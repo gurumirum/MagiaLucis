@@ -22,6 +22,8 @@ import static gurumirum.gemthing.GemthingMod.MODID;
 import static gurumirum.gemthing.GemthingMod.id;
 
 public final class Contents {
+	private Contents(){}
+
 	private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 	private static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(MODID);
 	private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);

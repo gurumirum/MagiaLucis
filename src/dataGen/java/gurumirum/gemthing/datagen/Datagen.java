@@ -1,6 +1,5 @@
 package gurumirum.gemthing.datagen;
 
-import gurumirum.gemthing.GemthingMod;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -13,7 +12,6 @@ import static gurumirum.gemthing.GemthingMod.MODID;
 public class Datagen {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
-		GemthingMod.LOGGER.debug("fuck you");
 		PackOutput o = event.getGenerator().getPackOutput();
 		ExistingFileHelper exf = event.getExistingFileHelper();
 

@@ -126,6 +126,10 @@ tasks.withType(ProcessResources).configureEach {
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
+
+    filesMatching(['META-INF/enumextensions.json']) {
+        expand replaceProperties
+    }
 }
 
 // Example configuration to allow publishing using the maven-publish plugin

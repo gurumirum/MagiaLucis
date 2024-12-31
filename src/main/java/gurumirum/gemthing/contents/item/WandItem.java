@@ -11,7 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class WandItem extends Item {
@@ -25,22 +27,16 @@ public class WandItem extends Item {
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		player.startUsingItem(hand);
-		return InteractionResultHolder.success(stack);
+		return InteractionResultHolder.consume(stack);
 	}
 
 	@Override
 	public void onUseTick(@NotNull Level level, @NotNull LivingEntity entity, @NotNull ItemStack stack, int remainingUseDuration) {
 		if (!level.isClientSide || !(entity instanceof LocalPlayer player)) return;
-		var eyePos = player.getEyePosition();
-		var hitResult = player.level().clip(new ClipContext(
-				eyePos,
-				eyePos.add(player.getLookAngle().scale(DISTANCE)),
-				ClipContext.Block.VISUAL,
-				ClipContext.Fluid.ANY,
-				player));
-		if (hitResult.getType() == HitResult.Type.BLOCK) {
-			InWorldBeamCraftingManager.setFocus(player, hitResult.getBlockPos());
-		}
+		Vec3 start = player.getEyePosition();
+		Vec3 end = start.add(player.getLookAngle().scale(DISTANCE));
+		BlockHitResult hitResult = trace(player, start, end);
+		InWorldBeamCraftingManager.setFocus(player, hitResult.getType() == HitResult.Type.BLOCK ? hitResult.getBlockPos() : null);
 	}
 
 	@Override
@@ -56,11 +52,17 @@ public class WandItem extends Item {
 
 	@Override
 	public @NotNull UseAnim getUseAnimation(@NotNull ItemStack stack) {
-		return UseAnim.CUSTOM;
+		return UseAnim.NONE;
 	}
 
 	@Override
 	public int getUseDuration(@NotNull ItemStack stack, @NotNull LivingEntity entity) {
 		return 72000;
+	}
+
+	public static BlockHitResult trace(Player player, Vec3 start, Vec3 end) {
+		return player.level().clip(new ClipContext(start, end,
+				ClipContext.Block.VISUAL, ClipContext.Fluid.ANY,
+				player));
 	}
 }

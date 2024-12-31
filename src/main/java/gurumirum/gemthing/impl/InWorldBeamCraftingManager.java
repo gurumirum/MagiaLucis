@@ -38,7 +38,6 @@ public final class InWorldBeamCraftingManager {
 			if (Objects.equals(focus.get(player.getUUID()), blockPos)) return;
 			PacketDistributor.sendToServer(new SetBeamCraftingInfoMsg(blockPos));
 		}
-		GemthingMod.LOGGER.info("set focus for player {} at {}", player, blockPos);
 		if (blockPos != null) focus.put(player.getUUID(), blockPos);
 		else focus.remove(player.getUUID());
 	}
