@@ -1,7 +1,7 @@
 package gurumirum.gemthing.client;
 
 import gurumirum.gemthing.GemthingMod;
-import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.ModItems;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +21,7 @@ public final class ClientInit {
 	@SubscribeEvent
 	public static void setup(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			ItemProperties.register(Contents.Items.WAND.asItem(),
+			ItemProperties.register(ModItems.WAND.asItem(),
 					ResourceLocation.withDefaultNamespace("using"),
 					(stack, level, entity, seed) ->
 							entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0);
@@ -41,6 +41,6 @@ public final class ClientInit {
 
 	@SubscribeEvent
 	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
-		event.registerItem(new WandItemExtension(), Contents.Items.WAND.asItem());
+		event.registerItem(new WandItemExtension(), ModItems.WAND.asItem());
 	}
 }

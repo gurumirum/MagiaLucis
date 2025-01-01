@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "gemthing:item/gem"
+    "layer0": "gemthing:item/silver_ingot"
   }
 }

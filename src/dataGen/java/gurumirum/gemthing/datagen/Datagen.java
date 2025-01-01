@@ -1,10 +1,14 @@
 package gurumirum.gemthing.datagen;
 
+import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+
+import java.util.Set;
 
 import static gurumirum.gemthing.GemthingMod.MODID;
 
@@ -16,7 +20,14 @@ public class Datagen {
 		ExistingFileHelper exf = event.getExistingFileHelper();
 
 		boolean c = event.includeClient();
+		boolean s = event.includeServer();
 
+		event.getGenerator().addProvider(c, new BlockStateGen(o, exf));
 		event.getGenerator().addProvider(c, new ItemModelGen(o, exf));
+
+		event.getGenerator().addProvider(s, new RecipeGen(o, event.getLookupProvider()));
+		event.getGenerator().addProvider(s, (DataProvider.Factory<DatapackBuiltinEntriesProvider>)output ->
+				new DatapackBuiltinEntriesProvider(output, event.getLookupProvider(), DatapackEntryGen.getEntries(),
+						Set.of(MODID)));
 	}
 }

@@ -1,6 +1,6 @@
 package gurumirum.gemthing.capability;
 
-import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.Gems;
 import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -56,28 +56,28 @@ public enum GemStat {
 
 	public Item item() {
 		return switch (this) {
-			case BRIGHTSTONE -> Contents.Gems.BRIGHTSTONE.asItem();
-			case AMBER -> Contents.Gems.AMBER.asItem();
-			case CITRINE -> Contents.Gems.CITRINE.asItem();
-			case AQUAMARINE -> Contents.Gems.AQUAMARINE.asItem();
-			case PEARL -> Contents.Gems.PEARL.asItem();
-			case PURIFIED_QUARTZ -> Contents.Gems.PURIFIED_QUARTZ.asItem();
-			case CRYSTALLIZED_REDSTONE -> Contents.Gems.CRYSTALLIZED_REDSTONE.asItem();
-			case POLISHED_LAPIS_LAZULI -> Contents.Gems.POLISHED_LAPIS_LAZULI.asItem();
-			case OBSIDIAN -> Contents.Gems.OBSIDIAN.asItem();
+			case BRIGHTSTONE -> Gems.BRIGHTSTONE.asItem();
+			case AMBER -> Gems.AMBER.asItem();
+			case CITRINE -> Gems.CITRINE.asItem();
+			case AQUAMARINE -> Gems.AQUAMARINE.asItem();
+			case PEARL -> Gems.PEARL.asItem();
+			case PURIFIED_QUARTZ -> Gems.PURIFIED_QUARTZ.asItem();
+			case CRYSTALLIZED_REDSTONE -> Gems.CRYSTALLIZED_REDSTONE.asItem();
+			case POLISHED_LAPIS_LAZULI -> Gems.POLISHED_LAPIS_LAZULI.asItem();
+			case OBSIDIAN -> Gems.OBSIDIAN.asItem();
 			case DIAMOND -> Items.DIAMOND;
-			case RUBY -> Contents.Gems.RUBY.asItem();
+			case RUBY -> Gems.RUBY.asItem();
 			case EMERALD -> Items.EMERALD;
-			case SAPPHIRE -> Contents.Gems.SAPPHIRE.asItem();
+			case SAPPHIRE -> Gems.SAPPHIRE.asItem();
 			case AMETHYST -> Items.AMETHYST_SHARD;
-			case TOPAZ -> Contents.Gems.TOPAZ.asItem();
-			case MOONSTONE -> Contents.Gems.MOONSTONE.asItem();
-			case JET -> Contents.Gems.JET.asItem();
-			case BRILLIANT_DIAMOND -> Contents.Gems.BRILLIANT_DIAMOND.asItem();
-			case RUBY2 -> Contents.Gems.RUBY2.asItem();
-			case EMERALD2 -> Contents.Gems.EMERALD2.asItem();
-			case SAPPHIRE2 -> Contents.Gems.SAPPHIRE2.asItem();
-			case DAIMONIUM -> Contents.Gems.DAIMONIUM.asItem();
+			case TOPAZ -> Gems.TOPAZ.asItem();
+			case MOONSTONE -> Gems.MOONSTONE.asItem();
+			case JET -> Gems.JET.asItem();
+			case BRILLIANT_DIAMOND -> Gems.BRILLIANT_DIAMOND.asItem();
+			case RUBY2 -> Gems.RUBY2.asItem();
+			case EMERALD2 -> Gems.EMERALD2.asItem();
+			case SAPPHIRE2 -> Gems.SAPPHIRE2.asItem();
+			case DAIMONIUM -> Gems.DAIMONIUM.asItem();
 		};
 	}
 }

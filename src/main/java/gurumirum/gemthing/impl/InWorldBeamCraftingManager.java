@@ -1,7 +1,8 @@
 package gurumirum.gemthing.impl;
 
 import gurumirum.gemthing.GemthingMod;
-import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.Gems;
+import gurumirum.gemthing.contents.ModItems;
 import gurumirum.gemthing.net.msgs.SetBeamCraftingInfoMsg;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -49,7 +50,7 @@ public final class InWorldBeamCraftingManager {
 
 		addRecipe(Blocks.SAND, new Recipe(25, LootTable.lootTable()
 				.withPool(new LootPool.Builder()
-						.add(LootItem.lootTableItem(Contents.Gems.BRIGHTSTONE)))
+						.add(LootItem.lootTableItem(Gems.BRIGHTSTONE)))
 				.build()));
 	}
 
@@ -97,7 +98,7 @@ public final class InWorldBeamCraftingManager {
 		for (Player p : event.getLevel().players()) {
 			if (p.isDeadOrDying() ||
 					!p.isUsingItem() ||
-					!p.getUseItem().is(Contents.Items.WAND.asItem())) {
+					!p.getUseItem().is(ModItems.WAND.asItem())) {
 				focus.remove(p.getUUID());
 				continue;
 			}

@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
-import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.ModItems;
 import gurumirum.gemthing.contents.item.WandItem;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
@@ -121,7 +121,7 @@ public final class BeamRender {
 
 		for (AbstractClientPlayer player : mc.level.players()) {
 			if (!player.isUsingItem() ||
-					!player.getUseItem().is(Contents.Items.WAND.asItem())) continue;
+					!player.getUseItem().is(ModItems.WAND.asItem())) continue;
 
 			var beamStart = PLAYER_BEAM_STARTS.get(player.getUUID());
 			if (beamStart == null || !beamStart.isFinite()) continue;

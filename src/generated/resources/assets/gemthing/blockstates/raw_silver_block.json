@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "gemthing:block/raw_silver_block"
+    }
+  }
+}

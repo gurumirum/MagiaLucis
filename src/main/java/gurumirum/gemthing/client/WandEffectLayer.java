@@ -2,7 +2,7 @@ package gurumirum.gemthing.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.ModItems;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,7 +21,7 @@ public class WandEffectLayer extends RenderLayer<AbstractClientPlayer, PlayerMod
 	public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight,
 	                   @NotNull AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTick,
 	                   float ageInTicks, float netHeadYaw, float headPitch) {
-		if (!player.isUsingItem() || !player.getUseItem().is(Contents.Items.WAND.asItem())) return;
+		if (!player.isUsingItem() || !player.getUseItem().is(ModItems.WAND.asItem())) return;
 
 		HumanoidArm arm = player.getUsedItemHand() == InteractionHand.MAIN_HAND ?
 				player.getMainArm() : player.getMainArm().getOpposite();

@@ -1,6 +1,6 @@
 package gurumirum.gemthing.capability;
 
-import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.Gems;
 import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -19,7 +19,7 @@ public final class Capabilities {
 
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		for (Contents.Gems value : Contents.Gems.values()) {
+		for (Gems value : Gems.values()) {
 			var stat = value.stat;
 			event.registerItem(GEM_STAT, (s, v) -> stat, value.asItem());
 		}

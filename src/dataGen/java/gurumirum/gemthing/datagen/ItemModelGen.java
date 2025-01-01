@@ -1,6 +1,9 @@
 package gurumirum.gemthing.datagen;
 
-import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.Gems;
+import gurumirum.gemthing.contents.ModBlocks;
+import gurumirum.gemthing.contents.ModItems;
+import gurumirum.gemthing.contents.NormalOres;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +17,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import java.util.Objects;
 
 import static gurumirum.gemthing.GemthingMod.MODID;
+import static gurumirum.gemthing.GemthingMod.id;
 
 public class ItemModelGen extends ItemModelProvider {
 	public ItemModelGen(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -22,11 +26,11 @@ public class ItemModelGen extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
-		handheld(Contents.Items.WAND.asItem())
+		handheld(ModItems.WAND.asItem())
 				.override()
 				.predicate(ResourceLocation.withDefaultNamespace("using"), 1)
-				.model(getBuilder(Contents.Items.WAND.id().getPath() + "_using")
-						.parent(new ModelFile.UncheckedModelFile(Contents.Items.WAND.id().withPrefix("item/")))
+				.model(getBuilder(ModItems.WAND.id().getPath() + "_using")
+						.parent(new ModelFile.UncheckedModelFile(ModItems.WAND.id().withPrefix("item/")))
 						.transforms()
 						.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
 						.rotation(-128.5f, 90, 0)
@@ -50,17 +54,25 @@ public class ItemModelGen extends ItemModelProvider {
 						.end()
 						.end());
 
-		basicItem(Contents.Gems.BRIGHTSTONE.asItem());
+		basicItem(ModItems.SILVER_INGOT.asItem());
+		basicItem(ModItems.SILVER_NUGGET.asItem());
+		basicItem(ModItems.RAW_SILVER.asItem());
 
-		basicItem(Contents.Gems.AMBER.asItem());
-		basicItem(Contents.Gems.CITRINE.asItem());
-		basicItem(Contents.Gems.AQUAMARINE.asItem());
-		basicItem(Contents.Gems.PEARL.asItem());
+		basicItem(Gems.BRIGHTSTONE.asItem());
 
-		basicItem(Contents.Gems.PURIFIED_QUARTZ.asItem());
-		basicItem(Contents.Gems.CRYSTALLIZED_REDSTONE.asItem());
-		basicItem(Contents.Gems.POLISHED_LAPIS_LAZULI.asItem());
-		basicItem(Contents.Gems.OBSIDIAN.asItem());
+		basicItem(Gems.AMBER.asItem());
+		basicItem(Gems.CITRINE.asItem());
+		basicItem(Gems.AQUAMARINE.asItem());
+		basicItem(Gems.PEARL.asItem());
+
+		basicItem(Gems.PURIFIED_QUARTZ.asItem());
+		basicItem(Gems.CRYSTALLIZED_REDSTONE.asItem());
+		basicItem(Gems.POLISHED_LAPIS_LAZULI.asItem());
+		basicItem(Gems.OBSIDIAN.asItem());
+
+		registerOreModels(NormalOres.SILVER);
+		itemBlock(ModBlocks.SILVER.id().getPath(), "silver");
+		itemBlock(ModBlocks.RAW_SILVER_BLOCK.id().getPath());
 	}
 
 	@SuppressWarnings("UnusedReturnValue")
@@ -72,5 +84,17 @@ public class ItemModelGen extends ItemModelProvider {
 		return getBuilder(item.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
 				.texture("layer0", ResourceLocation.fromNamespaceAndPath(item.getNamespace(), "item/" + item.getPath()));
+	}
+
+	private void registerOreModels(NormalOres ore) {
+		if (ore.hasOre()) itemBlock(ore.oreId());
+		if (ore.hasDeepslateOre()) itemBlock(ore.deepslateOreId());
+	}
+
+	private ItemModelBuilder itemBlock(String id) {
+		return itemBlock(id, id);
+	}
+	private ItemModelBuilder itemBlock(String id, String modelPath) {
+		return getBuilder(id).parent(new ModelFile.UncheckedModelFile(id("block/" + modelPath)));
 	}
 }

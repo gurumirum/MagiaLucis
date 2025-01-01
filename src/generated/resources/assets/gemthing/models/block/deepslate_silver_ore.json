@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "gemthing:block/deepslate_silver_ore"
+  }
+}
