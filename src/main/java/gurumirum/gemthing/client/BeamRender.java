@@ -98,11 +98,10 @@ public final class BeamRender {
 
 	private static final Object2ObjectOpenHashMap<UUID, Vector3f> PLAYER_BEAM_STARTS = new Object2ObjectOpenHashMap<>();
 
-	private static final Vector3f _cameraPos = new Vector3f();
 	private static final Vector3f _beamEnd = new Vector3f();
 
 	public static Vector3f getOrCreatePlayerBeamStart(Player player) {
-		return PLAYER_BEAM_STARTS.computeIfAbsent(player.getUUID(), u -> new Vector3f());
+		return PLAYER_BEAM_STARTS.computeIfAbsent(player.getUUID(), u -> new Vector3f(Float.NaN));
 	}
 
 	@SubscribeEvent
@@ -125,7 +124,7 @@ public final class BeamRender {
 					!player.getUseItem().is(Contents.Items.WAND.asItem())) continue;
 
 			var beamStart = PLAYER_BEAM_STARTS.get(player.getUUID());
-			if (beamStart == null || beamStart.isFinite()) continue;
+			if (beamStart == null || !beamStart.isFinite()) continue;
 
 			Vec3 start = player.getEyePosition();
 			Vec3 end = start.add(player.getLookAngle().scale(WandItem.DISTANCE));
