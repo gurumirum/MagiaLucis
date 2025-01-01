@@ -49,7 +49,6 @@ public class ItemModelGen extends ItemModelProvider {
 						.scale(0.85f, 0.85f, 0.85f)
 						.end()
 						.end());
-		basicItem(Contents.Items.GEM.asItem());
 
 		basicItem(Contents.Gems.BRIGHTSTONE.asItem());
 

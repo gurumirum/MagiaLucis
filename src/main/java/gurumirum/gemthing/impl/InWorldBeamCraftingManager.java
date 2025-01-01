@@ -6,11 +6,20 @@ import gurumirum.gemthing.net.msgs.SetBeamCraftingInfoMsg;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -26,8 +35,33 @@ import java.util.UUID;
 
 @EventBusSubscriber(modid = GemthingMod.MODID)
 public final class InWorldBeamCraftingManager {
+	private InWorldBeamCraftingManager() {}
+
 	private static final Map<UUID, @Nullable BlockPos> focus = new Object2ObjectOpenHashMap<>();
 	private static final Map<ServerLevel, Object2IntMap<BlockPos>> beam = new Object2ObjectOpenHashMap<>();
+	private static final Map<BlockState, Recipe> recipes = new Object2ObjectOpenHashMap<>();
+
+	private static boolean init;
+
+	public static void init() {
+		if (init) return;
+		init = true;
+
+		addRecipe(Blocks.SAND, new Recipe(25, LootTable.lootTable()
+				.withPool(new LootPool.Builder()
+						.add(LootItem.lootTableItem(Contents.Gems.BRIGHTSTONE)))
+				.build()));
+	}
+
+	private static void addRecipe(BlockState blockState, Recipe recipe) {
+		recipes.put(blockState, recipe);
+	}
+
+	private static void addRecipe(Block block, Recipe recipe) {
+		for (BlockState state : block.getStateDefinition().getPossibleStates()) {
+			recipes.put(state, recipe);
+		}
+	}
 
 	public static void removeFocus(@NotNull Player player) {
 		setFocus(player, null);
@@ -69,21 +103,29 @@ public final class InWorldBeamCraftingManager {
 			}
 
 			BlockPos focusPos = focus.get(p.getUUID());
-			if (focusPos == null) continue;
+			if (focusPos == null || !level.isLoaded(focusPos)) continue;
+
+			BlockState state = level.getBlockState(focusPos);
+			Recipe recipe = recipes.get(state);
+			if (recipe == null) continue;
 
 			if (beamProgress == null) beamProgress = beam.computeIfAbsent(level, l -> new Object2IntOpenHashMap<>());
 
 			int progress = beamProgress.getInt(focusPos) + PLAYER_FOCUS_UPDATE_INTERVAL;
-			if (progress >= 25) {
+			if (progress >= recipe.processTicks) {
 				beamProgress.removeInt(focusPos);
 				focus.remove(p.getUUID());
 				level.destroyBlock(focusPos, false);
 
-				ItemEntity itemEntity = new ItemEntity(level,
-						focusPos.getX() + .5, focusPos.getY() + .5, focusPos.getZ() + .5,
-						new ItemStack(Contents.Items.GEM));
+				ObjectArrayList<ItemStack> stacks = recipe.loot.getRandomItems(new LootParams.Builder(level)
+						.create(LootContextParamSets.EMPTY));
 
-				level.addFreshEntity(itemEntity);
+				for (ItemStack s : stacks) {
+					ItemEntity itemEntity = new ItemEntity(level,
+							focusPos.getX() + .5, focusPos.getY() + .5, focusPos.getZ() + .5,
+							s);
+					level.addFreshEntity(itemEntity);
+				}
 			} else {
 				// sus logic to counteract decay (im lazy)
 				beamProgress.put(focusPos, decayUpdateTick ? progress + DECAY_AMOUNT_PER_SEC : progress);
@@ -107,4 +149,6 @@ public final class InWorldBeamCraftingManager {
 	public static void onLevelUnload(LevelEvent.Unload event) {
 		beam.remove(event.getLevel());
 	}
+
+	public record Recipe(int processTicks, @NotNull LootTable loot) {}
 }

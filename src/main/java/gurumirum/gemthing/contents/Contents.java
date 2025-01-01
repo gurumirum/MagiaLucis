@@ -124,9 +124,7 @@ public final class Contents {
 	}
 
 	public enum Items implements ItemLike {
-		WAND(WandItem::new),
-
-		GEM;
+		WAND(WandItem::new);
 
 		private final DeferredItem<Item> item;
 
