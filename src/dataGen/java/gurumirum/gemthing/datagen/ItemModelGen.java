@@ -50,6 +50,18 @@ public class ItemModelGen extends ItemModelProvider {
 						.end()
 						.end());
 		basicItem(Contents.Items.GEM.asItem());
+
+		basicItem(Contents.Gems.BRIGHTSTONE.asItem());
+
+		basicItem(Contents.Gems.AMBER.asItem());
+		basicItem(Contents.Gems.CITRINE.asItem());
+		basicItem(Contents.Gems.AQUAMARINE.asItem());
+		basicItem(Contents.Gems.PEARL.asItem());
+
+		basicItem(Contents.Gems.PURIFIED_QUARTZ.asItem());
+		basicItem(Contents.Gems.CRYSTALLIZED_REDSTONE.asItem());
+		basicItem(Contents.Gems.POLISHED_LAPIS_LAZULI.asItem());
+		basicItem(Contents.Gems.OBSIDIAN.asItem());
 	}
 
 	@SuppressWarnings("UnusedReturnValue")
