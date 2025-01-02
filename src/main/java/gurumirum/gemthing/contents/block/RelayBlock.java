@@ -31,8 +31,11 @@ public class RelayBlock extends Block implements EntityBlock {
         BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
         if(!(blockEntity instanceof RelayBlockEntity)) return InteractionResult.PASS;
 
-        RelaySingleton.getInstance().getNearRelays(pPos).forEach(relay -> {
-            GemthingMod.LOGGER.info("Connected with {} {} {}", relay.getX(), relay.getY(), relay.getZ());
+        RelaySingleton.getInstance().getInboundNodes(pPos).forEach(relay -> {
+            GemthingMod.LOGGER.info("Inbound connection with {} {} {}", relay.getX(), relay.getY(), relay.getZ());
+        });
+        RelaySingleton.getInstance().getOutboundNodes(pPos).forEach(relay -> {
+            GemthingMod.LOGGER.info("Outbound connection with {} {} {}", relay.getX(), relay.getY(), relay.getZ());
         });
         return InteractionResult.SUCCESS;
     }

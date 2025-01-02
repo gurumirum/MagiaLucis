@@ -24,16 +24,15 @@ public class RelayBlockEntity extends BlockEntity {
         this(Contents.RELAY_BLOCK_ENTITY.get(), pPos, pBlockState);
     }
 
-    public boolean linkRelay(BlockPos pPos) {
-        RelayBlockEntity relay = (RelayBlockEntity) level.getBlockEntity(pPos);
+    public boolean linkRelay(BlockPos origin) {
+        if(level == null) return false;
+        RelayBlockEntity relay = (RelayBlockEntity) level.getBlockEntity(origin);
         if(relay == null) return false;
-        if(pPos.equals(this.getBlockPos())) return false;
-        if(!validateEdge(pPos)) return false;
+        if(origin.equals(this.getBlockPos())) return false;
+        if(!validateEdge(origin)) return false;
         RelaySingleton relaySingleton = RelaySingleton.getInstance();
-        if(!relaySingleton.addEdge(pPos, this.getBlockPos())) return false;
-        edges.add(pPos);
+        if(!relaySingleton.addEdge(origin, this.getBlockPos())) return false;
         relay.edges.add(this.getBlockPos());
-        setChanged();
         relay.setChanged();
         return true;
     }

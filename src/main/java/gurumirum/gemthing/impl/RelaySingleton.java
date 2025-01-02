@@ -7,8 +7,9 @@ import net.minecraft.core.BlockPos;
 import java.util.HashSet;
 import java.util.Set;
 
+@SuppressWarnings("UnstableApiUsage")
 public final class RelaySingleton {
-    private static final MutableGraph<BlockPos> graph = GraphBuilder.undirected().allowsSelfLoops(false).build();
+    private static final MutableGraph<BlockPos> graph = GraphBuilder.directed().allowsSelfLoops(false).build();
 
 
     private static RelaySingleton instance;
@@ -39,5 +40,15 @@ public final class RelaySingleton {
     public Set<BlockPos> getNearRelays(BlockPos relay) {
         if(!graph.nodes().contains(relay)) return new HashSet<>();
         return graph.adjacentNodes(relay);
+    }
+
+    public Set<BlockPos> getInboundNodes(BlockPos relay) {
+        if(!graph.nodes().contains(relay)) return new HashSet<>();
+        return graph.predecessors(relay);
+    }
+
+    public Set<BlockPos> getOutboundNodes(BlockPos relay) {
+        if(!graph.nodes().contains(relay)) return new HashSet<>();
+        return graph.successors(relay);
     }
 }
