@@ -8,6 +8,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
@@ -22,10 +23,22 @@ public class BlockTagGen extends BlockTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
+		var ores = tag(Tags.Blocks.ORES);
+		var stoneOres = tag(Tags.Blocks.ORES_IN_GROUND_STONE);
+		var deepslateOres = tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE);
+
 		for (NormalOres ore : NormalOres.values()) {
-			IntrinsicTagAppender<Block> tags = tag(BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/" + ore.oreId())));
-			if (ore.hasOre()) tags.add(ore.ore());
-			if (ore.hasDeepslateOre()) tags.add(ore.deepslateOre());
+			var tags = tag(BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/" + ore.oreId())));
+			if (ore.hasOre()) {
+				tags.add(ore.ore());
+				ores.add(ore.ore());
+				stoneOres.add(ore.ore());
+			}
+			if (ore.hasDeepslateOre()) {
+				tags.add(ore.deepslateOre());
+				ores.add(ore.deepslateOre());
+				deepslateOres.add(ore.deepslateOre());
+			}
 		}
 
 		c("storage_blocks/silver").add(ModBlocks.SILVER.block());

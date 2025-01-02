@@ -19,6 +19,9 @@ public class BlockStateGen extends BlockStateProvider {
 		simpleBlock(ModBlocks.RAW_SILVER_BLOCK.block());
 
 		registerOre(NormalOres.SILVER);
+		registerOre(NormalOres.AMBER);
+		registerOre(NormalOres.CITRINE);
+		registerOre(NormalOres.AQUAMARINE);
 	}
 
 	private void registerOre(NormalOres ore){

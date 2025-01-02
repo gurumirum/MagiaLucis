@@ -70,7 +70,13 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(Gems.POLISHED_LAPIS_LAZULI.asItem());
 		basicItem(Gems.OBSIDIAN.asItem());
 
-		registerOreModels(NormalOres.SILVER);
+		basicItem(Gems.TOPAZ.asItem());
+		basicItem(Gems.MOONSTONE.asItem());
+		basicItem(Gems.JET.asItem());
+		basicItem(Gems.RUBY.asItem());
+		basicItem(Gems.SAPPHIRE.asItem());
+
+		for (NormalOres ore : NormalOres.values()) registerOreModels(ore);
 		itemBlock(ModBlocks.SILVER.id().getPath(), "silver");
 		itemBlock(ModBlocks.RAW_SILVER_BLOCK.id().getPath());
 	}
