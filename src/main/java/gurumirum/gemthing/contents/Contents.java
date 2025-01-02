@@ -3,9 +3,14 @@ package gurumirum.gemthing.contents;
 import com.mojang.serialization.Codec;
 import gurumirum.gemthing.capability.GemStat;
 import gurumirum.gemthing.contents.block.RemoteChargerBlockEntity;
+import gurumirum.gemthing.contents.block.RelayBlockEntity;
+import gurumirum.gemthing.contents.entity.GemGolemEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -14,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -32,6 +38,19 @@ public final class Contents {
 
 	static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
 	static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, MODID);
+	static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
+
+	public static final DeferredHolder<EntityType<?>, EntityType<GemGolemEntity>> GEM_GOLEM = ENTITY_TYPES.register(
+			"gem_golem", () -> EntityType.Builder.of(GemGolemEntity::new, MobCategory.MONSTER).sized(1.4F, 2.7F).clientTrackingRange(10).build("gem_golem")
+	);
+
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> BLOCK_POS_DATA = DATA_COMPONENTS.register(
+			"block_pos", () -> DataComponentType.<BlockPos>builder().persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC).build()
+	);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RelayBlockEntity>> RELAY_BLOCK_ENTITY = BLOCK_ENTITIES.register(
+			"relay_block_entity", () -> BlockEntityType.Builder.of(RelayBlockEntity::new, ModBlocks.RELAY.block()).build(null)
+	);
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Long>> LUX_CHARGE = DATA_COMPONENTS.register("lux_charge",
 			() -> DataComponentType.<Long>builder()
@@ -49,6 +68,7 @@ public final class Contents {
 		BLOCKS.register(eventBus);
 		BLOCK_ENTITIES.register(eventBus);
 		PLACED_FEATURES.register(eventBus);
+		ENTITY_TYPES.register(eventBus);
 
 		eventBus.addListener((RegisterEvent event) -> {
 			event.register(Registries.CREATIVE_MODE_TAB, h -> {
@@ -71,6 +91,10 @@ public final class Contents {
 						})
 						.build());
 			});
+		});
+
+		eventBus.addListener((EntityAttributeCreationEvent event) -> {
+			event.put(Contents.GEM_GOLEM.get(), GemGolemEntity.createAttributes().build());
 		});
 
 		Gems.init();

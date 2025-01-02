@@ -2,6 +2,8 @@ package gurumirum.gemthing.client;
 
 import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.contents.ModItems;
+import gurumirum.gemthing.client.render.entity.GemGolemRenderer;
+import gurumirum.gemthing.contents.Contents;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -42,5 +44,10 @@ public final class ClientInit {
 	@SubscribeEvent
 	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerItem(new WandItemExtension(), ModItems.WAND.asItem());
+	}
+
+	@SubscribeEvent
+	public static void onEntityRendererRegister(EntityRenderersEvent.RegisterRenderers event) {
+		event.registerEntityRenderer(Contents.GEM_GOLEM.get(), GemGolemRenderer::new);
 	}
 }
