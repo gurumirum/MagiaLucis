@@ -17,6 +17,7 @@ public class BlockStateGen extends BlockStateProvider {
 	protected void registerStatesAndModels() {
 		simpleBlock(ModBlocks.SILVER.block());
 		simpleBlock(ModBlocks.RAW_SILVER_BLOCK.block());
+		simpleBlock(ModBlocks.RELAY.block());
 
 		registerOre(NormalOres.SILVER);
 	}

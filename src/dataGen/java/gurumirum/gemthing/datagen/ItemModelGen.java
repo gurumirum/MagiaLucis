@@ -57,6 +57,7 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(ModItems.SILVER_INGOT.asItem());
 		basicItem(ModItems.SILVER_NUGGET.asItem());
 		basicItem(ModItems.RAW_SILVER.asItem());
+		basicItem(ModItems.WRENCH_WAND.asItem());
 
 		basicItem(Gems.BRIGHTSTONE.asItem());
 
@@ -73,6 +74,7 @@ public class ItemModelGen extends ItemModelProvider {
 		registerOreModels(NormalOres.SILVER);
 		itemBlock(ModBlocks.SILVER.id().getPath(), "silver");
 		itemBlock(ModBlocks.RAW_SILVER_BLOCK.id().getPath());
+		itemBlock(ModBlocks.RELAY.id().getPath());
 	}
 
 	@SuppressWarnings("UnusedReturnValue")

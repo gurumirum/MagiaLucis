@@ -1,7 +1,5 @@
 package gurumirum.gemthing.contents.entity;
 
-import com.google.common.graph.Graph;
-import com.google.common.graph.GraphBuilder;
 import gurumirum.gemthing.contents.entity.ai.BackToPositionGoal;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
