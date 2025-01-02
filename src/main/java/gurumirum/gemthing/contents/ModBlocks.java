@@ -1,5 +1,6 @@
 package gurumirum.gemthing.contents;
 
+import gurumirum.gemthing.contents.block.RemoteChargerBlock;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -22,7 +23,8 @@ import java.util.function.Supplier;
 public enum ModBlocks implements ItemLike {
 	SILVER(() -> Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL)),
 	RAW_SILVER_BLOCK(() -> Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)),
-	;
+
+	REMOTE_CHARGER(RemoteChargerBlock::new, () -> Properties.of());
 
 	private final DeferredBlock<Block> block;
 	@Nullable

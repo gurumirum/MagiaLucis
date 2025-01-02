@@ -9,7 +9,8 @@ import net.minecraft.util.Mth;
 public final class RGB332 {
 	private RGB332() {}
 
-	public static byte WHITE = of(7, 7, 3);
+	public static final byte BLACK = (byte)0; // (0, 0, 0)
+	public static final byte WHITE = (byte)-1; // (7, 7, 3)
 
 	public static byte of(int r, int g, int b) {
 		r = Mth.clamp(r, 0, 7);
@@ -57,13 +58,13 @@ public final class RGB332 {
 		return (int)(16 + (255 - 16) * (b / 3.0));
 	}
 
-	public static double rBrightness(byte rgb332){
+	public static double rBrightness(byte rgb332) {
 		return rComponentValue(rgb332) / 255f;
 	}
-	public static double gBrightness(byte rgb332){
+	public static double gBrightness(byte rgb332) {
 		return gComponentValue(rgb332) / 255f;
 	}
-	public static double bBrightness(byte rgb332){
+	public static double bBrightness(byte rgb332) {
 		return bComponentValue(rgb332) / 255f;
 	}
 }
