@@ -1,7 +1,9 @@
 package gurumirum.gemthing.client;
 
 import gurumirum.gemthing.GemthingMod;
+import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.ModItems;
+import gurumirum.gemthing.contents.item.wandbag.WandBagScreen;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +12,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 import static gurumirum.gemthing.GemthingMod.MODID;
@@ -42,5 +45,10 @@ public final class ClientInit {
 	@SubscribeEvent
 	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerItem(new WandItemExtension(), ModItems.WAND.asItem());
+	}
+
+	@SubscribeEvent
+	public static void registerMenuScreens(RegisterMenuScreensEvent event) {
+		event.register(Contents.WANG_BAG_MENU.get(), WandBagScreen::new);
 	}
 }

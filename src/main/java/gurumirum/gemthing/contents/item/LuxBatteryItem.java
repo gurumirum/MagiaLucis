@@ -1,6 +1,6 @@
 package gurumirum.gemthing.contents.item;
 
-import gurumirum.gemthing.capability.Capabilities;
+import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.capability.LuxContainerStat;
 import gurumirum.gemthing.contents.Contents;
 import net.minecraft.network.chat.Component;
@@ -20,7 +20,7 @@ public class LuxBatteryItem extends Item {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		LuxContainerStat luxContainerStat = stack.getCapability(Capabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (luxContainerStat == null) return;
 
 		long charge = stack.getOrDefault(Contents.LUX_CHARGE.get(), 0L);
@@ -29,13 +29,13 @@ public class LuxBatteryItem extends Item {
 
 	@Override
 	public boolean isBarVisible(@NotNull ItemStack stack) {
-		LuxContainerStat luxContainerStat = stack.getCapability(Capabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		return luxContainerStat != null;
 	}
 
 	@Override
 	public int getBarWidth(@NotNull ItemStack stack) {
-		LuxContainerStat luxContainerStat = stack.getCapability(Capabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (luxContainerStat == null) return 0;
 
 		long charge = stack.getOrDefault(Contents.LUX_CHARGE.get(), 0L);

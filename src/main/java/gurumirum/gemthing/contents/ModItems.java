@@ -1,6 +1,7 @@
 package gurumirum.gemthing.contents;
 
 import gurumirum.gemthing.contents.item.LuxBatteryItem;
+import gurumirum.gemthing.contents.item.wandbag.WandBagItem;
 import gurumirum.gemthing.contents.item.WandItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -16,6 +17,7 @@ import java.util.function.Function;
 public enum ModItems implements ItemLike {
 	WAND(WandItem::new),
 	LUX_BATTERY(LuxBatteryItem::new),
+	WAND_BAG(WandBagItem::new),
 
 	SILVER_INGOT,
 	SILVER_NUGGET,

@@ -1,6 +1,6 @@
 package gurumirum.gemthing.impl;
 
-import gurumirum.gemthing.capability.Capabilities;
+import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.capability.GemStat;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -22,7 +22,7 @@ public final class GemStatTooltip {
 
 	@SubscribeEvent
 	public static void asdf(ItemTooltipEvent event) {
-		GemStat gemStat = event.getItemStack().getCapability(Capabilities.GEM_STAT);
+		GemStat gemStat = event.getItemStack().getCapability(ModCapabilities.GEM_STAT);
 		if (gemStat == null) return;
 
 		// TODO localize

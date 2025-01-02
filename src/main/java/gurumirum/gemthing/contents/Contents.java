@@ -3,9 +3,12 @@ package gurumirum.gemthing.contents;
 import com.mojang.serialization.Codec;
 import gurumirum.gemthing.capability.GemStat;
 import gurumirum.gemthing.contents.block.RemoteChargerBlockEntity;
+import gurumirum.gemthing.contents.item.wandbag.WandBagMenu;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -31,6 +34,7 @@ public final class Contents {
 	static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
 	static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
+	static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
 	static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, MODID);
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Long>> LUX_CHARGE = DATA_COMPONENTS.register("lux_charge",
@@ -38,6 +42,15 @@ public final class Contents {
 					.persistent(Codec.LONG)
 					.networkSynchronized(ByteBufCodecs.VAR_LONG)
 					.build());
+
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Byte>> WAND_BAG_SELECTED_INDEX = DATA_COMPONENTS.register("wand_bag_selected_index",
+			() -> DataComponentType.<Byte>builder()
+					.persistent(Codec.BYTE)
+					.networkSynchronized(ByteBufCodecs.BYTE)
+					.build());
+
+	public static final DeferredHolder<MenuType<?>, MenuType<WandBagMenu>> WANG_BAG_MENU = MENUS.register("wand_bag",
+			() -> new MenuType<>(WandBagMenu::new, FeatureFlagSet.of()));
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> REMOTE_CHARGER = BLOCK_ENTITIES.register("remote_charger",
 			() -> BlockEntityType.Builder.of(RemoteChargerBlockEntity::new, ModBlocks.REMOTE_CHARGER.block())
@@ -48,6 +61,7 @@ public final class Contents {
 		DATA_COMPONENTS.register(eventBus);
 		BLOCKS.register(eventBus);
 		BLOCK_ENTITIES.register(eventBus);
+		MENUS.register(eventBus);
 		PLACED_FEATURES.register(eventBus);
 
 		eventBus.addListener((RegisterEvent event) -> {

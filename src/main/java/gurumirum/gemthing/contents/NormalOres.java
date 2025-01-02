@@ -70,12 +70,16 @@ public enum NormalOres {
 		}
 	}
 
+	public @NotNull String oreBaseName() {
+		return name().toLowerCase(Locale.ROOT);
+	}
+
 	public @NotNull String oreId() {
-		return name().toLowerCase(Locale.ROOT) + "_ore";
+		return oreBaseName() + "_ore";
 	}
 
 	public @NotNull String deepslateOreId() {
-		return "deepslate_" + name().toLowerCase(Locale.ROOT) + "_ore";
+		return "deepslate_" + oreBaseName() + "_ore";
 	}
 
 	public @NotNull Block ore() {
