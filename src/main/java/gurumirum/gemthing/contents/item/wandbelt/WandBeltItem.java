@@ -1,5 +1,6 @@
-package gurumirum.gemthing.contents.item.wandbag;
+package gurumirum.gemthing.contents.item.wandbelt;
 
+import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.ModItemTags;
 import net.minecraft.core.component.DataComponents;
@@ -23,8 +24,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class WandBagItem extends Item {
-	public WandBagItem(Properties properties) {
+public class WandBeltItem extends Item {
+	public static final String CURIO_SLOT = GemthingMod.MODID + "_wand_belt";
+
+	public WandBeltItem(Properties properties) {
 		super(properties.stacksTo(1).fireResistant());
 	}
 
@@ -44,7 +47,7 @@ public class WandBagItem extends Item {
 			}
 			@Override
 			public @NotNull AbstractContainerMenu createMenu(int containerId, @NotNull Inventory playerInventory, @NotNull Player player) {
-				return new WandBagMenu(containerId, playerInventory, inv, selectedIndex);
+				return new WandBeltMenu(containerId, playerInventory, inv, selectedIndex);
 			}
 		});
 
@@ -74,6 +77,11 @@ public class WandBagItem extends Item {
 	public static int getSelectedIndex(ItemStack stack) {
 		Byte selectedIndex = stack.get(Contents.WAND_BAG_SELECTED_INDEX);
 		return selectedIndex == null ? -1 : Byte.toUnsignedInt(selectedIndex);
+	}
+
+	public static void setSelectedIndex(ItemStack stack, int newIndex) {
+		if (newIndex < 0) stack.remove(Contents.WAND_BAG_SELECTED_INDEX);
+		else stack.set(Contents.WAND_BAG_SELECTED_INDEX, (byte)newIndex);
 	}
 
 	public static class ItemHandler extends ComponentItemHandler {

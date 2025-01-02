@@ -3,7 +3,7 @@ package gurumirum.gemthing.contents;
 import com.mojang.serialization.Codec;
 import gurumirum.gemthing.capability.GemStat;
 import gurumirum.gemthing.contents.block.RemoteChargerBlockEntity;
-import gurumirum.gemthing.contents.item.wandbag.WandBagMenu;
+import gurumirum.gemthing.contents.item.wandbelt.WandBeltMenu;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -49,8 +49,8 @@ public final class Contents {
 					.networkSynchronized(ByteBufCodecs.BYTE)
 					.build());
 
-	public static final DeferredHolder<MenuType<?>, MenuType<WandBagMenu>> WANG_BAG_MENU = MENUS.register("wand_bag",
-			() -> new MenuType<>(WandBagMenu::new, FeatureFlagSet.of()));
+	public static final DeferredHolder<MenuType<?>, MenuType<WandBeltMenu>> WANG_BELT_MENU = MENUS.register("wand_belt",
+			() -> new MenuType<>(WandBeltMenu::new, FeatureFlagSet.of()));
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> REMOTE_CHARGER = BLOCK_ENTITIES.register("remote_charger",
 			() -> BlockEntityType.Builder.of(RemoteChargerBlockEntity::new, ModBlocks.REMOTE_CHARGER.block())

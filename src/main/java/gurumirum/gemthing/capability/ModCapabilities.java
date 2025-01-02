@@ -2,7 +2,7 @@ package gurumirum.gemthing.capability;
 
 import gurumirum.gemthing.contents.Gems;
 import gurumirum.gemthing.contents.ModItems;
-import gurumirum.gemthing.contents.item.wandbag.WandBagItem;
+import gurumirum.gemthing.contents.item.wandbelt.WandBeltItem;
 import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -35,7 +35,7 @@ public final class ModCapabilities {
 
 		registerLuxContainer(event, new LuxContainerStat.Simple(1000, RGB332.WHITE, 0, 100), ModItems.LUX_BATTERY);
 
-		event.registerItem(ItemHandler.ITEM, (s, v) -> new WandBagItem.ItemHandler(s), ModItems.WAND_BAG);
+		event.registerItem(ItemHandler.ITEM, (s, v) -> new WandBeltItem.ItemHandler(s), ModItems.WAND_BELT);
 	}
 
 	private static void registerLuxContainer(RegisterCapabilitiesEvent event, LuxContainerStat stat, ItemLike... items) {

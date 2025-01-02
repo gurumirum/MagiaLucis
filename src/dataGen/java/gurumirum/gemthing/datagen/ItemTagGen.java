@@ -4,6 +4,7 @@ import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.contents.ModItemTags;
 import gurumirum.gemthing.contents.ModItems;
 import gurumirum.gemthing.contents.NormalOres;
+import gurumirum.gemthing.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -27,6 +29,8 @@ public class ItemTagGen extends ItemTagsProvider {
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		tag(ModItemTags.WANDS).add(ModItems.WAND.asItem());
+
+		curio(WandBeltItem.CURIO_SLOT).add(ModItems.WAND_BELT.asItem());
 
 		c("ingots/silver").add(ModItems.SILVER_INGOT.asItem());
 		c("nuggets/silver").add(ModItems.SILVER_NUGGET.asItem());
@@ -47,5 +51,9 @@ public class ItemTagGen extends ItemTagsProvider {
 
 	private void copyTag(ResourceLocation tag) {
 		copy(BlockTags.create(tag), ItemTags.create(tag));
+	}
+
+	private IntrinsicTagAppender<Item> curio(String curioIdentifier) {
+		return tag(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, curioIdentifier)));
 	}
 }

@@ -3,7 +3,8 @@ package gurumirum.gemthing.client;
 import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.ModItems;
-import gurumirum.gemthing.contents.item.wandbag.WandBagScreen;
+import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;
+import gurumirum.gemthing.contents.item.wandbelt.WandBeltScreen;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -12,10 +13,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 import static gurumirum.gemthing.GemthingMod.MODID;
+import static gurumirum.gemthing.GemthingMod.id;
 
 @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientInit {
@@ -49,6 +52,11 @@ public final class ClientInit {
 
 	@SubscribeEvent
 	public static void registerMenuScreens(RegisterMenuScreensEvent event) {
-		event.register(Contents.WANG_BAG_MENU.get(), WandBagScreen::new);
+		event.register(Contents.WANG_BELT_MENU.get(), WandBeltScreen::new);
+	}
+
+	@SubscribeEvent
+	public static void registerGuiLayers(RegisterGuiLayersEvent event) {
+		event.registerAboveAll(id("wand_bag"), new WandBeltGuiLayer());
 	}
 }

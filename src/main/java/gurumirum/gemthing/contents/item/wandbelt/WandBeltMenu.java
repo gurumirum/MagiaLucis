@@ -1,6 +1,5 @@
-package gurumirum.gemthing.contents.item.wandbag;
+package gurumirum.gemthing.contents.item.wandbelt;
 
-import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.ModItemTags;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,51 +20,51 @@ import java.util.List;
 import static gurumirum.gemthing.client.SharedGUI.PLAYER_INV_HEIGHT;
 import static gurumirum.gemthing.client.SharedGUI.PLAYER_INV_WIDTH;
 
-public class WandBagMenu extends AbstractContainerMenu {
-	public static final int WAND_BAG_WIDTH = 18 * 9 + (16 - 9) * 2;
-	public static final int WAND_BAG_HEIGHT = 18 * 2 + (16 - 9) * 2;
+public class WandBeltMenu extends AbstractContainerMenu {
+	public static final int WAND_BELT_WIDTH = 18 * 9 + (16 - 9) * 2;
+	public static final int WAND_BELT_HEIGHT = 18 * 2 + (16 - 9) * 2;
 
-	public static final int WIDTH = Math.max(PLAYER_INV_WIDTH, WAND_BAG_WIDTH);
-	public static final int HEIGHT = WAND_BAG_HEIGHT +
+	public static final int WIDTH = Math.max(PLAYER_INV_WIDTH, WAND_BELT_WIDTH);
+	public static final int HEIGHT = WAND_BELT_HEIGHT +
 			11 + // inventory label
 			PLAYER_INV_HEIGHT;
 
-	public static final int PLAYER_INV_LABEL_Y = WAND_BAG_HEIGHT;
+	public static final int PLAYER_INV_LABEL_Y = WAND_BELT_HEIGHT;
 	public static final int PLAYER_INV_Y = PLAYER_INV_LABEL_Y + 11;
 
-	private static final int WAND_BAG_SLOT_UPPER_ROW_Y = 8;
-	private static final int WAND_BAG_SLOT_LOWER_ROW_Y = WAND_BAG_SLOT_UPPER_ROW_Y + 18;
-	private static final int WAND_BAG_SLOT_SINGLE_ROW_Y = (WAND_BAG_SLOT_UPPER_ROW_Y + WAND_BAG_SLOT_LOWER_ROW_Y) / 2;
+	private static final int WAND_BELT_SLOT_UPPER_ROW_Y = 8;
+	private static final int WAND_BELT_SLOT_LOWER_ROW_Y = WAND_BELT_SLOT_UPPER_ROW_Y + 18;
+	private static final int WAND_BELT_SLOT_SINGLE_ROW_Y = (WAND_BELT_SLOT_UPPER_ROW_Y + WAND_BELT_SLOT_LOWER_ROW_Y) / 2;
 
-	private final List<WandBagSlot> wandBagSlots;
+	private final List<WandBeltSlot> wandBeltSlots;
 	private final DataSlot selectedIndex = DataSlot.standalone();
 
 	private final IItemHandlerModifiable wandBagInv;
 	private boolean oneRow;
 	private boolean updateOneRow = true;
 
-	public WandBagMenu(int containerId, Inventory playerInv) {
-		super(Contents.WANG_BAG_MENU.get(), containerId);
-		this.wandBagSlots = setup(playerInv, this.wandBagInv = new ClientSideItemHandler(), -1);
+	public WandBeltMenu(int containerId, Inventory playerInv) {
+		super(Contents.WANG_BELT_MENU.get(), containerId);
+		this.wandBeltSlots = setup(playerInv, this.wandBagInv = new ClientSideItemHandler(), -1);
 	}
 
-	public WandBagMenu(int containerId, Inventory playerInv, IItemHandlerModifiable wandBagInv, int selectedIndex) {
-		super(Contents.WANG_BAG_MENU.get(), containerId);
-		this.wandBagSlots = setup(playerInv, this.wandBagInv = new ServerSideItemHandlerWrapper(wandBagInv), selectedIndex);
+	public WandBeltMenu(int containerId, Inventory playerInv, IItemHandlerModifiable wandBagInv, int selectedIndex) {
+		super(Contents.WANG_BELT_MENU.get(), containerId);
+		this.wandBeltSlots = setup(playerInv, this.wandBagInv = new ServerSideItemHandlerWrapper(wandBagInv), selectedIndex);
 	}
 
-	private List<WandBagSlot> setup(Inventory playerInv, IItemHandlerModifiable wandBagInv, int selectedIndex) {
+	private List<WandBeltSlot> setup(Inventory playerInv, IItemHandlerModifiable wandBagInv, int selectedIndex) {
 		addDataSlot(this.selectedIndex).set(selectedIndex);
 
-		List<WandBagSlot> wandBagSlots = new ArrayList<>();
+		List<WandBeltSlot> wandBeltSlots = new ArrayList<>();
 
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 9; j++) {
 				int index = j + i * 9;
 				int x = 8 + j * 18;
-				int y = WAND_BAG_SLOT_UPPER_ROW_Y + i * 18;
-				WandBagSlot slot = new WandBagSlot(wandBagInv, index, x, y);
-				wandBagSlots.add(slot);
+				int y = WAND_BELT_SLOT_UPPER_ROW_Y + i * 18;
+				WandBeltSlot slot = new WandBeltSlot(wandBagInv, index, x, y);
+				wandBeltSlots.add(slot);
 				addSlot(slot);
 			}
 		}
@@ -80,15 +79,15 @@ public class WandBagMenu extends AbstractContainerMenu {
 			addSlot(new Slot(playerInv, i, 8 + i * 18, PLAYER_INV_Y + 66));
 		}
 
-		return wandBagSlots;
+		return wandBeltSlots;
 	}
 
 	public int selectedIndex() {
 		return this.selectedIndex.get();
 	}
 
-	public List<? extends Slot> wandBagSlots() {
-		return this.wandBagSlots;
+	public List<? extends Slot> wandBeltSlots() {
+		return this.wandBeltSlots;
 	}
 
 	public boolean hasOneRow() {
@@ -100,25 +99,24 @@ public class WandBagMenu extends AbstractContainerMenu {
 		this.updateOneRow = false;
 
 		boolean oneRow = computeOneRow();
-		if (this.oneRow == oneRow) return;
 
-		GemthingMod.LOGGER.info("one row = " + oneRow);
+		if (this.oneRow == oneRow) return;
 		this.oneRow = oneRow;
 
 		for (int i = 0; i < 18; i++) {
-			WandBagSlot slot = this.wandBagSlots.get(i);
+			WandBeltSlot slot = this.wandBeltSlots.get(i);
 			if (oneRow) {
-				if (i < 9) slot.y = WAND_BAG_SLOT_SINGLE_ROW_Y;
+				if (i < 9) slot.y = WAND_BELT_SLOT_SINGLE_ROW_Y;
 				else slot.active = false;
 			} else {
-				slot.y = WAND_BAG_SLOT_UPPER_ROW_Y + 18 * (i / 9);
+				slot.y = WAND_BELT_SLOT_UPPER_ROW_Y + 18 * (i / 9);
 				slot.active = true;
 			}
 		}
 	}
 
 	private boolean computeOneRow() {
-		// if the selected index is on 2nd row or the rightmost slot of 1st row, there should be two rows
+		// if the selected index is on 2nd row, there should be two rows
 		if (this.selectedIndex.get() >= 8) return false;
 
 		// if any item is in 2nd row then there should be two rows
@@ -171,10 +169,10 @@ public class WandBagMenu extends AbstractContainerMenu {
 		return true;
 	}
 
-	private static class WandBagSlot extends ItemHandlerCopySlot {
+	private static class WandBeltSlot extends ItemHandlerCopySlot {
 		private boolean active = true;
 
-		public WandBagSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+		public WandBeltSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
 			super(itemHandler, index, xPosition, yPosition);
 		}
 
