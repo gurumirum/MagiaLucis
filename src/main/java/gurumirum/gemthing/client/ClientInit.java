@@ -57,6 +57,6 @@ public final class ClientInit {
 
 	@SubscribeEvent
 	public static void registerGuiLayers(RegisterGuiLayersEvent event) {
-		event.registerAboveAll(id("wand_bag"), new WandBeltGuiLayer());
+		event.registerAboveAll(id("wand_belt"), new WandBeltGuiLayer());
 	}
 }

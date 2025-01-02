@@ -43,7 +43,7 @@ public final class Contents {
 					.networkSynchronized(ByteBufCodecs.VAR_LONG)
 					.build());
 
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Byte>> WAND_BAG_SELECTED_INDEX = DATA_COMPONENTS.register("wand_bag_selected_index",
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Byte>> WAND_BELT_SELECTED_INDEX = DATA_COMPONENTS.register("wand_belt_selected_index",
 			() -> DataComponentType.<Byte>builder()
 					.persistent(Codec.BYTE)
 					.networkSynchronized(ByteBufCodecs.BYTE)

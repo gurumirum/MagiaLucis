@@ -39,21 +39,21 @@ public class WandBeltMenu extends AbstractContainerMenu {
 	private final List<WandBeltSlot> wandBeltSlots;
 	private final DataSlot selectedIndex = DataSlot.standalone();
 
-	private final IItemHandlerModifiable wandBagInv;
+	private final IItemHandlerModifiable wandBeltInv;
 	private boolean oneRow;
 	private boolean updateOneRow = true;
 
 	public WandBeltMenu(int containerId, Inventory playerInv) {
 		super(Contents.WANG_BELT_MENU.get(), containerId);
-		this.wandBeltSlots = setup(playerInv, this.wandBagInv = new ClientSideItemHandler(), -1);
+		this.wandBeltSlots = setup(playerInv, this.wandBeltInv = new ClientSideItemHandler(), -1);
 	}
 
-	public WandBeltMenu(int containerId, Inventory playerInv, IItemHandlerModifiable wandBagInv, int selectedIndex) {
+	public WandBeltMenu(int containerId, Inventory playerInv, IItemHandlerModifiable wandBeltInv, int selectedIndex) {
 		super(Contents.WANG_BELT_MENU.get(), containerId);
-		this.wandBeltSlots = setup(playerInv, this.wandBagInv = new ServerSideItemHandlerWrapper(wandBagInv), selectedIndex);
+		this.wandBeltSlots = setup(playerInv, this.wandBeltInv = new ServerSideItemHandlerWrapper(wandBeltInv), selectedIndex);
 	}
 
-	private List<WandBeltSlot> setup(Inventory playerInv, IItemHandlerModifiable wandBagInv, int selectedIndex) {
+	private List<WandBeltSlot> setup(Inventory playerInv, IItemHandlerModifiable wandBeltInv, int selectedIndex) {
 		addDataSlot(this.selectedIndex).set(selectedIndex);
 
 		List<WandBeltSlot> wandBeltSlots = new ArrayList<>();
@@ -63,7 +63,7 @@ public class WandBeltMenu extends AbstractContainerMenu {
 				int index = j + i * 9;
 				int x = 8 + j * 18;
 				int y = WAND_BELT_SLOT_UPPER_ROW_Y + i * 18;
-				WandBeltSlot slot = new WandBeltSlot(wandBagInv, index, x, y);
+				WandBeltSlot slot = new WandBeltSlot(wandBeltInv, index, x, y);
 				wandBeltSlots.add(slot);
 				addSlot(slot);
 			}
@@ -121,12 +121,12 @@ public class WandBeltMenu extends AbstractContainerMenu {
 
 		// if any item is in 2nd row then there should be two rows
 		for (int i = 9; i < 18; i++) {
-			if (!this.wandBagInv.getStackInSlot(i).isEmpty()) return false;
+			if (!this.wandBeltInv.getStackInSlot(i).isEmpty()) return false;
 		}
 
 		// if all upper row is full then there should be two rows
 		for (int i = 0; i < 9; i++) {
-			if (this.wandBagInv.getStackInSlot(i).isEmpty()) return true;
+			if (this.wandBeltInv.getStackInSlot(i).isEmpty()) return true;
 		}
 
 		return false;

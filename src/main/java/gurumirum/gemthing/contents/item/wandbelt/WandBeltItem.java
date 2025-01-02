@@ -75,13 +75,13 @@ public class WandBeltItem extends Item {
 	}
 
 	public static int getSelectedIndex(ItemStack stack) {
-		Byte selectedIndex = stack.get(Contents.WAND_BAG_SELECTED_INDEX);
+		Byte selectedIndex = stack.get(Contents.WAND_BELT_SELECTED_INDEX);
 		return selectedIndex == null ? -1 : Byte.toUnsignedInt(selectedIndex);
 	}
 
 	public static void setSelectedIndex(ItemStack stack, int newIndex) {
-		if (newIndex < 0) stack.remove(Contents.WAND_BAG_SELECTED_INDEX);
-		else stack.set(Contents.WAND_BAG_SELECTED_INDEX, (byte)newIndex);
+		if (newIndex < 0) stack.remove(Contents.WAND_BELT_SELECTED_INDEX);
+		else stack.set(Contents.WAND_BELT_SELECTED_INDEX, (byte)newIndex);
 	}
 
 	public static class ItemHandler extends ComponentItemHandler {
