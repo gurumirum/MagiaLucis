@@ -1,0 +1,6 @@
+{
+  "parent": "gemthing:item/amber_torch",
+  "textures": {
+    "layer0": "gemthing:item/amber_torch_no_charge"
+  }
+}

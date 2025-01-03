@@ -1,7 +1,8 @@
 package gurumirum.gemthing.capability;
 
-import gurumirum.gemthing.contents.Gems;
+import gurumirum.gemthing.contents.GemItems;
 import gurumirum.gemthing.contents.ModItems;
+import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltItem;
 import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.world.item.Items;
@@ -25,13 +26,19 @@ public final class ModCapabilities {
 
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		for (Gems value : Gems.values()) {
+		for (GemItems value : GemItems.values()) {
 			var stat = value.stat;
 			event.registerItem(GEM_STAT, (s, v) -> stat, value.asItem());
 		}
-		event.registerItem(GEM_STAT, (s, v) -> GemStat.AMETHYST, Items.AMETHYST_SHARD);
-		event.registerItem(GEM_STAT, (s, v) -> GemStat.DIAMOND, Items.DIAMOND);
-		event.registerItem(GEM_STAT, (s, v) -> GemStat.EMERALD, Items.EMERALD);
+		event.registerItem(GEM_STAT, (s, v) -> Gems.AMETHYST, Items.AMETHYST_SHARD);
+		event.registerItem(GEM_STAT, (s, v) -> Gems.DIAMOND, Items.DIAMOND);
+		event.registerItem(GEM_STAT, (s, v) -> Gems.EMERALD, Items.EMERALD);
+
+		for (Wands w : Wands.values()) {
+			if (w.luxContainerStat() != null) {
+				registerLuxContainer(event, w.luxContainerStat(), w);
+			}
+		}
 
 		registerLuxContainer(event, new LuxContainerStat.Simple(1000, RGB332.WHITE, 0, 100), ModItems.LUX_BATTERY);
 
@@ -39,6 +46,7 @@ public final class ModCapabilities {
 	}
 
 	private static void registerLuxContainer(RegisterCapabilitiesEvent event, LuxContainerStat stat, ItemLike... items) {
+		event.registerItem(GEM_STAT, (s, v) -> stat, items);
 		event.registerItem(LUX_CONTAINER_STAT, (s, v) -> stat, items);
 		event.registerItem(LUX_ACCEPTOR, (s, v) -> new LuxAcceptorImpl(s, stat), items);
 	}

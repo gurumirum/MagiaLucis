@@ -1,7 +1,7 @@
 package gurumirum.gemthing.impl;
 
 import gurumirum.gemthing.GemthingMod;
-import gurumirum.gemthing.contents.Gems;
+import gurumirum.gemthing.contents.GemItems;
 import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.net.msgs.SetBeamCraftingInfoMsg;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -50,7 +50,7 @@ public final class InWorldBeamCraftingManager {
 
 		addRecipe(Blocks.SAND, new Recipe(25, LootTable.lootTable()
 				.withPool(new LootPool.Builder()
-						.add(LootItem.lootTableItem(Gems.BRIGHTSTONE)))
+						.add(LootItem.lootTableItem(GemItems.BRIGHTSTONE)))
 				.build()));
 	}
 

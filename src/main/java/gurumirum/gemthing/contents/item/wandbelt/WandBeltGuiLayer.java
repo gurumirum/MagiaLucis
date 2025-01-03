@@ -80,9 +80,10 @@ public class WandBeltGuiLayer implements LayeredDraw.Layer {
 		for (int i = 0, slots = Math.min(oneRow ? 9 : 18, container.getSlots()); i < slots; i++) {
 			ItemStack stack = container.getStackInSlot(i);
 			if (stack.isEmpty()) continue;
-			guiGraphics.renderItem(stack,
-					left + 18 * (i % 9) + 8,
-					top + (oneRow ? 9 : 18 * (i / 9)) + 8);
+			int x = left + 18 * (i % 9) + 8;
+			int y = top + (oneRow ? 9 : 18 * (i / 9)) + 8;
+			guiGraphics.renderItem(stack, x, y);
+			guiGraphics.renderItemDecorations(mc.font, stack, x, y, "");
 		}
 
 		guiGraphics.pose().popPose();

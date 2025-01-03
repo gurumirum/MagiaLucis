@@ -39,10 +39,25 @@ public interface BlockProfile<B extends Block, I extends BlockItem> {
 
 	static <B extends Block, I extends BlockItem> BlockProfile<B, I> customBlockWithItem(
 			@NotNull Function<Properties, B> blockFactory,
+			@NotNull Properties properties,
+			@Nullable Function<DeferredBlock<? extends B>, ItemProfile<I>> itemProfileProvider
+	) {
+		return customBlockWithItem(blockFactory, () -> properties, itemProfileProvider);
+	}
+
+	static <B extends Block, I extends BlockItem> BlockProfile<B, I> customBlockWithItem(
+			@NotNull Function<Properties, B> blockFactory,
 			@NotNull Supplier<Properties> properties,
 			@Nullable Function<DeferredBlock<? extends B>, ItemProfile<I>> itemProfileProvider
 	) {
 		return customBlockWithoutItem(blockFactory, properties).withItem(itemProfileProvider);
+	}
+
+	static <B extends Block> BlockProfile<B, BlockItem> customBlockWithoutItem(
+			@NotNull Function<Properties, B> blockFactory,
+			@NotNull Properties properties
+	) {
+		return customBlockWithoutItem(blockFactory, () -> properties);
 	}
 
 	static <B extends Block> BlockProfile<B, BlockItem> customBlockWithoutItem(

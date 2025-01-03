@@ -3,6 +3,7 @@ package gurumirum.gemthing.client;
 import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.Wands;
+import gurumirum.gemthing.contents.item.wand.AmberTorchWandItem;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltScreen;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -36,9 +37,15 @@ public final class ClientInit {
 					entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0;
 			ResourceLocation wandUsingId = ResourceLocation.withDefaultNamespace("using");
 
+			ResourceLocation noChargeId = ResourceLocation.withDefaultNamespace("no_charge");
+
 			for (Wands w : Wands.values()) {
 				ItemProperties.register(w.asItem(), wandUsingId, wandUsing);
 			}
+
+			ItemProperties.register(Wands.AMBER_TORCH.asItem(), noChargeId, (stack, level, entity, seed) -> {
+				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < AmberTorchWandItem.COST_PER_LIGHT_SOURCE ? 1 : 0;
+			});
 		});
 	}
 

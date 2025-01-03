@@ -23,12 +23,12 @@ public class RecipeGen extends RecipeProvider {
 		for (Ore ore : Ore.values()) {
 			ItemLike smeltResult = switch (ore) {
 				case SILVER -> ModItems.SILVER_INGOT;
-				case AMBER -> Gems.AMBER;
-				case CITRINE -> Gems.CITRINE;
-				case AQUAMARINE -> Gems.AQUAMARINE;
-				case RUBY -> Gems.RUBY;
-				case SAPPHIRE -> Gems.SAPPHIRE;
-				case TOPAZ -> Gems.TOPAZ;
+				case AMBER -> GemItems.AMBER;
+				case CITRINE -> GemItems.CITRINE;
+				case AQUAMARINE -> GemItems.AQUAMARINE;
+				case RUBY -> GemItems.RUBY;
+				case SAPPHIRE -> GemItems.SAPPHIRE;
+				case TOPAZ -> GemItems.TOPAZ;
 			};
 			String group = ore == Ore.SILVER ? "silver_ingot" : ore.oreBaseName();
 

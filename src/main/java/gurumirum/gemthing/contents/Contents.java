@@ -1,7 +1,7 @@
 package gurumirum.gemthing.contents;
 
 import com.mojang.serialization.Codec;
-import gurumirum.gemthing.capability.GemStat;
+import gurumirum.gemthing.capability.Gems;
 import gurumirum.gemthing.contents.block.RemoteChargerBlockEntity;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltMenu;
 import net.minecraft.core.component.DataComponentType;
@@ -69,23 +69,32 @@ public final class Contents {
 				h.register(id("main"), CreativeModeTab.builder()
 						.icon(() -> new ItemStack(Wands.ANCIENT_LIGHT))
 						.displayItems((p, o) -> {
+							for (var i : Wands.values()) {
+								o.accept(i);
+								if (i.luxContainerStat() != null) {
+									ItemStack stack = new ItemStack(i);
+									stack.set(LUX_CHARGE.get(), i.luxContainerStat().maxCharge());
+									o.accept(stack);
+								}
+							}
 							for (var i : ModItems.values()) o.accept(i);
-							for (var i : ModBlocks.values()) o.accept(i);
-							for (var i : Wands.values()) o.accept(i);
+							for (var i : ModBlocks.values()) {
+								if (i.blockItem() != null) o.accept(i);
+							}
 						})
 						.build());
 
 				h.register(id("gems"), CreativeModeTab.builder()
-						.icon(() -> new ItemStack(Gems.BRIGHTSTONE))
+						.icon(() -> new ItemStack(GemItems.BRIGHTSTONE))
 						.displayItems((p, o) -> {
 							for (var ore : Ore.values()) ore.allOreItems().forEach(o::accept);
-							for (var g : GemStat.values()) o.accept(g.item());
+							for (var g : Gems.values()) o.accept(g.item());
 						})
 						.build());
 			});
 		});
 
-		Gems.init();
+		GemItems.init();
 		ModItems.init();
 		ModBlocks.init();
 		Ore.init();

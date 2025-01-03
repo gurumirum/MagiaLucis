@@ -41,7 +41,7 @@ public class ItemTagGen extends ItemTagsProvider {
 		copyCommonTag("storage_blocks/raw_silver");
 
 		var gems = tag(Tags.Items.GEMS);
-		for (Gems gem : Gems.values()) {
+		for (GemItems gem : GemItems.values()) {
 			if (!gem.isNatural()) continue;
 			c("gems/" + gem.id().getPath()).add(gem.asItem());
 			gems.add(gem.asItem());

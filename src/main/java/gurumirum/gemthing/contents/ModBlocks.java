@@ -1,5 +1,6 @@
 package gurumirum.gemthing.contents;
 
+import gurumirum.gemthing.contents.block.AmberLightBlock;
 import gurumirum.gemthing.contents.block.RemoteChargerBlock;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -19,6 +20,12 @@ import java.util.Locale;
 public enum ModBlocks implements ItemLike {
 	SILVER(BlockProfile.block(Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL))),
 	RAW_SILVER_BLOCK(BlockProfile.block(Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))),
+
+	AMBER_LIGHT(BlockProfile.customBlockWithoutItem(AmberLightBlock::new, Properties.of().lightLevel(s -> 15)
+			.replaceable()
+			.noLootTable()
+			.noCollission()
+			.noOcclusion())),
 
 	REMOTE_CHARGER(BlockProfile.customBlock(RemoteChargerBlock::new, Properties.of()));
 

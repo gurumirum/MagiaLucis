@@ -52,27 +52,34 @@ public class ItemModelGen extends ItemModelProvider {
 						.end()
 						.end());
 
+		handheld(Wands.AMBER_TORCH.asItem())
+				.override()
+				.predicate(ResourceLocation.withDefaultNamespace("no_charge"), 1)
+				.model(getBuilder(Wands.AMBER_TORCH.id().getPath() + "_no_charge")
+						.parent(new ModelFile.UncheckedModelFile(Wands.AMBER_TORCH.id().withPrefix("item/")))
+						.texture("layer0", id("item/amber_torch_no_charge")));
+
 		basicItem(ModItems.SILVER_INGOT.asItem());
 		basicItem(ModItems.SILVER_NUGGET.asItem());
 		basicItem(ModItems.RAW_SILVER.asItem());
 
-		basicItem(Gems.BRIGHTSTONE.asItem());
+		basicItem(GemItems.BRIGHTSTONE.asItem());
 
-		basicItem(Gems.AMBER.asItem());
-		basicItem(Gems.CITRINE.asItem());
-		basicItem(Gems.AQUAMARINE.asItem());
-		basicItem(Gems.PEARL.asItem());
+		basicItem(GemItems.AMBER.asItem());
+		basicItem(GemItems.CITRINE.asItem());
+		basicItem(GemItems.AQUAMARINE.asItem());
+		basicItem(GemItems.PEARL.asItem());
 
-		basicItem(Gems.PURIFIED_QUARTZ.asItem());
-		basicItem(Gems.CRYSTALLIZED_REDSTONE.asItem());
-		basicItem(Gems.POLISHED_LAPIS_LAZULI.asItem());
-		basicItem(Gems.OBSIDIAN.asItem());
+		basicItem(GemItems.PURIFIED_QUARTZ.asItem());
+		basicItem(GemItems.CRYSTALLIZED_REDSTONE.asItem());
+		basicItem(GemItems.POLISHED_LAPIS_LAZULI.asItem());
+		basicItem(GemItems.OBSIDIAN.asItem());
 
-		basicItem(Gems.TOPAZ.asItem());
-		basicItem(Gems.MOONSTONE.asItem());
-		basicItem(Gems.JET.asItem());
-		basicItem(Gems.RUBY.asItem());
-		basicItem(Gems.SAPPHIRE.asItem());
+		basicItem(GemItems.TOPAZ.asItem());
+		basicItem(GemItems.MOONSTONE.asItem());
+		basicItem(GemItems.JET.asItem());
+		basicItem(GemItems.RUBY.asItem());
+		basicItem(GemItems.SAPPHIRE.asItem());
 
 		for (Ore ore : Ore.values()) registerOreModels(ore);
 		itemBlock(ModBlocks.SILVER.id().getPath(), "silver");

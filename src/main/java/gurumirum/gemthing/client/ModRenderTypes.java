@@ -27,10 +27,9 @@ public final class ModRenderTypes {
 							GameRenderer::getPositionColorShader
 					))
 					.setWriteMaskState(RenderType.COLOR_DEPTH_WRITE)
-					.setTransparencyState(RenderType.NO_TRANSPARENCY)
+					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setOutputState(RenderType.PARTICLES_TARGET)
-					.createCompositeState(false)
-	);
+					.createCompositeState(true));
 
 	private static final Function<ResourceLocation, RenderType> POS_TEX_C = Util.memoize(texture -> RenderType.create(
 			MODID + "_ptc",
@@ -45,11 +44,10 @@ public final class ModRenderTypes {
 					))
 					.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
 					.setWriteMaskState(RenderType.COLOR_DEPTH_WRITE)
-					.setTransparencyState(RenderType.NO_TRANSPARENCY)
+					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setCullState(RenderStateShard.NO_CULL)
 					.setOutputState(RenderType.PARTICLES_TARGET)
-					.createCompositeState(false)
-	));
+					.createCompositeState(true)));
 
 	public static RenderType positionTextureColor(ResourceLocation texture) {
 		return POS_TEX_C.apply(texture);
