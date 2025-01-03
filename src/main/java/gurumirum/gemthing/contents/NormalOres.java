@@ -23,9 +23,9 @@ public enum NormalOres {
 	CITRINE(true, false),
 	AQUAMARINE(true, false),
 
-	RUBY(true, false),
-	SAPPHIRE(true, false),
-	TOPAZ(true, false);
+	RUBY,
+	SAPPHIRE,
+	TOPAZ;
 
 	@Nullable
 	private final DeferredBlock<Block> ore;

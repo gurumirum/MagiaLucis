@@ -6,7 +6,10 @@
     "gemthing:citrine_ore",
     "gemthing:aquamarine_ore",
     "gemthing:ruby_ore",
+    "gemthing:deepslate_ruby_ore",
     "gemthing:sapphire_ore",
-    "gemthing:topaz_ore"
+    "gemthing:deepslate_sapphire_ore",
+    "gemthing:topaz_ore",
+    "gemthing:deepslate_topaz_ore"
   ]
 }

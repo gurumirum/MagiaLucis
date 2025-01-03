@@ -18,13 +18,10 @@ public class BlockStateGen extends BlockStateProvider {
 		simpleBlock(ModBlocks.SILVER.block());
 		simpleBlock(ModBlocks.RAW_SILVER_BLOCK.block());
 
-		registerOre(NormalOres.SILVER);
-		registerOre(NormalOres.AMBER);
-		registerOre(NormalOres.CITRINE);
-		registerOre(NormalOres.AQUAMARINE);
+		for (NormalOres ore : NormalOres.values()) registerOre(ore);
 	}
 
-	private void registerOre(NormalOres ore){
+	private void registerOre(NormalOres ore) {
 		if (ore.hasOre()) simpleBlock(ore.ore());
 		if (ore.hasDeepslateOre()) simpleBlock(ore.deepslateOre());
 	}
