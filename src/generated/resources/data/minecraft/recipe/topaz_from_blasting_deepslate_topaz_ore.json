@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "topaz",
+  "ingredient": {
+    "item": "gemthing:deepslate_topaz_ore"
+  },
+  "result": {
+    "count": 1,
+    "id": "gemthing:topaz"
+  }
+}

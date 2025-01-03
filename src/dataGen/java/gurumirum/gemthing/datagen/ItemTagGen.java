@@ -1,6 +1,7 @@
 package gurumirum.gemthing.datagen;
 
 import gurumirum.gemthing.GemthingMod;
+import gurumirum.gemthing.contents.Gems;
 import gurumirum.gemthing.contents.ModItemTags;
 import gurumirum.gemthing.contents.ModItems;
 import gurumirum.gemthing.contents.NormalOres;
@@ -13,6 +14,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,6 +41,13 @@ public class ItemTagGen extends ItemTagsProvider {
 		for (NormalOres ore : NormalOres.values()) copyCommonTag("ores/" + ore.oreId());
 		copyCommonTag("storage_blocks/silver");
 		copyCommonTag("storage_blocks/raw_silver");
+
+		var gems = tag(Tags.Items.GEMS);
+		for (Gems gem : Gems.values()) {
+			if (!gem.isNatural()) continue;
+			c("gems/" + gem.id().getPath()).add(gem.asItem());
+			gems.add(gem.asItem());
+		}
 	}
 
 	private IntrinsicTagAppender<Item> c(String path) {
