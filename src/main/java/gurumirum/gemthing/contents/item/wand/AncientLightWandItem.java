@@ -70,7 +70,6 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 				player));
 	}
 
-
 	@Override
 	public int beamColor(Player player, ItemStack stack, boolean firstPersonPerspective) {
 		return 0x80FFFFFF;
