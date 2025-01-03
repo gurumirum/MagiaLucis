@@ -7,6 +7,7 @@ import net.minecraft.world.item.Items;
 
 public enum Gems implements GemStat {
 	BRIGHTSTONE(0, RGB332.WHITE, 0, 100),
+	SOUL_BRIGHTSTONE(0, RGB332.of(1, 0, 0), 0, 100),
 
 	AMBER(1, RGB332.of(6, 3, 0), 30, 300),
 	CITRINE(1, RGB332.of(6, 6, 1), 10, 200),
@@ -57,6 +58,7 @@ public enum Gems implements GemStat {
 	public Item item() {
 		return switch (this) {
 			case BRIGHTSTONE -> GemItems.BRIGHTSTONE.asItem();
+			case SOUL_BRIGHTSTONE -> GemItems.SOUL_BRIGHTSTONE.asItem();
 			case AMBER -> GemItems.AMBER.asItem();
 			case CITRINE -> GemItems.CITRINE.asItem();
 			case AQUAMARINE -> GemItems.AQUAMARINE.asItem();

@@ -46,6 +46,8 @@ public class ItemTagGen extends ItemTagsProvider {
 			c("gems/" + gem.id().getPath()).add(gem.asItem());
 			gems.add(gem.asItem());
 		}
+
+		tag(ModItemTags.BRIGHTSTONES).add(GemItems.BRIGHTSTONE.asItem(), GemItems.RED_BRIGHTSTONE.asItem());
 	}
 
 	private IntrinsicTagAppender<Item> c(String path) {

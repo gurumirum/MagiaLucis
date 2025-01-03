@@ -88,7 +88,10 @@ public final class Contents {
 						.icon(() -> new ItemStack(GemItems.BRIGHTSTONE))
 						.displayItems((p, o) -> {
 							for (var ore : Ore.values()) ore.allOreItems().forEach(o::accept);
-							for (var g : Gems.values()) o.accept(g.item());
+							for (var g : Gems.values()) {
+								o.accept(g.item());
+								if (g == Gems.BRIGHTSTONE) o.accept(GemItems.RED_BRIGHTSTONE);
+							}
 						})
 						.build());
 			});

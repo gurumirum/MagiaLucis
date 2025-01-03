@@ -52,6 +52,14 @@ public final class InWorldBeamCraftingManager {
 				.withPool(new LootPool.Builder()
 						.add(LootItem.lootTableItem(GemItems.BRIGHTSTONE)))
 				.build()));
+		addRecipe(Blocks.RED_SAND, new Recipe(25, LootTable.lootTable()
+				.withPool(new LootPool.Builder()
+						.add(LootItem.lootTableItem(GemItems.RED_BRIGHTSTONE)))
+				.build()));
+		addRecipe(Blocks.SOUL_SAND, new Recipe(50, LootTable.lootTable()
+				.withPool(new LootPool.Builder()
+						.add(LootItem.lootTableItem(GemItems.SOUL_BRIGHTSTONE)))
+				.build()));
 	}
 
 	private static void addRecipe(BlockState blockState, Recipe recipe) {

@@ -10,4 +10,5 @@ public final class ModItemTags {
 	private ModItemTags() {}
 
 	public static final TagKey<Item> WANDS = ItemTags.create(id("wands"));
+	public static final TagKey<Item> BRIGHTSTONES = ItemTags.create(id("brightstones"));
 }

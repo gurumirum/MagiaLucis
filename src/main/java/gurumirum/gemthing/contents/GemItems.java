@@ -11,6 +11,8 @@ import java.util.Locale;
 
 public enum GemItems implements ItemLike {
 	BRIGHTSTONE(Gems.BRIGHTSTONE),
+	RED_BRIGHTSTONE(Gems.BRIGHTSTONE),
+	SOUL_BRIGHTSTONE(Gems.SOUL_BRIGHTSTONE),
 
 	AMBER(Gems.AMBER),
 	CITRINE(Gems.CITRINE),
@@ -39,14 +41,14 @@ public enum GemItems implements ItemLike {
 
 	DAIMONIUM(Gems.DAIMONIUM);
 
-	public final Gems stat;
+	public final Gems gem;
 	private final DeferredItem<Item> item;
 
-	GemItems(Gems stat) {
-		this(stat, ItemProfile.item());
+	GemItems(Gems gem) {
+		this(gem, ItemProfile.item());
 	}
-	GemItems(Gems stat, @NotNull ItemProfile<Item> itemProfile) {
-		this.stat = stat;
+	GemItems(Gems gem, @NotNull ItemProfile<Item> itemProfile) {
+		this.gem = gem;
 		this.item = itemProfile.create(name().toLowerCase(Locale.ROOT));
 	}
 
@@ -60,7 +62,7 @@ public enum GemItems implements ItemLike {
 	}
 
 	public boolean isNatural() {
-		return this != BRIGHTSTONE && this != PURIFIED_QUARTZ && this.stat.tier < 4;
+		return this != BRIGHTSTONE && this != RED_BRIGHTSTONE && this != SOUL_BRIGHTSTONE && this != PURIFIED_QUARTZ && this.gem.tier < 4;
 	}
 
 	public static void init() {}

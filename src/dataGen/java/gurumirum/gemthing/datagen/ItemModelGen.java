@@ -64,6 +64,8 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(ModItems.RAW_SILVER.asItem());
 
 		basicItem(GemItems.BRIGHTSTONE.asItem());
+		basicItem(GemItems.RED_BRIGHTSTONE.asItem());
+		basicItem(GemItems.SOUL_BRIGHTSTONE.asItem());
 
 		basicItem(GemItems.AMBER.asItem());
 		basicItem(GemItems.CITRINE.asItem());

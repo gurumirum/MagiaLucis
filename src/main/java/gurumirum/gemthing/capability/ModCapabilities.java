@@ -27,7 +27,7 @@ public final class ModCapabilities {
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		for (GemItems value : GemItems.values()) {
-			var stat = value.stat;
+			var stat = value.gem;
 			event.registerItem(GEM_STAT, (s, v) -> stat, value.asItem());
 		}
 		event.registerItem(GEM_STAT, (s, v) -> Gems.AMETHYST, Items.AMETHYST_SHARD);
