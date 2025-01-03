@@ -6,11 +6,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public enum Gems implements ItemLike {
 	BRIGHTSTONE(GemStat.BRIGHTSTONE),
@@ -46,21 +43,11 @@ public enum Gems implements ItemLike {
 	private final DeferredItem<Item> item;
 
 	Gems(GemStat stat) {
-		this(stat, null, null);
+		this(stat, ItemProfile.item());
 	}
-	Gems(GemStat stat, @Nullable Function<Item.Properties, Item> itemFactory) {
-		this(stat, itemFactory, null);
-	}
-	Gems(GemStat stat, @Nullable Consumer<Item.Properties> properties) {
-		this(stat, null, properties);
-	}
-	Gems(GemStat stat, @Nullable Function<Item.Properties, Item> itemFactory, @Nullable Consumer<Item.Properties> properties) {
+	Gems(GemStat stat, @NotNull ItemProfile<Item> itemProfile) {
 		this.stat = stat;
-		this.item = Contents.ITEMS.register(name().toLowerCase(Locale.ROOT), () -> {
-			Item.Properties p = new Item.Properties();
-			if (properties != null) properties.accept(p);
-			return itemFactory == null ? new Item(p) : itemFactory.apply(p);
-		});
+		this.item = itemProfile.create(name().toLowerCase(Locale.ROOT));
 	}
 
 	public @NotNull ResourceLocation id() {

@@ -1,10 +1,7 @@
 package gurumirum.gemthing.datagen;
 
 import gurumirum.gemthing.GemthingMod;
-import gurumirum.gemthing.contents.Gems;
-import gurumirum.gemthing.contents.ModItemTags;
-import gurumirum.gemthing.contents.ModItems;
-import gurumirum.gemthing.contents.NormalOres;
+import gurumirum.gemthing.contents.*;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -20,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 public class ItemTagGen extends ItemTagsProvider {
@@ -30,7 +28,7 @@ public class ItemTagGen extends ItemTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
-		tag(ModItemTags.WANDS).add(ModItems.WAND.asItem());
+		tag(ModItemTags.WANDS).add(Arrays.stream(Wands.values()).map(Wands::asItem).toArray(Item[]::new));
 
 		curio(WandBeltItem.CURIO_SLOT).add(ModItems.WAND_BELT.asItem());
 
@@ -38,7 +36,7 @@ public class ItemTagGen extends ItemTagsProvider {
 		c("nuggets/silver").add(ModItems.SILVER_NUGGET.asItem());
 		c("raw_materials/silver").add(ModItems.RAW_SILVER.asItem());
 
-		for (NormalOres ore : NormalOres.values()) copyCommonTag("ores/" + ore.oreId());
+		for (Ore ore : Ore.values()) copyCommonTag("ores/" + ore.oreId());
 		copyCommonTag("storage_blocks/silver");
 		copyCommonTag("storage_blocks/raw_silver");
 

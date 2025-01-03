@@ -1,9 +1,6 @@
 package gurumirum.gemthing.datagen;
 
-import gurumirum.gemthing.contents.Gems;
-import gurumirum.gemthing.contents.ModBlocks;
-import gurumirum.gemthing.contents.ModItems;
-import gurumirum.gemthing.contents.NormalOres;
+import gurumirum.gemthing.contents.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -23,7 +20,7 @@ public class RecipeGen extends RecipeProvider {
 
 	@Override
 	protected void buildRecipes(@NotNull RecipeOutput out, HolderLookup.@NotNull Provider provider) {
-		for (NormalOres ore : NormalOres.values()) {
+		for (Ore ore : Ore.values()) {
 			ItemLike smeltResult = switch (ore) {
 				case SILVER -> ModItems.SILVER_INGOT;
 				case AMBER -> Gems.AMBER;
@@ -33,7 +30,7 @@ public class RecipeGen extends RecipeProvider {
 				case SAPPHIRE -> Gems.SAPPHIRE;
 				case TOPAZ -> Gems.TOPAZ;
 			};
-			String group = ore == NormalOres.SILVER ? "silver_ingot" : ore.oreBaseName();
+			String group = ore == Ore.SILVER ? "silver_ingot" : ore.oreBaseName();
 
 			oreSmelting(out, ingredients(ore), RecipeCategory.MISC, smeltResult, 1, 200, group);
 			oreBlasting(out, ingredients(ore), RecipeCategory.MISC, smeltResult, 1, 100, group);
@@ -44,12 +41,12 @@ public class RecipeGen extends RecipeProvider {
 		nineBlockStorageRecipesWithCustomPacking(out, RecipeCategory.MISC, ModItems.SILVER_NUGGET, RecipeCategory.MISC, ModItems.SILVER_INGOT, "silver_ingot_from_nuggets", "silver_ingot");
 	}
 
-	private List<ItemLike> ingredients(NormalOres ore) {
+	private List<ItemLike> ingredients(Ore ore) {
 		List<ItemLike> list = new ArrayList<>();
-		if (ore == NormalOres.SILVER) list.add(ModItems.RAW_SILVER);
+		if (ore == Ore.SILVER) list.add(ModItems.RAW_SILVER);
 
-		if (ore.hasOre()) list.add(ore.ore());
-		if (ore.hasDeepslateOre()) list.add(ore.deepslateOre());
+		ore.allOreItems().forEach(list::add);
+
 		return list;
 	}
 }

@@ -15,42 +15,21 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public enum ModBlocks implements ItemLike {
-	SILVER(() -> Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL)),
-	RAW_SILVER_BLOCK(() -> Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)),
+	SILVER(BlockProfile.block(Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL))),
+	RAW_SILVER_BLOCK(BlockProfile.block(Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))),
 
-	REMOTE_CHARGER(RemoteChargerBlock::new, () -> Properties.of());
+	REMOTE_CHARGER(BlockProfile.customBlock(RemoteChargerBlock::new, Properties.of()));
 
-	private final DeferredBlock<Block> block;
+	private final DeferredBlock<? extends Block> block;
 	@Nullable
-	private final DeferredItem<BlockItem> item;
+	private final DeferredItem<? extends BlockItem> item;
 
-	ModBlocks(@Nullable Supplier<Properties> properties) {
-		this(null, properties);
-	}
-	ModBlocks(@Nullable Function<Properties, Block> blockFactory,
-	          @Nullable Supplier<Properties> properties) {
-		this(blockFactory, properties, Contents.defaultItemFactory, null);
-	}
-	ModBlocks(@Nullable Function<Properties, Block> blockFactory,
-	          @Nullable Supplier<Properties> properties,
-	          @Nullable BiFunction<Block, Item.Properties, BlockItem> itemFactory,
-	          @Nullable Consumer<Item.Properties> itemProperties) {
+	ModBlocks(@NotNull BlockProfile<Block, BlockItem> blockProfile) {
 		String id = name().toLowerCase(Locale.ROOT);
-		this.block = Contents.BLOCKS.register(id, () -> {
-			Properties p = properties != null ? properties.get() : Properties.of();
-			return blockFactory == null ? new Block(p) : blockFactory.apply(p);
-		});
-		this.item = itemFactory == null ? null : Contents.ITEMS.register(id, () -> {
-			Item.Properties p = new Item.Properties();
-			if (itemProperties != null) itemProperties.accept(p);
-			return itemFactory.apply(this.block.get(), p);
-		});
+		this.block = blockProfile.create(id);
+		this.item = blockProfile.createItem(this.block);
 	}
 
 	public @NotNull ResourceLocation id() {

@@ -2,7 +2,8 @@ package gurumirum.gemthing.datagen;
 
 import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.contents.ModBlocks;
-import gurumirum.gemthing.contents.NormalOres;
+import gurumirum.gemthing.contents.Ore;
+import gurumirum.gemthing.contents.OreType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -26,18 +27,22 @@ public class BlockTagGen extends BlockTagsProvider {
 		var ores = tag(Tags.Blocks.ORES);
 		var stoneOres = tag(Tags.Blocks.ORES_IN_GROUND_STONE);
 		var deepslateOres = tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE);
+		var netherOres = tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK);
 
-		for (NormalOres ore : NormalOres.values()) {
+		for (Ore ore : Ore.values()) {
 			var tags = tag(BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/" + ore.oreId())));
-			if (ore.hasOre()) {
-				tags.add(ore.ore());
-				ores.add(ore.ore());
-				stoneOres.add(ore.ore());
-			}
-			if (ore.hasDeepslateOre()) {
-				tags.add(ore.deepslateOre());
-				ores.add(ore.deepslateOre());
-				deepslateOres.add(ore.deepslateOre());
+			for (OreType oreType : OreType.values()) {
+				if (ore.exists(oreType)) {
+					Block oreBlock = ore.expectOreBlock(oreType);
+					tags.add(oreBlock);
+					ores.add(oreBlock);
+
+					switch (oreType) {
+						case STONE -> stoneOres.add(oreBlock);
+						case DEEPSLATE -> deepslateOres.add(oreBlock);
+						case NETHER -> netherOres.add(oreBlock);
+					}
+				}
 			}
 		}
 

@@ -1,5 +1,6 @@
 package gurumirum.gemthing.datagen;
 
+import gurumirum.gemthing.contents.OreType;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistrySetBuilder;
@@ -25,7 +26,7 @@ import net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifi
 import java.util.List;
 
 import static gurumirum.gemthing.GemthingMod.id;
-import static gurumirum.gemthing.contents.NormalOres.SILVER;
+import static gurumirum.gemthing.contents.Ore.SILVER;
 import static net.minecraft.core.registries.Registries.CONFIGURED_FEATURE;
 import static net.minecraft.core.registries.Registries.PLACED_FEATURE;
 import static net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration.target;
@@ -48,8 +49,8 @@ public final class DatapackEntryGen {
 					RuleTest deepslate = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
 
 					List<TargetBlockState> silverOre = List.of(
-							target(stone, SILVER.ore().defaultBlockState()),
-							target(deepslate, SILVER.deepslateOre().defaultBlockState())
+							target(stone, SILVER.expectOreBlock(OreType.STONE).defaultBlockState()),
+							target(deepslate, SILVER.expectOreBlock(OreType.DEEPSLATE).defaultBlockState())
 					);
 
 					FeatureUtils.register(ctx, SILVER_ORE, Feature.ORE, new OreConfiguration(silverOre, 9));

@@ -1,7 +1,7 @@
 package gurumirum.gemthing.datagen;
 
 import gurumirum.gemthing.contents.ModBlocks;
-import gurumirum.gemthing.contents.NormalOres;
+import gurumirum.gemthing.contents.Ore;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -18,11 +18,6 @@ public class BlockStateGen extends BlockStateProvider {
 		simpleBlock(ModBlocks.SILVER.block());
 		simpleBlock(ModBlocks.RAW_SILVER_BLOCK.block());
 
-		for (NormalOres ore : NormalOres.values()) registerOre(ore);
-	}
-
-	private void registerOre(NormalOres ore) {
-		if (ore.hasOre()) simpleBlock(ore.ore());
-		if (ore.hasDeepslateOre()) simpleBlock(ore.deepslateOre());
+		for (Ore ore : Ore.values()) ore.allOreBlocks().forEach(this::simpleBlock);
 	}
 }

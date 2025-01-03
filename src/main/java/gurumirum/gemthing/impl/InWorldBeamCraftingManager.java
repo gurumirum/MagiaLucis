@@ -2,7 +2,7 @@ package gurumirum.gemthing.impl;
 
 import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.contents.Gems;
-import gurumirum.gemthing.contents.ModItems;
+import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.net.msgs.SetBeamCraftingInfoMsg;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -96,9 +96,7 @@ public final class InWorldBeamCraftingManager {
 
 		Object2IntMap<BlockPos> beamProgress = null;
 		for (Player p : event.getLevel().players()) {
-			if (p.isDeadOrDying() ||
-					!p.isUsingItem() ||
-					!p.getUseItem().is(ModItems.WAND.asItem())) {
+			if (p.isDeadOrDying() || !p.isUsingItem() || !p.getUseItem().is(Wands.ANCIENT_LIGHT.asItem())) {
 				focus.remove(p.getUUID());
 				continue;
 			}

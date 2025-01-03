@@ -67,20 +67,18 @@ public final class Contents {
 		eventBus.addListener((RegisterEvent event) -> {
 			event.register(Registries.CREATIVE_MODE_TAB, h -> {
 				h.register(id("main"), CreativeModeTab.builder()
-						.icon(() -> new ItemStack(ModItems.WAND))
+						.icon(() -> new ItemStack(Wands.ANCIENT_LIGHT))
 						.displayItems((p, o) -> {
 							for (var i : ModItems.values()) o.accept(i);
 							for (var i : ModBlocks.values()) o.accept(i);
+							for (var i : Wands.values()) o.accept(i);
 						})
 						.build());
 
 				h.register(id("gems"), CreativeModeTab.builder()
 						.icon(() -> new ItemStack(Gems.BRIGHTSTONE))
 						.displayItems((p, o) -> {
-							for (var ore : NormalOres.values()) {
-								if (ore.hasOre()) o.accept(ore.oreItem());
-								if (ore.hasDeepslateOre()) o.accept(ore.deepslateOreItem());
-							}
+							for (var ore : Ore.values()) ore.allOreItems().forEach(o::accept);
 							for (var g : GemStat.values()) o.accept(g.item());
 						})
 						.build());
@@ -90,7 +88,8 @@ public final class Contents {
 		Gems.init();
 		ModItems.init();
 		ModBlocks.init();
-		NormalOres.init();
+		Ore.init();
+		Wands.init();
 	}
 
 	static final BiFunction<Block, Item.Properties, BlockItem> defaultItemFactory = BlockItem::new;

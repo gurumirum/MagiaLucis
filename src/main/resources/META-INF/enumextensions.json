@@ -2,7 +2,7 @@
   "entries": [
     {
       "enum": "net/minecraft/client/model/HumanoidModel\$ArmPose",
-      "name": "${mod_id}_FILE",
+      "name": "${mod_id.toUpperCase(Locale.ROOT)}_FILE",
       "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
       "parameters": {
         "class": "gurumirum/${mod_id}/client/ModArmPose",

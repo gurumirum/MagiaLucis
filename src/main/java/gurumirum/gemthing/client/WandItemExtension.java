@@ -2,6 +2,7 @@ package gurumirum.gemthing.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import gurumirum.gemthing.contents.item.BeamSource;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
@@ -31,18 +32,26 @@ class WandItemExtension implements IClientItemExtensions {
 				(player.getUsedItemHand() == InteractionHand.MAIN_HAND ?
 						player.getMainArm() : player.getMainArm().getOpposite()) != arm) return false;
 
+		BeamSource beamSource = BeamSource.from(itemInHand);
+		boolean canProduceBeam = beamSource != null && beamSource.canProduceBeam(player, itemInHand);
+		WandEffect wandEffect = WandEffect.from(itemInHand, player);
+		if (!canProduceBeam && wandEffect == null) return false;
+
 		applyItemArmTransform(poseStack, arm, equipProcess);
 
 		poseStack.pushPose();
-		BeamRender.applyItemTransform(poseStack, arm, true);
 
-		_mat.identity()
-				.mul(RenderSystem.getProjectionMatrix())
-				.mul(RenderSystem.getModelViewMatrix())
-				.mul(poseStack.last().pose())
-				.transformProject(18 / 16f, 18 / 16f, .5f, BeamRender.getOrCreatePlayerBeamStart(player));
+		BeamRender.applyItemTransform(poseStack, itemInHand, player, arm, true);
 
-		BeamRender.drawWandEffect(poseStack, player, partialTick, false);
+		if (canProduceBeam) {
+			_mat.identity()
+					.mul(RenderSystem.getProjectionMatrix())
+					.mul(RenderSystem.getModelViewMatrix())
+					.mul(poseStack.last().pose())
+					.transformProject(18 / 16f, 18 / 16f, .5f, BeamRender.getOrCreatePlayerBeamStart(player));
+		}
+
+		if (wandEffect != null) wandEffect.render(poseStack, player, itemInHand, partialTick, false);
 
 		poseStack.popPose();
 		return true;

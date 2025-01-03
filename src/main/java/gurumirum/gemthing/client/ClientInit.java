@@ -2,12 +2,14 @@ package gurumirum.gemthing.client;
 
 import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.contents.Contents;
-import gurumirum.gemthing.contents.ModItems;
+import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltScreen;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -16,6 +18,8 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+
+import java.util.Arrays;
 
 import static gurumirum.gemthing.GemthingMod.MODID;
 import static gurumirum.gemthing.GemthingMod.id;
@@ -27,10 +31,14 @@ public final class ClientInit {
 	@SubscribeEvent
 	public static void setup(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			ItemProperties.register(ModItems.WAND.asItem(),
-					ResourceLocation.withDefaultNamespace("using"),
-					(stack, level, entity, seed) ->
-							entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0);
+			@SuppressWarnings("deprecation")
+			ItemPropertyFunction wandUsing = (stack, level, entity, seed) ->
+					entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0;
+			ResourceLocation wandUsingId = ResourceLocation.withDefaultNamespace("using");
+
+			for (Wands w : Wands.values()) {
+				ItemProperties.register(w.asItem(), wandUsingId, wandUsing);
+			}
 		});
 	}
 
@@ -47,7 +55,8 @@ public final class ClientInit {
 
 	@SubscribeEvent
 	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
-		event.registerItem(new WandItemExtension(), ModItems.WAND.asItem());
+		event.registerItem(new WandItemExtension(), Arrays.stream(Wands.values())
+				.map(Wands::asItem).toArray(Item[]::new));
 	}
 
 	@SubscribeEvent

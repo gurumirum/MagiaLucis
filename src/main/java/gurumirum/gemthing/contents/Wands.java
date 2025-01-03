@@ -1,7 +1,6 @@
 package gurumirum.gemthing.contents;
 
-import gurumirum.gemthing.contents.item.LuxBatteryItem;
-import gurumirum.gemthing.contents.item.wandbelt.WandBeltItem;
+import gurumirum.gemthing.contents.item.wand.AncientLightWandItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -10,20 +9,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-public enum ModItems implements ItemLike {
-	LUX_BATTERY(ItemProfile.customItem(LuxBatteryItem::new)),
-	WAND_BELT(ItemProfile.customItem(WandBeltItem::new)),
-
-	SILVER_INGOT,
-	SILVER_NUGGET,
-	RAW_SILVER;
+public enum Wands implements ItemLike {
+	ANCIENT_LIGHT(ItemProfile.customItem(AncientLightWandItem::new))
+	;
 
 	private final DeferredItem<Item> item;
 
-	ModItems() {
+	Wands() {
 		this(ItemProfile.item());
 	}
-	ModItems(@NotNull ItemProfile<Item> itemProfile) {
+	Wands(@NotNull ItemProfile<Item> itemProfile) {
 		this.item = itemProfile.create(name().toLowerCase(Locale.ROOT));
 	}
 

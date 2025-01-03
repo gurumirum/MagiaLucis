@@ -1,5 +1,5 @@
 {
-  "parent": "gemthing:item/wand",
+  "parent": "gemthing:item/ancient_light",
   "display": {
     "firstperson_lefthand": {
       "rotation": [

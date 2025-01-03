@@ -1,9 +1,6 @@
 package gurumirum.gemthing.datagen;
 
-import gurumirum.gemthing.contents.Gems;
-import gurumirum.gemthing.contents.ModBlocks;
-import gurumirum.gemthing.contents.ModItems;
-import gurumirum.gemthing.contents.NormalOres;
+import gurumirum.gemthing.contents.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +11,7 @@ import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static gurumirum.gemthing.GemthingMod.MODID;
@@ -26,11 +24,11 @@ public class ItemModelGen extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
-		handheld(ModItems.WAND.asItem())
+		handheld(Wands.ANCIENT_LIGHT.asItem())
 				.override()
 				.predicate(ResourceLocation.withDefaultNamespace("using"), 1)
-				.model(getBuilder(ModItems.WAND.id().getPath() + "_using")
-						.parent(new ModelFile.UncheckedModelFile(ModItems.WAND.id().withPrefix("item/")))
+				.model(getBuilder(Wands.ANCIENT_LIGHT.id().getPath() + "_using")
+						.parent(new ModelFile.UncheckedModelFile(Wands.ANCIENT_LIGHT.id().withPrefix("item/")))
 						.transforms()
 						.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
 						.rotation(-128.5f, 90, 0)
@@ -76,7 +74,7 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(Gems.RUBY.asItem());
 		basicItem(Gems.SAPPHIRE.asItem());
 
-		for (NormalOres ore : NormalOres.values()) registerOreModels(ore);
+		for (Ore ore : Ore.values()) registerOreModels(ore);
 		itemBlock(ModBlocks.SILVER.id().getPath(), "silver");
 		itemBlock(ModBlocks.RAW_SILVER_BLOCK.id().getPath());
 	}
@@ -92,9 +90,12 @@ public class ItemModelGen extends ItemModelProvider {
 				.texture("layer0", ResourceLocation.fromNamespaceAndPath(item.getNamespace(), "item/" + item.getPath()));
 	}
 
-	private void registerOreModels(NormalOres ore) {
-		if (ore.hasOre()) itemBlock(ore.oreId());
-		if (ore.hasDeepslateOre()) itemBlock(ore.deepslateOreId());
+	private void registerOreModels(Ore ore) {
+		ore.entries()
+				.map(Map.Entry::getValue)
+				.forEach(p -> {
+					itemBlock(p.getSecond().getId().getPath(), p.getFirst().getId().getPath());
+				});
 	}
 
 	private ItemModelBuilder itemBlock(String id) {
