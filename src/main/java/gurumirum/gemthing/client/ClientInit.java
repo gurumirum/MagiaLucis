@@ -1,14 +1,13 @@
 package gurumirum.gemthing.client;
 
 import gurumirum.gemthing.GemthingMod;
+import gurumirum.gemthing.client.render.entity.GemGolemRenderer;
 import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.contents.item.wand.AmberTorchWandItem;
 import gurumirum.gemthing.contents.item.wand.RecallStaffWandItem;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltScreen;
-import gurumirum.gemthing.client.render.entity.GemGolemRenderer;
-import gurumirum.gemthing.contents.Contents;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
@@ -85,7 +84,7 @@ public final class ClientInit {
 	}
 
 	@SubscribeEvent
-	public static void onEntityRendererRegister(EntityRenderersEvent.RegisterRenderers event) {
+	public static void registerEntityRegister(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(Contents.GEM_GOLEM.get(), GemGolemRenderer::new);
 	}
 }
