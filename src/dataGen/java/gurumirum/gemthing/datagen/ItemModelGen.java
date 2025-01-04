@@ -1,5 +1,6 @@
 package gurumirum.gemthing.datagen;
 
+import gurumirum.gemthing.client.ClientInit;
 import gurumirum.gemthing.contents.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -24,9 +25,10 @@ public class ItemModelGen extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+
 		handheld(Wands.ANCIENT_LIGHT.asItem())
 				.override()
-				.predicate(ResourceLocation.withDefaultNamespace("using"), 1)
+				.predicate(ClientInit.USING, 1)
 				.model(getBuilder(Wands.ANCIENT_LIGHT.id().getPath() + "_using")
 						.parent(new ModelFile.UncheckedModelFile(Wands.ANCIENT_LIGHT.id().withPrefix("item/")))
 						.transforms()
@@ -52,12 +54,34 @@ public class ItemModelGen extends ItemModelProvider {
 						.end()
 						.end());
 
+		handheld(Wands.CONFIGURATION_WAND.asItem());
+
 		handheld(Wands.AMBER_TORCH.asItem())
 				.override()
-				.predicate(ResourceLocation.withDefaultNamespace("no_charge"), 1)
-				.model(getBuilder(Wands.AMBER_TORCH.id().getPath() + "_no_charge")
-						.parent(new ModelFile.UncheckedModelFile(Wands.AMBER_TORCH.id().withPrefix("item/")))
-						.texture("layer0", id("item/amber_torch_no_charge")));
+				.predicate(ClientInit.NO_CHARGE, 1)
+				.model(handheld(id(Wands.AMBER_TORCH.id().getPath() + "_no_charge")));
+
+		handheld(Wands.RECALL_STAFF.asItem())
+				.override()
+				.predicate(ClientInit.USING, 1)
+				.model(getBuilder(Wands.RECALL_STAFF.id().getPath() + "_using")
+						.parent(new ModelFile.UncheckedModelFile(Wands.RECALL_STAFF.id().withPrefix("item/")))
+						.transforms()
+						.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
+						.rotation(4.86f, 13.85f, -44.18f)
+						.translation(-3.75f, 6.2f, 1.13f)
+						.scale(0.68f, 0.68f, 0.68f)
+						.end()
+						.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
+						.rotation(4.86f, -13.85f, 44.18f)
+						.translation(-3.75f, 6.2f, 1.13f)
+						.scale(0.68f, 0.68f, 0.68f)
+						.end()
+						.end())
+				.end()
+				.override()
+				.predicate(ClientInit.NO_CHARGE, 1)
+				.model(handheld(id(Wands.RECALL_STAFF.id().getPath() + "_no_charge")));
 
 		basicItem(ModItems.SILVER_INGOT.asItem());
 		basicItem(ModItems.SILVER_NUGGET.asItem());
@@ -94,9 +118,13 @@ public class ItemModelGen extends ItemModelProvider {
 	}
 
 	private ItemModelBuilder handheld(ResourceLocation item) {
+		return handheld(item, item.withPrefix("item/"));
+	}
+
+	private ItemModelBuilder handheld(ResourceLocation item, ResourceLocation texture) {
 		return getBuilder(item.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
-				.texture("layer0", ResourceLocation.fromNamespaceAndPath(item.getNamespace(), "item/" + item.getPath()));
+				.texture("layer0", texture);
 	}
 
 	private void registerOreModels(Ore ore) {

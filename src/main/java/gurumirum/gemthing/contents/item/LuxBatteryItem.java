@@ -24,7 +24,7 @@ public class LuxBatteryItem extends Item {
 		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (luxContainerStat == null) return;
 
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE.get(), 0L);
+		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
 		tooltip.add(Component.literal(charge + " / " + luxContainerStat.maxCharge()));
 	}
 
@@ -39,7 +39,7 @@ public class LuxBatteryItem extends Item {
 		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (luxContainerStat == null) return 0;
 
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE.get(), 0L);
+		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
 		return (int)Math.round(13 * ((double)charge / luxContainerStat.maxCharge()));
 	}
 

@@ -4,9 +4,11 @@ import com.mojang.serialization.Codec;
 import gurumirum.gemthing.capability.Gems;
 import gurumirum.gemthing.contents.block.RemoteChargerBlockEntity;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltMenu;
+import gurumirum.gemthing.contents.mobeffect.RecallFatigueMobEffect;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -35,6 +37,7 @@ public final class Contents {
 
 	static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
 	static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
+	static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MODID);
 	static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, MODID);
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Long>> LUX_CHARGE = DATA_COMPONENTS.register("lux_charge",
@@ -52,6 +55,9 @@ public final class Contents {
 	public static final DeferredHolder<MenuType<?>, MenuType<WandBeltMenu>> WANG_BELT_MENU = MENUS.register("wand_belt",
 			() -> new MenuType<>(WandBeltMenu::new, FeatureFlagSet.of()));
 
+	public static final DeferredHolder<MobEffect, MobEffect> RECALL_FATIGUE = MOB_EFFECTS.register("recall_fatigue",
+			RecallFatigueMobEffect::new);
+
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> REMOTE_CHARGER = BLOCK_ENTITIES.register("remote_charger",
 			() -> BlockEntityType.Builder.of(RemoteChargerBlockEntity::new, ModBlocks.REMOTE_CHARGER.block())
 					.build(null));
@@ -62,6 +68,7 @@ public final class Contents {
 		BLOCKS.register(eventBus);
 		BLOCK_ENTITIES.register(eventBus);
 		MENUS.register(eventBus);
+		MOB_EFFECTS.register(eventBus);
 		PLACED_FEATURES.register(eventBus);
 
 		eventBus.addListener((RegisterEvent event) -> {
@@ -73,7 +80,7 @@ public final class Contents {
 								o.accept(i);
 								if (i.luxContainerStat() != null) {
 									ItemStack stack = new ItemStack(i);
-									stack.set(LUX_CHARGE.get(), i.luxContainerStat().maxCharge());
+									stack.set(LUX_CHARGE, i.luxContainerStat().maxCharge());
 									o.accept(stack);
 								}
 							}

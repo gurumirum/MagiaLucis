@@ -27,12 +27,10 @@ public interface WandEffect {
 	abstract class SpinningTipEffect implements WandEffect {
 		private final Vector3f offset = new Vector3f();
 
-		protected void offset(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective, Vector3f dest) {
-			dest.set(14 / 16f, 14 / 16f, 0.5f);
-		}
+		protected abstract void offset(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective, Vector3f dest);
 
 		protected float scale(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
-			return 0.5f;
+			return 1;
 		}
 
 		protected double getRotationDegrees(Player player, ItemStack stack, int ticksUsingItem, boolean firstPersonPerspective) {
@@ -60,10 +58,10 @@ public interface WandEffect {
 		@Override
 		public void render(PoseStack poseStack, Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
 			offset(player, stack, partialTicks, firstPersonPerspective, this.offset);
-			poseStack.translate(this.offset.x, this.offset.y, this.offset.z);
+			poseStack.translate(this.offset.x / 16, this.offset.y / 16, this.offset.z / 16);
 
 			float scale = scale(player, stack, partialTicks, firstPersonPerspective);
-			poseStack.scale(scale, scale, scale);
+			if (scale != 1) poseStack.scale(scale, scale, scale);
 
 			poseStack.mulPose(Axis.ZP.rotationDegrees(45));
 			int ticksUsingItem = player.getTicksUsingItem();

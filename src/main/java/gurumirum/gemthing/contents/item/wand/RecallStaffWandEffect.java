@@ -8,19 +8,14 @@ import org.joml.Vector3f;
 
 import static gurumirum.gemthing.GemthingMod.id;
 
-public class AncientLightWandEffect extends WandEffect.SpinningTipEffect {
-	public static final AncientLightWandEffect INSTANCE = new AncientLightWandEffect();
+public class RecallStaffWandEffect extends WandEffect.SpinningTipEffect {
+	public static final RecallStaffWandEffect INSTANCE = new RecallStaffWandEffect();
 
-	private static final ResourceLocation TEXTURE = id("textures/wand_effect/ancient_light.png");
+	private static final ResourceLocation TEXTURE = id("textures/wand_effect/recall.png");
 
 	@Override
 	protected void offset(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective, Vector3f dest) {
-		dest.set(14, 14, 8);
-	}
-
-	@Override
-	protected float scale(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
-		return .5f;
+		dest.set(13.5f, 13.5f, 8f);
 	}
 
 	@Override

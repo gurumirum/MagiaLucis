@@ -4,6 +4,7 @@ import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.contents.item.wand.AmberTorchWandItem;
+import gurumirum.gemthing.contents.item.wand.RecallStaffWandItem;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltScreen;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -29,22 +30,27 @@ import static gurumirum.gemthing.GemthingMod.id;
 public final class ClientInit {
 	private ClientInit() {}
 
+	public static final ResourceLocation USING = ResourceLocation.withDefaultNamespace("using");
+	public static final ResourceLocation NO_CHARGE = ResourceLocation.withDefaultNamespace("no_charge");
+
 	@SubscribeEvent
 	public static void setup(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
 			@SuppressWarnings("deprecation")
 			ItemPropertyFunction wandUsing = (stack, level, entity, seed) ->
 					entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0;
-			ResourceLocation wandUsingId = ResourceLocation.withDefaultNamespace("using");
-
-			ResourceLocation noChargeId = ResourceLocation.withDefaultNamespace("no_charge");
 
 			for (Wands w : Wands.values()) {
-				ItemProperties.register(w.asItem(), wandUsingId, wandUsing);
+				ItemProperties.register(w.asItem(), USING, wandUsing);
 			}
 
-			ItemProperties.register(Wands.AMBER_TORCH.asItem(), noChargeId, (stack, level, entity, seed) -> {
+			ItemProperties.register(Wands.AMBER_TORCH.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
 				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < AmberTorchWandItem.COST_PER_LIGHT_SOURCE ? 1 : 0;
+			});
+			ItemProperties.register(Wands.RECALL_STAFF.asItem(), USING, wandUsing);
+			ItemProperties.register(Wands.RECALL_STAFF.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
+				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < RecallStaffWandItem.COST_PER_RECALL ||
+						entity != null && entity.hasEffect(Contents.RECALL_FATIGUE) ? 1 : 0;
 			});
 		});
 	}
