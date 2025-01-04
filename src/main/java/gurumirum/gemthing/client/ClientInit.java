@@ -4,7 +4,7 @@ import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.client.render.entity.GemGolemRenderer;
 import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.Wands;
-import gurumirum.gemthing.contents.block.RelayBlockEntityRenderer;
+import gurumirum.gemthing.contents.block.lux.relay.RelayBlockEntityRenderer;
 import gurumirum.gemthing.contents.item.wand.AmberTorchWandItem;
 import gurumirum.gemthing.contents.item.wand.RecallStaffWandItem;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;

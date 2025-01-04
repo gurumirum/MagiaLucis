@@ -2,8 +2,8 @@ package gurumirum.gemthing.contents;
 
 import com.mojang.serialization.Codec;
 import gurumirum.gemthing.capability.Gems;
-import gurumirum.gemthing.contents.block.RelayBlockEntity;
-import gurumirum.gemthing.contents.block.RemoteChargerBlockEntity;
+import gurumirum.gemthing.contents.block.lux.relay.RelayBlockEntity;
+import gurumirum.gemthing.contents.block.lux.remotecharger.RemoteChargerBlockEntity;
 import gurumirum.gemthing.contents.entity.GemGolemEntity;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltMenu;
 import gurumirum.gemthing.contents.mobeffect.RecallFatigueMobEffect;

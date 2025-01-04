@@ -1,4 +1,4 @@
-package gurumirum.gemthing.contents.block;
+package gurumirum.gemthing.contents.block.lux.relay;
 
 import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.impl.LuxNet;

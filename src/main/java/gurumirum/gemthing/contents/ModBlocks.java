@@ -1,8 +1,8 @@
 package gurumirum.gemthing.contents;
 
-import gurumirum.gemthing.contents.block.RelayBlock;
+import gurumirum.gemthing.contents.block.lux.relay.RelayBlock;
 import gurumirum.gemthing.contents.block.AmberLightBlock;
-import gurumirum.gemthing.contents.block.RemoteChargerBlock;
+import gurumirum.gemthing.contents.block.lux.remotecharger.RemoteChargerBlock;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;

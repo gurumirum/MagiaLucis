@@ -1,6 +1,8 @@
-package gurumirum.gemthing.contents.block;
+package gurumirum.gemthing.contents.block.lux;
 
 import gurumirum.gemthing.capability.LuxNodeBlock;
+import gurumirum.gemthing.contents.block.BlockEntityUtils;
+import gurumirum.gemthing.contents.block.SyncedBlockEntity;
 import gurumirum.gemthing.impl.LuxNet;
 import gurumirum.gemthing.impl.LuxNodeInterface;
 import net.minecraft.core.BlockPos;

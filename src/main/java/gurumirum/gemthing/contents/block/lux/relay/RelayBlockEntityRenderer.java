@@ -1,4 +1,4 @@
-package gurumirum.gemthing.contents.block;
+package gurumirum.gemthing.contents.block.lux.relay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

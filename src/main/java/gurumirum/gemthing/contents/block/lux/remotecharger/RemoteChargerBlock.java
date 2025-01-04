@@ -1,6 +1,7 @@
-package gurumirum.gemthing.contents.block;
+package gurumirum.gemthing.contents.block.lux.remotecharger;
 
 import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.block.Ticker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;

@@ -1,9 +1,10 @@
-package gurumirum.gemthing.contents.block;
+package gurumirum.gemthing.contents.block.lux.relay;
 
 import gurumirum.gemthing.capability.LinkSource;
 import gurumirum.gemthing.capability.LuxNodeBlock;
 import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.gemthing.impl.LuxNet;
 import gurumirum.gemthing.impl.LuxNetEvent;
 import gurumirum.gemthing.impl.LuxNode;

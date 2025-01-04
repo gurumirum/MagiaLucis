@@ -1,8 +1,9 @@
-package gurumirum.gemthing.contents.block;
+package gurumirum.gemthing.contents.block.lux.remotecharger;
 
 import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.capability.LuxAcceptor;
 import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.block.Ticker;
 import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
