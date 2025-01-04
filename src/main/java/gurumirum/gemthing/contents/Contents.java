@@ -56,7 +56,8 @@ public final class Contents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> BLOCK_POS_DATA = DATA_COMPONENTS.register("block_pos",
 			() -> DataComponentType.<BlockPos>builder()
 					.persistent(BlockPos.CODEC)
-					.networkSynchronized(BlockPos.STREAM_CODEC).build());
+					.networkSynchronized(BlockPos.STREAM_CODEC)
+					.build());
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Long>> LUX_CHARGE = DATA_COMPONENTS.register("lux_charge",
 			() -> DataComponentType.<Long>builder()

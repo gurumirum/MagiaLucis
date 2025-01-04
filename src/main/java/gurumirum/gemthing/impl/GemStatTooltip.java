@@ -1,6 +1,6 @@
 package gurumirum.gemthing.impl;
 
-import gurumirum.gemthing.capability.GemStat;
+import gurumirum.gemthing.capability.LuxSourceStat;
 import gurumirum.gemthing.capability.ModCapabilities;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -22,8 +22,8 @@ public final class GemStatTooltip {
 
 	@SubscribeEvent
 	public static void asdf(ItemTooltipEvent event) {
-		GemStat gem = event.getItemStack().getCapability(ModCapabilities.GEM_STAT);
-		if (gem == null) return;
+		LuxSourceStat stat = event.getItemStack().getCapability(ModCapabilities.LUX_SOURCE_STAT);
+		if (stat == null) return;
 
 		// TODO localize
 		List<Component> tooltip = event.getToolTip();
@@ -32,34 +32,34 @@ public final class GemStatTooltip {
 
 			tooltip.add(i++, Component.literal("+ Gem Stat [Shift]").withStyle(ChatFormatting.DARK_GRAY));
 
-			double r = RGB332.rBrightness(gem.color());
+			double r = RGB332.rBrightness(stat.color());
 			tooltip.add(i++, Component.literal("  R: ").withStyle(ChatFormatting.GRAY)
 					.append(Component.literal(bar(r)).withStyle(ChatFormatting.RED))
 					.append(" (" + pct.format(r) + ")"));
 
-			double g = RGB332.gBrightness(gem.color());
+			double g = RGB332.gBrightness(stat.color());
 			tooltip.add(i++, Component.literal("  G: ").withStyle(ChatFormatting.GRAY)
 					.append(Component.literal(bar(g)).withStyle(ChatFormatting.GREEN))
 					.append(" (" + pct.format(g) + ")"));
 
-			double b = RGB332.bBrightness(gem.color());
+			double b = RGB332.bBrightness(stat.color());
 			tooltip.add(i++, Component.literal("  B: ").withStyle(ChatFormatting.GRAY)
 					.append(Component.literal(bar(b)).withStyle(ChatFormatting.BLUE))
 					.append(" (" + pct.format(b) + ")"));
 
 			tooltip.add(i++, Component.literal("  Min. LUX Threshold: ").withStyle(ChatFormatting.GRAY)
-					.append(Component.literal(formatLuxThreshold(gem.minLuxThreshold())).withStyle(ChatFormatting.YELLOW)));
-			if (gem.minLuxThreshold() > 0 && gem.minLuxThreshold() != Long.MAX_VALUE) {
+					.append(Component.literal(formatLuxThreshold(stat.minLuxThreshold())).withStyle(ChatFormatting.YELLOW)));
+			if (stat.minLuxThreshold() > 0 && stat.minLuxThreshold() != Long.MAX_VALUE) {
 				tooltip.add(i++, Component.literal("  (Effective Threshold: ").withStyle(ChatFormatting.GRAY)
-						.append(Component.literal(formatLuxThreshold((long)Math.ceil(gem.minLuxThreshold() / r))).withStyle(ChatFormatting.RED))
+						.append(Component.literal(formatLuxThreshold((long)Math.ceil(stat.minLuxThreshold() / r))).withStyle(ChatFormatting.RED))
 						.append(" ")
-						.append(Component.literal(formatLuxThreshold((long)Math.ceil(gem.minLuxThreshold() / g))).withStyle(ChatFormatting.GREEN))
+						.append(Component.literal(formatLuxThreshold((long)Math.ceil(stat.minLuxThreshold() / g))).withStyle(ChatFormatting.GREEN))
 						.append(" ")
-						.append(Component.literal(formatLuxThreshold((long)Math.ceil(gem.minLuxThreshold() / b))).withStyle(ChatFormatting.BLUE))
+						.append(Component.literal(formatLuxThreshold((long)Math.ceil(stat.minLuxThreshold() / b))).withStyle(ChatFormatting.BLUE))
 						.append(")"));
 			}
 			tooltip.add(i++, Component.literal("  Max. LUX Threshold: ").withStyle(ChatFormatting.GRAY)
-					.append(Component.literal(formatLuxThreshold(gem.maxLuxThreshold())).withStyle(ChatFormatting.YELLOW)));
+					.append(Component.literal(formatLuxThreshold(stat.maxLuxThreshold())).withStyle(ChatFormatting.YELLOW)));
 		} else {
 			tooltip.add(1, Component.literal("- Gem Stat [Shift]").withStyle(ChatFormatting.DARK_GRAY));
 		}

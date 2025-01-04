@@ -17,10 +17,10 @@ public enum Wands implements ItemLike {
 	ANCIENT_LIGHT(ItemProfile.customItem(AncientLightWandItem::new, Shape.WAND), null),
 	CONFIGURATION_WAND(ItemProfile.customItem(ConfigurationWandItem::new, Shape.WAND), null),
 	AMBER_TORCH(ItemProfile.customItem(AmberTorchWandItem::new, Shape.WAND),
-			LuxContainerStat.withGemStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 250, Gems.AMBER)),
+			LuxContainerStat.withSourceStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 250, Gems.AMBER)),
 	// citrine wand
 	RECALL_STAFF(ItemProfile.customItem(RecallStaffWandItem::new, Shape.STAFF),
-			LuxContainerStat.withGemStat(RecallStaffWandItem.COST_PER_RECALL * 3, Gems.AQUAMARINE));
+			LuxContainerStat.withSourceStat(RecallStaffWandItem.COST_PER_RECALL * 3, Gems.AQUAMARINE));
 
 	private final DeferredItem<Item> item;
 	@Nullable

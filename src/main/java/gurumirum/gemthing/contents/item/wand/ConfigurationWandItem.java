@@ -1,14 +1,18 @@
 package gurumirum.gemthing.contents.item.wand;
 
-import gurumirum.gemthing.GemthingMod;
+import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.contents.Contents;
-import gurumirum.gemthing.contents.block.RelayBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class ConfigurationWandItem extends Item {
 	public ConfigurationWandItem(Properties properties) {
@@ -16,22 +20,43 @@ public class ConfigurationWandItem extends Item {
 	}
 
 	@Override
-	public @NotNull InteractionResult useOn(UseOnContext context) {
-		ItemStack stack = context.getItemInHand();
+	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
+	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flags) {
+		BlockPos linkSourcePos = stack.get(Contents.BLOCK_POS_DATA);
+		if (linkSourcePos != null) tooltip.add(Component.literal("[" + linkSourcePos.toShortString() + "]")
+				.withStyle(ChatFormatting.GOLD));
+	}
+
+	@Override
+	public @NotNull InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
 		BlockPos pos = context.getClickedPos();
-		BlockPos relayPos = stack.get(Contents.BLOCK_POS_DATA.get());
+		BlockPos linkSourcePos = stack.get(Contents.BLOCK_POS_DATA.get());
 
-		GemthingMod.LOGGER.info("Wrench wand item used on {}", pos);
+		if (linkSourcePos == null) {
+			var linkable = context.getLevel().getCapability(ModCapabilities.LINK_SOURCE, context.getClickedPos());
+			if (linkable != null) {
+				if (!context.getLevel().isClientSide) stack.set(Contents.BLOCK_POS_DATA.get(), pos);
+				return InteractionResult.SUCCESS;
+			} else {
+				return InteractionResult.PASS;
+			}
+		}
 
-		if (relayPos == null) {
-			stack.set(Contents.BLOCK_POS_DATA.get(), pos);
-		} else if (context.getLevel().getBlockEntity(pos) instanceof RelayBlockEntity relay) {
-			if (relayPos == pos) return InteractionResult.PASS;
-			if (!relay.linkRelay(relayPos)) return InteractionResult.PASS;
+		if (context.getLevel().isClientSide) return InteractionResult.SUCCESS;
+
+		if (linkSourcePos.equals(pos) || !context.getLevel().isLoaded(linkSourcePos)) {
 			stack.remove(Contents.BLOCK_POS_DATA.get());
-		} else return InteractionResult.PASS;
+			return InteractionResult.SUCCESS;
+		}
 
-		GemthingMod.LOGGER.info("Holding {}", stack.get(Contents.BLOCK_POS_DATA.get()));
-		return InteractionResult.SUCCESS;
+		var linkable = context.getLevel().getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos);
+		if (linkable != null) {
+			linkable.link(context.getClickLocation());
+			stack.remove(Contents.BLOCK_POS_DATA.get());
+			return InteractionResult.SUCCESS;
+		} else {
+			stack.remove(Contents.BLOCK_POS_DATA.get());
+			return InteractionResult.FAIL;
+		}
 	}
 }

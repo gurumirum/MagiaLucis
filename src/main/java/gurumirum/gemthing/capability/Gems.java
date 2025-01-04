@@ -5,7 +5,7 @@ import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
-public enum Gems implements GemStat {
+public enum Gems implements LuxSourceStat {
 	BRIGHTSTONE(0, RGB332.WHITE, 0, 100),
 	SOUL_BRIGHTSTONE(0, RGB332.of(1, 0, 0), 0, 100),
 
