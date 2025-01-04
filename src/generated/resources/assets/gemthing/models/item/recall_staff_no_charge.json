@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "gemthing:item/recall_staff_no_charge"
+  }
+}

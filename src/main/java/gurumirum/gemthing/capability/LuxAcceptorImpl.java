@@ -23,7 +23,7 @@ public class LuxAcceptorImpl implements LuxAcceptor {
 		long maxLuxThreshold = stat.maxLuxThreshold();
 		if (maxCharge <= 0 || maxLuxThreshold <= 0) return 0;
 
-		long luxCharge = Math.max(0, stack.getOrDefault(Contents.LUX_CHARGE.get(), 0L));
+		long luxCharge = Math.max(0, stack.getOrDefault(Contents.LUX_CHARGE, 0L));
 		if (luxCharge >= maxCharge) return 0;
 
 		byte containerColor = stat.color();
@@ -38,7 +38,7 @@ public class LuxAcceptorImpl implements LuxAcceptor {
 
 		long amountToCharge = Math.min(maxCharge - luxCharge, combinedLux);
 
-		if (!test) stack.set(Contents.LUX_CHARGE.get(), luxCharge + amountToCharge);
+		if (!test) stack.set(Contents.LUX_CHARGE, luxCharge + amountToCharge);
 
 		return amountToCharge;
 	}

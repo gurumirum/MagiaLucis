@@ -1,16 +1,21 @@
 package gurumirum.gemthing.contents;
 
 import com.mojang.serialization.Codec;
-import gurumirum.gemthing.capability.GemStat;
-import gurumirum.gemthing.contents.block.RemoteChargerBlockEntity;
+import gurumirum.gemthing.capability.Gems;
 import gurumirum.gemthing.contents.block.RelayBlockEntity;
+import gurumirum.gemthing.contents.block.RemoteChargerBlockEntity;
 import gurumirum.gemthing.contents.entity.GemGolemEntity;
+import gurumirum.gemthing.contents.item.wandbelt.WandBeltMenu;
+import gurumirum.gemthing.contents.mobeffect.RecallFatigueMobEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -37,20 +42,21 @@ public final class Contents {
 	static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
 	static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
+	static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
+	static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MODID);
 	static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, MODID);
 	static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
 
-	public static final DeferredHolder<EntityType<?>, EntityType<GemGolemEntity>> GEM_GOLEM = ENTITY_TYPES.register(
-			"gem_golem", () -> EntityType.Builder.of(GemGolemEntity::new, MobCategory.MONSTER).sized(1.4F, 2.7F).clientTrackingRange(10).build("gem_golem")
-	);
+	public static final DeferredHolder<EntityType<?>, EntityType<GemGolemEntity>> GEM_GOLEM = ENTITY_TYPES.register("gem_golem",
+			() -> EntityType.Builder.of(GemGolemEntity::new, MobCategory.MONSTER)
+					.sized(1.4F, 2.7F)
+					.clientTrackingRange(10)
+					.build("gem_golem"));
 
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> BLOCK_POS_DATA = DATA_COMPONENTS.register(
-			"block_pos", () -> DataComponentType.<BlockPos>builder().persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC).build()
-	);
-
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RelayBlockEntity>> RELAY_BLOCK_ENTITY = BLOCK_ENTITIES.register(
-			"relay_block_entity", () -> BlockEntityType.Builder.of(RelayBlockEntity::new, ModBlocks.RELAY.block()).build(null)
-	);
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> BLOCK_POS_DATA = DATA_COMPONENTS.register("block_pos",
+			() -> DataComponentType.<BlockPos>builder()
+					.persistent(BlockPos.CODEC)
+					.networkSynchronized(BlockPos.STREAM_CODEC).build());
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Long>> LUX_CHARGE = DATA_COMPONENTS.register("lux_charge",
 			() -> DataComponentType.<Long>builder()
@@ -58,36 +64,63 @@ public final class Contents {
 					.networkSynchronized(ByteBufCodecs.VAR_LONG)
 					.build());
 
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Byte>> WAND_BELT_SELECTED_INDEX = DATA_COMPONENTS.register("wand_belt_selected_index",
+			() -> DataComponentType.<Byte>builder()
+					.persistent(Codec.BYTE)
+					.networkSynchronized(ByteBufCodecs.BYTE)
+					.build());
+
+	public static final DeferredHolder<MenuType<?>, MenuType<WandBeltMenu>> WANG_BELT_MENU = MENUS.register("wand_belt",
+			() -> new MenuType<>(WandBeltMenu::new, FeatureFlagSet.of()));
+
+	public static final DeferredHolder<MobEffect, MobEffect> RECALL_FATIGUE = MOB_EFFECTS.register("recall_fatigue",
+			RecallFatigueMobEffect::new);
+
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> REMOTE_CHARGER = BLOCK_ENTITIES.register("remote_charger",
 			() -> BlockEntityType.Builder.of(RemoteChargerBlockEntity::new, ModBlocks.REMOTE_CHARGER.block())
 					.build(null));
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RelayBlockEntity>> RELAY_BLOCK_ENTITY = BLOCK_ENTITIES.register("relay_block_entity",
+			() -> BlockEntityType.Builder.of(RelayBlockEntity::new, ModBlocks.RELAY.block()).build(null));
 
 	public static void init(IEventBus eventBus) {
 		ITEMS.register(eventBus);
 		DATA_COMPONENTS.register(eventBus);
 		BLOCKS.register(eventBus);
 		BLOCK_ENTITIES.register(eventBus);
+		MENUS.register(eventBus);
+		MOB_EFFECTS.register(eventBus);
 		PLACED_FEATURES.register(eventBus);
 		ENTITY_TYPES.register(eventBus);
 
 		eventBus.addListener((RegisterEvent event) -> {
 			event.register(Registries.CREATIVE_MODE_TAB, h -> {
 				h.register(id("main"), CreativeModeTab.builder()
-						.icon(() -> new ItemStack(ModItems.WAND))
+						.icon(() -> new ItemStack(Wands.ANCIENT_LIGHT))
 						.displayItems((p, o) -> {
+							for (var i : Wands.values()) {
+								o.accept(i);
+								if (i.luxContainerStat() != null) {
+									ItemStack stack = new ItemStack(i);
+									stack.set(LUX_CHARGE, i.luxContainerStat().maxCharge());
+									o.accept(stack);
+								}
+							}
 							for (var i : ModItems.values()) o.accept(i);
-							for (var i : ModBlocks.values()) o.accept(i);
+							for (var i : ModBlocks.values()) {
+								if (i.blockItem() != null) o.accept(i);
+							}
 						})
 						.build());
 
 				h.register(id("gems"), CreativeModeTab.builder()
-						.icon(() -> new ItemStack(Gems.BRIGHTSTONE))
+						.icon(() -> new ItemStack(GemItems.BRIGHTSTONE))
 						.displayItems((p, o) -> {
-							for (var ore : NormalOres.values()) {
-								if (ore.hasOre()) o.accept(ore.oreItem());
-								if (ore.hasDeepslateOre()) o.accept(ore.deepslateOreItem());
+							for (var ore : Ore.values()) ore.allOreItems().forEach(o::accept);
+							for (var g : Gems.values()) {
+								o.accept(g.item());
+								if (g == Gems.BRIGHTSTONE) o.accept(GemItems.RED_BRIGHTSTONE);
 							}
-							for (var g : GemStat.values()) o.accept(g.item());
 						})
 						.build());
 			});
@@ -97,10 +130,11 @@ public final class Contents {
 			event.put(Contents.GEM_GOLEM.get(), GemGolemEntity.createAttributes().build());
 		});
 
-		Gems.init();
+		GemItems.init();
 		ModItems.init();
 		ModBlocks.init();
-		NormalOres.init();
+		Ore.init();
+		Wands.init();
 	}
 
 	static final BiFunction<Block, Item.Properties, BlockItem> defaultItemFactory = BlockItem::new;

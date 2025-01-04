@@ -2,6 +2,8 @@ package gurumirum.gemthing.net;
 
 import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.net.msgs.SetBeamCraftingInfoMsg;
+import gurumirum.gemthing.net.msgs.SetWandBeltSelectedIndexMsg;
+import gurumirum.gemthing.net.msgs.SwapWandBeltItemMsg;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -18,5 +20,15 @@ public final class Net {
 				SetBeamCraftingInfoMsg.TYPE,
 				SetBeamCraftingInfoMsg.STREAM_CODEC,
 				ServerSideHandlers::handleSetBeamCraftingInfo);
+
+		registrar.commonToServer(
+				SetWandBeltSelectedIndexMsg.TYPE,
+				SetWandBeltSelectedIndexMsg.STREAM_CODEC,
+				ServerSideHandlers::handleSetWandBeltSelectedIndex);
+
+		registrar.commonToServer(
+				SwapWandBeltItemMsg.TYPE,
+				SwapWandBeltItemMsg.STREAM_CODEC,
+				ServerSideHandlers::handleSwapWandBeltItem);
 	}
 }

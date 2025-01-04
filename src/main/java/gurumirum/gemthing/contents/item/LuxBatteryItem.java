@@ -1,8 +1,9 @@
 package gurumirum.gemthing.contents.item;
 
-import gurumirum.gemthing.capability.Capabilities;
+import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.capability.LuxContainerStat;
 import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.Item;
@@ -20,34 +21,38 @@ public class LuxBatteryItem extends Item {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		LuxContainerStat luxContainerStat = stack.getCapability(Capabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (luxContainerStat == null) return;
 
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE.get(), 0L);
+		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
 		tooltip.add(Component.literal(charge + " / " + luxContainerStat.maxCharge()));
 	}
 
 	@Override
 	public boolean isBarVisible(@NotNull ItemStack stack) {
-		LuxContainerStat luxContainerStat = stack.getCapability(Capabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		return luxContainerStat != null;
 	}
 
 	@Override
 	public int getBarWidth(@NotNull ItemStack stack) {
-		LuxContainerStat luxContainerStat = stack.getCapability(Capabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (luxContainerStat == null) return 0;
 
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE.get(), 0L);
+		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
 		return (int)Math.round(13 * ((double)charge / luxContainerStat.maxCharge()));
 	}
 
 	@Override
 	public int getBarColor(@NotNull ItemStack stack) {
+		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
+		if (luxContainerStat == null) return 0;
 		double v = (System.currentTimeMillis() % 5000) / 5000.0;
-		return FastColor.ARGB32.lerp((float)((Math.sin(v * 2 * Math.PI) + 1) / 2),
-				0xFFFFFFFF,
-				0xFF999999);
+		return FastColor.ARGB32.multiply(
+				RGB332.toARGB32(luxContainerStat.color(), 255),
+				FastColor.ARGB32.lerp((float)((Math.sin(v * 2 * Math.PI) + 1) / 2),
+						0xFFFFFFFF,
+						0xFF999999));
 	}
 
 	@Override

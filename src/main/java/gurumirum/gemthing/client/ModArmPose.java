@@ -12,8 +12,7 @@ public final class ModArmPose {
 	private ModArmPose() {}
 
 	public static final EnumProxy<HumanoidModel.ArmPose> WAND = new EnumProxy<>(
-			HumanoidModel.ArmPose.class, false,
-			(IArmPoseTransformer) ModArmPose::wandTransform);
+			HumanoidModel.ArmPose.class, false, (IArmPoseTransformer) ModArmPose::wandTransform);
 
 	private static void wandTransform(@NotNull HumanoidModel<?> model, @NotNull LivingEntity entity, @NotNull HumanoidArm arm) {
 		AnimationUtils.animateCrossbowHold(model.rightArm, model.leftArm, model.head, arm == HumanoidArm.RIGHT);

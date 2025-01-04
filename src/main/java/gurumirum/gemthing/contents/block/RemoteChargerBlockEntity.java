@@ -1,6 +1,6 @@
 package gurumirum.gemthing.contents.block;
 
-import gurumirum.gemthing.capability.Capabilities;
+import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.capability.LuxAcceptor;
 import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.impl.RGB332;
@@ -27,7 +27,7 @@ public class RemoteChargerBlockEntity extends BlockEntity implements Ticker {
 
 		for (Player p : level.getEntities(EntityTypeTest.forClass(Player.class), new AABB(pos).inflate(5), e -> true)) {
 			ItemStack stack = p.getMainHandItem();
-			LuxAcceptor luxAcceptor = stack.getCapability(Capabilities.LUX_ACCEPTOR);
+			LuxAcceptor luxAcceptor = stack.getCapability(ModCapabilities.LUX_ACCEPTOR);
 			if (luxAcceptor == null) continue;
 			luxAcceptor.accept(10, RGB332.WHITE, false);
 		}

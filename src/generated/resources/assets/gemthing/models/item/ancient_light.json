@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/handheld",
+  "overrides": [
+    {
+      "model": "gemthing:item/ancient_light_using",
+      "predicate": {
+        "minecraft:using": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "gemthing:item/ancient_light"
+  }
+}

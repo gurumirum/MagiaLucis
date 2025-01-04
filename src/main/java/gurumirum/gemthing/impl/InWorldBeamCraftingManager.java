@@ -1,8 +1,8 @@
 package gurumirum.gemthing.impl;
 
 import gurumirum.gemthing.GemthingMod;
-import gurumirum.gemthing.contents.Gems;
-import gurumirum.gemthing.contents.ModItems;
+import gurumirum.gemthing.contents.GemItems;
+import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.net.msgs.SetBeamCraftingInfoMsg;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -50,7 +50,15 @@ public final class InWorldBeamCraftingManager {
 
 		addRecipe(Blocks.SAND, new Recipe(25, LootTable.lootTable()
 				.withPool(new LootPool.Builder()
-						.add(LootItem.lootTableItem(Gems.BRIGHTSTONE)))
+						.add(LootItem.lootTableItem(GemItems.BRIGHTSTONE)))
+				.build()));
+		addRecipe(Blocks.RED_SAND, new Recipe(25, LootTable.lootTable()
+				.withPool(new LootPool.Builder()
+						.add(LootItem.lootTableItem(GemItems.RED_BRIGHTSTONE)))
+				.build()));
+		addRecipe(Blocks.SOUL_SAND, new Recipe(50, LootTable.lootTable()
+				.withPool(new LootPool.Builder()
+						.add(LootItem.lootTableItem(GemItems.SOUL_BRIGHTSTONE)))
 				.build()));
 	}
 
@@ -96,9 +104,7 @@ public final class InWorldBeamCraftingManager {
 
 		Object2IntMap<BlockPos> beamProgress = null;
 		for (Player p : event.getLevel().players()) {
-			if (p.isDeadOrDying() ||
-					!p.isUsingItem() ||
-					!p.getUseItem().is(ModItems.WAND.asItem())) {
+			if (p.isDeadOrDying() || !p.isUsingItem() || !p.getUseItem().is(Wands.ANCIENT_LIGHT.asItem())) {
 				focus.remove(p.getUUID());
 				continue;
 			}
