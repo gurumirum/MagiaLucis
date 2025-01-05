@@ -22,7 +22,7 @@ public final class ModBlockEntities {
 			blockEntity("remote_charger", RemoteChargerBlockEntity::basic, ModBlocks.REMOTE_CHARGER);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> REMOTE_CHARGER_2 =
-			blockEntity("remote_charger_2", RemoteChargerBlockEntity::advanced, ModBlocks.REMOTE_CHARGER);
+			blockEntity("remote_charger_2", RemoteChargerBlockEntity::advanced, ModBlocks.REMOTE_CHARGER_2);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LuxSourceBlockEntity>> LUX_SOURCE =
 			blockEntity("lux_source", LuxSourceBlockEntity::new, ModBlocks.LUX_SOURCE);
