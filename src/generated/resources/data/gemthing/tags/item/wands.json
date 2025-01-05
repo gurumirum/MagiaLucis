@@ -3,6 +3,7 @@
     "gemthing:ancient_light",
     "gemthing:configuration_wand",
     "gemthing:amber_torch",
-    "gemthing:recall_staff"
+    "gemthing:recall_staff",
+    "gemthing:heal_wand"
   ]
 }
