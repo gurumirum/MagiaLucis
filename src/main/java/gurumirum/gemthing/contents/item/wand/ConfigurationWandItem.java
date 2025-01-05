@@ -35,7 +35,13 @@ public class ConfigurationWandItem extends Item {
 		if (linkSourcePos == null) {
 			var linkable = context.getLevel().getCapability(ModCapabilities.LINK_SOURCE, context.getClickedPos());
 			if (linkable != null) {
-				if (!context.getLevel().isClientSide) stack.set(Contents.BLOCK_POS_DATA.get(), pos);
+				if (!context.getLevel().isClientSide) {
+					if (context.isSecondaryUseActive()) {
+						linkable.unlinkAll();
+					} else {
+						stack.set(Contents.BLOCK_POS_DATA.get(), pos);
+					}
+				}
 				return InteractionResult.SUCCESS;
 			} else {
 				return InteractionResult.PASS;
@@ -44,14 +50,18 @@ public class ConfigurationWandItem extends Item {
 
 		if (context.getLevel().isClientSide) return InteractionResult.SUCCESS;
 
-		if (linkSourcePos.equals(pos) || !context.getLevel().isLoaded(linkSourcePos)) {
+		if (!context.getLevel().isLoaded(linkSourcePos)) {
 			stack.remove(Contents.BLOCK_POS_DATA.get());
 			return InteractionResult.SUCCESS;
 		}
 
 		var linkable = context.getLevel().getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos);
 		if (linkable != null) {
-			linkable.link(context.getClickLocation());
+			if (linkSourcePos.equals(pos)) {
+				linkable.unlink();
+			} else {
+				linkable.link(context.getClickLocation());
+			}
 			stack.remove(Contents.BLOCK_POS_DATA.get());
 			return InteractionResult.SUCCESS;
 		} else {

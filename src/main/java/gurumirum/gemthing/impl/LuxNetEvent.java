@@ -9,14 +9,13 @@ public sealed interface LuxNetEvent {
 
 	record ConnectionUpdated(
 			int sourceNode,
-			int prevDestinationNode,
-			int newDestinationNode
+			int destinationNode,
+			boolean connected
 	) implements LuxNetEvent {
 		@Override
 		public void dispatch(@NotNull LuxNetEventDispatcher dispatcher) {
 			dispatcher.dispatchEvent(this.sourceNode, this);
-			dispatcher.dispatchEvent(this.prevDestinationNode, this);
-			dispatcher.dispatchEvent(this.newDestinationNode, this);
+			dispatcher.dispatchEvent(this.destinationNode, this);
 		}
 
 		@Override

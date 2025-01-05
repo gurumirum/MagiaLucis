@@ -1,9 +1,7 @@
 package gurumirum.gemthing.contents;
 
 import com.mojang.serialization.Codec;
-import gurumirum.gemthing.capability.Gems;
-import gurumirum.gemthing.contents.block.lux.relay.RelayBlockEntity;
-import gurumirum.gemthing.contents.block.lux.remotecharger.RemoteChargerBlockEntity;
+import gurumirum.gemthing.capability.GemStats;
 import gurumirum.gemthing.contents.entity.GemGolemEntity;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltMenu;
 import gurumirum.gemthing.contents.mobeffect.RecallFatigueMobEffect;
@@ -16,11 +14,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.bus.api.IEventBus;
@@ -28,8 +23,6 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegisterEvent;
-
-import java.util.function.BiFunction;
 
 import static gurumirum.gemthing.GemthingMod.MODID;
 import static gurumirum.gemthing.GemthingMod.id;
@@ -77,13 +70,6 @@ public final class Contents {
 	public static final DeferredHolder<MobEffect, MobEffect> RECALL_FATIGUE = MOB_EFFECTS.register("recall_fatigue",
 			RecallFatigueMobEffect::new);
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> REMOTE_CHARGER = BLOCK_ENTITIES.register("remote_charger",
-			() -> BlockEntityType.Builder.of(RemoteChargerBlockEntity::new, ModBlocks.REMOTE_CHARGER.block())
-					.build(null));
-
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RelayBlockEntity>> RELAY_BLOCK_ENTITY = BLOCK_ENTITIES.register("relay_block_entity",
-			() -> BlockEntityType.Builder.of(RelayBlockEntity::new, ModBlocks.RELAY.block()).build(null));
-
 	public static void init(IEventBus eventBus) {
 		ITEMS.register(eventBus);
 		DATA_COMPONENTS.register(eventBus);
@@ -118,9 +104,9 @@ public final class Contents {
 						.icon(() -> new ItemStack(GemItems.BRIGHTSTONE))
 						.displayItems((p, o) -> {
 							for (var ore : Ore.values()) ore.allOreItems().forEach(o::accept);
-							for (var g : Gems.values()) {
+							for (var g : GemStats.values()) {
 								o.accept(g.item());
-								if (g == Gems.BRIGHTSTONE) o.accept(GemItems.RED_BRIGHTSTONE);
+								if (g == GemStats.BRIGHTSTONE) o.accept(GemItems.RED_BRIGHTSTONE);
 							}
 						})
 						.build());
@@ -134,9 +120,8 @@ public final class Contents {
 		GemItems.init();
 		ModItems.init();
 		ModBlocks.init();
+		ModBlockEntities.init();
 		Ore.init();
 		Wands.init();
 	}
-
-	static final BiFunction<Block, Item.Properties, BlockItem> defaultItemFactory = BlockItem::new;
 }

@@ -3,8 +3,9 @@ package gurumirum.gemthing.client;
 import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.client.render.entity.GemGolemRenderer;
 import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.ModBlockEntities;
 import gurumirum.gemthing.contents.Wands;
-import gurumirum.gemthing.contents.block.lux.relay.RelayBlockEntityRenderer;
+import gurumirum.gemthing.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.gemthing.contents.item.wand.AmberTorchWandItem;
 import gurumirum.gemthing.contents.item.wand.RecallStaffWandItem;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;
@@ -88,6 +89,7 @@ public final class ClientInit {
 	public static void registerEntityRegister(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(Contents.GEM_GOLEM.get(), GemGolemRenderer::new);
 
-		event.registerBlockEntityRenderer(Contents.RELAY_BLOCK_ENTITY.get(), RelayBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), BasicRelayBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);
 	}
 }

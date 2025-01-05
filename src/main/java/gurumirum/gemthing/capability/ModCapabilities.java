@@ -1,9 +1,6 @@
 package gurumirum.gemthing.capability;
 
-import gurumirum.gemthing.contents.Contents;
-import gurumirum.gemthing.contents.GemItems;
-import gurumirum.gemthing.contents.ModItems;
-import gurumirum.gemthing.contents.Wands;
+import gurumirum.gemthing.contents.*;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltItem;
 import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.core.Direction;
@@ -27,10 +24,10 @@ public final class ModCapabilities {
 
 	public static final ItemCapability<LuxAcceptor, Void> LUX_ACCEPTOR = ItemCapability.createVoid(id("lux_acceptor"), LuxAcceptor.class);
 	public static final ItemCapability<LuxContainerStat, Void> LUX_CONTAINER_STAT = ItemCapability.createVoid(id("lux_container_stat"), LuxContainerStat.class);
-	public static final ItemCapability<LuxSourceStat, Void> LUX_SOURCE_STAT = ItemCapability.createVoid(id("lux_source_stat"), LuxSourceStat.class);
+	public static final ItemCapability<LuxStat, Void> LUX_SOURCE_STAT = ItemCapability.createVoid(id("lux_source_stat"), LuxStat.class);
 
 	public static final BlockCapability<LinkSource, Void> LINK_SOURCE = BlockCapability.createVoid(id("linkable"), LinkSource.class);
-	public static final BlockCapability<LuxNodeBlock, Direction> LUX_NODE_BLOCK = BlockCapability.createSided(id("lux_node_block"), LuxNodeBlock.class);
+	public static final BlockCapability<LuxNetComponent, Direction> LUX_NET_COMPONENT = BlockCapability.createSided(id("lux_net_component"), LuxNetComponent.class);
 
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -38,9 +35,9 @@ public final class ModCapabilities {
 			var stat = value.gem;
 			event.registerItem(LUX_SOURCE_STAT, (s, v) -> stat, value.asItem());
 		}
-		event.registerItem(LUX_SOURCE_STAT, (s, v) -> Gems.AMETHYST, Items.AMETHYST_SHARD);
-		event.registerItem(LUX_SOURCE_STAT, (s, v) -> Gems.DIAMOND, Items.DIAMOND);
-		event.registerItem(LUX_SOURCE_STAT, (s, v) -> Gems.EMERALD, Items.EMERALD);
+		event.registerItem(LUX_SOURCE_STAT, (s, v) -> GemStats.AMETHYST, Items.AMETHYST_SHARD);
+		event.registerItem(LUX_SOURCE_STAT, (s, v) -> GemStats.DIAMOND, Items.DIAMOND);
+		event.registerItem(LUX_SOURCE_STAT, (s, v) -> GemStats.EMERALD, Items.EMERALD);
 
 		for (Wands w : Wands.values()) {
 			if (w.luxContainerStat() != null) {
@@ -52,21 +49,24 @@ public final class ModCapabilities {
 
 		event.registerItem(ItemHandler.ITEM, (s, v) -> new WandBeltItem.ItemHandler(s), ModItems.WAND_BELT);
 
-		registerRelayLinkSource(event, Contents.RELAY_BLOCK_ENTITY.get());
-		registerLuxNodeBlock(event, Contents.RELAY_BLOCK_ENTITY.get());
+		registerRelayLinkSource(event, ModBlockEntities.RELAY.get());
+		registerLuxNodeBlock(event, ModBlockEntities.RELAY.get());
+		registerRelayLinkSource(event, ModBlockEntities.LUX_SOURCE.get());
+		registerLuxNodeBlock(event, ModBlockEntities.LUX_SOURCE.get());
+		registerLuxNodeBlock(event, ModBlockEntities.REMOTE_CHARGER.get());
+		registerLuxNodeBlock(event, ModBlockEntities.REMOTE_CHARGER_2.get());
 	}
 
 	private static void registerLuxContainer(RegisterCapabilitiesEvent event, LuxContainerStat stat, ItemLike... items) {
-		event.registerItem(LUX_SOURCE_STAT, (s, v) -> stat, items);
 		event.registerItem(LUX_CONTAINER_STAT, (s, v) -> stat, items);
-		event.registerItem(LUX_ACCEPTOR, (s, v) -> new LuxAcceptorImpl(s, stat), items);
+		event.registerItem(LUX_ACCEPTOR, (s, v) -> new ItemStackLuxAcceptor(s, stat), items);
 	}
 
 	private static <T extends BlockEntity & LinkSource> void registerRelayLinkSource(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
 		event.registerBlockEntity(LINK_SOURCE, type, (be, context) -> be);
 	}
 
-	private static <T extends BlockEntity & LuxNodeBlock> void registerLuxNodeBlock(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
-		event.registerBlockEntity(LUX_NODE_BLOCK, type, (be, context) -> be);
+	private static <T extends BlockEntity & LuxNetComponent> void registerLuxNodeBlock(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
+		event.registerBlockEntity(LUX_NET_COMPONENT, type, (be, context) -> be);
 	}
 }

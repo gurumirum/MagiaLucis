@@ -1,26 +1,21 @@
 package gurumirum.gemthing.capability;
 
-import gurumirum.gemthing.impl.RGB332;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3d;
 
-@FunctionalInterface
 public interface LuxAcceptor {
-	LuxAcceptor NULL = (r, g, b, t) -> 0;
+	LuxAcceptor NULL = new LuxAcceptor() {
+		@Override
+		public void accept(double red, double green, double blue, boolean test, @NotNull Vector3d acceptedOut) {
+			acceptedOut.zero();
+		}
 
-	long accept(double red, double green, double blue, boolean test);
+		@Override
+		public long acceptDirect(long amount, boolean bypassThreshold, boolean test) {
+			return 0;
+		}
+	};
 
-	default long accept(long amount, byte color, boolean test) {
-		if (amount <= 0) return amount;
-
-		double rBrightness = RGB332.rBrightness(color);
-		double gBrightness = RGB332.gBrightness(color);
-		double bBrightness = RGB332.bBrightness(color);
-
-		double totalBrightness = rBrightness + gBrightness + bBrightness;
-
-		double red = amount / totalBrightness * rBrightness;
-		double green = amount / totalBrightness * bBrightness;
-		double blue = amount / totalBrightness * gBrightness;
-
-		return accept(red, green, blue, test);
-	}
+	void accept(double red, double green, double blue, boolean test, @NotNull Vector3d acceptedOut);
+	long acceptDirect(long amount, boolean bypassThreshold, boolean test);
 }

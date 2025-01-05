@@ -1,12 +1,14 @@
 package gurumirum.gemthing.impl;
 
 import gurumirum.gemthing.GemthingMod;
+import gurumirum.gemthing.capability.LuxStat;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
+import org.joml.Vector3d;
 
 import java.util.Objects;
 
@@ -15,16 +17,54 @@ public final class LuxNode {
 
 	private @Nullable LuxNodeInterface iface;
 
-	final IntSet adjacentInboundNodeIds = new IntOpenHashSet();
-	int outboundNodeId;
+	final Vector3d storedColorCharge = new Vector3d();
+	final Vector3d incomingColorChargeCache = new Vector3d();
 
-	private @Nullable IntSet adjacentInboundNodeIdsView;
+	final Vector3d maxColorCharge = new Vector3d();
+
+	final IntSet inboundNodes = new IntOpenHashSet();
+	final IntSet outboundNodes = new IntOpenHashSet();
+
+	private @Nullable IntSet inboundNodesView;
+	private @Nullable IntSet outboundNodesView;
+
+	byte color;
+	double minLuxThreshold;
+	double maxLuxThreshold;
 
 	public LuxNode(int id) {
 		this.id = id;
 	}
 
-	public boolean bindInterface(@Nullable LuxNodeInterface iface) {
+	public @Nullable LuxNodeInterface iface() {
+		return iface;
+	}
+
+	public @NotNull @UnmodifiableView IntSet inboundNodes() {
+		return this.inboundNodesView == null ?
+				this.inboundNodesView = IntSets.unmodifiable(this.inboundNodes) :
+				this.inboundNodesView;
+	}
+
+	public @NotNull @UnmodifiableView IntSet outboundNodes() {
+		return this.outboundNodesView == null ?
+				this.outboundNodesView = IntSets.unmodifiable(this.outboundNodes) :
+				this.outboundNodesView;
+	}
+
+	public void setStats(@NotNull LuxStat stat) {
+		this.color = stat.color();
+		this.minLuxThreshold = stat.minLuxThreshold();
+		if (Double.isNaN(this.minLuxThreshold) || this.minLuxThreshold < 0) this.minLuxThreshold = 0;
+		this.maxLuxThreshold = stat.maxLuxThreshold();
+		if (Double.isNaN(this.maxLuxThreshold) || this.maxLuxThreshold < 0) this.maxLuxThreshold = 0;
+		this.maxColorCharge.set(
+				this.maxLuxThreshold * RGB332.rBrightness(this.color),
+				this.maxLuxThreshold * RGB332.gBrightness(this.color),
+				this.maxLuxThreshold * RGB332.bBrightness(this.color));
+	}
+
+	boolean bindInterface(@Nullable LuxNodeInterface iface) {
 		if (iface == null || this.iface == null) {
 			this.iface = iface;
 		} else if (this.iface != iface) {
@@ -37,22 +77,12 @@ public final class LuxNode {
 		return true;
 	}
 
-	public void unbindInterface() {
+	void unbindInterface() {
 		bindInterface(null);
 	}
 
-	public @Nullable LuxNodeInterface iface() {
-		return iface;
-	}
-
-	public @NotNull @UnmodifiableView IntSet adjacentInboundNodeIds() {
-		return this.adjacentInboundNodeIdsView == null ?
-				this.adjacentInboundNodeIdsView = IntSets.unmodifiable(this.adjacentInboundNodeIds) :
-				this.adjacentInboundNodeIdsView;
-	}
-
-	public int outboundNode() {
-		return this.outboundNodeId;
+	void trimColorCharge() {
+		this.storedColorCharge.min(this.maxColorCharge);
 	}
 
 	@Override

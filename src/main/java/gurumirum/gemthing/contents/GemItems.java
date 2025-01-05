@@ -1,6 +1,6 @@
 package gurumirum.gemthing.contents;
 
-import gurumirum.gemthing.capability.Gems;
+import gurumirum.gemthing.capability.GemStats;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -10,44 +10,44 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 
 public enum GemItems implements ItemLike {
-	BRIGHTSTONE(Gems.BRIGHTSTONE),
-	RED_BRIGHTSTONE(Gems.BRIGHTSTONE),
-	SOUL_BRIGHTSTONE(Gems.SOUL_BRIGHTSTONE),
+	BRIGHTSTONE(GemStats.BRIGHTSTONE),
+	RED_BRIGHTSTONE(GemStats.BRIGHTSTONE),
+	SOUL_BRIGHTSTONE(GemStats.SOUL_BRIGHTSTONE),
 
-	AMBER(Gems.AMBER),
-	CITRINE(Gems.CITRINE),
-	AQUAMARINE(Gems.AQUAMARINE),
-	PEARL(Gems.PEARL),
+	AMBER(GemStats.AMBER),
+	CITRINE(GemStats.CITRINE),
+	AQUAMARINE(GemStats.AQUAMARINE),
+	PEARL(GemStats.PEARL),
 
-	PURIFIED_QUARTZ(Gems.PURIFIED_QUARTZ),
-	CRYSTALLIZED_REDSTONE(Gems.CRYSTALLIZED_REDSTONE),
-	POLISHED_LAPIS_LAZULI(Gems.POLISHED_LAPIS_LAZULI),
-	OBSIDIAN(Gems.OBSIDIAN),
+	PURIFIED_QUARTZ(GemStats.PURIFIED_QUARTZ),
+	CRYSTALLIZED_REDSTONE(GemStats.CRYSTALLIZED_REDSTONE),
+	POLISHED_LAPIS_LAZULI(GemStats.POLISHED_LAPIS_LAZULI),
+	OBSIDIAN(GemStats.OBSIDIAN),
 
 	// diamond
-	RUBY(Gems.RUBY),
+	RUBY(GemStats.RUBY),
 	// emerald
-	SAPPHIRE(Gems.SAPPHIRE),
+	SAPPHIRE(GemStats.SAPPHIRE),
 
 	// amethyst
-	TOPAZ(Gems.TOPAZ),
-	MOONSTONE(Gems.MOONSTONE),
-	JET(Gems.JET),
+	TOPAZ(GemStats.TOPAZ),
+	MOONSTONE(GemStats.MOONSTONE),
+	JET(GemStats.JET),
 
-	BRILLIANT_DIAMOND(Gems.BRILLIANT_DIAMOND),
-	RUBY2(Gems.RUBY2),
-	EMERALD2(Gems.EMERALD2),
-	SAPPHIRE2(Gems.SAPPHIRE2),
+	BRILLIANT_DIAMOND(GemStats.BRILLIANT_DIAMOND),
+	RUBY2(GemStats.RUBY2),
+	EMERALD2(GemStats.EMERALD2),
+	SAPPHIRE2(GemStats.SAPPHIRE2),
 
-	DAIMONIUM(Gems.DAIMONIUM);
+	DAIMONIUM(GemStats.DAIMONIUM);
 
-	public final Gems gem;
+	public final GemStats gem;
 	private final DeferredItem<Item> item;
 
-	GemItems(Gems gem) {
+	GemItems(GemStats gem) {
 		this(gem, ItemProfile.item());
 	}
-	GemItems(Gems gem, @NotNull ItemProfile<Item> itemProfile) {
+	GemItems(GemStats gem, @NotNull ItemProfile<Item> itemProfile) {
 		this.gem = gem;
 		this.item = itemProfile.create(name().toLowerCase(Locale.ROOT));
 	}

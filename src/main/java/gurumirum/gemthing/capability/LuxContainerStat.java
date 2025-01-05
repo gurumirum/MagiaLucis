@@ -2,19 +2,19 @@ package gurumirum.gemthing.capability;
 
 import gurumirum.gemthing.impl.RGB332;
 
-public interface LuxContainerStat extends LuxSourceStat {
+public interface LuxContainerStat extends LuxStat {
 	LuxContainerStat NULL = simple(0, RGB332.BLACK, 0, 0);
 
 	long maxCharge();
 
 	static LuxContainerStat.Simple simple(long maxCharge,
 	                                      byte color,
-	                                      long minLuxThreshold,
-	                                      long maxLuxThreshold) {
+	                                      double minLuxThreshold,
+	                                      double maxLuxThreshold) {
 		return new Simple(maxCharge, color, minLuxThreshold, maxLuxThreshold);
 	}
 
-	static LuxContainerStat.Simple withSourceStat(long maxCharge, Gems gem) {
+	static LuxContainerStat.Simple withSourceStat(long maxCharge, GemStats gem) {
 		return new Simple(maxCharge, gem.color, gem.minLuxThreshold, gem.maxLuxThreshold);
 	}
 
@@ -25,7 +25,7 @@ public interface LuxContainerStat extends LuxSourceStat {
 	record Simple(
 			long maxCharge,
 			byte color,
-			long minLuxThreshold,
-			long maxLuxThreshold
+			double minLuxThreshold,
+			double maxLuxThreshold
 	) implements LuxContainerStat {}
 }

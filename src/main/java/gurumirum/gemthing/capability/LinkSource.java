@@ -5,4 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 public interface LinkSource {
 	void link(@NotNull Vec3 target);
+	void unlink();
+	void unlinkAll();
 }

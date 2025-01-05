@@ -1,8 +1,9 @@
 package gurumirum.gemthing.contents;
 
-import gurumirum.gemthing.contents.block.lux.relay.RelayBlock;
 import gurumirum.gemthing.contents.block.AmberLightBlock;
+import gurumirum.gemthing.contents.block.lux.relay.RelayBlock;
 import gurumirum.gemthing.contents.block.lux.remotecharger.RemoteChargerBlock;
+import gurumirum.gemthing.contents.block.lux.source.LuxSourceBlock;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
-public enum ModBlocks implements ItemLike {
+public enum ModBlocks implements ItemLike, BlockProvider {
 	SILVER(BlockProfile.block(Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL))),
 	RAW_SILVER_BLOCK(BlockProfile.block(Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))),
 
@@ -28,8 +29,10 @@ public enum ModBlocks implements ItemLike {
 			.noCollission()
 			.noOcclusion())),
 
-	REMOTE_CHARGER(BlockProfile.customBlock(RemoteChargerBlock::new, Properties.of())),
-	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of()));
+	REMOTE_CHARGER(BlockProfile.customBlock(RemoteChargerBlock.Basic::new, Properties.of())),
+	REMOTE_CHARGER_2(BlockProfile.customBlock(RemoteChargerBlock.Advanced::new, Properties.of())),
+	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of())),
+	LUX_SOURCE(BlockProfile.customBlock(LuxSourceBlock::new, Properties.of()));
 
 	private final DeferredBlock<? extends Block> block;
 	@Nullable

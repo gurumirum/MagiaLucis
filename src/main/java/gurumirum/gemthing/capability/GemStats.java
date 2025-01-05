@@ -5,7 +5,7 @@ import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
-public enum Gems implements LuxSourceStat {
+public enum GemStats implements LuxStat {
 	BRIGHTSTONE(0, RGB332.WHITE, 0, 100),
 	SOUL_BRIGHTSTONE(0, RGB332.of(1, 0, 0), 0, 100),
 
@@ -36,14 +36,14 @@ public enum Gems implements LuxSourceStat {
 
 	// Artificial gems onwards?
 
-	DAIMONIUM(5, RGB332.of(0, 0, 0), Long.MAX_VALUE, Long.MAX_VALUE);
+	DAIMONIUM(5, RGB332.of(0, 0, 0), Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 
 	public final int tier;
 	public final byte color;
-	public final long minLuxThreshold;
-	public final long maxLuxThreshold;
+	public final double minLuxThreshold;
+	public final double maxLuxThreshold;
 
-	Gems(int tier, byte color, long minLuxThreshold, long maxLuxThreshold) {
+	GemStats(int tier, byte color, double minLuxThreshold, double maxLuxThreshold) {
 		if (tier < 0) throw new IllegalArgumentException("tier < 0");
 		if (minLuxThreshold < 0) throw new IllegalArgumentException("minLuxThreshold < 0");
 		if (maxLuxThreshold < 0) throw new IllegalArgumentException("maxLuxThreshold < 0");
@@ -88,11 +88,11 @@ public enum Gems implements LuxSourceStat {
 		return this.color;
 	}
 	@Override
-	public long minLuxThreshold() {
+	public double minLuxThreshold() {
 		return this.minLuxThreshold;
 	}
 	@Override
-	public long maxLuxThreshold() {
+	public double maxLuxThreshold() {
 		return this.maxLuxThreshold;
 	}
 }

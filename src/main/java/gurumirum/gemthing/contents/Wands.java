@@ -1,6 +1,6 @@
 package gurumirum.gemthing.contents;
 
-import gurumirum.gemthing.capability.Gems;
+import gurumirum.gemthing.capability.GemStats;
 import gurumirum.gemthing.capability.LuxContainerStat;
 import gurumirum.gemthing.contents.item.wand.*;
 import net.minecraft.resources.ResourceLocation;
@@ -17,10 +17,10 @@ public enum Wands implements ItemLike {
 	ANCIENT_LIGHT(ItemProfile.customItem(AncientLightWandItem::new, Shape.WAND), null),
 	CONFIGURATION_WAND(ItemProfile.customItem(ConfigurationWandItem::new, Shape.WAND), null),
 	AMBER_TORCH(ItemProfile.customItem(AmberTorchWandItem::new, Shape.WAND),
-			LuxContainerStat.withSourceStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 250, Gems.AMBER)),
+			LuxContainerStat.withSourceStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 250, GemStats.AMBER)),
 	// citrine wand
 	RECALL_STAFF(ItemProfile.customItem(RecallStaffWandItem::new, Shape.STAFF),
-			LuxContainerStat.withSourceStat(RecallStaffWandItem.COST_PER_RECALL * 3, Gems.AQUAMARINE));
+			LuxContainerStat.withSourceStat(RecallStaffWandItem.COST_PER_RECALL * 3, GemStats.AQUAMARINE));
 
 	private final DeferredItem<Item> item;
 	@Nullable
