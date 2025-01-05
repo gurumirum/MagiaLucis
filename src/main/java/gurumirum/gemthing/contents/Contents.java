@@ -5,7 +5,7 @@ import gurumirum.gemthing.capability.GemStats;
 import gurumirum.gemthing.contents.entity.GemGolemEntity;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltMenu;
 import gurumirum.gemthing.contents.mobeffect.RecallFatigueMobEffect;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -46,10 +46,10 @@ public final class Contents {
 					.clientTrackingRange(10)
 					.build("gem_golem"));
 
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> BLOCK_POS_DATA = DATA_COMPONENTS.register("block_pos",
-			() -> DataComponentType.<BlockPos>builder()
-					.persistent(BlockPos.CODEC)
-					.networkSynchronized(BlockPos.STREAM_CODEC)
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<GlobalPos>> LINK_SOURCE = DATA_COMPONENTS.register("link_source",
+			() -> DataComponentType.<GlobalPos>builder()
+					.persistent(GlobalPos.CODEC)
+					.networkSynchronized(GlobalPos.STREAM_CODEC)
 					.build());
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Long>> LUX_CHARGE = DATA_COMPONENTS.register("lux_charge",

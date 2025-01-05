@@ -49,7 +49,29 @@ public final class ModRenderTypes {
 					.setOutputState(RenderType.PARTICLES_TARGET)
 					.createCompositeState(true)));
 
+	private static final Function<ResourceLocation, RenderType> BLOCK_HIGHLIGHT = Util.memoize(texture -> RenderType.create(
+			MODID + "_block_highlight",
+			DefaultVertexFormat.POSITION_TEX_COLOR,
+			VertexFormat.Mode.QUADS,
+			1536,
+			true,
+			false,
+			RenderType.CompositeState.builder()
+					.setShaderState(new RenderStateShard.ShaderStateShard(
+							GameRenderer::getPositionTexColorShader
+					))
+					.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+					.setWriteMaskState(RenderType.COLOR_DEPTH_WRITE)
+					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
+					.setDepthTestState(RenderType.NO_DEPTH_TEST)
+					.setOutputState(RenderType.PARTICLES_TARGET)
+					.createCompositeState(true)));
+
 	public static RenderType positionTextureColor(ResourceLocation texture) {
 		return POS_TEX_C.apply(texture);
+	}
+
+	public static RenderType blockHighlight(ResourceLocation texture) {
+		return BLOCK_HIGHLIGHT.apply(texture);
 	}
 }

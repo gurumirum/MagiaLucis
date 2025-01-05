@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 public class BasicRelayBlockEntityRenderer implements BlockEntityRenderer<BasicRelayBlockEntity> {
@@ -17,7 +18,8 @@ public class BasicRelayBlockEntityRenderer implements BlockEntityRenderer<BasicR
 	@Override
 	public void render(@NotNull BasicRelayBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack,
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		for (BasicRelayBlockEntity.Orientation o : blockEntity.getLinks()) {
+		for (@Nullable BasicRelayBlockEntity.Orientation o : blockEntity.getLinks()) {
+			if (o == null) continue;
 			o.toVector(this.directionCache);
 
 			if (!this.directionCache.isFinite()) return;

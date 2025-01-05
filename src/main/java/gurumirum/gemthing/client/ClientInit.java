@@ -7,6 +7,7 @@ import gurumirum.gemthing.contents.ModBlockEntities;
 import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.gemthing.contents.item.wand.AmberTorchWandItem;
+import gurumirum.gemthing.contents.item.wand.ConfigurationWandGuiLayer;
 import gurumirum.gemthing.contents.item.wand.RecallStaffWandItem;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltScreen;
@@ -83,6 +84,7 @@ public final class ClientInit {
 	@SubscribeEvent
 	public static void registerGuiLayers(RegisterGuiLayersEvent event) {
 		event.registerAboveAll(id("wand_belt"), new WandBeltGuiLayer());
+		event.registerAboveAll(id("configuration_wand"), new ConfigurationWandGuiLayer());
 	}
 
 	@SubscribeEvent

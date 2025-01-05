@@ -2,7 +2,6 @@ package gurumirum.gemthing.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import gurumirum.gemthing.contents.item.BeamSource;
 import gurumirum.gemthing.contents.item.wand.AncientLightWandItem;
@@ -140,7 +139,7 @@ public final class BeamRender {
 						beamSource.beamRotationDegrees(player, stack, ticksUsingItem + 1, firstPersonPerspective))));
 
 		int color = beamSource.beamColor(player, stack, firstPersonPerspective);
-		renderLineBox(
+		RenderShapes.untexturedZGradientBox(
 				poseStack,
 				bufferSource.getBuffer(ModRenderTypes.BEAM),
 				-.5f, -.5f, 0,
@@ -148,42 +147,5 @@ public final class BeamRender {
 				color, color);
 
 		poseStack.popPose();
-	}
-
-	private static void renderLineBox(PoseStack poseStack, VertexConsumer vc,
-	                                  float x1, float y1, float z1,
-	                                  float x2, float y2, float z2,
-	                                  int c1, int c2) {
-		PoseStack.Pose pose = poseStack.last();
-
-		vc.addVertex(pose, x1, y1, z1).setColor(c1);
-		vc.addVertex(pose, x1, y2, z1).setColor(c1);
-		vc.addVertex(pose, x2, y2, z1).setColor(c1);
-		vc.addVertex(pose, x2, y1, z1).setColor(c1);
-
-		vc.addVertex(pose, x1, y1, z2).setColor(c2);
-		vc.addVertex(pose, x1, y1, z1).setColor(c1);
-		vc.addVertex(pose, x2, y1, z1).setColor(c1);
-		vc.addVertex(pose, x2, y1, z2).setColor(c2);
-
-		vc.addVertex(pose, x1, y1, z1).setColor(c1);
-		vc.addVertex(pose, x1, y1, z2).setColor(c2);
-		vc.addVertex(pose, x1, y2, z2).setColor(c2);
-		vc.addVertex(pose, x1, y2, z1).setColor(c1);
-
-		vc.addVertex(pose, x2, y2, z2).setColor(c2);
-		vc.addVertex(pose, x2, y2, z1).setColor(c1);
-		vc.addVertex(pose, x1, y2, z1).setColor(c1);
-		vc.addVertex(pose, x1, y2, z2).setColor(c2);
-
-		vc.addVertex(pose, x2, y2, z1).setColor(c1);
-		vc.addVertex(pose, x2, y2, z2).setColor(c2);
-		vc.addVertex(pose, x2, y1, z2).setColor(c2);
-		vc.addVertex(pose, x2, y1, z1).setColor(c1);
-
-		vc.addVertex(pose, x2, y1, z2).setColor(c2);
-		vc.addVertex(pose, x2, y2, z2).setColor(c2);
-		vc.addVertex(pose, x1, y2, z2).setColor(c2);
-		vc.addVertex(pose, x1, y1, z2).setColor(c2);
 	}
 }
