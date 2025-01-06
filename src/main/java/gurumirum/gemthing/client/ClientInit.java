@@ -6,10 +6,7 @@ import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.ModBlockEntities;
 import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.contents.block.lux.BasicRelayBlockEntityRenderer;
-import gurumirum.gemthing.contents.item.wand.AmberTorchWandItem;
-import gurumirum.gemthing.contents.item.wand.ConfigurationWandGuiLayer;
-import gurumirum.gemthing.contents.item.wand.HealWandItem;
-import gurumirum.gemthing.contents.item.wand.RecallStaffWandItem;
+import gurumirum.gemthing.contents.item.wand.*;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltScreen;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -51,6 +48,11 @@ public final class ClientInit {
 
 			ItemProperties.register(Wands.AMBER_TORCH.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
 				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < AmberTorchWandItem.COST_PER_LIGHT_SOURCE ? 1 : 0;
+			});
+
+			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), USING, wandUsing);
+			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
+				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < LesserIceStaffWandItem.COST_PER_ATTACK ? 1 : 0;
 			});
 
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), USING, wandUsing);
