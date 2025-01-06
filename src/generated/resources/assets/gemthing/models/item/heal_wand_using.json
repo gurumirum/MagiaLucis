@@ -1,6 +1,6 @@
 {
   "parent": "gemthing:item/passive_channel_wand",
   "textures": {
-    "layer0": "gemthing:item/recall_staff"
+    "layer0": "gemthing:item/heal_wand"
   }
 }

@@ -14,16 +14,16 @@ import java.util.Locale;
 import java.util.function.Consumer;
 
 public enum Wands implements ItemLike {
-	ANCIENT_LIGHT(ItemProfile.customItem(AncientLightWandItem::new, Shape.WAND), null),
-	CONFIGURATION_WAND(ItemProfile.customItem(ConfigurationWandItem::new, Shape.WAND), null),
-	AMBER_TORCH(ItemProfile.customItem(AmberTorchWandItem::new, Shape.WAND),
+	ANCIENT_LIGHT(ItemProfile.customItem(AncientLightWandItem::new, StandardWandShape.WAND), null),
+	CONFIGURATION_WAND(ItemProfile.customItem(ConfigurationWandItem::new, StandardWandShape.WAND), null),
+	AMBER_TORCH(ItemProfile.customItem(AmberTorchWandItem::new, StandardWandShape.WAND),
 			LuxContainerStat.withSourceStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 250, GemStats.AMBER)),
 	// citrine wand
-	RECALL_STAFF(ItemProfile.customItem(RecallStaffWandItem::new, Shape.STAFF),
+	RECALL_STAFF(ItemProfile.customItem(RecallStaffWandItem::new, StandardWandShape.STAFF),
 			LuxContainerStat.withSourceStat(RecallStaffWandItem.COST_PER_RECALL * 3, GemStats.AQUAMARINE)),
 
-	HEAL_WAND(ItemProfile.customItem(PearlWandItem::new, Shape.WAND),
-			LuxContainerStat.withSourceStat(PearlWandItem.COST_PER_CAST * 5, GemStats.PEARL))
+	HEAL_WAND(ItemProfile.customItem(HealWandItem::new, StandardWandShape.WAND),
+			LuxContainerStat.withSourceStat(HealWandItem.COST_PER_CAST * 5, GemStats.PEARL))
 	;
 
 	private final DeferredItem<Item> item;
@@ -50,7 +50,7 @@ public enum Wands implements ItemLike {
 
 	public static void init() {}
 
-	public enum Shape implements Consumer<Item.Properties> {
+	public enum StandardWandShape implements Consumer<Item.Properties> {
 		WAND,
 		STAFF;
 

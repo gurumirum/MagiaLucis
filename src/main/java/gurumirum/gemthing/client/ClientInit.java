@@ -8,6 +8,7 @@ import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.gemthing.contents.item.wand.AmberTorchWandItem;
 import gurumirum.gemthing.contents.item.wand.ConfigurationWandGuiLayer;
+import gurumirum.gemthing.contents.item.wand.HealWandItem;
 import gurumirum.gemthing.contents.item.wand.RecallStaffWandItem;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltScreen;
@@ -51,10 +52,16 @@ public final class ClientInit {
 			ItemProperties.register(Wands.AMBER_TORCH.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
 				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < AmberTorchWandItem.COST_PER_LIGHT_SOURCE ? 1 : 0;
 			});
+
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), USING, wandUsing);
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
 				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < RecallStaffWandItem.COST_PER_RECALL ||
 						entity != null && entity.hasEffect(Contents.RECALL_FATIGUE) ? 1 : 0;
+			});
+
+			ItemProperties.register(Wands.HEAL_WAND.asItem(), USING, wandUsing);
+			ItemProperties.register(Wands.HEAL_WAND.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
+				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < HealWandItem.COST_PER_CAST ? 1 : 0;
 			});
 		});
 	}
