@@ -17,7 +17,7 @@ public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
 
 	@Override
 	public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
-		List<String> overlayText = ConfigurationWandOverlayRender.overlayText;
+		List<String> overlayText = ConfigurationWandOverlay.visualData.overlayText;
 		if (overlayText.isEmpty()) return;
 
 		drawOverlayBox(guiGraphics, overlayText);

@@ -100,19 +100,19 @@ public class ConfigurationWandItem extends Item {
 		private static final Quaternionf q2 = new Quaternionf();
 
 		public static void calculateLink(Level level, Player player, BlockPos linkSourcePos, LinkSource linkSource,
-		                                 BlockPos clickedPos, Vec3 clickedLocation) {
+		                                 BlockPos cursorPos, Vec3 cursorLocation) {
 			if (!(player instanceof LocalPlayer)) return; // skip for non-local players
 			if (linkSource.maxLinks() <= 0) return;
 
 			// abort if too far away
 			double linkDistance = linkSource.linkDistance();
-			if ((linkDistance + 1) * (linkDistance + 1) < linkSourcePos.distToCenterSqr(clickedLocation)) return;
+			if ((linkDistance + 1) * (linkDistance + 1) < linkSourcePos.distToCenterSqr(cursorLocation)) return;
 
 			if (player.isSecondaryUseActive()) {
 				// remove the closest link with tangent less than 90 degrees
 				LinkSource.Orientation orientation = isCtrlPressed() ?
-						LinkSource.Orientation.fromPosition(linkSourcePos, clickedLocation) :
-						LinkSource.Orientation.fromPosition(linkSourcePos, clickedPos);
+						LinkSource.Orientation.fromPosition(linkSourcePos, cursorLocation) :
+						LinkSource.Orientation.fromPosition(linkSourcePos, cursorPos);
 
 				orientation.toQuat(q1);
 
@@ -142,7 +142,7 @@ public class ConfigurationWandItem extends Item {
 					BlockHitResult h = connections[i];
 					if (h == null) {
 						if (firstNull == -1) firstNull = i;
-					} else if (h.getBlockPos().equals(clickedPos)) {
+					} else if (h.getBlockPos().equals(cursorPos)) {
 						// duplicate detected; remove preexisting connection instead
 						PacketDistributor.sendToServer(new SetLinkMsg(linkSourcePos, i, null));
 						return;
@@ -150,8 +150,8 @@ public class ConfigurationWandItem extends Item {
 				}
 
 				LinkSource.Orientation orientation = isCtrlPressed() ?
-						LinkSource.Orientation.fromPosition(linkSourcePos, clickedLocation) :
-						LinkSource.Orientation.fromPosition(linkSourcePos, clickedPos);
+						LinkSource.Orientation.fromPosition(linkSourcePos, cursorLocation) :
+						LinkSource.Orientation.fromPosition(linkSourcePos, cursorPos);
 
 				PacketDistributor.sendToServer(new SetLinkMsg(linkSourcePos,
 						firstNull == -1 ? connections.length - 1 : firstNull,
