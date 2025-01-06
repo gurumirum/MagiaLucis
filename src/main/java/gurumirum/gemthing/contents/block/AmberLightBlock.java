@@ -13,8 +13,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -24,14 +22,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
+
 public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 	private static final VoxelShape SHAPE = box(5, 5, 5, 11, 11, 11);
 
-	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-
 	public AmberLightBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(this.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false));
+		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -47,24 +45,22 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	public void animateTick(@NotNull BlockState state, @NotNull Level level, BlockPos pos, @NotNull RandomSource random) {
-		double x = (double)pos.getX() + 0.5;
-		double y = (double)pos.getY() + 0.5;
-		double z = (double)pos.getZ() + 0.5;
-		if(state.getValue(WATERLOGGED)) {
-			level.addParticle(ParticleTypes.BUBBLE, x, y, z, 0.0D, 0.001D, 0.0D);
-			level.addParticle(ParticleTypes.BUBBLE, x, y, z, 0.0D, 0.002D, 0.0D);
-		}
-		else {
-			level.addParticle(ParticleTypes.FLAME, x, y, z, 0.0, 0.0, 0.0);
-			level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0001, 0.0D);
-			level.addParticle(ParticleTypes.SMOKE, x, y + 0.01, z, 0.0D, 0.001, 0.0D);
+		double x = pos.getX() + 0.5;
+		double y = pos.getY() + 0.5;
+		double z = pos.getZ() + 0.5;
+		if (state.getValue(WATERLOGGED)) {
+			level.addParticle(ParticleTypes.BUBBLE, x, y, z, 0, 0.001, 0);
+			level.addParticle(ParticleTypes.BUBBLE, x, y, z, 0, 0.002, 0);
+		} else {
+			level.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0, 0);
 		}
 	}
 
 	@Override
 	public @Nullable BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
-		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-		return Objects.requireNonNull(super.getStateForPlacement(context)).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+		return Objects.requireNonNull(super.getStateForPlacement(context))
+				.setValue(WATERLOGGED, fluidState.is(Fluids.WATER));
 	}
 
 	@Override

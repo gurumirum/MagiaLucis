@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -24,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 public class AmberTorchWandItem extends LuxBatteryItem {
 	public static final int COST_PER_LIGHT_SOURCE = 2;
 
-	private static final int HIT_DISTANCE = 10;
+	private static final int HIT_DISTANCE = 15;
 	private static final int PARTICLE_COUNT = 8;
 
 	public AmberTorchWandItem(Properties properties) {
@@ -35,41 +34,30 @@ public class AmberTorchWandItem extends LuxBatteryItem {
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
-		if(charge < COST_PER_LIGHT_SOURCE) return InteractionResultHolder.success(player.getItemInHand(hand));
+		if (charge < COST_PER_LIGHT_SOURCE) return InteractionResultHolder.fail(player.getItemInHand(hand));
+
 		HitResult res = player.pick(HIT_DISTANCE, 0, false);
-		if(res instanceof  BlockHitResult hitResult) {
-			BlockPos pos = hitResult.getBlockPos();
-			BlockState state = level.getBlockState(pos);
+		if (!(res instanceof BlockHitResult hitResult) || hitResult.getType() != HitResult.Type.BLOCK)
+			return InteractionResultHolder.fail(stack);
 
-			if(state.is(ModBlocks.AMBER_LIGHT.block()) || state.is(Blocks.AIR)) return InteractionResultHolder.fail(stack);
-			if (!state.canBeReplaced()) {
-				pos = pos.relative(hitResult.getDirection());
-				state = level.getBlockState(pos);
-
-				if (state.is(ModBlocks.AMBER_LIGHT.block())) return InteractionResultHolder.fail(stack);
-				if (!state.canBeReplaced()) return InteractionResultHolder.pass(stack);
-			}
-
-			BlockState placeState = ModBlocks.AMBER_LIGHT.block().getStateForPlacement(new BlockPlaceContext(player, hand, stack, hitResult));
-			if (placeState == null)	return InteractionResultHolder.fail(stack);
-
+		InteractionResult result = placeLight(level, player, hand, stack, hitResult);
+		if (result.indicateItemUse()) {
 			Vec3 playerPos = player.getEyePosition().lerp(player.getPosition(0), 0.5);
-			int count = (int) playerPos.distanceTo(res.getLocation());
-			for (int i=0; i<count; i++) {
-				Vec3 particlePos = playerPos.lerp(res.getLocation(), i/(float)count).offsetRandom(player.getRandom(), 0.5f);
-				level.addParticle(ParticleTypes.FLAME, particlePos.x, particlePos.y, particlePos.z, 0.0, 0.0, 0.0);
-			}
-			magicalFlameCircle(level, pos);
+			int count = (int)playerPos.distanceTo(hitResult.getLocation());
 
-			level.setBlockAndUpdate(pos, placeState);
+			for (int i = 0; i < count; i++) {
+				Vec3 particlePos = playerPos.lerp(hitResult.getLocation(), i / (float)count)
+						.offsetRandom(player.getRandom(), 0.5f);
+				level.addParticle(ParticleTypes.FLAME,
+						particlePos.x, particlePos.y, particlePos.z,
+						0.0, 0.0, 0.0);
+			}
 
 			stack.set(Contents.LUX_CHARGE, charge - COST_PER_LIGHT_SOURCE);
 			applyCooldown(player);
-
-			return InteractionResultHolder.success(stack);
 		}
 
-		return InteractionResultHolder.fail(stack);
+		return new InteractionResultHolder<>(result, stack);
 	}
 
 	@Override
@@ -78,26 +66,38 @@ public class AmberTorchWandItem extends LuxBatteryItem {
 		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
 		if (charge < COST_PER_LIGHT_SOURCE) return InteractionResult.FAIL;
 
-		BlockPos pos = context.getClickedPos();
-		BlockState state = context.getLevel().getBlockState(pos);
+		InteractionResult result = placeLight(context.getLevel(), context.getPlayer(), context.getHand(),
+				context.getItemInHand(), context.getHitResult());
+		if (result.indicateItemUse()) {
+			stack.set(Contents.LUX_CHARGE, charge - COST_PER_LIGHT_SOURCE);
+			applyCooldown(context.getPlayer());
+		}
+
+		return result;
+	}
+
+	private static InteractionResult placeLight(Level level, Player player, InteractionHand hand, ItemStack stack,
+	                                            BlockHitResult blockHitResult) {
+		if (blockHitResult == null || blockHitResult.getType() != HitResult.Type.BLOCK) return InteractionResult.FAIL;
+
+		BlockPos pos = blockHitResult.getBlockPos();
+		BlockState state = level.getBlockState(pos);
 
 		if (state.is(ModBlocks.AMBER_LIGHT.block())) return InteractionResult.FAIL;
 		if (!state.canBeReplaced()) {
-			pos = pos.relative(context.getClickedFace());
-			state = context.getLevel().getBlockState(pos);
+			pos = pos.relative(blockHitResult.getDirection());
+			state = level.getBlockState(pos);
 
 			if (state.is(ModBlocks.AMBER_LIGHT.block())) return InteractionResult.FAIL;
-			if (!state.canBeReplaced()) return InteractionResult.PASS;
+			if (!state.canBeReplaced()) return InteractionResult.FAIL;
 		}
-		BlockState placeState = ModBlocks.AMBER_LIGHT.block().getStateForPlacement(new BlockPlaceContext(context));
+
+		BlockState placeState = ModBlocks.AMBER_LIGHT.block()
+				.getStateForPlacement(new BlockPlaceContext(player, hand, stack, blockHitResult));
 		if (placeState == null) return InteractionResult.FAIL;
 
-		magicalFlameCircle(context.getLevel(), pos);
-		context.getLevel().setBlockAndUpdate(pos, placeState);
-
-		stack.set(Contents.LUX_CHARGE, charge - COST_PER_LIGHT_SOURCE);
-		applyCooldown(context.getPlayer());
-
+		magicalFlameCircle(level, pos);
+		level.setBlockAndUpdate(pos, placeState);
 		return InteractionResult.SUCCESS;
 	}
 
@@ -106,15 +106,14 @@ public class AmberTorchWandItem extends LuxBatteryItem {
 		player.getCooldowns().addCooldown(this, 10);
 	}
 
-	private void magicalFlameCircle(Level level, BlockPos pos) {
+	private static void magicalFlameCircle(Level level, BlockPos pos) {
 		double x = (double)pos.getX() + 0.5;
 		double y = (double)pos.getY() + 0.5;
 		double z = (double)pos.getZ() + 0.5;
-		for (int i=0; i<PARTICLE_COUNT; i++) {
+		for (int i = 0; i < PARTICLE_COUNT; i++) {
 			level.addParticle(ParticleTypes.FLAME, x, y, z, 0.1 * (level.getRandom().nextDouble() + 0.5) * Math.sin(2 * Math.PI / PARTICLE_COUNT * i),
 					level.getRandom().nextDouble() * 0.05,
 					0.1 * (level.getRandom().nextDouble() + 0.5) * Math.cos(2 * Math.PI / PARTICLE_COUNT * i));
 		}
 	}
-
 }
