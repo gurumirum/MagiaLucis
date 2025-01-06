@@ -106,7 +106,10 @@ public final class Contents {
 							for (var ore : Ore.values()) ore.allOreItems().forEach(o::accept);
 							for (var g : GemStats.values()) {
 								o.accept(g.item());
-								if (g == GemStats.BRIGHTSTONE) o.accept(GemItems.RED_BRIGHTSTONE);
+								if (g == GemStats.BRIGHTSTONE) {
+									o.accept(GemItems.RED_BRIGHTSTONE);
+									o.accept(GemItems.ICY_BRIGHTSTONE);
+								}
 							}
 						})
 						.build());

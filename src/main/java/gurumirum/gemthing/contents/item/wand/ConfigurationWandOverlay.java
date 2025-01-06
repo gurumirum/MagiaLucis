@@ -6,7 +6,6 @@ import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.client.ModRenderTypes;
 import gurumirum.gemthing.client.RenderShapes;
 import gurumirum.gemthing.contents.Contents;
-import gurumirum.gemthing.contents.Wands;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -58,11 +57,11 @@ public final class ConfigurationWandOverlay {
 		if (player == null) return;
 
 		ItemStack stack = player.getMainHandItem();
-		if (stack.is(Wands.CONFIGURATION_WAND.asItem())) {
+		if (stack.getItem() instanceof ConfigurationWandItem) {
 			updateAndDraw(event, player, mc.level, stack);
 		} else {
 			stack = player.getOffhandItem();
-			if (stack.is(Wands.CONFIGURATION_WAND.asItem())) {
+			if (stack.getItem() instanceof ConfigurationWandItem) {
 				updateAndDraw(event, player, mc.level, stack);
 			}
 		}

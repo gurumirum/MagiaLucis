@@ -12,6 +12,7 @@ import java.util.Locale;
 public enum GemItems implements ItemLike {
 	BRIGHTSTONE(GemStats.BRIGHTSTONE),
 	RED_BRIGHTSTONE(GemStats.BRIGHTSTONE),
+	ICY_BRIGHTSTONE(GemStats.BRIGHTSTONE),
 	SOUL_BRIGHTSTONE(GemStats.SOUL_BRIGHTSTONE),
 
 	AMBER(GemStats.AMBER),

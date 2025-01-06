@@ -56,6 +56,22 @@ public final class InWorldBeamCraftingManager {
 				.withPool(new LootPool.Builder()
 						.add(LootItem.lootTableItem(GemItems.RED_BRIGHTSTONE)))
 				.build()));
+		addRecipe(Blocks.ICE, new Recipe(25, LootTable.lootTable()
+				.withPool(new LootPool.Builder()
+						.add(LootItem.lootTableItem(GemItems.ICY_BRIGHTSTONE)))
+				.build()));
+		addRecipe(Blocks.FROSTED_ICE, new Recipe(25, LootTable.lootTable()
+				.withPool(new LootPool.Builder()
+						.add(LootItem.lootTableItem(GemItems.ICY_BRIGHTSTONE)))
+				.build()));
+		addRecipe(Blocks.BLUE_ICE, new Recipe(25, LootTable.lootTable()
+				.withPool(new LootPool.Builder()
+						.add(LootItem.lootTableItem(GemItems.ICY_BRIGHTSTONE)))
+				.build()));
+		addRecipe(Blocks.PACKED_ICE, new Recipe(25, LootTable.lootTable()
+				.withPool(new LootPool.Builder()
+						.add(LootItem.lootTableItem(GemItems.ICY_BRIGHTSTONE)))
+				.build()));
 		addRecipe(Blocks.SOUL_SAND, new Recipe(50, LootTable.lootTable()
 				.withPool(new LootPool.Builder()
 						.add(LootItem.lootTableItem(GemItems.SOUL_BRIGHTSTONE)))

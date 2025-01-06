@@ -73,6 +73,8 @@ public class ItemModelGen extends ItemModelProvider {
 						.texture("layer0", Wands.ANCIENT_LIGHT.id().withPrefix("item/")));
 
 		handheld(Wands.CONFIGURATION_WAND.asItem());
+		handheld(Wands.RED_CONFIGURATION_WAND.asItem());
+		handheld(Wands.ICY_CONFIGURATION_WAND.asItem());
 
 		handheld(Wands.AMBER_TORCH.asItem())
 				.override()
@@ -107,6 +109,7 @@ public class ItemModelGen extends ItemModelProvider {
 
 		basicItem(GemItems.BRIGHTSTONE.asItem());
 		basicItem(GemItems.RED_BRIGHTSTONE.asItem());
+		basicItem(GemItems.ICY_BRIGHTSTONE.asItem());
 		basicItem(GemItems.SOUL_BRIGHTSTONE.asItem());
 
 		basicItem(GemItems.AMBER.asItem());
