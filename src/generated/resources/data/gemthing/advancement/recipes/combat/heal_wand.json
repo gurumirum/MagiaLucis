@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_pearl": {
+      "conditions": {
+        "items": [
+          {
+            "items": "gemthing:pearl"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "gemthing:heal_wand"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_pearl"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "gemthing:heal_wand"
+    ]
+  }
+}

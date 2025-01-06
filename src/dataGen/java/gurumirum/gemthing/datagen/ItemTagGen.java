@@ -42,12 +42,13 @@ public class ItemTagGen extends ItemTagsProvider {
 
 		var gems = tag(Tags.Items.GEMS);
 		for (GemItems gem : GemItems.values()) {
-			if (!gem.isNatural()) continue;
-			c("gems/" + gem.id().getPath()).add(gem.asItem());
-			gems.add(gem.asItem());
+			if (gem.gem.hasTag()) {
+				tag(gem.gem.tag()).add(gem.asItem());
+				gems.add(gem.asItem());
+			}
 		}
 
-		tag(ModItemTags.BRIGHTSTONES).add(GemItems.BRIGHTSTONE.asItem(), GemItems.RED_BRIGHTSTONE.asItem());
+		tag(ModItemTags.BRIGHTSTONES).add(GemItems.BRIGHTSTONE.asItem(), GemItems.RED_BRIGHTSTONE.asItem(), GemItems.ICY_BRIGHTSTONE.asItem());
 	}
 
 	private IntrinsicTagAppender<Item> c(String path) {

@@ -20,15 +20,15 @@ public enum Wands implements ItemLike {
 	ICY_CONFIGURATION_WAND(ItemProfile.customItem(ConfigurationWandItem::new, StandardWandShape.WAND), null),
 
 	AMBER_TORCH(ItemProfile.customItem(AmberTorchWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withSourceStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 250, GemStats.AMBER)),
+			LuxContainerStat.withBaseStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 250, GemStats.AMBER)),
 	LESSER_ICE_STAFF(ItemProfile.customItem(LesserIceStaffWandItem::new, StandardWandShape.STAFF),
-			LuxContainerStat.withSourceStat(LesserIceStaffWandItem.COST_PER_ATTACK * 250, GemStats.BRIGHTSTONE)),
+			LuxContainerStat.withBaseStat(LesserIceStaffWandItem.COST_PER_ATTACK * 250, GemStats.BRIGHTSTONE)),
 	// citrine wand
 	RECALL_STAFF(ItemProfile.customItem(RecallStaffWandItem::new, StandardWandShape.STAFF),
-			LuxContainerStat.withSourceStat(RecallStaffWandItem.COST_PER_RECALL * 3, GemStats.AQUAMARINE)),
+			LuxContainerStat.withBaseStat(RecallStaffWandItem.COST_PER_RECALL * 3, GemStats.AQUAMARINE)),
 
 	HEAL_WAND(ItemProfile.customItem(HealWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withSourceStat(HealWandItem.COST_PER_CAST * 5, GemStats.PEARL))
+			LuxContainerStat.withBaseStat(HealWandItem.COST_PER_CAST * 5, GemStats.PEARL))
 	;
 
 	private final DeferredItem<Item> item;

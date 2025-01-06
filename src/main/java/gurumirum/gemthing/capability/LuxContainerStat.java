@@ -14,8 +14,8 @@ public interface LuxContainerStat extends LuxStat {
 		return new Simple(maxCharge, color, minLuxThreshold, maxLuxThreshold);
 	}
 
-	static LuxContainerStat.Simple withSourceStat(long maxCharge, GemStats gem) {
-		return new Simple(maxCharge, gem.color, gem.minLuxThreshold, gem.maxLuxThreshold);
+	static LuxContainerStat.Simple withBaseStat(long maxCharge, LuxStat stat) {
+		return new Simple(maxCharge, stat.color(), stat.minLuxThreshold(), stat.maxLuxThreshold());
 	}
 
 	static LuxContainerStat.Simple copyOf(LuxContainerStat stat) {

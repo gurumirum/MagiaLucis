@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_icy_brightstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "gemthing:icy_brightstone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "gemthing:icy_configuration_wand"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_icy_brightstone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "gemthing:icy_configuration_wand"
+    ]
+  }
+}

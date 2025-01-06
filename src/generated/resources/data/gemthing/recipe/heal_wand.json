@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "1": {
+      "tag": "c:ingots/gold"
+    },
+    "2": {
+      "item": "gemthing:pearl"
+    }
+  },
+  "pattern": [
+    " 12",
+    " 11",
+    "1  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "gemthing:heal_wand"
+  }
+}

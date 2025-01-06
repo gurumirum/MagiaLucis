@@ -62,9 +62,5 @@ public enum GemItems implements ItemLike {
 		return this.item.asItem();
 	}
 
-	public boolean isNatural() {
-		return this != BRIGHTSTONE && this != RED_BRIGHTSTONE && this != SOUL_BRIGHTSTONE && this != PURIFIED_QUARTZ && this.gem.tier < 4;
-	}
-
 	public static void init() {}
 }

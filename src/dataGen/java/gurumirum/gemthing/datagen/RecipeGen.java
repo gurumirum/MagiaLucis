@@ -1,12 +1,16 @@
 package gurumirum.gemthing.datagen;
 
+import gurumirum.gemthing.capability.GemStats;
 import gurumirum.gemthing.contents.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -39,6 +43,68 @@ public class RecipeGen extends RecipeProvider {
 		nineBlockStorageRecipes(out, RecipeCategory.MISC, ModItems.SILVER_INGOT, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SILVER);
 		nineBlockStorageRecipes(out, RecipeCategory.MISC, ModItems.RAW_SILVER, RecipeCategory.BUILDING_BLOCKS, ModBlocks.RAW_SILVER_BLOCK);
 		nineBlockStorageRecipesWithCustomPacking(out, RecipeCategory.MISC, ModItems.SILVER_NUGGET, RecipeCategory.MISC, ModItems.SILVER_INGOT, "silver_ingot_from_nuggets", "silver_ingot");
+
+		wandRecipe(true, Wands.ANCIENT_LIGHT)
+				.define('1', ItemTags.STONE_BRICKS)
+				.define('2', ModItems.ANCIENT_CORE)
+				.unlockedBy("has_ancient_core", has(ModItems.ANCIENT_CORE))
+				.save(out);
+
+		wandRecipe(true, Wands.CONFIGURATION_WAND)
+				.define('1', ItemTags.STONE_BRICKS)
+				.define('2', GemItems.BRIGHTSTONE)
+				.unlockedBy("has_brightstone", has(GemItems.BRIGHTSTONE))
+				.save(out);
+		wandRecipe(true, Wands.RED_CONFIGURATION_WAND)
+				.define('1', ItemTags.STONE_BRICKS)
+				.define('2', GemItems.RED_BRIGHTSTONE)
+				.unlockedBy("has_red_brightstone", has(GemItems.RED_BRIGHTSTONE))
+				.save(out);
+		wandRecipe(true, Wands.ICY_CONFIGURATION_WAND)
+				.define('1', ItemTags.STONE_BRICKS)
+				.define('2', GemItems.ICY_BRIGHTSTONE)
+				.unlockedBy("has_icy_brightstone", has(GemItems.ICY_BRIGHTSTONE))
+				.save(out);
+
+		wandRecipe(true, Wands.AMBER_TORCH)
+				.define('1', ItemTags.LOGS)
+				.define('2', GemStats.AMBER.tag())
+				.unlockedBy("has_amber", has(GemStats.AMBER.tag()))
+				.save(out);
+
+		wandRecipe(false, Wands.LESSER_ICE_STAFF)
+				.define('1', ItemTags.LOGS)
+				.define('2', GemItems.ICY_BRIGHTSTONE)
+				.unlockedBy("has_icy_brightstone", has(GemItems.ICY_BRIGHTSTONE))
+				.save(out);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Wands.RECALL_STAFF)
+				.pattern(" 32")
+				.pattern("413")
+				.pattern("14 ")
+				.define('1', Tags.Items.INGOTS_GOLD)
+				.define('2', GemItems.AQUAMARINE)
+				.define('3', Tags.Items.LEATHERS)
+				.define('4', Tags.Items.DYES_RED)
+				.unlockedBy("has_aquamarine", has(GemItems.AQUAMARINE))
+				.save(out);
+
+		wandRecipe(false, Wands.HEAL_WAND)
+				.define('1', Tags.Items.INGOTS_GOLD)
+				.define('2', GemItems.PEARL)
+				.unlockedBy("has_pearl", has(GemItems.PEARL))
+				.save(out);
+	}
+
+	private ShapedRecipeBuilder wandRecipe(boolean tool, ItemLike result) {
+		return wandRecipe(tool ? RecipeCategory.TOOLS : RecipeCategory.COMBAT, result);
+	}
+
+	private ShapedRecipeBuilder wandRecipe(RecipeCategory category, ItemLike result) {
+		return ShapedRecipeBuilder.shaped(category, result)
+				.pattern(" 12")
+				.pattern(" 11")
+				.pattern("1  ");
 	}
 
 	private List<ItemLike> ingredients(Ore ore) {

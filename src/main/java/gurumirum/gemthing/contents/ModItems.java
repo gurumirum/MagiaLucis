@@ -14,6 +14,8 @@ public enum ModItems implements ItemLike {
 	LUX_BATTERY(ItemProfile.customItem(LuxBatteryItem::new)),
 	WAND_BELT(ItemProfile.customItem(WandBeltItem::new)),
 
+	ANCIENT_CORE,
+
 	SILVER_INGOT,
 	SILVER_NUGGET,
 	RAW_SILVER;

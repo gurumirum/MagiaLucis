@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "1": {
+      "tag": "minecraft:logs"
+    },
+    "2": {
+      "tag": "c:gems/amber"
+    }
+  },
+  "pattern": [
+    " 12",
+    " 11",
+    "1  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "gemthing:amber_torch"
+  }
+}

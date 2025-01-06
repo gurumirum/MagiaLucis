@@ -2,48 +2,68 @@ package gurumirum.gemthing.capability;
 
 import gurumirum.gemthing.contents.GemItems;
 import gurumirum.gemthing.impl.RGB332;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Locale;
 
 public enum GemStats implements LuxStat {
-	BRIGHTSTONE(0, RGB332.WHITE, 0, 100),
-	SOUL_BRIGHTSTONE(0, RGB332.of(1, 0, 0), 0, 100),
+	BRIGHTSTONE(0, RGB332.WHITE, 0, 100, false),
+	SOUL_BRIGHTSTONE(0, RGB332.of(1, 0, 0), 0, 100, false),
 
 	AMBER(1, RGB332.of(6, 3, 0), 30, 300),
 	CITRINE(1, RGB332.of(6, 6, 1), 10, 200),
 	AQUAMARINE(1, RGB332.of(0, 5, 3), 20, 160),
 	PEARL(1, RGB332.of(7, 6, 3), 50, 150),
 
-	PURIFIED_QUARTZ(2, RGB332.WHITE, 10, 1000),
+	PURIFIED_QUARTZ(2, RGB332.WHITE, 10, 1000, false),
 	CRYSTALLIZED_REDSTONE(2, RGB332.of(5, 0, 0), 400, 800),
 	POLISHED_LAPIS_LAZULI(2, RGB332.of(1, 1, 2), 10, 200),
 	OBSIDIAN(2, RGB332.of(1, 0, 1), 400, 2000),
 
-	DIAMOND(2, RGB332.of(4, 7, 3), 800, 4000),
+	DIAMOND(2, RGB332.of(4, 7, 3), 800, 4000, true, true),
 	RUBY(2, RGB332.of(7, 0, 0), 50, 5000),
-	EMERALD(2, RGB332.of(0, 7, 0), 50, 5000),
+	EMERALD(2, RGB332.of(0, 7, 0), 50, 5000, true, true),
 	SAPPHIRE(2, RGB332.of(0, 0, 3), 50, 5000),
 
-	AMETHYST(3, RGB332.of(7, 2, 3), 500, 4000),
+	AMETHYST(3, RGB332.of(7, 2, 3), 500, 4000, true, true),
 	TOPAZ(3, RGB332.of(6, 6, 0), 5000, 10000),
 	MOONSTONE(3, RGB332.of(4, 6, 3), 1500, 20000),
 	JET(3, RGB332.of(0, 0, 0), 100, 20000),
 
-	BRILLIANT_DIAMOND(4, RGB332.of(6, 6, 3), 100, 10000),
-	RUBY2(4, RGB332.of(7, 0, 0), 1000, 25000),
-	EMERALD2(4, RGB332.of(0, 7, 0), 1000, 25000),
-	SAPPHIRE2(4, RGB332.of(0, 0, 3), 1000, 25000),
+	BRILLIANT_DIAMOND(4, RGB332.of(6, 6, 3), 100, 10000, false),
+	RUBY2(4, RGB332.of(7, 0, 0), 1000, 25000, false),
+	EMERALD2(4, RGB332.of(0, 7, 0), 1000, 25000, false),
+	SAPPHIRE2(4, RGB332.of(0, 0, 3), 1000, 25000, false),
 
 	// Artificial gems onwards?
 
-	DAIMONIUM(5, RGB332.of(0, 0, 0), Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+	DAIMONIUM(5, RGB332.of(0, 0, 0), Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, false);
 
-	public final int tier;
-	public final byte color;
-	public final double minLuxThreshold;
-	public final double maxLuxThreshold;
+	private final int tier;
+	private final byte color;
+	private final double minLuxThreshold;
+	private final double maxLuxThreshold;
+	private final boolean hasTag;
+	private final boolean vanilla;
+
+	private @Nullable TagKey<Item> tag;
 
 	GemStats(int tier, byte color, double minLuxThreshold, double maxLuxThreshold) {
+		this(tier, color, minLuxThreshold, maxLuxThreshold, true, false);
+	}
+
+	GemStats(int tier, byte color, double minLuxThreshold, double maxLuxThreshold, boolean hasTag) {
+		this(tier, color, minLuxThreshold, maxLuxThreshold, hasTag, false);
+	}
+
+	GemStats(int tier, byte color, double minLuxThreshold, double maxLuxThreshold, boolean hasTag, boolean vanilla) {
+		this.vanilla = vanilla;
 		if (tier < 0) throw new IllegalArgumentException("tier < 0");
 		if (minLuxThreshold < 0) throw new IllegalArgumentException("minLuxThreshold < 0");
 		if (maxLuxThreshold < 0) throw new IllegalArgumentException("maxLuxThreshold < 0");
@@ -53,6 +73,24 @@ public enum GemStats implements LuxStat {
 		this.color = color;
 		this.minLuxThreshold = minLuxThreshold;
 		this.maxLuxThreshold = maxLuxThreshold;
+		this.hasTag = hasTag;
+	}
+
+	public boolean hasTag() {
+		return this.hasTag;
+	}
+
+	public boolean isVanilla() {
+		return this.vanilla;
+	}
+
+	public @NotNull TagKey<Item> tag() {
+		if (!this.hasTag) throw new IllegalStateException("Gem " + this + " does not have item tag");
+		if (this.tag == null) {
+			this.tag = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c",
+					"gems/" + name().toLowerCase(Locale.ROOT)));
+		}
+		return this.tag;
 	}
 
 	public Item item() {
