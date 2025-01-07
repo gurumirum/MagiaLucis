@@ -20,7 +20,7 @@ public class RelayBlockEntity extends BasicRelayBlockEntity {
 	}
 
 	@Override
-	protected void initializeLuxNodeData(@NotNull LuxNet luxNet, @NotNull LuxNode node) {
+	public void onBind(@NotNull LuxNet luxNet, @NotNull LuxNode node) {
 		node.setStats(GemStats.BRIGHTSTONE);
 		setHasOutboundConnection(!node.outboundNodes().isEmpty());
 	}
@@ -43,16 +43,20 @@ public class RelayBlockEntity extends BasicRelayBlockEntity {
 	}
 
 	@Override
-	public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
-		CompoundTag tag = new CompoundTag();
-		saveAdditional(tag, registries);
-		tag.putBoolean("hasOutboundConnection", this.hasOutboundConnection);
-		return tag;
+	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
+		super.save(tag, lookupProvider, context);
+
+		if (context.isSync()) {
+			tag.putBoolean("hasOutboundConnection", this.hasOutboundConnection);
+		}
 	}
 
 	@Override
-	public void handleUpdateTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider) {
-		super.handleUpdateTag(tag, lookupProvider);
-		this.hasOutboundConnection = tag.getBoolean("hasOutboundConnection");
+	protected void load(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
+		super.load(tag, lookupProvider, context);
+
+		if (context.isSync()) {
+			this.hasOutboundConnection = tag.getBoolean("hasOutboundConnection");
+		}
 	}
 }

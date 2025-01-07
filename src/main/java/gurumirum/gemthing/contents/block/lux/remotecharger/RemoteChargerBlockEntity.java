@@ -10,7 +10,6 @@ import gurumirum.gemthing.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.gemthing.impl.LuxConsumerNodeInterface;
 import gurumirum.gemthing.impl.LuxNet;
 import gurumirum.gemthing.impl.LuxNode;
-import gurumirum.gemthing.impl.RGB332;
 import gurumirum.gemthing.utils.LuxUtils;
 import gurumirum.gemthing.utils.TagUtils;
 import net.minecraft.core.BlockPos;
@@ -53,16 +52,12 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 	public RemoteChargerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, LuxStat stat) {
 		super(type, pos, blockState);
 		this.stat = stat;
-		this.maxChargeRate.set(
-				stat.maxLuxThreshold() * RGB332.rBrightness(stat.color()),
-				stat.maxLuxThreshold() * RGB332.gBrightness(stat.color()),
-				stat.maxLuxThreshold() * RGB332.bBrightness(stat.color()));
-		LuxUtils.snapComponents(this.maxChargeRate, 0);
+		LuxUtils.snapComponents(this.stat.maxTransfer(this.maxChargeRate), 0);
 		this.maxChargeStorage.set(this.maxChargeRate).mul(100);
 	}
 
 	@Override
-	protected void initializeLuxNodeData(@NotNull LuxNet luxNet, @NotNull LuxNode node) {
+	public void onBind(LuxNet luxNet, LuxNode node) {
 		node.setStats(this.stat);
 	}
 
@@ -87,6 +82,8 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 		setChanged();
 	}
 
+	private static final DecimalFormat formatter = new DecimalFormat("#,##0.00");
+
 	private boolean chargeItem(Vector3d charge, ItemStack stack) {
 		LuxAcceptor luxAcceptor = stack.getCapability(ModCapabilities.LUX_ACCEPTOR);
 		boolean success = false;
@@ -101,9 +98,9 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 				if (!(this.acceptedCache.x <= 0) || !(this.acceptedCache.y <= 0) || !(this.acceptedCache.z <= 0)) {
 					LuxUtils.snapComponents(this.acceptedCache, 0);
 					GemthingMod.LOGGER.warn("Charged {}, max charge rate: {}, charges left: {}",
-							this.acceptedCache.toString(new DecimalFormat("0")),
-							this.maxChargeRate.toString(new DecimalFormat("0")),
-							charge.toString(new DecimalFormat("0")));
+							this.acceptedCache.toString(formatter),
+							this.maxChargeRate.toString(formatter),
+							charge.toString(formatter));
 					charge.sub(this.acceptedCache.min(this.maxChargeRate));
 					success = true;
 				}
@@ -124,14 +121,20 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {}
 
 	@Override
-	protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
-		TagUtils.writeVector3d(tag, "charge", this.charge);
+	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
+		super.save(tag, lookupProvider, context);
+
+		if (context.isSaveLoad()) {
+			TagUtils.writeVector3d(tag, "charge", this.charge);
+		}
 	}
 
 	@Override
-	protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
-		TagUtils.readVector3d(tag, "charge", this.charge);
+	protected void load(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
+		super.load(tag, lookupProvider, context);
+
+		if (context.isSaveLoad()) {
+			TagUtils.readVector3d(tag, "charge", this.charge);
+		}
 	}
 }

@@ -1,7 +1,7 @@
 package gurumirum.gemthing.contents.item;
 
-import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.capability.LuxContainerStat;
+import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.network.chat.Component;

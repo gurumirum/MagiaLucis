@@ -100,23 +100,9 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 	}
 
 	@Override
-	protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
+		super.save(tag, lookupProvider, context);
 
-		this.links.clear();
-		if (tag.contains("links", CompoundTag.TAG_LIST)) {
-			ListTag list = tag.getList("links", Tag.TAG_COMPOUND);
-			for (int i = 0; i < list.size(); i++) {
-				CompoundTag tag2 = list.getCompound(i);
-				int index = tag2.getInt("index");
-				if (index >= 0 && index < maxLinks()) setLink(index, Orientation.fromLong(tag2.getLong("orientation")));
-			}
-		}
-	}
-
-	@Override
-	protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
 		if (!this.links.isEmpty()) {
 			ListTag list = new ListTag();
 			for (int i = 0, size = Math.min(maxLinks(), this.links.size()); i < size; i++) {
@@ -129,6 +115,21 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 				}
 			}
 			tag.put("links", list);
+		}
+	}
+
+	@Override
+	protected void load(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
+		super.load(tag, lookupProvider, context);
+
+		this.links.clear();
+		if (tag.contains("links", CompoundTag.TAG_LIST)) {
+			ListTag list = tag.getList("links", Tag.TAG_COMPOUND);
+			for (int i = 0; i < list.size(); i++) {
+				CompoundTag tag2 = list.getCompound(i);
+				int index = tag2.getInt("index");
+				if (index >= 0 && index < maxLinks()) setLink(index, Orientation.fromLong(tag2.getLong("orientation")));
+			}
 		}
 	}
 

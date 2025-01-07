@@ -1,7 +1,6 @@
 package gurumirum.gemthing.capability;
 
 import gurumirum.gemthing.contents.Contents;
-import gurumirum.gemthing.impl.RGB332;
 import gurumirum.gemthing.utils.LuxUtils;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -21,20 +20,18 @@ public class ItemStackLuxAcceptor implements LuxAcceptor {
 		acceptedOut.zero();
 
 		long maxCharge = this.stat.maxCharge();
-		double maxLuxThreshold = this.stat.maxLuxThreshold();
-		if (maxCharge <= 0 || maxLuxThreshold <= 0) return;
+		if (maxCharge <= 0) return;
 
 		long luxCharge = Math.max(0, this.stack.getOrDefault(Contents.LUX_CHARGE, 0L));
 		if (luxCharge >= maxCharge) return;
 
-		byte containerColor = this.stat.color();
-		double rBrightness = RGB332.rBrightness(containerColor);
-		double gBrightness = RGB332.gBrightness(containerColor);
-		double bBrightness = RGB332.bBrightness(containerColor);
+		double rMaxTransfer = this.stat.rMaxTransfer();
+		double gMaxTransfer = this.stat.gMaxTransfer();
+		double bMaxTransfer = this.stat.bMaxTransfer();
 
-		acceptedOut.x = Math.min(red, rBrightness * maxLuxThreshold);
-		acceptedOut.y = Math.min(green, gBrightness * maxLuxThreshold);
-		acceptedOut.z = Math.min(blue, bBrightness * maxLuxThreshold);
+		acceptedOut.x = Math.min(red, rMaxTransfer);
+		acceptedOut.y = Math.min(green, gMaxTransfer);
+		acceptedOut.z = Math.min(blue, bMaxTransfer);
 		LuxUtils.snapComponents(acceptedOut, this.stat.minLuxThreshold());
 
 		double combinedLux = acceptedOut.x + acceptedOut.y + acceptedOut.z;
@@ -45,10 +42,10 @@ public class ItemStackLuxAcceptor implements LuxAcceptor {
 			return;
 		}
 
-		double brightnessSum = rBrightness + gBrightness + bBrightness;
-		acceptedOut.x = amountToCharge * (rBrightness / brightnessSum);
-		acceptedOut.y = amountToCharge * (gBrightness / brightnessSum);
-		acceptedOut.z = amountToCharge * (bBrightness / brightnessSum);
+		double brightnessSum = rMaxTransfer + gMaxTransfer + bMaxTransfer;
+		acceptedOut.x = amountToCharge * (rMaxTransfer / brightnessSum);
+		acceptedOut.y = amountToCharge * (gMaxTransfer / brightnessSum);
+		acceptedOut.z = amountToCharge * (bMaxTransfer / brightnessSum);
 
 		if (!test) this.stack.set(Contents.LUX_CHARGE, luxCharge + amountToCharge);
 	}
@@ -64,9 +61,7 @@ public class ItemStackLuxAcceptor implements LuxAcceptor {
 		if (luxCharge >= maxCharge) return 0;
 
 		if (!bypassThreshold) {
-			byte containerColor = this.stat.color();
-			long maxLuxThreshold = Math.max((long)(this.stat.maxLuxThreshold() * (RGB332.rBrightness(containerColor) +
-					RGB332.gBrightness(containerColor) + RGB332.bBrightness(containerColor))), 0);
+			long maxLuxThreshold = Math.max((long)(this.stat.rMaxTransfer() + this.stat.gMaxTransfer() + this.stat.bMaxTransfer()), 0);
 			long minLuxThreshold = Math.max((long)(this.stat.minLuxThreshold() * 3), 0);
 
 			amount = Math.min(amount, maxLuxThreshold);

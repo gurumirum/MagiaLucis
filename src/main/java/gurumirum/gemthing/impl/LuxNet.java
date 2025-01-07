@@ -9,6 +9,8 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -45,17 +47,13 @@ public final class LuxNet extends SavedData implements LuxNetEvent.LuxNetEventDi
 	private final List<LuxNetEvent> queuedEvents = new ArrayList<>();
 
 	private final IntSet updateCacheSet = new IntOpenHashSet();
-	private final IntSet updateCacheSet2 = new IntOpenHashSet();
-	private final IntSet updateCacheSet3 = new IntOpenHashSet();
+	private final IntSet updateLinkCacheSet = new IntOpenHashSet();
 
 	private final LinkCollector linkCollector = new LinkCollector();
 
 	private int idIncrement;
 
 	public LuxNet() {}
-	public LuxNet(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		this.idIncrement = tag.getInt("id");
-	}
 
 	public int register(@NotNull LuxNodeInterface iface, int id) {
 		while (id == NO_ID) {
@@ -69,7 +67,7 @@ public final class LuxNet extends SavedData implements LuxNetEvent.LuxNetEventDi
 	private void registerInternal(@NotNull LuxNodeInterface iface, int id) {
 		if (id == NO_ID) throw new IllegalArgumentException("Cannot register node of ID 0");
 		LuxNode node = this.nodes.computeIfAbsent(id, LuxNode::new);
-		node.bindInterface(iface);
+		node.bindInterface(this, iface);
 		if (iface instanceof LuxSourceNodeInterface) this.sourceNodes.add(node);
 		else this.sourceNodes.remove(node);
 		if (iface instanceof LuxConsumerNodeInterface) this.consumerNodes.add(node);
@@ -88,7 +86,7 @@ public final class LuxNet extends SavedData implements LuxNetEvent.LuxNetEventDi
 			});
 			node.outboundNodes.forEach(i -> removeLink(node, i));
 		} else {
-			node.unbindInterface();
+			node.bindInterface(this, null);
 		}
 		this.sourceNodes.remove(node);
 		this.consumerNodes.remove(node);
@@ -132,12 +130,10 @@ public final class LuxNet extends SavedData implements LuxNetEvent.LuxNetEventDi
 		});
 
 		if (level.getGameTime() % UPDATE_CONNECTION_CYCLE == 0) {
-			this.updateCacheSet2.addAll(this.nodes.keySet());
-			this.updateCacheSet2.removeAll(this.updateCacheSet);
+			for (var e : this.nodes.int2ObjectEntrySet()) {
+				if (this.updateCacheSet.contains(e.getIntKey())) continue;
 
-			this.updateCacheSet2.forEach(id -> {
-				LuxNode node = get(id);
-				if (node == null) return;
+				LuxNode node = e.getValue();
 				LuxNodeInterface iface = node.iface();
 				if (iface == null) return;
 
@@ -148,9 +144,7 @@ public final class LuxNet extends SavedData implements LuxNetEvent.LuxNetEventDi
 				});
 
 				if (!outboundNodeUnloaded) updateLink(node, iface);
-			});
-
-			this.updateCacheSet2.clear();
+			}
 		}
 		this.updateCacheSet.clear();
 
@@ -165,21 +159,23 @@ public final class LuxNet extends SavedData implements LuxNetEvent.LuxNetEventDi
 			event.dispatch(this);
 		}
 		this.queuedEvents.clear();
+
+		setDirty();
 	}
 
 	private void updateLink(LuxNode node, LuxNodeInterface iface) {
 		this.linkCollector.init(node);
 		iface.updateLink(this, this.linkCollector);
-		this.updateCacheSet3.addAll(node.outboundNodes);
-		this.updateCacheSet3.forEach(id -> {
+		this.updateLinkCacheSet.addAll(node.outboundNodes);
+		this.updateLinkCacheSet.forEach(id -> {
 			if (this.linkCollector.links.contains(id)) return;
 			removeLink(node, id);
 		});
 		this.linkCollector.links.forEach(id -> {
-			if (this.updateCacheSet3.contains(id)) return;
+			if (this.updateLinkCacheSet.contains(id)) return;
 			addLink(node, id);
 		});
-		this.updateCacheSet3.clear();
+		this.updateLinkCacheSet.clear();
 		this.linkCollector.reset();
 	}
 
@@ -248,7 +244,41 @@ public final class LuxNet extends SavedData implements LuxNetEvent.LuxNetEventDi
 	@Override
 	public @NotNull CompoundTag save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider) {
 		if (this.idIncrement != 0) tag.putInt("id", this.idIncrement);
+
+		if (!this.nodes.isEmpty()) {
+			ListTag list = new ListTag();
+			for (var e : this.nodes.int2ObjectEntrySet()) {
+				CompoundTag tag2 = e.getValue().save();
+				tag2.putInt("id", e.getIntKey());
+				list.add(tag2);
+			}
+			tag.put("nodes", list);
+		}
+
 		return tag;
+	}
+
+	public LuxNet(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		this.idIncrement = tag.getInt("id");
+
+		if (tag.contains("nodes", Tag.TAG_LIST)) {
+			ListTag list = tag.getList("nodes", Tag.TAG_COMPOUND);
+			for (int i = 0; i < list.size(); i++) {
+				CompoundTag tag2 = list.getCompound(i);
+				int id = tag2.getInt("id");
+				if (id != NO_ID && !this.nodes.containsKey(id)) this.nodes.put(id, new LuxNode(id, tag2));
+			}
+		}
+
+		for (LuxNode node : this.nodes.values()) {
+			node.outboundNodes.removeIf(id -> {
+				if (id == NO_ID || node.id == id) return true;
+				LuxNode node2 = get(id);
+				if (node2 == null) return true;
+				node2.inboundNodes.add(node.id);
+				return false;
+			});
+		}
 	}
 
 	public class LinkCollector {

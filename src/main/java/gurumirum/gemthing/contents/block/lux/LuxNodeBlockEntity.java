@@ -4,7 +4,6 @@ import gurumirum.gemthing.capability.LuxNetComponent;
 import gurumirum.gemthing.contents.block.BlockEntityUtils;
 import gurumirum.gemthing.contents.block.SyncedBlockEntity;
 import gurumirum.gemthing.impl.LuxNet;
-import gurumirum.gemthing.impl.LuxNode;
 import gurumirum.gemthing.impl.LuxNodeInterface;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -51,14 +50,8 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements Bl
 
 	protected void registerLuxNode() {
 		LuxNet luxNet = LuxNet.tryGet(this.level);
-		if (luxNet != null) {
-			this.nodeId = luxNet.register(this, this.nodeId);
-			LuxNode node = luxNet.get(this.nodeId);
-			if (node != null && node.iface() == this) initializeLuxNodeData(luxNet, node);
-		}
+		if (luxNet != null) this.nodeId = luxNet.register(this, this.nodeId);
 	}
-
-	protected abstract void initializeLuxNodeData(@NotNull LuxNet luxNet, @NotNull LuxNode node);
 
 	protected void unregisterLuxNode(boolean destroyed) {
 		LuxNet luxNet = LuxNet.tryGet(this.level);
@@ -67,14 +60,14 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements Bl
 	}
 
 	@Override
-	protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	protected void load(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
+		super.load(tag, lookupProvider, context);
 		this.nodeId = tag.getInt("nodeId");
 	}
 
 	@Override
-	protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
+	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
+		super.save(tag, lookupProvider, context);
 		tag.putInt("nodeId", this.nodeId);
 	}
 }

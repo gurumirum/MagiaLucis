@@ -45,12 +45,13 @@ public enum GemStats implements LuxStat {
 
 	DAIMONIUM(5, RGB332.of(0, 0, 0), Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, false);
 
-	private final int tier;
 	private final byte color;
 	private final double minLuxThreshold;
-	private final double maxLuxThreshold;
 	private final boolean hasTag;
 	private final boolean vanilla;
+	private final double rMaxTransfer;
+	private final double gMaxTransfer;
+	private final double bMaxTransfer;
 
 	private @Nullable TagKey<Item> tag;
 
@@ -69,11 +70,12 @@ public enum GemStats implements LuxStat {
 		if (maxLuxThreshold < 0) throw new IllegalArgumentException("maxLuxThreshold < 0");
 		if (minLuxThreshold > maxLuxThreshold) throw new IllegalArgumentException("minLuxThreshold > maxLuxThreshold");
 
-		this.tier = tier;
 		this.color = color;
 		this.minLuxThreshold = minLuxThreshold;
-		this.maxLuxThreshold = maxLuxThreshold;
 		this.hasTag = hasTag;
+		this.rMaxTransfer = maxLuxThreshold * RGB332.rBrightness(color);
+		this.gMaxTransfer = maxLuxThreshold * RGB332.gBrightness(color);
+		this.bMaxTransfer = maxLuxThreshold * RGB332.bBrightness(color);
 	}
 
 	public boolean hasTag() {
@@ -130,7 +132,15 @@ public enum GemStats implements LuxStat {
 		return this.minLuxThreshold;
 	}
 	@Override
-	public double maxLuxThreshold() {
-		return this.maxLuxThreshold;
+	public double rMaxTransfer() {
+		return this.rMaxTransfer;
+	}
+	@Override
+	public double gMaxTransfer() {
+		return this.gMaxTransfer;
+	}
+	@Override
+	public double bMaxTransfer() {
+		return this.bMaxTransfer;
 	}
 }

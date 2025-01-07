@@ -88,26 +88,24 @@ public final class LuxStatTooltip {
 				indent + "LUX" + ChatFormatting.GRAY + " Transfer Rate: "));
 
 		tooltip.add(i++, Component.literal(indent + " R: ").withStyle(ChatFormatting.GRAY)
-				.append(component(stat, RGB332.rBrightness(stat.color())).withStyle(ChatFormatting.RED)));
+				.append(component(stat, stat.rMaxTransfer()).withStyle(ChatFormatting.RED)));
 
 		tooltip.add(i++, Component.literal(indent + " G: ").withStyle(ChatFormatting.GRAY)
-				.append(component(stat, RGB332.gBrightness(stat.color())).withStyle(ChatFormatting.GREEN)));
+				.append(component(stat, stat.gMaxTransfer()).withStyle(ChatFormatting.GREEN)));
 
 		tooltip.add(i++, Component.literal(indent + " B: ").withStyle(ChatFormatting.GRAY)
-				.append(component(stat, RGB332.bBrightness(stat.color())).withStyle(ChatFormatting.BLUE)));
+				.append(component(stat, stat.bMaxTransfer()).withStyle(ChatFormatting.BLUE)));
 
 		tooltip.add(i++, Component.literal(indent + ChatFormatting.GRAY + "Min. " + ChatFormatting.WHITE + "LUX" + ChatFormatting.GRAY + " Threshold: ")
 				.append(Component.literal(formatLuxThreshold(stat.minLuxThreshold())).withStyle(ChatFormatting.YELLOW)));
 	}
 
-	private static MutableComponent component(LuxStat stat, double brightness) {
-		double max = stat.maxLuxThreshold() * brightness;
-
-		if (max < stat.minLuxThreshold() || Double.isInfinite(stat.minLuxThreshold())) {
+	private static MutableComponent component(LuxStat stat, double maxTransfer) {
+		if (maxTransfer < stat.minLuxThreshold() || Double.isInfinite(stat.minLuxThreshold())) {
 			return Component.empty().append(Component.literal("  0").withStyle(ChatFormatting.DARK_GRAY));
 		} else {
-			double level = (Math.log10(max) - 1) * 2;
-			return Component.literal(bar(level)).append(String.format("  " + decimal.format(max)));
+			double level = (Math.log10(maxTransfer) - 1) * 2;
+			return Component.literal(bar(level)).append(String.format("  " + decimal.format(maxTransfer)));
 		}
 	}
 
