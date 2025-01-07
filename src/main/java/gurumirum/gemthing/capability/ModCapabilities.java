@@ -24,7 +24,7 @@ public final class ModCapabilities {
 
 	public static final ItemCapability<LuxAcceptor, Void> LUX_ACCEPTOR = ItemCapability.createVoid(id("lux_acceptor"), LuxAcceptor.class);
 	public static final ItemCapability<LuxContainerStat, Void> LUX_CONTAINER_STAT = ItemCapability.createVoid(id("lux_container_stat"), LuxContainerStat.class);
-	public static final ItemCapability<LuxStat, Void> LUX_SOURCE_STAT = ItemCapability.createVoid(id("lux_source_stat"), LuxStat.class);
+	public static final ItemCapability<LuxStat, Void> GEM_STAT = ItemCapability.createVoid(id("gem_stat"), LuxStat.class);
 
 	public static final BlockCapability<LinkSource, Void> LINK_SOURCE = BlockCapability.createVoid(id("linkable"), LinkSource.class);
 	public static final BlockCapability<LuxNetComponent, Direction> LUX_NET_COMPONENT = BlockCapability.createSided(id("lux_net_component"), LuxNetComponent.class);
@@ -33,11 +33,11 @@ public final class ModCapabilities {
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		for (GemItems value : GemItems.values()) {
 			var stat = value.gem;
-			event.registerItem(LUX_SOURCE_STAT, (s, v) -> stat, value.asItem());
+			event.registerItem(GEM_STAT, (s, v) -> stat, value.asItem());
 		}
-		event.registerItem(LUX_SOURCE_STAT, (s, v) -> GemStats.AMETHYST, Items.AMETHYST_SHARD);
-		event.registerItem(LUX_SOURCE_STAT, (s, v) -> GemStats.DIAMOND, Items.DIAMOND);
-		event.registerItem(LUX_SOURCE_STAT, (s, v) -> GemStats.EMERALD, Items.EMERALD);
+		event.registerItem(GEM_STAT, (s, v) -> GemStats.AMETHYST, Items.AMETHYST_SHARD);
+		event.registerItem(GEM_STAT, (s, v) -> GemStats.DIAMOND, Items.DIAMOND);
+		event.registerItem(GEM_STAT, (s, v) -> GemStats.EMERALD, Items.EMERALD);
 
 		for (Wands w : Wands.values()) {
 			if (w.luxContainerStat() != null) {

@@ -17,7 +17,7 @@ public class LuxSourceBlockEntity extends BasicRelayBlockEntity implements LuxSo
 	}
 
 	@Override
-	public void onBind(@NotNull LuxNet luxNet, @NotNull LuxNode node) {
+	public void updateProperties(@NotNull LuxNet luxNet, @NotNull LuxNode node) {
 		node.setStats(GemStats.BRIGHTSTONE);
 	}
 

@@ -2,28 +2,21 @@ package gurumirum.gemthing.contents.block.lux;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-public class BasicRelayBlockEntityRenderer implements BlockEntityRenderer<BasicRelayBlockEntity> {
+public class BasicRelayBlockEntityRenderer<T extends BasicRelayBlockEntity> implements BlockEntityRenderer<T> {
 	private final Vector3f directionCache = new Vector3f();
 
 	public BasicRelayBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}
 
 	@Override
-	public void render(@NotNull BasicRelayBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack,
+	public void render(@NotNull T blockEntity, float partialTick, @NotNull PoseStack poseStack,
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		for (@Nullable BasicRelayBlockEntity.Orientation o : blockEntity.getLinks()) {
 			if (o == null) continue;
@@ -43,29 +36,5 @@ public class BasicRelayBlockEntityRenderer implements BlockEntityRenderer<BasicR
 							.5f + this.directionCache.z * 3)
 					.setColor(color).setNormal(poseStack.last(), 0, 1, 0);
 		}
-
-		poseStack.pushPose();
-		poseStack.translate(.5f, .5f - 2 / 16f, .5f);
-
-		Minecraft mc = Minecraft.getInstance();
-		Level level = blockEntity.getLevel();
-
-		if (level != null) {
-			float rotation = (level.getGameTime() % 720) * -2.5f;
-			poseStack.mulPose(Axis.YP.rotationDegrees(
-					mc.isPaused() ? rotation : Mth.lerp(partialTick, rotation, rotation + 1)));
-		}
-
-		mc.getItemRenderer().renderStatic(
-				new ItemStack(Items.DIAMOND),
-				ItemDisplayContext.GROUND,
-				15728880, // emissive
-				packedOverlay,
-				poseStack,
-				bufferSource,
-				level,
-				0);
-
-		poseStack.popPose();
 	}
 }

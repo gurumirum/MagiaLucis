@@ -60,6 +60,8 @@ public final class LuxNode {
 		this.maxColorCharge.x = Double.isNaN(rMaxTransfer) ? 0 : Math.max(rMaxTransfer, 0);
 		this.maxColorCharge.y = Double.isNaN(gMaxTransfer) ? 0 : Math.max(gMaxTransfer, 0);
 		this.maxColorCharge.z = Double.isNaN(bMaxTransfer) ? 0 : Math.max(bMaxTransfer, 0);
+
+		trimColorCharge();
 	}
 
 	void bindInterface(LuxNet luxNet, @Nullable LuxNodeInterface iface) {

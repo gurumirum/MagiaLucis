@@ -46,6 +46,12 @@ public final class Contents {
 					.clientTrackingRange(10)
 					.build("gem_golem"));
 
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemStack>> ITEM_STACK = DATA_COMPONENTS.register("item_stack",
+			() -> DataComponentType.<ItemStack>builder()
+					.persistent(ItemStack.CODEC)
+					.networkSynchronized(ItemStack.STREAM_CODEC)
+					.build());
+
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<GlobalPos>> LINK_SOURCE = DATA_COMPONENTS.register("link_source",
 			() -> DataComponentType.<GlobalPos>builder()
 					.persistent(GlobalPos.CODEC)

@@ -57,7 +57,7 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 	}
 
 	@Override
-	public void onBind(LuxNet luxNet, LuxNode node) {
+	public void updateProperties(LuxNet luxNet, LuxNode node) {
 		node.setStats(this.stat);
 	}
 

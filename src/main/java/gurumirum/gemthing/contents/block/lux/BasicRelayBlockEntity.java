@@ -95,6 +95,9 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 		while (index >= this.links.size()) this.links.add(null);
 		this.links.set(index, orientation);
 
+		LuxNet luxNet = getLuxNet();
+		if (luxNet != null) luxNet.queueLinkUpdate(luxNodeId());
+
 		setChanged();
 		syncToClient();
 	}

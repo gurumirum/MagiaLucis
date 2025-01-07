@@ -44,6 +44,7 @@ public final class LuxNet extends SavedData implements LuxNetEvent.LuxNetEventDi
 	private final Set<LuxNode> consumerNodes = new ObjectOpenHashSet<>();
 
 	private final IntSet queuedLinkUpdates = new IntOpenHashSet();
+	private final IntSet queuedPropertyUpdates = new IntOpenHashSet();
 	private final List<LuxNetEvent> queuedEvents = new ArrayList<>();
 
 	private final IntSet updateCacheSet = new IntOpenHashSet();
@@ -118,6 +119,11 @@ public final class LuxNet extends SavedData implements LuxNetEvent.LuxNetEventDi
 		this.queuedLinkUpdates.add(nodeId);
 	}
 
+	public void queuePropertyUpdate(int nodeId) {
+		if (nodeId == NO_ID) return;
+		this.queuedPropertyUpdates.add(nodeId);
+	}
+
 	void update(@NotNull ServerLevel level) {
 		this.updateCacheSet.addAll(this.queuedLinkUpdates);
 		this.queuedLinkUpdates.clear();
@@ -146,6 +152,18 @@ public final class LuxNet extends SavedData implements LuxNetEvent.LuxNetEventDi
 				if (!outboundNodeUnloaded) updateLink(node, iface);
 			}
 		}
+		this.updateCacheSet.clear();
+
+		this.updateCacheSet.addAll(this.queuedPropertyUpdates);
+		this.queuedPropertyUpdates.clear();
+
+		this.updateCacheSet.forEach(id -> {
+			LuxNode node = get(id);
+			if (node == null) return;
+			LuxNodeInterface iface = node.iface();
+			if (iface != null) updateLink(node, iface);
+		});
+
 		this.updateCacheSet.clear();
 
 		generateLuxSource();

@@ -37,7 +37,7 @@ public final class LuxStatTooltip {
 			return;
 		}
 
-		LuxStat sourceStat = stack.getCapability(ModCapabilities.LUX_SOURCE_STAT);
+		LuxStat sourceStat = stack.getCapability(ModCapabilities.GEM_STAT);
 		if (sourceStat != null) {
 			formatInternal(sourceStat, event.getToolTip(), 1, expandedMode(event.getFlags()), false);
 		}

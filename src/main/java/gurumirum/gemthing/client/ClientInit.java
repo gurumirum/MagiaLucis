@@ -6,6 +6,7 @@ import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.ModBlockEntities;
 import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.contents.block.lux.BasicRelayBlockEntityRenderer;
+import gurumirum.gemthing.contents.block.lux.relay.RelayBlockEntityRenderer;
 import gurumirum.gemthing.contents.item.wand.*;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltScreen;
@@ -100,7 +101,7 @@ public final class ClientInit {
 	public static void registerEntityRegister(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(Contents.GEM_GOLEM.get(), GemGolemRenderer::new);
 
-		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), BasicRelayBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);
 	}
 }
