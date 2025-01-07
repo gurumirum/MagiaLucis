@@ -4,7 +4,6 @@ import gurumirum.gemthing.capability.GemStats;
 import gurumirum.gemthing.capability.LuxStat;
 import gurumirum.gemthing.contents.ModBlockEntities;
 import gurumirum.gemthing.contents.block.Ticker;
-import gurumirum.gemthing.contents.block.lux.LuxNodeBlock;
 import gurumirum.gemthing.impl.LuxStatTooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -12,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class RemoteChargerBlock extends LuxNodeBlock implements EntityBlock {
+public abstract class RemoteChargerBlock extends Block implements EntityBlock {
 	public static final LuxStat BASIC_STAT = GemStats.BRIGHTSTONE;
 	public static final LuxStat ADVANCED_STAT = GemStats.PURIFIED_QUARTZ;
 

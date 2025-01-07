@@ -2,7 +2,6 @@ package gurumirum.gemthing.contents.block.lux.relay;
 
 import gurumirum.gemthing.capability.LuxStat;
 import gurumirum.gemthing.capability.ModCapabilities;
-import gurumirum.gemthing.contents.block.lux.LuxNodeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -11,6 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -19,11 +20,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class RelayBlock extends LuxNodeBlock {
+public class RelayBlock extends Block implements EntityBlock {
 	private static final VoxelShape SHAPE = box(
 			2, 0, 2,
-			14, 12, 14
-	);
+			14, 12, 14);
 
 	public RelayBlock(Properties properties) {
 		super(properties);

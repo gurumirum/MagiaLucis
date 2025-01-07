@@ -1,13 +1,14 @@
 package gurumirum.gemthing.contents.block.lux.source;
 
-import gurumirum.gemthing.contents.block.lux.LuxNodeBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class LuxSourceBlock extends LuxNodeBlock {
+public class LuxSourceBlock extends Block implements EntityBlock {
 	public LuxSourceBlock(Properties properties) {
 		super(properties);
 	}

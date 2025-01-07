@@ -1,6 +1,5 @@
 package gurumirum.gemthing.contents.block.lux;
 
-import com.google.common.base.Objects;
 import gurumirum.gemthing.capability.LinkSource;
 import gurumirum.gemthing.capability.LuxNetComponent;
 import gurumirum.gemthing.capability.ModCapabilities;
@@ -29,6 +28,7 @@ import org.joml.Vector3d;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implements LinkSource {
 	public static final int DEFAULT_MAX_LINKS = 3;
@@ -54,14 +54,13 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 		BlockPos pos = getBlockPos();
 		double linkDistance = linkDistance();
 
-		for (Orientation o : this.links) {
+		for (int i = 0; i < this.links.size(); i++) {
+			Orientation o = this.links.get(i);
 			if (o == null) continue;
 			Vector3d vec = o.toVector(linkCollector.mutableVec3d);
 
 			BlockHitResult hitResult = safeClip(level, new ClipContext(
-					Vec3.atCenterOf(pos).add(vec.x,
-							vec.y,
-							vec.z),
+					Vec3.atCenterOf(pos).add(vec.x, vec.y, vec.z),
 					new Vec3(
 							pos.getX() + .5f + vec.x * linkDistance,
 							pos.getY() + .5f + vec.y * linkDistance,
@@ -72,9 +71,11 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 			if (hitResult.getType() == HitResult.Type.BLOCK && !hitResult.getBlockPos().equals(pos)) {
 				LuxNetComponent luxNetComponent = level.getCapability(ModCapabilities.LUX_NET_COMPONENT, hitResult.getBlockPos(), hitResult.getDirection());
 				if (luxNetComponent != null) {
-					linkCollector.link(luxNetComponent.luxNodeId());
+					linkCollector.inWorldLink(i, luxNetComponent.luxNodeId(), pos, hitResult.getLocation());
+					continue;
 				}
 			}
+			linkCollector.inWorldLinkFail(i, hitResult.getBlockPos(), hitResult.getLocation());
 		}
 	}
 
@@ -91,7 +92,7 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 	@Override
 	public void setLink(int index, @Nullable Orientation orientation) {
 		if (index < 0 || index >= maxLinks()) return;
-		if (Objects.equal(getLink(index), orientation)) return;
+		if (Objects.equals(getLink(index), orientation)) return;
 		while (index >= this.links.size()) this.links.add(null);
 		this.links.set(index, orientation);
 

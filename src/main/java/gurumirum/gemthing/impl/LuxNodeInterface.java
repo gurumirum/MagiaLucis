@@ -1,14 +1,21 @@
 package gurumirum.gemthing.impl;
 
-import gurumirum.gemthing.impl.LuxNetEvent.ConnectionUpdated;
+import gurumirum.gemthing.capability.LuxStat;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
+import org.joml.Vector3d;
+
+import java.util.Map;
 
 public interface LuxNodeInterface {
-	void updateProperties(LuxNet luxNet, LuxNode node);
+	@Nullable LuxStat calculateNodeStat(LuxNet luxNet);
 	void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector);
 
-	default void onBind(LuxNet luxNet, LuxNode node) {
-		updateProperties(luxNet, node);
-	}
-
-	default void connectionUpdated(ConnectionUpdated connectionUpdated) {}
+	void syncLuxFlow(Vector3d amount);
+	void syncNodeStats(byte color, double minLuxThreshold, double rMaxTransfer, double gMaxTransfer, double bMaxTransfer);
+	void syncConnection(@NotNull @UnmodifiableView Map<LuxNode, @Nullable InWorldLinkInfo> outboundLinks,
+	                    @NotNull @UnmodifiableView Map<LuxNode, @Nullable InWorldLinkInfo> inboundLinks);
+	void syncLinkStatus(@NotNull @UnmodifiableView Int2ObjectMap<InWorldLinkState> linkIndexToState);
 }

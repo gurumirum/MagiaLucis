@@ -1,14 +1,14 @@
 package gurumirum.gemthing.contents.block.lux.source;
 
 import gurumirum.gemthing.capability.GemStats;
+import gurumirum.gemthing.capability.LuxStat;
 import gurumirum.gemthing.contents.ModBlockEntities;
 import gurumirum.gemthing.contents.block.lux.BasicRelayBlockEntity;
 import gurumirum.gemthing.impl.LuxNet;
-import gurumirum.gemthing.impl.LuxNode;
 import gurumirum.gemthing.impl.LuxSourceNodeInterface;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 public class LuxSourceBlockEntity extends BasicRelayBlockEntity implements LuxSourceNodeInterface {
@@ -17,8 +17,8 @@ public class LuxSourceBlockEntity extends BasicRelayBlockEntity implements LuxSo
 	}
 
 	@Override
-	public void updateProperties(@NotNull LuxNet luxNet, @NotNull LuxNode node) {
-		node.setStats(GemStats.BRIGHTSTONE);
+	public @Nullable LuxStat calculateNodeStat(LuxNet luxNet) {
+		return GemStats.BRIGHTSTONE;
 	}
 
 	@Override

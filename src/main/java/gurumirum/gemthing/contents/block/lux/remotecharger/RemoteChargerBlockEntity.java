@@ -9,8 +9,8 @@ import gurumirum.gemthing.contents.block.Ticker;
 import gurumirum.gemthing.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.gemthing.impl.LuxConsumerNodeInterface;
 import gurumirum.gemthing.impl.LuxNet;
-import gurumirum.gemthing.impl.LuxNode;
 import gurumirum.gemthing.utils.LuxUtils;
+import gurumirum.gemthing.utils.NumberFormats;
 import gurumirum.gemthing.utils.TagUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -24,9 +24,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
-
-import java.text.DecimalFormat;
 
 public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Ticker, LuxConsumerNodeInterface {
 	private static final int CYCLE = 10;
@@ -57,11 +56,6 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 	}
 
 	@Override
-	public void updateProperties(LuxNet luxNet, LuxNode node) {
-		node.setStats(this.stat);
-	}
-
-	@Override
 	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
 		if (level.getGameTime() % CYCLE != 0) return;
 		if (this.charge.x <= 0 && this.charge.y <= 0 && this.charge.z <= 0) return;
@@ -82,8 +76,6 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 		setChanged();
 	}
 
-	private static final DecimalFormat formatter = new DecimalFormat("#,##0.00");
-
 	private boolean chargeItem(Vector3d charge, ItemStack stack) {
 		LuxAcceptor luxAcceptor = stack.getCapability(ModCapabilities.LUX_ACCEPTOR);
 		boolean success = false;
@@ -98,9 +90,9 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 				if (!(this.acceptedCache.x <= 0) || !(this.acceptedCache.y <= 0) || !(this.acceptedCache.z <= 0)) {
 					LuxUtils.snapComponents(this.acceptedCache, 0);
 					GemthingMod.LOGGER.warn("Charged {}, max charge rate: {}, charges left: {}",
-							this.acceptedCache.toString(formatter),
-							this.maxChargeRate.toString(formatter),
-							charge.toString(formatter));
+							this.acceptedCache.toString(NumberFormats.DECIMAL),
+							this.maxChargeRate.toString(NumberFormats.DECIMAL),
+							charge.toString(NumberFormats.DECIMAL));
 					charge.sub(this.acceptedCache.min(this.maxChargeRate));
 					success = true;
 				}
@@ -115,6 +107,11 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 	public void consumeLux(Vector3d lux) {
 		LuxUtils.transfer(lux, this.charge, this.maxChargeStorage);
 		setChanged();
+	}
+
+	@Override
+	public @Nullable LuxStat calculateNodeStat(LuxNet luxNet) {
+		return this.stat;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package gurumirum.gemthing.impl;
 import gurumirum.gemthing.capability.LuxContainerStat;
 import gurumirum.gemthing.capability.LuxStat;
 import gurumirum.gemthing.capability.ModCapabilities;
+import gurumirum.gemthing.utils.NumberFormats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -12,15 +13,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 @EventBusSubscriber
 public final class LuxStatTooltip {
 	private LuxStatTooltip() {}
-
-	private static final DecimalFormat decimal = new DecimalFormat("#,##0.##");
-	private static final DecimalFormat integer = new DecimalFormat("#,##0");
 
 	private static final char BLOCK = '█';
 	private static final char HALF_BLOCK = '▌';
@@ -105,7 +102,7 @@ public final class LuxStatTooltip {
 			return Component.empty().append(Component.literal("  0").withStyle(ChatFormatting.DARK_GRAY));
 		} else {
 			double level = (Math.log10(maxTransfer) - 1) * 2;
-			return Component.literal(bar(level)).append(String.format("  " + decimal.format(maxTransfer)));
+			return Component.literal(bar(level)).append(String.format("  " + NumberFormats.DECIMAL.format(maxTransfer)));
 		}
 	}
 
@@ -124,7 +121,7 @@ public final class LuxStatTooltip {
 
 	private static String formatLuxThreshold(double value) {
 		if (value == Double.POSITIVE_INFINITY) return "∞";
-		else return integer.format(value);
+		else return NumberFormats.INTEGER.format(value);
 	}
 
 	public enum Mode {
