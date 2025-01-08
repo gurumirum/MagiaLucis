@@ -1,30 +1,33 @@
 {
   "parent": "block/block",
+  "textures": {
+    "0": "gemthing:block/relay/bottom",
+    "1": "gemthing:block/relay/side",
+    "2": "gemthing:block/relay/top",
+    "particle": "gemthing:block/relay/top"
+  },
   "elements": [
     {
       "from": [2, 0, 2],
       "to": [14, 2, 14],
-      "color": 8,
       "faces": {
-        "north": {"uv": [0, 0, 12, 2], "texture": "#missing"},
-        "east": {"uv": [0, 0, 12, 2], "texture": "#missing"},
-        "south": {"uv": [0, 0, 12, 2], "texture": "#missing"},
-        "west": {"uv": [0, 0, 12, 2], "texture": "#missing"},
-        "up": {"uv": [0, 0, 12, 12], "texture": "#missing"},
-        "down": {"uv": [0, 0, 12, 12], "texture": "#missing"}
+        "north": {"uv": [2, 14, 14, 16], "texture": "#1"},
+        "east": {"uv": [2, 14, 14, 16], "texture": "#1"},
+        "south": {"uv": [2, 14, 14, 16], "texture": "#1"},
+        "west": {"uv": [2, 14, 14, 16], "texture": "#1"},
+        "up": {"uv": [2, 2, 14, 14], "texture": "#2"},
+        "down": {"uv": [2, 2, 14, 14], "texture": "#0", "cullface": "down"}
       }
     },
     {
       "from": [4, 2, 4],
       "to": [12, 4, 12],
-      "color": 8,
       "faces": {
-        "north": {"uv": [0, 0, 8, 2], "texture": "#missing"},
-        "east": {"uv": [0, 0, 8, 2], "texture": "#missing"},
-        "south": {"uv": [0, 0, 8, 2], "texture": "#missing"},
-        "west": {"uv": [0, 0, 8, 2], "texture": "#missing"},
-        "up": {"uv": [0, 0, 8, 8], "texture": "#missing"},
-        "down": {"uv": [0, 0, 8, 8], "texture": "#missing"}
+        "north": {"uv": [4, 12, 12, 14], "texture": "#1"},
+        "east": {"uv": [4, 12, 12, 14], "texture": "#1"},
+        "south": {"uv": [4, 12, 12, 14], "texture": "#1"},
+        "west": {"uv": [4, 12, 12, 14], "texture": "#1"},
+        "up": {"uv": [4, 4, 12, 12], "texture": "#2"}
       }
     }
   ]
