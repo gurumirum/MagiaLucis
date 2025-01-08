@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "gemthing:brightstones"
+    },
+    "2": {
+      "tag": "c:nuggets/gold"
+    },
+    "3": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
+  "pattern": [
+    " 1 ",
+    "1 1",
+    "232"
+  ],
+  "result": {
+    "count": 1,
+    "id": "gemthing:relay"
+  }
+}

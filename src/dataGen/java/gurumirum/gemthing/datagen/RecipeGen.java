@@ -94,6 +94,16 @@ public class RecipeGen extends RecipeProvider {
 				.define('2', GemItems.PEARL)
 				.unlockedBy("has_pearl", has(GemItems.PEARL))
 				.save(out);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RELAY)
+				.pattern(" 1 ")
+				.pattern("1 1")
+				.pattern("232")
+				.define('1', ModItemTags.BRIGHTSTONES)
+				.define('2', Tags.Items.NUGGETS_GOLD)
+				.define('3', ItemTags.WOODEN_SLABS)
+				.unlockedBy("has_brightstones", has(ModItemTags.BRIGHTSTONES))
+				.save(out);
 	}
 
 	private ShapedRecipeBuilder wandRecipe(boolean tool, ItemLike result) {
