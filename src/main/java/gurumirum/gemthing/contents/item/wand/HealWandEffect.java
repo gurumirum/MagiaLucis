@@ -22,7 +22,7 @@ public class HealWandEffect extends WandEffect.SpinningTipEffect {
 
 	@Override
 	protected float getRotationDegrees(Player player, ItemStack stack, int ticksUsingItem, boolean firstPersonPerspective, float partialTicks) {
-		return RotationLogic.rotation(ticksUsingItem, ROTATION_PERIOD, partialTicks);
+		return -RotationLogic.rotation(ticksUsingItem, ROTATION_PERIOD, partialTicks);
 	}
 
 	@Override

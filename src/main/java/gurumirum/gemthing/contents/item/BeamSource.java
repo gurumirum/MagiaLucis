@@ -14,7 +14,7 @@ public interface BeamSource {
 
 	default float beamRotationDegrees(Player player, ItemStack stack, int ticksUsingItem,
 	                                   boolean firstPersonPerspective, float partialTicks) {
-		return RotationLogic.rotation(ticksUsingItem, DEFAULT_ROTATION_PERIOD, partialTicks);
+		return -RotationLogic.rotation(ticksUsingItem, DEFAULT_ROTATION_PERIOD, partialTicks);
 	}
 
 	int beamStartDelay(Player player, ItemStack stack);
