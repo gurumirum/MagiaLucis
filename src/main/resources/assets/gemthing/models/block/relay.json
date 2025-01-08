@@ -2,60 +2,6 @@
   "parent": "block/block",
   "elements": [
     {
-      "from": [2, 2, 5],
-      "to": [3, 4, 11],
-      "rotation": {"angle": 45, "axis": "z", "origin": [2, 4, 8], "rescale": true},
-      "color": 3,
-      "faces": {
-        "north": {"uv": [1, 0, 2, 2], "texture": "#missing"},
-        "east": {"uv": [4, 0, 10, 2], "texture": "#missing"},
-        "south": {"uv": [1, 0, 2, 2], "texture": "#missing"},
-        "west": {"uv": [4, 0, 10, 2], "texture": "#missing"},
-        "up": {"uv": [3, 4, 4, 10], "texture": "#missing"},
-        "down": {"uv": [3, 4, 4, 10], "texture": "#missing"}
-      }
-    },
-    {
-      "from": [2, 4, 5],
-      "to": [4, 12, 11],
-      "color": 6,
-      "faces": {
-        "north": {"uv": [1, 0, 3, 8], "texture": "#missing"},
-        "east": {"uv": [4, 0, 10, 8], "texture": "#missing"},
-        "south": {"uv": [1, 0, 3, 8], "texture": "#missing"},
-        "west": {"uv": [4, 0, 10, 8], "texture": "#missing"},
-        "up": {"uv": [1, 0, 3, 6], "texture": "#missing"},
-        "down": {"uv": [1, 0, 3, 6], "texture": "#missing"}
-      }
-    },
-    {
-      "from": [13, 2, 5],
-      "to": [14, 4, 11],
-      "rotation": {"angle": -45, "axis": "z", "origin": [14, 4, 8], "rescale": true},
-      "color": 3,
-      "faces": {
-        "north": {"uv": [2, 0, 1, 2], "texture": "#missing"},
-        "east": {"uv": [10, 0, 4, 2], "texture": "#missing"},
-        "south": {"uv": [2, 0, 1, 2], "texture": "#missing"},
-        "west": {"uv": [10, 0, 4, 2], "texture": "#missing"},
-        "up": {"uv": [4, 4, 3, 10], "texture": "#missing"},
-        "down": {"uv": [4, 4, 3, 10], "texture": "#missing"}
-      }
-    },
-    {
-      "from": [12, 4, 5],
-      "to": [14, 12, 11],
-      "color": 6,
-      "faces": {
-        "north": {"uv": [3, 0, 1, 8], "texture": "#missing"},
-        "east": {"uv": [10, 0, 4, 8], "texture": "#missing"},
-        "south": {"uv": [3, 0, 1, 8], "texture": "#missing"},
-        "west": {"uv": [10, 0, 4, 8], "texture": "#missing"},
-        "up": {"uv": [3, 0, 1, 6], "texture": "#missing"},
-        "down": {"uv": [3, 0, 1, 6], "texture": "#missing"}
-      }
-    },
-    {
       "from": [2, 0, 2],
       "to": [14, 2, 14],
       "color": 8,
@@ -81,6 +27,5 @@
         "down": {"uv": [0, 0, 8, 8], "texture": "#missing"}
       }
     }
-  ],
-  "display": {}
+  ]
 }
