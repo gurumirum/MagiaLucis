@@ -3,40 +3,28 @@ package gurumirum.gemthing.contents.block.lux.relay;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.client.ModRenderTypes;
 import gurumirum.gemthing.client.RenderShapes;
+import gurumirum.gemthing.client.RotationLogic;
 import gurumirum.gemthing.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.gemthing.utils.AprilFoolsUtils;
-import net.minecraft.client.Camera;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-
-@EventBusSubscriber(modid = GemthingMod.MODID, value = Dist.CLIENT)
 public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<RelayBlockEntity> {
-	private static final Queue<BlockPos> relay = new ArrayDeque<>();
+	public static final long ROTATION_PERIOD = 160;
 
 	private final Vector3d luxFlow = new Vector3d();
 
@@ -77,9 +65,7 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 
 			if (level != null) {
 				poseStack.translate(.5f, 0, .5f);
-				float rotation = (level.getGameTime() % 720) * -2.5f;
-				poseStack.mulPose(Axis.YP.rotationDegrees(
-						mc.isPaused() ? rotation : Mth.lerp(partialTick, rotation, rotation + 1)));
+				poseStack.mulPose(Axis.YP.rotationDegrees(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTick)));
 				poseStack.translate(-.5f, 0, -.5f);
 			}
 
@@ -93,8 +79,6 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 			VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.RELAY);
 			RenderShapes.drawOctahedron(poseStack, vc, 0xffd2ecf6, false);
 			RenderShapes.drawOctahedron(poseStack, vc, -1, true);
-
-			// relay.add(blockEntity.getBlockPos());
 		}
 
 		if (transformed) poseStack.popPose();
@@ -109,9 +93,7 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 		Minecraft mc = Minecraft.getInstance();
 
 		if (level != null) {
-			float rotation = (level.getGameTime() % 720) * -2.5f;
-			poseStack.mulPose(Axis.YP.rotationDegrees(
-					mc.isPaused() ? rotation : Mth.lerp(partialTick, rotation, rotation + 1)));
+			poseStack.mulPose(Axis.YP.rotationDegrees(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTick)));
 		}
 
 		double max = luxFlow == null ? 0 : Math.max(Math.max(luxFlow.x, luxFlow.y), luxFlow.z);
@@ -127,35 +109,5 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 				0);
 
 		poseStack.popPose();
-	}
-
-	@SubscribeEvent
-	public static void onRender(RenderLevelStageEvent event) {
-		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
-		if (relay.isEmpty()) return;
-
-		Minecraft mc = Minecraft.getInstance();
-		PoseStack poseStack = event.getPoseStack();
-		MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-
-		Camera camera = event.getCamera();
-
-		poseStack.pushPose();
-		Vec3 cameraPos = camera.getPosition();
-		poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-
-		for (BlockPos pos : relay) {
-			poseStack.pushPose();
-			poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
-
-			VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.RELAY);
-			RenderShapes.drawOctahedron(poseStack, vc, 0xffd2ecf6, false);
-			RenderShapes.drawOctahedron(poseStack, vc, -1, true);
-
-			poseStack.popPose();
-		}
-
-		poseStack.popPose();
-		relay.clear();
 	}
 }
