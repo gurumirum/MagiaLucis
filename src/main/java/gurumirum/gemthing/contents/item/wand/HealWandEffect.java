@@ -1,5 +1,6 @@
 package gurumirum.gemthing.contents.item.wand;
 
+import gurumirum.gemthing.client.RotationLogic;
 import gurumirum.gemthing.client.WandEffect;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -11,6 +12,7 @@ import static gurumirum.gemthing.GemthingMod.id;
 public class HealWandEffect extends WandEffect.SpinningTipEffect {
 	public static final HealWandEffect INSTANCE = new HealWandEffect();
 
+	private static final long ROTATION_PERIOD = 90;
 	private static final ResourceLocation TEXTURE = id("textures/wand_effect/heal.png");
 
 	@Override
@@ -19,8 +21,8 @@ public class HealWandEffect extends WandEffect.SpinningTipEffect {
 	}
 
 	@Override
-	protected double getRotationDegrees(Player player, ItemStack stack, int ticksUsingItem, boolean firstPersonPerspective) {
-		return ticksUsingItem * 4;
+	protected float getRotationDegrees(Player player, ItemStack stack, int ticksUsingItem, boolean firstPersonPerspective, float partialTicks) {
+		return RotationLogic.rotation(ticksUsingItem, ROTATION_PERIOD, partialTicks);
 	}
 
 	@Override

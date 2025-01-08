@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -133,10 +132,7 @@ public final class BeamRender {
 		poseStack.scale(diameter, diameter, 1);
 
 		int ticksUsingItem = player.getTicksUsingItem();
-		poseStack.mulPose(Axis.ZP.rotationDegrees(
-				(float)Mth.rotLerp(partialTick,
-						beamSource.beamRotationDegrees(player, stack, ticksUsingItem, firstPersonPerspective),
-						beamSource.beamRotationDegrees(player, stack, ticksUsingItem + 1, firstPersonPerspective))));
+		poseStack.mulPose(Axis.ZP.rotationDegrees(beamSource.beamRotationDegrees(player, stack, ticksUsingItem, firstPersonPerspective, partialTick)));
 
 		int color = beamSource.beamColor(player, stack, firstPersonPerspective);
 		RenderShapes.untexturedZGradientBox(
