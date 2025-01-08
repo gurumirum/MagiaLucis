@@ -3,6 +3,7 @@ package gurumirum.gemthing.contents.block.lux.relay;
 import gurumirum.gemthing.capability.LuxStat;
 import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.impl.LuxStatTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -149,6 +150,11 @@ public class RelayBlock extends Block implements EntityBlock {
 		ItemStack s = RelayItemData.getItem(stack);
 		if (!s.isEmpty()) {
 			tooltip.add(s.getHoverName().copy().withStyle(ChatFormatting.GOLD));
+			LuxStat gemStat = s.getCapability(ModCapabilities.GEM_STAT);
+			if (gemStat != null) {
+				LuxStatTooltip.formatStat(gemStat, tooltip);
+				LuxStatTooltip.skipAutoTooltipFor(stack);
+			}
 		}
 	}
 }

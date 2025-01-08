@@ -46,7 +46,7 @@ public abstract class RemoteChargerBlock extends Block implements EntityBlock {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		LuxStatTooltip.formatSourceStat(this.stat, tooltip, LuxStatTooltip.Mode.ALWAYS_VISIBLE);
+		LuxStatTooltip.formatStat(this.stat, tooltip);
 	}
 
 	public static class Basic extends RemoteChargerBlock {

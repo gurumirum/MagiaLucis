@@ -1,5 +1,6 @@
 package gurumirum.gemthing.impl;
 
+import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.capability.LuxContainerStat;
 import gurumirum.gemthing.capability.LuxStat;
 import gurumirum.gemthing.capability.ModCapabilities;
@@ -12,10 +13,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@EventBusSubscriber
+@EventBusSubscriber(modid = GemthingMod.MODID)
 public final class LuxStatTooltip {
 	private LuxStatTooltip() {}
 
@@ -23,10 +25,21 @@ public final class LuxStatTooltip {
 	private static final char HALF_BLOCK = '▌';
 	private static final char MINI_BLOCK = '▏';
 
+	private static @Nullable ItemStack tooltipSkippedStack;
+
+	public static void skipAutoTooltipFor(ItemStack stack) {
+		tooltipSkippedStack = stack;
+	}
+
 	// TODO localize
 	@SubscribeEvent
 	public static void onItemTooltip(ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
+		ItemStack skipped = tooltipSkippedStack;
+		if (skipped != null) {
+			tooltipSkippedStack = null;
+			if (stack == skipped) return;
+		}
 
 		LuxContainerStat containerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (containerStat != null) {
@@ -52,11 +65,11 @@ public final class LuxStatTooltip {
 		formatInternal(stat, tooltip, -1, mode, true);
 	}
 
-	public static void formatSourceStat(LuxStat stat, List<Component> tooltip) {
-		formatSourceStat(stat, tooltip, Mode.ALWAYS_VISIBLE);
+	public static void formatStat(LuxStat stat, List<Component> tooltip) {
+		formatStat(stat, tooltip, Mode.ALWAYS_VISIBLE);
 	}
 
-	public static void formatSourceStat(LuxStat stat, List<Component> tooltip, Mode mode) {
+	public static void formatStat(LuxStat stat, List<Component> tooltip, Mode mode) {
 		formatInternal(stat, tooltip, -1, mode, false);
 	}
 

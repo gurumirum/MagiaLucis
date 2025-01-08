@@ -3,6 +3,7 @@ package gurumirum.gemthing.contents.item;
 import gurumirum.gemthing.capability.LuxContainerStat;
 import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.impl.LuxStatTooltip;
 import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
@@ -26,6 +27,8 @@ public class LuxBatteryItem extends Item {
 
 		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
 		tooltip.add(Component.literal(charge + " / " + luxContainerStat.maxCharge()));
+		LuxStatTooltip.formatContainerStat(luxContainerStat, tooltip);
+		LuxStatTooltip.skipAutoTooltipFor(stack);
 	}
 
 	@Override

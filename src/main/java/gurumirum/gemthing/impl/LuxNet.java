@@ -313,7 +313,8 @@ public final class LuxNet extends SavedData {
 				continue;
 			}
 
-			addLink(node, n, this.linkCollector.inWorldLinks.get(linkIndex).info());
+			InWorldLinkState linkState = this.linkCollector.inWorldLinks.get(linkIndex);
+			addLink(node, n, linkState != null ? linkState.info() : null);
 		}
 
 		iface.syncLinkStatus(Int2ObjectMaps.unmodifiable(this.linkCollector.inWorldLinks));

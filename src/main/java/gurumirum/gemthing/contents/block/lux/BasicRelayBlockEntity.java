@@ -80,7 +80,7 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 					continue;
 				}
 			}
-			linkCollector.inWorldLinkFail(i, hitResult.getBlockPos(), hitResult.getLocation());
+			linkCollector.inWorldLinkFail(i, pos, hitResult.getLocation());
 		}
 	}
 

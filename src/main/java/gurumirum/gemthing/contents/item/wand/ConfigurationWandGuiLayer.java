@@ -36,18 +36,26 @@ public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
 			list.add("Node: #" + be.luxNodeId() + " [" + be.getBlockPos().toShortString() + "]");
 
 			if (!be.outboundLinks().isEmpty()) {
-				list.add("");
-				list.add("Outbound Links:");
+				boolean first = true;
 				for (var e : be.outboundLinks().int2ObjectEntrySet()) {
 					if (e.getValue() == null) continue;
+					if (first) {
+						first = false;
+						list.add("");
+						list.add("Outbound Links:");
+					}
 					list.add("#" + e.getIntKey() + " [" + BlockPos.containing(e.getValue().linkLocation()).toShortString() + "]");
 				}
 			}
 			if (!be.inboundLinks().isEmpty()) {
-				list.add("");
-				list.add("Inbound Links:");
+				boolean first = true;
 				for (var e : be.inboundLinks().int2ObjectEntrySet()) {
 					if (e.getValue() == null) continue;
+					if (first) {
+						first = false;
+						list.add("");
+						list.add("Inbound Links:");
+					}
 					list.add("#" + e.getIntKey() + " [" + e.getValue().origin().toShortString() + "]");
 				}
 			}

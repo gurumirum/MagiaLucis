@@ -70,13 +70,13 @@ public class RelayBlockEntity extends BasicRelayBlockEntity {
 	protected void applyImplicitComponents(BlockEntity.@NotNull DataComponentInput componentInput) {
 		super.applyImplicitComponents(componentInput);
 		RelayItemData relayItemData = componentInput.get(Contents.RELAY_ITEM.get());
-		this.stack = relayItemData != null ? relayItemData.stack() : ItemStack.EMPTY;
+		this.stack = relayItemData != null ? relayItemData.stack().copy() : ItemStack.EMPTY;
 	}
 
 	@Override
 	protected void collectImplicitComponents(DataComponentMap.@NotNull Builder components) {
 		super.collectImplicitComponents(components);
-		components.set(Contents.RELAY_ITEM.get(), new RelayItemData(this.stack));
+		if (!this.stack.isEmpty()) components.set(Contents.RELAY_ITEM.get(), new RelayItemData(this.stack.copy()));
 	}
 
 	@Override

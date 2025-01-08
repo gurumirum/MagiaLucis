@@ -1,6 +1,7 @@
 package gurumirum.gemthing.contents;
 
 import gurumirum.gemthing.contents.block.AmberLightBlock;
+import gurumirum.gemthing.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.gemthing.contents.block.lux.relay.RelayBlock;
 import gurumirum.gemthing.contents.block.lux.remotecharger.RemoteChargerBlock;
 import gurumirum.gemthing.contents.block.lux.source.LuxSourceBlock;
@@ -32,6 +33,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 	REMOTE_CHARGER(BlockProfile.customBlock(RemoteChargerBlock.Basic::new, Properties.of())),
 	REMOTE_CHARGER_2(BlockProfile.customBlock(RemoteChargerBlock.Advanced::new, Properties.of())),
 	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of())),
+	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of().lightLevel(state -> 9))),
 	LUX_SOURCE(BlockProfile.customBlock(LuxSourceBlock::new, Properties.of()));
 
 	private final DeferredBlock<? extends Block> block;

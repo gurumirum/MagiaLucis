@@ -1,6 +1,9 @@
 package gurumirum.gemthing.capability;
 
-import gurumirum.gemthing.contents.*;
+import gurumirum.gemthing.contents.GemItems;
+import gurumirum.gemthing.contents.ModBlockEntities;
+import gurumirum.gemthing.contents.ModItems;
+import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltItem;
 import gurumirum.gemthing.impl.RGB332;
 import net.minecraft.core.Direction;
@@ -8,6 +11,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.BlockCapability;
@@ -50,11 +54,13 @@ public final class ModCapabilities {
 		event.registerItem(ItemHandler.ITEM, (s, v) -> new WandBeltItem.ItemHandler(s), ModItems.WAND_BELT);
 
 		registerRelayLinkSource(event, ModBlockEntities.RELAY.get());
-		registerLuxNodeBlock(event, ModBlockEntities.RELAY.get());
+		event.registerBlockEntity(LUX_NET_COMPONENT, ModBlockEntities.RELAY.get(), (be, dir) ->
+				be.getBlockState().getValue(BlockStateProperties.FACING).getOpposite() != dir ? be : null);
+
 		registerRelayLinkSource(event, ModBlockEntities.LUX_SOURCE.get());
-		registerLuxNodeBlock(event, ModBlockEntities.LUX_SOURCE.get());
-		registerLuxNodeBlock(event, ModBlockEntities.REMOTE_CHARGER.get());
-		registerLuxNodeBlock(event, ModBlockEntities.REMOTE_CHARGER_2.get());
+		registerLuxNetComponent(event, ModBlockEntities.LUX_SOURCE.get());
+		registerLuxNetComponent(event, ModBlockEntities.REMOTE_CHARGER.get());
+		registerLuxNetComponent(event, ModBlockEntities.REMOTE_CHARGER_2.get());
 	}
 
 	private static void registerLuxContainer(RegisterCapabilitiesEvent event, LuxContainerStat stat, ItemLike... items) {
@@ -66,7 +72,7 @@ public final class ModCapabilities {
 		event.registerBlockEntity(LINK_SOURCE, type, (be, context) -> be);
 	}
 
-	private static <T extends BlockEntity & LuxNetComponent> void registerLuxNodeBlock(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
+	private static <T extends BlockEntity & LuxNetComponent> void registerLuxNetComponent(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
 		event.registerBlockEntity(LUX_NET_COMPONENT, type, (be, context) -> be);
 	}
 }

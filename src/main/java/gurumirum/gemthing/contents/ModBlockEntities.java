@@ -1,5 +1,6 @@
 package gurumirum.gemthing.contents;
 
+import gurumirum.gemthing.contents.block.lux.ambercore.AmberCoreBlockEntity;
 import gurumirum.gemthing.contents.block.lux.relay.RelayBlockEntity;
 import gurumirum.gemthing.contents.block.lux.remotecharger.RemoteChargerBlockEntity;
 import gurumirum.gemthing.contents.block.lux.source.LuxSourceBlockEntity;
@@ -14,6 +15,9 @@ import static gurumirum.gemthing.contents.Contents.BLOCK_ENTITIES;
 
 public final class ModBlockEntities {
 	private ModBlockEntities() {}
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmberCoreBlockEntity>> AMBER_CORE =
+			blockEntity("amber_core", AmberCoreBlockEntity::new, ModBlocks.AMBER_CORE);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RelayBlockEntity>> RELAY =
 			blockEntity("relay", RelayBlockEntity::new, ModBlocks.RELAY);
