@@ -1,5 +1,6 @@
 package gurumirum.gemthing.capability;
 
+import gurumirum.gemthing.impl.InWorldLinkState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -13,6 +14,7 @@ public interface LinkSource {
 
 	int maxLinks();
 	@Nullable Orientation getLink(int index);
+	@Nullable InWorldLinkState getLinkState(int index);
 	void setLink(int index, @Nullable Orientation orientation);
 
 	default double linkDistance() {

@@ -7,11 +7,13 @@ import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.contents.ModBlockEntities;
 import gurumirum.gemthing.contents.block.Ticker;
 import gurumirum.gemthing.contents.block.lux.LuxNodeBlockEntity;
+import gurumirum.gemthing.impl.InWorldLinkState;
 import gurumirum.gemthing.impl.LuxConsumerNodeInterface;
 import gurumirum.gemthing.impl.LuxNet;
 import gurumirum.gemthing.utils.LuxUtils;
 import gurumirum.gemthing.utils.NumberFormats;
 import gurumirum.gemthing.utils.TagUtils;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
 public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Ticker, LuxConsumerNodeInterface {
@@ -116,6 +119,8 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 
 	@Override
 	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {}
+	@Override
+	public void syncLinkStatus(@NotNull @UnmodifiableView Int2ObjectMap<InWorldLinkState> linkIndexToState) {}
 
 	@Override
 	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {

@@ -6,6 +6,9 @@ import gurumirum.gemthing.capability.ModCapabilities;
 import gurumirum.gemthing.client.ModRenderTypes;
 import gurumirum.gemthing.client.RenderShapes;
 import gurumirum.gemthing.contents.Contents;
+import gurumirum.gemthing.contents.block.lux.RelaySyncPropertyAccess;
+import gurumirum.gemthing.impl.InWorldLinkInfo;
+import gurumirum.gemthing.impl.InWorldLinkState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -29,11 +32,10 @@ import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static gurumirum.gemthing.GemthingMod.MODID;
 import static gurumirum.gemthing.GemthingMod.id;
-import static gurumirum.gemthing.contents.item.wand.ConfigurationWandItem.ClientFunction.*;
+import static gurumirum.gemthing.contents.item.wand.ConfigurationWandItem.ClientFunction.isCtrlPressed;
 
 @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
 public final class ConfigurationWandOverlay {
@@ -44,6 +46,7 @@ public final class ConfigurationWandOverlay {
 	private static final int TINT_SELECT = 0xee00ff00;
 	private static final int TINT_MISSING = 0xeeffff00;
 	private static final int TINT_REMOVE = 0xee800000;
+	private static final int TINT_INPUT = 0xee284ea4;
 
 	@SubscribeEvent
 	public static void onRender(RenderLevelStageEvent event) {
@@ -119,15 +122,8 @@ public final class ConfigurationWandOverlay {
 				visualData.overlayText.add(ChatFormatting.YELLOW + "SHIFT+RClick" + ChatFormatting.RESET + " to remove all links");
 
 				if (player.isSecondaryUseActive()) {
-					if (linkSource != null) {
-						for (@Nullable BlockHitResult hitResult : getConnections(level, linkSource, cursorHitPos)) {
-							if (hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
-								visualData.lines.add(new Line(cursorHitPos, hitResult.getLocation(), TINT_REMOVE));
-							}
-						}
-					}
-
 					boxTint = TINT_REMOVE;
+					if (linkSource != null) addAllConnections(linkSource, true);
 				}
 				visualData.boxes.add(new Box(linkSourcePos.pos(), boxTint));
 				return;
@@ -157,22 +153,23 @@ public final class ConfigurationWandOverlay {
 						}
 
 						if (closestIndex != -1) {
-							BlockHitResult hitResult = getConnection(level, linkSource, Vec3.atCenterOf(linkSourcePos.pos()), closestIndex);
-							if (hitResult != null)
-								visualData.lines.add(new Line(linkSourcePos.pos(), hitResult.getLocation(), TINT_REMOVE));
+							InWorldLinkState linkState = linkSource.getLinkState(closestIndex);
+							if (linkState != null)
+								visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
 						}
 					} else {
-						@Nullable BlockHitResult[] connections = getConnections(level, linkSource, linkSourcePos.pos());
 						int firstNull = -1;
 						boolean skipNewLink = false;
 
-						for (int i = 0; i < connections.length; i++) {
-							BlockHitResult h = connections[i];
-							if (h == null) {
+						for (int i = 0, maxLinks = linkSource.maxLinks(); i < maxLinks; i++) {
+							if (linkSource.getLink(i) == null) {
 								if (firstNull == -1) firstNull = i;
-							} else if (h.getBlockPos().equals(cursorHitPos)) {
+								continue;
+							}
+							InWorldLinkState linkState = linkSource.getLinkState(i);
+							if (linkState != null && BlockPos.containing(linkState.linkLocation()).equals(cursorHitPos)) {
 								// duplicate detected; remove preexisting connection instead
-								visualData.lines.add(new Line(linkSourcePos.pos(), h.getLocation(), TINT_REMOVE));
+								visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
 								removeLink = true;
 								skipNewLink = true;
 								break;
@@ -181,9 +178,10 @@ public final class ConfigurationWandOverlay {
 
 						if (!skipNewLink) {
 							if (firstNull == -1) {
-								visualData.lines.add(new Line(linkSourcePos.pos(),
-										Objects.requireNonNull(connections[connections.length - 1]).getLocation(),
-										TINT_REMOVE));
+								InWorldLinkState linkState = linkSource.getLinkState(linkSource.maxLinks() - 1);
+								if (linkState != null) {
+									visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
+								}
 							}
 							visualData.lines.add(new Line(linkSourcePos.pos(),
 									isCtrlPressed() ? cursorHitLocation : Vec3.atCenterOf(cursorHitPos), TINT_SELECT));
@@ -210,15 +208,7 @@ public final class ConfigurationWandOverlay {
 		if (cursorHitPos != null) {
 			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, cursorHitPos);
 			if (linkSource != null) {
-				for (@Nullable BlockHitResult hitResult : getConnections(level, linkSource, cursorHitPos)) {
-					if (hitResult != null) {
-						visualData.lines.add(new Line(cursorHitPos, hitResult.getLocation(),
-								player.isSecondaryUseActive() ? TINT_REMOVE :
-										hitResult.getType() == HitResult.Type.BLOCK &&
-												level.getCapability(ModCapabilities.LINK_SOURCE, hitResult.getBlockPos()) != null ?
-												TINT_SELECT : TINT_MISSING));
-					}
-				}
+				addAllConnections(linkSource, player.isSecondaryUseActive());
 
 				visualData.overlayText.add(ChatFormatting.YELLOW + "RClick" + ChatFormatting.RESET + " to start link");
 				visualData.overlayText.add(ChatFormatting.YELLOW + "SHIFT+RClick" + ChatFormatting.RESET + " to remove all links");
@@ -260,7 +250,24 @@ public final class ConfigurationWandOverlay {
 		poseStack.popPose();
 	}
 
-	public static class OverlayVisualData {
+	private static void addAllConnections(LinkSource linkSource, boolean remove) {
+		for (int i = 0, maxLinks = linkSource.maxLinks(); i < maxLinks; i++) {
+			InWorldLinkState linkState = linkSource.getLinkState(i);
+			if (linkState == null) continue;
+			visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(),
+					remove ? TINT_REMOVE : linkState.linked() ? TINT_SELECT : TINT_MISSING));
+		}
+
+		if (linkSource instanceof RelaySyncPropertyAccess a) {
+			for (var e : a.inboundLinks().int2ObjectEntrySet()) {
+				InWorldLinkInfo linkState = e.getValue();
+				if (linkState == null) continue;
+				visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_INPUT));
+			}
+		}
+	}
+
+	public static final class OverlayVisualData {
 		public final List<Box> boxes = new ArrayList<>();
 		public final List<Line> lines = new ArrayList<>();
 		public final List<String> overlayText = new ArrayList<>();

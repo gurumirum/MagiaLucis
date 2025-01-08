@@ -6,6 +6,7 @@ import gurumirum.gemthing.contents.block.SyncedBlockEntity;
 import gurumirum.gemthing.impl.*;
 import gurumirum.gemthing.utils.TagUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -22,12 +23,11 @@ import org.joml.Vector3d;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements BlockEntityUtils, LuxNodeInterface, LuxNetComponent {
+public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements BlockEntityUtils, LuxNodeInterface, LuxNetComponent, RelaySyncPropertyAccess {
 	private int nodeId;
 	private final Vector3d luxFlow = new Vector3d();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks = new Int2ObjectOpenHashMap<>();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> inboundLinks = new Int2ObjectOpenHashMap<>();
-	private final Int2ObjectMap<InWorldLinkState> linkIndexToState = new Int2ObjectOpenHashMap<>();
 
 	private byte color;
 	private double minLuxThreshold;
@@ -44,30 +44,38 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements Bl
 		return this.nodeId;
 	}
 
-	public Vector3d influx(Vector3d dest) {
+	@Override
+	public Vector3d luxFlow(Vector3d dest) {
 		return dest.set(this.luxFlow);
 	}
 
-	public Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks() {
-		return this.outboundLinks;
+	@Override
+	public @NotNull @UnmodifiableView Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks() {
+		return Int2ObjectMaps.unmodifiable(this.outboundLinks);
 	}
 
-	public Int2ObjectMap<@Nullable InWorldLinkInfo> inboundLinks() {
-		return this.inboundLinks;
+	@Override
+	public @NotNull @UnmodifiableView Int2ObjectMap<@Nullable InWorldLinkInfo> inboundLinks() {
+		return Int2ObjectMaps.unmodifiable(this.inboundLinks);
 	}
 
+	@Override
 	public byte color() {
 		return color;
 	}
+	@Override
 	public double minLuxThreshold() {
 		return minLuxThreshold;
 	}
+	@Override
 	public double rMaxTransfer() {
 		return rMaxTransfer;
 	}
+	@Override
 	public double gMaxTransfer() {
 		return gMaxTransfer;
 	}
+	@Override
 	public double bMaxTransfer() {
 		return bMaxTransfer;
 	}
@@ -157,32 +165,16 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements Bl
 		if (changed) syncToClient();
 	}
 
-	@SuppressWarnings("DataFlowIssue") // ??
-	@Override
-	public void syncLinkStatus(@NotNull @UnmodifiableView Int2ObjectMap<InWorldLinkState> linkIndexToState) {
-		if (this.linkIndexToState.equals(linkIndexToState)) {
-			this.linkIndexToState.clear();
-			this.linkIndexToState.putAll(linkIndexToState);
-			syncToClient();
-		}
-	}
-
 	@Override
 	protected void load(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
 		super.load(tag, lookupProvider, context);
 		this.nodeId = tag.getInt("nodeId");
+
 		if (context.isSync()) {
 			TagUtils.readVector3d(tag, "luxFlow", this.luxFlow);
 
 			loadLinkMap(tag.getList("outboundLinks", Tag.TAG_COMPOUND), this.outboundLinks);
 			loadLinkMap(tag.getList("inboundLinks", Tag.TAG_COMPOUND), this.inboundLinks);
-
-			ListTag list = tag.getList("linkIndexToState", Tag.TAG_COMPOUND);
-			this.linkIndexToState.clear();
-			for (int i = 0; i < list.size(); i++) {
-				CompoundTag tag2 = list.getCompound(i);
-				this.linkIndexToState.put(tag2.getInt("index"), new InWorldLinkState(tag2));
-			}
 
 			this.color = tag.getByte("color");
 			this.minLuxThreshold = tag.getDouble("minLuxThreshold");
@@ -196,19 +188,12 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements Bl
 	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
 		super.save(tag, lookupProvider, context);
 		tag.putInt("nodeId", this.nodeId);
+
 		if (context.isSync()) {
 			TagUtils.writeVector3d(tag, "luxFlow", this.luxFlow);
 
 			tag.put("outboundLinks", saveLinkMap(this.outboundLinks));
 			tag.put("inboundLinks", saveLinkMap(this.inboundLinks));
-
-			ListTag list = new ListTag();
-			for (var e : this.linkIndexToState.int2ObjectEntrySet()) {
-				CompoundTag tag2 = e.getValue().save();
-				tag2.putInt("index", e.getIntKey());
-				list.add(tag2);
-			}
-			tag.put("linkIndexToState", list);
 
 			tag.putByte("color", this.color);
 			tag.putDouble("minLuxThreshold", this.minLuxThreshold);

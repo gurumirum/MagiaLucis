@@ -33,17 +33,25 @@ public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
 
 			list.add("Node: #" + be.luxNodeId() + " [" + be.getBlockPos().toShortString() + "]");
 
-			list.add("Outbound Links:");
-			for (var e : be.outboundLinks().int2ObjectEntrySet()) {
-				if (e.getValue() == null) continue;
-				list.add("#" + e.getIntKey() + " [" + BlockPos.containing(e.getValue().linkLocation()).toShortString() + "]");
+			if (!be.outboundLinks().isEmpty()) {
+				list.add("");
+				list.add("Outbound Links:");
+				for (var e : be.outboundLinks().int2ObjectEntrySet()) {
+					if (e.getValue() == null) continue;
+					list.add("#" + e.getIntKey() + " [" + BlockPos.containing(e.getValue().linkLocation()).toShortString() + "]");
+				}
 			}
-			list.add("Inbound Links:");
-			for (var e : be.inboundLinks().int2ObjectEntrySet()) {
-				if (e.getValue() == null) continue;
-				list.add("#" + e.getIntKey() + " [" + e.getValue().origin().toShortString() + "]");
+			if (!be.inboundLinks().isEmpty()) {
+				list.add("");
+				list.add("Inbound Links:");
+				for (var e : be.inboundLinks().int2ObjectEntrySet()) {
+					if (e.getValue() == null) continue;
+					list.add("#" + e.getIntKey() + " [" + e.getValue().origin().toShortString() + "]");
+				}
 			}
-			list.add("LUX Flow: " + be.influx(new Vector3d()).toString(NumberFormats.DECIMAL));
+
+			list.add("");
+			list.add("LUX Flow: " + be.luxFlow(new Vector3d()).toString(NumberFormats.DECIMAL));
 			list.add("color = " + be.color());
 			list.add("minLuxThreshold = " + be.minLuxThreshold());
 			list.add("rMaxTransfer = " + be.rMaxTransfer());

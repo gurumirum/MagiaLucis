@@ -14,6 +14,14 @@ public record InWorldLinkState(boolean linked, @NotNull InWorldLinkInfo info) {
 		this(tag.getBoolean("linked"), new InWorldLinkInfo(tag));
 	}
 
+	public @NotNull BlockPos origin() {
+		return this.info.origin();
+	}
+
+	public @NotNull Vec3 linkLocation() {
+		return this.info.linkLocation();
+	}
+
 	public CompoundTag save() {
 		CompoundTag tag = new CompoundTag();
 		tag.putBoolean("linked", this.linked);
