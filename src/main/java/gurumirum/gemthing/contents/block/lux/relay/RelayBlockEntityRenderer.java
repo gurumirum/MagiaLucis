@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import gurumirum.gemthing.contents.block.lux.BasicRelayBlockEntityRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
@@ -11,8 +12,11 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3d;
 
 public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<RelayBlockEntity> {
+	private final Vector3d luxFlow = new Vector3d();
+
 	public RelayBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}
@@ -37,10 +41,14 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 					mc.isPaused() ? rotation : Mth.lerp(partialTick, rotation, rotation + 1)));
 		}
 
+		blockEntity.luxFlow(this.luxFlow);
+
+		double max = Math.max(Math.max(this.luxFlow.x, this.luxFlow.y), this.luxFlow.z);
+
 		mc.getItemRenderer().renderStatic(
 				stack,
 				ItemDisplayContext.GROUND,
-				15728880, // emissive
+				max > 0 ? LightTexture.FULL_BRIGHT : packedLight, // emissive
 				packedOverlay,
 				poseStack,
 				bufferSource,

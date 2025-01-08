@@ -53,6 +53,7 @@ public final class ConfigurationWandOverlay {
 		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
 
 		visualData.overlayText.clear();
+		visualData.active = false;
 
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null) return;
@@ -61,10 +62,12 @@ public final class ConfigurationWandOverlay {
 
 		ItemStack stack = player.getMainHandItem();
 		if (stack.getItem() instanceof ConfigurationWandItem) {
+			visualData.active = true;
 			updateAndDraw(event, player, mc.level, stack);
 		} else {
 			stack = player.getOffhandItem();
 			if (stack.getItem() instanceof ConfigurationWandItem) {
+				visualData.active = true;
 				updateAndDraw(event, player, mc.level, stack);
 			}
 		}
@@ -268,6 +271,7 @@ public final class ConfigurationWandOverlay {
 	}
 
 	public static final class OverlayVisualData {
+		public boolean active;
 		public final List<Box> boxes = new ArrayList<>();
 		public final List<Line> lines = new ArrayList<>();
 		public final List<String> overlayText = new ArrayList<>();

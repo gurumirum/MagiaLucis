@@ -24,6 +24,8 @@ public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
 
 	@Override
 	public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
+		if (!ConfigurationWandOverlay.visualData.active) return;
+
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level != null &&
 				mc.hitResult instanceof BlockHitResult blockHitResult &&
@@ -53,10 +55,10 @@ public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
 			list.add("");
 			list.add("LUX Flow: " + be.luxFlow(new Vector3d()).toString(NumberFormats.DECIMAL));
 			list.add("color = " + be.color());
-			list.add("minLuxThreshold = " + be.minLuxThreshold());
-			list.add("rMaxTransfer = " + be.rMaxTransfer());
-			list.add("gMaxTransfer = " + be.gMaxTransfer());
-			list.add("bMaxTransfer = " + be.bMaxTransfer());
+			list.add("minLuxThreshold = " + NumberFormats.DECIMAL.format(be.minLuxThreshold()));
+			list.add("rMaxTransfer = " + NumberFormats.DECIMAL.format(be.rMaxTransfer()));
+			list.add("gMaxTransfer = " + NumberFormats.DECIMAL.format(be.gMaxTransfer()));
+			list.add("bMaxTransfer = " + NumberFormats.DECIMAL.format(be.bMaxTransfer()));
 
 			drawDebugShit(guiGraphics, list);
 		}
