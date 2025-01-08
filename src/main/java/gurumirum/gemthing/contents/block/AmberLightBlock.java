@@ -59,8 +59,7 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	public @Nullable BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
 		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
-		return Objects.requireNonNull(super.getStateForPlacement(context))
-				.setValue(WATERLOGGED, fluidState.is(Fluids.WATER));
+		return defaultBlockState().setValue(WATERLOGGED, fluidState.is(Fluids.WATER));
 	}
 
 	@Override

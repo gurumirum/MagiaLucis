@@ -2,6 +2,7 @@ package gurumirum.gemthing.contents;
 
 import com.mojang.serialization.Codec;
 import gurumirum.gemthing.capability.GemStats;
+import gurumirum.gemthing.contents.block.lux.relay.RelayItemData;
 import gurumirum.gemthing.contents.entity.GemGolemEntity;
 import gurumirum.gemthing.contents.item.wandbelt.WandBeltMenu;
 import gurumirum.gemthing.contents.mobeffect.RecallFatigueMobEffect;
@@ -46,10 +47,10 @@ public final class Contents {
 					.clientTrackingRange(10)
 					.build("gem_golem"));
 
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemStack>> ITEM_STACK = DATA_COMPONENTS.register("item_stack",
-			() -> DataComponentType.<ItemStack>builder()
-					.persistent(ItemStack.CODEC)
-					.networkSynchronized(ItemStack.STREAM_CODEC)
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<RelayItemData>> RELAY_ITEM = DATA_COMPONENTS.register("relay_item",
+			() -> DataComponentType.<RelayItemData>builder()
+					.persistent(ItemStack.CODEC.xmap(RelayItemData::new, RelayItemData::stack))
+					.networkSynchronized(ItemStack.STREAM_CODEC.map(RelayItemData::new, RelayItemData::stack))
 					.build());
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<GlobalPos>> LINK_SOURCE = DATA_COMPONENTS.register("link_source",
@@ -102,6 +103,16 @@ public final class Contents {
 							for (var i : ModItems.values()) o.accept(i);
 							for (var i : ModBlocks.values()) {
 								if (i.blockItem() != null) o.accept(i);
+
+								if (i == ModBlocks.RELAY) {
+									for (GemStats g : GemStats.values()) {
+										g.forEachItem(item -> {
+											ItemStack stack = new ItemStack(ModBlocks.RELAY.asItem());
+											stack.set(RELAY_ITEM, new RelayItemData(new ItemStack(item)));
+											o.accept(stack);
+										});
+									}
+								}
 							}
 						})
 						.build());
@@ -110,13 +121,7 @@ public final class Contents {
 						.icon(() -> new ItemStack(GemItems.BRIGHTSTONE))
 						.displayItems((p, o) -> {
 							for (var ore : Ore.values()) ore.allOreItems().forEach(o::accept);
-							for (var g : GemStats.values()) {
-								o.accept(g.item());
-								if (g == GemStats.BRIGHTSTONE) {
-									o.accept(GemItems.RED_BRIGHTSTONE);
-									o.accept(GemItems.ICY_BRIGHTSTONE);
-								}
-							}
+							for (var g : GemStats.values()) g.forEachItem(o::accept);
 						})
 						.build());
 			});

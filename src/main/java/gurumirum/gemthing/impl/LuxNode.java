@@ -1,6 +1,5 @@
 package gurumirum.gemthing.impl;
 
-import gurumirum.gemthing.GemthingMod;
 import gurumirum.gemthing.capability.LuxStat;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
@@ -44,19 +43,11 @@ public final class LuxNode {
 		trimColorCharge();
 	}
 
-	boolean bindInterface(@Nullable LuxNodeInterface iface) {
-		if (this.iface == iface) return false;
-
-		if (iface == null || this.iface == null) {
-			this.iface = iface;
-			return true;
-		}
-
-		GemthingMod.LOGGER.info("""
-				Trying to bind a second lux node interface to node {}, ignoring
-				  Existing interface: {}
-				  Second interface: {}""", id, this.iface, iface);
-		return false;
+	BindInterfaceResult bindInterface(@Nullable LuxNodeInterface iface) {
+		if (this.iface == iface) return BindInterfaceResult.NO_CHANGE;
+		else if (iface != null && this.iface != null) return BindInterfaceResult.FAIL;
+		this.iface = iface;
+		return BindInterfaceResult.SUCCESS;
 	}
 
 	void trimColorCharge() {
@@ -118,5 +109,11 @@ public final class LuxNode {
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(this.id);
+	}
+
+	enum BindInterfaceResult {
+		SUCCESS,
+		FAIL,
+		NO_CHANGE
 	}
 }

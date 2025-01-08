@@ -1,7 +1,10 @@
-package gurumirum.gemthing.client;
+package gurumirum.gemthing.contents.item.wand;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import gurumirum.gemthing.client.BeamRender;
+import gurumirum.gemthing.client.ModArmPose;
+import gurumirum.gemthing.client.WandEffect;
 import gurumirum.gemthing.contents.item.BeamSource;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
@@ -14,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
-class WandItemExtension implements IClientItemExtensions {
+public class WandItemExtension implements IClientItemExtensions {
 	@Override
 	public HumanoidModel.@Nullable ArmPose getArmPose(@NotNull LivingEntity entity,
 	                                                  @NotNull InteractionHand hand,

@@ -2,7 +2,10 @@ package gurumirum.gemthing.contents.block.lux;
 
 import gurumirum.gemthing.capability.LuxNetComponent;
 import gurumirum.gemthing.contents.block.SyncedBlockEntity;
-import gurumirum.gemthing.impl.*;
+import gurumirum.gemthing.impl.InWorldLinkInfo;
+import gurumirum.gemthing.impl.LuxNet;
+import gurumirum.gemthing.impl.LuxNode;
+import gurumirum.gemthing.impl.LuxNodeInterface;
 import gurumirum.gemthing.utils.TagUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
@@ -14,6 +17,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -200,6 +204,13 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements Lu
 			tag.putDouble("gMaxTransfer", this.gMaxTransfer);
 			tag.putDouble("bMaxTransfer", this.bMaxTransfer);
 		}
+	}
+
+	@MustBeInvokedByOverriders
+	@SuppressWarnings("deprecation")
+	@Override
+	public void removeComponentsFromTag(CompoundTag tag) {
+		tag.remove("nodeId"); // do NOT copy node id lmao
 	}
 
 	private static boolean equals(Int2ObjectMap<@Nullable InWorldLinkInfo> m1, Map<LuxNode, @Nullable InWorldLinkInfo> m2) {

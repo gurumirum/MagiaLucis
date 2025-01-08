@@ -1,9 +1,12 @@
 package gurumirum.gemthing.client;
 
 import gurumirum.gemthing.GemthingMod;
+import gurumirum.gemthing.contents.block.lux.relay.RelayItemExtension;
+import gurumirum.gemthing.contents.item.wand.WandItemExtension;
 import gurumirum.gemthing.client.render.entity.GemGolemRenderer;
 import gurumirum.gemthing.contents.Contents;
 import gurumirum.gemthing.contents.ModBlockEntities;
+import gurumirum.gemthing.contents.ModBlocks;
 import gurumirum.gemthing.contents.Wands;
 import gurumirum.gemthing.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.gemthing.contents.block.lux.relay.RelayBlockEntityRenderer;
@@ -84,6 +87,7 @@ public final class ClientInit {
 	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerItem(new WandItemExtension(), Arrays.stream(Wands.values())
 				.map(Wands::asItem).toArray(Item[]::new));
+		event.registerItem(new RelayItemExtension(), ModBlocks.RELAY.asItem());
 	}
 
 	@SubscribeEvent

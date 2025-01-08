@@ -15,16 +15,20 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 import java.util.ArrayDeque;
@@ -45,9 +49,24 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		super.render(blockEntity, partialTick, poseStack, bufferSource, packedLight, packedOverlay);
 
+		BlockState state = blockEntity.getBlockState();
+		boolean transformed = false;
+
+		if (state.hasProperty(BlockStateProperties.FACING)) {
+			Direction facing = state.getValue(BlockStateProperties.FACING);
+			if (facing != Direction.UP) {
+				transformed = true;
+				poseStack.pushPose();
+				poseStack.translate(.5f, .5f, .5f);
+				poseStack.mulPose(facing.getRotation());
+				poseStack.translate(-.5f, -.5f, -.5f);
+			}
+		}
+
 		ItemStack stack = blockEntity.stack();
 		if (!stack.isEmpty()) {
-			drawItem(blockEntity, partialTick, poseStack, bufferSource, stack, packedLight, packedOverlay);
+			drawItem(blockEntity.getLevel(), partialTick, poseStack, bufferSource, stack, packedLight, packedOverlay,
+					blockEntity.luxFlow(this.luxFlow));
 		}
 
 		Minecraft mc = Minecraft.getInstance();
@@ -71,17 +90,23 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 
 			poseStack.popPose();
 		} else {
-			relay.add(blockEntity.getBlockPos());
+			VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.RELAY);
+			RenderShapes.drawOctahedron(poseStack, vc, 0xffd2ecf6, false);
+			RenderShapes.drawOctahedron(poseStack, vc, -1, true);
+
+			// relay.add(blockEntity.getBlockPos());
 		}
+
+		if (transformed) poseStack.popPose();
 	}
 
-	private void drawItem(RelayBlockEntity blockEntity, float partialTick, PoseStack poseStack,
-	                      MultiBufferSource bufferSource, ItemStack stack, int packedLight, int packedOverlay) {
+	public static void drawItem(@Nullable Level level, float partialTick, PoseStack poseStack,
+	                            MultiBufferSource bufferSource, ItemStack stack, int packedLight, int packedOverlay,
+	                            @Nullable Vector3d luxFlow) {
 		poseStack.pushPose();
 		poseStack.translate(.5f, .5f - 2 / 16f, .5f);
 
 		Minecraft mc = Minecraft.getInstance();
-		Level level = blockEntity.getLevel();
 
 		if (level != null) {
 			float rotation = (level.getGameTime() % 720) * -2.5f;
@@ -89,9 +114,7 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 					mc.isPaused() ? rotation : Mth.lerp(partialTick, rotation, rotation + 1)));
 		}
 
-		blockEntity.luxFlow(this.luxFlow);
-
-		double max = Math.max(Math.max(this.luxFlow.x, this.luxFlow.y), this.luxFlow.z);
+		double max = luxFlow == null ? 0 : Math.max(Math.max(luxFlow.x, luxFlow.y), luxFlow.z);
 
 		mc.getItemRenderer().renderStatic(
 				stack,

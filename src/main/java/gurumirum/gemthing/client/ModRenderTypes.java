@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterRenderBuffersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public final class ModRenderTypes {
 			MODID + "_beam",
 			DefaultVertexFormat.POSITION_COLOR,
 			VertexFormat.Mode.QUADS,
-			1536,
+			RenderType.TRANSIENT_BUFFER_SIZE,
 			true,
 			false,
 			RenderType.CompositeState.builder()
@@ -44,7 +45,7 @@ public final class ModRenderTypes {
 			MODID + "_relay",
 			DefaultVertexFormat.POSITION_COLOR_NORMAL,
 			VertexFormat.Mode.TRIANGLES,
-			1536,
+			RenderType.TRANSIENT_BUFFER_SIZE,
 			false,
 			true,
 			RenderType.CompositeState.builder()
@@ -53,15 +54,30 @@ public final class ModRenderTypes {
 					))
 					.setWriteMaskState(RenderType.COLOR_WRITE)
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
-					// .setCullState(RenderStateShard.NO_CULL)
-					.setOutputState(RenderType.PARTICLES_TARGET)
+					.setOutputState(RenderType.TRANSLUCENT_TARGET)
+					.createCompositeState(true));
+
+	public static final RenderType RELAY_ITEM_ENTITY = RenderType.create(
+			MODID + "_relay_item_entity",
+			DefaultVertexFormat.POSITION_COLOR_NORMAL,
+			VertexFormat.Mode.TRIANGLES,
+			RenderType.TRANSIENT_BUFFER_SIZE,
+			false,
+			false,
+			RenderType.CompositeState.builder()
+					.setShaderState(new RenderStateShard.ShaderStateShard(
+							() -> Objects.requireNonNull(ModRenderTypes.relayShader)
+					))
+					.setWriteMaskState(RenderType.COLOR_WRITE)
+					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
+					.setOutputState(RenderType.ITEM_ENTITY_TARGET)
 					.createCompositeState(true));
 
 	private static final Function<ResourceLocation, RenderType> POS_TEX_C = Util.memoize(texture -> RenderType.create(
 			MODID + "_ptc",
 			DefaultVertexFormat.POSITION_TEX_COLOR,
 			VertexFormat.Mode.QUADS,
-			1536,
+			RenderType.TRANSIENT_BUFFER_SIZE,
 			true,
 			false,
 			RenderType.CompositeState.builder()
@@ -77,7 +93,7 @@ public final class ModRenderTypes {
 			MODID + "_block_highlight",
 			DefaultVertexFormat.POSITION_TEX_COLOR,
 			VertexFormat.Mode.QUADS,
-			1536,
+			RenderType.TRANSIENT_BUFFER_SIZE,
 			true,
 			false,
 			RenderType.CompositeState.builder()
@@ -105,5 +121,11 @@ public final class ModRenderTypes {
 	public static void registerShaders(RegisterShadersEvent event) throws IOException {
 		event.registerShader(new ShaderInstance(event.getResourceProvider(), id("relay"),
 				DefaultVertexFormat.POSITION_COLOR_NORMAL), s -> relayShader = s);
+	}
+
+	@SubscribeEvent
+	public static void registerRenderBuffers(RegisterRenderBuffersEvent event){
+		event.registerRenderBuffer(RELAY);
+		event.registerRenderBuffer(RELAY_ITEM_ENTITY);
 	}
 }

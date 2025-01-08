@@ -63,30 +63,61 @@ public final class LuxNet extends SavedData {
 
 	private LuxNet() {}
 
-	public int register(@NotNull LuxNodeInterface iface, int id) {
-		while (id == NO_ID) {
-			id = ++this.idIncrement;
-			setDirty();
+	public int register(@NotNull LuxNodeInterface iface, int existingId) {
+		if (existingId != NO_ID) {
+			if (registerInternal(iface, existingId, true)) return existingId;
 		}
-		registerInternal(iface, id);
+
+		int id;
+
+		do {
+			do {
+				id = ++this.idIncrement;
+			} while (id == NO_ID);
+		} while (!registerInternal(iface, id, false));
+
+		if (existingId != NO_ID) {
+			GemthingMod.LOGGER.warn("""
+					Failed to bind an interface to preexisting luxnet node, assigning a new node ID as a fallback.
+					  Provided ID: {}
+					  Re-mapped ID: {}""", existingId, id);
+		}
 		return id;
 	}
 
-	private void registerInternal(@NotNull LuxNodeInterface iface, int id) {
+	private boolean registerInternal(@NotNull LuxNodeInterface iface, int id, boolean existing) {
 		if (id == NO_ID) throw new IllegalArgumentException("Cannot register node of ID 0");
-		LuxNode node = this.nodes.computeIfAbsent(id, LuxNode::new);
-		if (!node.bindInterface(iface)) return;
 
-		queueStatUpdate(id);
-		queueConnectionSync(id);
+		LuxNode node;
 
-		NodeFlowRecord record = this.loadedNodes.computeIfAbsent(node, n -> new NodeFlowRecord());
-		record.reset();
-		record.syncNow = true;
-		if (iface instanceof LuxSourceNodeInterface) this.sourceNodes.add(node);
-		else this.sourceNodes.remove(node);
-		if (iface instanceof LuxConsumerNodeInterface) this.consumerNodes.put(node, record);
-		else this.consumerNodes.remove(node);
+		if (existing) {
+			node = this.nodes.get(id);
+			if (node == null) return false;
+		} else {
+			node = this.nodes.computeIfAbsent(id, LuxNode::new);
+		}
+
+		return switch (node.bindInterface(iface)) {
+			case SUCCESS -> {
+				queueStatUpdate(id);
+				queueConnectionSync(id);
+
+				NodeFlowRecord record = this.loadedNodes.computeIfAbsent(node, n -> new NodeFlowRecord());
+				record.reset();
+				record.syncNow = true;
+
+				if (iface instanceof LuxSourceNodeInterface) this.sourceNodes.add(node);
+				else this.sourceNodes.remove(node);
+				if (iface instanceof LuxConsumerNodeInterface) this.consumerNodes.put(node, record);
+				else this.consumerNodes.remove(node);
+
+				setDirty();
+
+				yield true;
+			}
+			case FAIL -> false;
+			case NO_CHANGE -> true;
+		};
 	}
 
 	public void unregister(int id, boolean destroyed) {
@@ -96,14 +127,9 @@ public final class LuxNet extends SavedData {
 		if (destroyed) {
 			node.bindInterface(null);
 			this.nodes.remove(id);
-			if (hasOutboundLink(node)) {
-				for (var n : outboundLinks0(node).keySet().toArray(new LuxNode[0])) removeLink(node, n);
-			}
-			if (hasInboundLink(node)) {
-				for (var n : inboundLinks0(node).keySet().toArray(new LuxNode[0])) removeLink(n, node);
-			}
+			unlinkAll(node);
 		} else {
-			if (!node.bindInterface(null)) return;
+			if (node.bindInterface(null) != LuxNode.BindInterfaceResult.SUCCESS) return;
 		}
 
 		this.loadedNodes.remove(node);
@@ -151,6 +177,15 @@ public final class LuxNet extends SavedData {
 
 	public @NotNull @UnmodifiableView Set<LuxNode> nodesWithInboundLink() {
 		return Collections.unmodifiableSet(this.dstToSrc.keySet());
+	}
+
+	private void unlinkAll(@NotNull LuxNode node) {
+		if (hasOutboundLink(node)) {
+			for (var n : outboundLinks0(node).keySet().toArray(new LuxNode[0])) removeLink(node, n);
+		}
+		if (hasInboundLink(node)) {
+			for (var n : inboundLinks0(node).keySet().toArray(new LuxNode[0])) removeLink(n, node);
+		}
 	}
 
 	private void removeLink(@NotNull LuxNode src, @NotNull LuxNode dst) {
@@ -432,24 +467,37 @@ public final class LuxNet extends SavedData {
 		}
 	}
 
-	public void clear() {
-		this.nodes.clear();
-		this.loadedNodes.clear();
-		this.sourceNodes.clear();
-		this.consumerNodes.clear();
+	public void clear(ClearMode clearMode) {
+		switch (clearMode) {
+			case ALL -> {
+				this.nodes.clear();
+				this.loadedNodes.clear();
+				this.sourceNodes.clear();
+				this.consumerNodes.clear();
 
-		this.srcToDst.clear();
-		this.dstToSrc.clear();
+				this.srcToDst.clear();
+				this.dstToSrc.clear();
 
-		this.queuedLinkUpdates.clear();
-		this.queuedStatUpdates.clear();
-		this.queuedConnectionSyncs.clear();
+				this.queuedLinkUpdates.clear();
+				this.queuedStatUpdates.clear();
+				this.queuedConnectionSyncs.clear();
 
-		this.updateCacheSet.clear();
+				this.updateCacheSet.clear();
 
-		this.linkCollector.reset();
+				this.linkCollector.reset();
 
-		this.idIncrement = 0;
+				this.idIncrement = 0;
+			}
+			case UNLOADED -> this.nodes.int2ObjectEntrySet().removeIf(e -> {
+				LuxNode node = e.getValue();
+				if (node.iface() != null) return false;
+				unlinkAll(node);
+				this.loadedNodes.remove(node);
+				this.sourceNodes.remove(node);
+				this.consumerNodes.remove(node);
+				return true;
+			});
+		}
 
 		setDirty();
 	}
@@ -513,5 +561,10 @@ public final class LuxNet extends SavedData {
 			this.recordedTicks = 0;
 			this.syncNow = false;
 		}
+	}
+
+	public enum ClearMode {
+		ALL,
+		UNLOADED;
 	}
 }

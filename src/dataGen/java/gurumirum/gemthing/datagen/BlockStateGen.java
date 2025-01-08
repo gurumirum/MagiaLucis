@@ -4,7 +4,6 @@ import gurumirum.gemthing.contents.ModBlocks;
 import gurumirum.gemthing.contents.Ore;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static gurumirum.gemthing.GemthingMod.MODID;
@@ -19,7 +18,8 @@ public class BlockStateGen extends BlockStateProvider {
 	protected void registerStatesAndModels() {
 		simpleBlock(ModBlocks.SILVER.block());
 		simpleBlock(ModBlocks.RAW_SILVER_BLOCK.block());
-		simpleBlock(ModBlocks.RELAY.block(), new ModelFile.ExistingModelFile(id("block/relay"), this.models().existingFileHelper));
+
+		directionalBlock(ModBlocks.RELAY.block(), models().getExistingFile(id("block/relay")));
 
 		for (Ore ore : Ore.values()) ore.allOreBlocks().forEach(this::simpleBlock);
 	}

@@ -44,11 +44,20 @@ public final class ModCommands {
 								)
 						).then(literal("clear")
 								.requires(stack -> stack.hasPermission(Commands.LEVEL_GAMEMASTERS))
-								.executes(context ->
-										clearLuxNet(context.getSource(), context.getSource().getLevel())
-								).then(argument("dimension", DimensionArgument.dimension())
+								.then(literal("all")
 										.executes(context ->
-												clearLuxNet(context.getSource(), DimensionArgument.getDimension(context, "dimension")))
+												clearLuxNet(context.getSource(), context.getSource().getLevel(), LuxNet.ClearMode.ALL)
+										).then(argument("dimension", DimensionArgument.dimension())
+												.executes(context ->
+														clearLuxNet(context.getSource(), DimensionArgument.getDimension(context, "dimension"), LuxNet.ClearMode.ALL))
+										)
+								).then(literal("unloaded")
+										.executes(context ->
+												clearLuxNet(context.getSource(), context.getSource().getLevel(), LuxNet.ClearMode.UNLOADED)
+										).then(argument("dimension", DimensionArgument.dimension())
+												.executes(context ->
+														clearLuxNet(context.getSource(), DimensionArgument.getDimension(context, "dimension"), LuxNet.ClearMode.UNLOADED))
+										)
 								)
 						)
 				));
@@ -142,8 +151,8 @@ public final class ModCommands {
 		return 1;
 	}
 
-	private static int clearLuxNet(CommandSourceStack source, ServerLevel level) {
-		LuxNet.get(level).clear();
+	private static int clearLuxNet(CommandSourceStack source, ServerLevel level, LuxNet.ClearMode clearMode) {
+		LuxNet.get(level).clear(clearMode);
 		source.sendSuccess(() -> Component.literal("Cleared lux network configuration in " + level.dimension().location() + "."), true); // TODO localize
 		return 1;
 	}

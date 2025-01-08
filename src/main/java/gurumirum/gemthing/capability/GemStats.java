@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
+import java.util.function.Consumer;
 
 public enum GemStats implements LuxStat {
 	BRIGHTSTONE(0, RGB332.WHITE, 0, 100, false),
@@ -93,6 +94,16 @@ public enum GemStats implements LuxStat {
 					"gems/" + name().toLowerCase(Locale.ROOT)));
 		}
 		return this.tag;
+	}
+
+	public void forEachItem(Consumer<Item> consumer){
+		if (this == GemStats.BRIGHTSTONE) {
+			consumer.accept(GemItems.BRIGHTSTONE.asItem());
+			consumer.accept(GemItems.RED_BRIGHTSTONE.asItem());
+			consumer.accept(GemItems.ICY_BRIGHTSTONE.asItem());
+		} else {
+			consumer.accept(item());
+		}
 	}
 
 	public Item item() {
