@@ -1,7 +1,6 @@
 package gurumirum.gemthing.contents.block.lux;
 
 import gurumirum.gemthing.capability.LuxNetComponent;
-import gurumirum.gemthing.contents.block.BlockEntityUtils;
 import gurumirum.gemthing.contents.block.SyncedBlockEntity;
 import gurumirum.gemthing.impl.*;
 import gurumirum.gemthing.utils.TagUtils;
@@ -23,7 +22,7 @@ import org.joml.Vector3d;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements BlockEntityUtils, LuxNodeInterface, LuxNetComponent, RelaySyncPropertyAccess {
+public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements LuxNodeInterface, LuxNetComponent, RelaySyncPropertyAccess {
 	private int nodeId;
 	private final Vector3d luxFlow = new Vector3d();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks = new Int2ObjectOpenHashMap<>();

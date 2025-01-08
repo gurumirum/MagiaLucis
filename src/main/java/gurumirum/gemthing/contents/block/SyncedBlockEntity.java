@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class SyncedBlockEntity extends BlockEntity implements BlockEntityUtils {
+public abstract class SyncedBlockEntity extends BlockEntity {
 	public SyncedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
 	}
