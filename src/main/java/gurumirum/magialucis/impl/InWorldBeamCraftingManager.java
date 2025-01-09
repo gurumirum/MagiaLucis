@@ -7,7 +7,6 @@ import gurumirum.magialucis.net.msgs.SetBeamCraftingInfoMsg;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -16,11 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -30,9 +24,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @EventBusSubscriber(modid = MagiaLucisMod.MODID)
 public final class InWorldBeamCraftingManager {
@@ -48,34 +40,27 @@ public final class InWorldBeamCraftingManager {
 		if (init) return;
 		init = true;
 
-		addRecipe(Blocks.SAND, new Recipe(25, LootTable.lootTable()
-				.withPool(new LootPool.Builder()
-						.add(LootItem.lootTableItem(GemItems.BRIGHTSTONE)))
-				.build()));
-		addRecipe(Blocks.RED_SAND, new Recipe(25, LootTable.lootTable()
-				.withPool(new LootPool.Builder()
-						.add(LootItem.lootTableItem(GemItems.RED_BRIGHTSTONE)))
-				.build()));
-		addRecipe(Blocks.ICE, new Recipe(25, LootTable.lootTable()
-				.withPool(new LootPool.Builder()
-						.add(LootItem.lootTableItem(GemItems.ICY_BRIGHTSTONE)))
-				.build()));
-		addRecipe(Blocks.FROSTED_ICE, new Recipe(25, LootTable.lootTable()
-				.withPool(new LootPool.Builder()
-						.add(LootItem.lootTableItem(GemItems.ICY_BRIGHTSTONE)))
-				.build()));
-		addRecipe(Blocks.BLUE_ICE, new Recipe(25, LootTable.lootTable()
-				.withPool(new LootPool.Builder()
-						.add(LootItem.lootTableItem(GemItems.ICY_BRIGHTSTONE)))
-				.build()));
-		addRecipe(Blocks.PACKED_ICE, new Recipe(25, LootTable.lootTable()
-				.withPool(new LootPool.Builder()
-						.add(LootItem.lootTableItem(GemItems.ICY_BRIGHTSTONE)))
-				.build()));
-		addRecipe(Blocks.SOUL_SAND, new Recipe(50, LootTable.lootTable()
-				.withPool(new LootPool.Builder()
-						.add(LootItem.lootTableItem(GemItems.SOUL_BRIGHTSTONE)))
-				.build()));
+		addRecipe(Blocks.SAND, new Recipe(25, List.of(
+				new ItemStack(GemItems.BRIGHTSTONE)
+		)));
+		addRecipe(Blocks.RED_SAND, new Recipe(25, List.of(
+				new ItemStack(GemItems.BRIGHTSTONE)
+		)));
+		addRecipe(Blocks.ICE, new Recipe(25, List.of(
+				new ItemStack(GemItems.ICY_BRIGHTSTONE)
+		)));
+		addRecipe(Blocks.FROSTED_ICE, new Recipe(25, List.of(
+				new ItemStack(GemItems.ICY_BRIGHTSTONE)
+		)));
+		addRecipe(Blocks.BLUE_ICE, new Recipe(25, List.of(
+				new ItemStack(GemItems.ICY_BRIGHTSTONE)
+		)));
+		addRecipe(Blocks.PACKED_ICE, new Recipe(25, List.of(
+				new ItemStack(GemItems.ICY_BRIGHTSTONE)
+		)));
+		addRecipe(Blocks.SOUL_SAND, new Recipe(25, List.of(
+				new ItemStack(GemItems.SOUL_BRIGHTSTONE)
+		)));
 	}
 
 	private static void addRecipe(BlockState blockState, Recipe recipe) {
@@ -140,8 +125,7 @@ public final class InWorldBeamCraftingManager {
 				focus.remove(p.getUUID());
 				level.destroyBlock(focusPos, false);
 
-				ObjectArrayList<ItemStack> stacks = recipe.loot.getRandomItems(new LootParams.Builder(level)
-						.create(LootContextParamSets.EMPTY));
+				List<ItemStack> stacks = List.copyOf(recipe.output);
 
 				for (ItemStack s : stacks) {
 					ItemEntity itemEntity = new ItemEntity(level,
@@ -167,11 +151,14 @@ public final class InWorldBeamCraftingManager {
 		}
 	}
 
+	public static Map<BlockState, Recipe> getRecipes(){
+		return Collections.unmodifiableMap(recipes);
+	}
 	@SuppressWarnings("SuspiciousMethodCalls") // wdym
 	@SubscribeEvent
 	public static void onLevelUnload(LevelEvent.Unload event) {
 		beam.remove(event.getLevel());
 	}
 
-	public record Recipe(int processTicks, @NotNull LootTable loot) {}
+	public record Recipe(int processTicks, @NotNull List<ItemStack> output) {}
 }
