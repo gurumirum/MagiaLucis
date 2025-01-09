@@ -2,7 +2,6 @@ package gurumirum.gemthing.contents.item.wandbelt;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import gurumirum.gemthing.client.ModKeyMappings;
 import gurumirum.gemthing.contents.ModItems;
 import net.minecraft.client.DeltaTracker;
@@ -14,7 +13,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
 
 public class WandBeltGuiLayer implements LayeredDraw.Layer {
 	private float alpha;
@@ -55,7 +53,6 @@ public class WandBeltGuiLayer implements LayeredDraw.Layer {
 		int left = (mc.getWindow().getGuiScaledWidth() - WandBeltMenu.WAND_BELT_WIDTH) / 2;
 		int top = mc.getWindow().getGuiScaledHeight() / 2 + 10;
 
-		RenderSystem.setShaderTexture(0, WandBeltScreen.TEXTURE);
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
 		for (int i = 0, slots = oneRow ? 9 : 18; i < slots; i++) {
@@ -64,14 +61,16 @@ public class WandBeltGuiLayer implements LayeredDraw.Layer {
 			drawWandBeltSlot(guiGraphics,
 					left + 18 * (i % 9),
 					top + (oneRow ? 9 : 18 * (i / 9)),
-					false);
+					false,
+					isEmpty(container, i));
 		}
 
 		if (selectedIndex >= 0 && selectedIndex < 18) {
 			drawWandBeltSlot(guiGraphics,
 					left + 18 * (selectedIndex % 9),
 					top + (oneRow ? 9 : 18 * (selectedIndex / 9)),
-					true);
+					true,
+					isEmpty(container, selectedIndex));
 		}
 
 		guiGraphics.pose().pushPose();
@@ -93,13 +92,19 @@ public class WandBeltGuiLayer implements LayeredDraw.Layer {
 		}
 	}
 
-	private static void drawWandBeltSlot(@NotNull GuiGraphics guiGraphics, int x, int y, boolean selected) {
-		Matrix4f pose = guiGraphics.pose().last().pose();
-		BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-		bb.addVertex(pose, x, y, 0).setUv(0, selected ? .5f : 0);
-		bb.addVertex(pose, x, y + 32, 0).setUv(0, selected ? 1 : .5f);
-		bb.addVertex(pose, x + 32, y + 32, 0).setUv(1, selected ? 1 : .5f);
-		bb.addVertex(pose, x + 32, y, 0).setUv(1, selected ? .5f : 0);
-		BufferUploader.drawWithShader(bb.buildOrThrow());
+	private static boolean isEmpty(ItemContainerContents container, int slot) {
+		if (slot < 0 || slot >= container.getSlots()) return true;
+		ItemStack stack = container.getStackInSlot(slot);
+		return stack.isEmpty();
+	}
+
+	private static void drawWandBeltSlot(@NotNull GuiGraphics guiGraphics, int x, int y, boolean selected, boolean empty) {
+		RenderSystem.setShaderTexture(0, WandBeltScreen.TEXTURE);
+		guiGraphics.blit(WandBeltScreen.TEXTURE, x - 8, y - 8, 0, selected ? 32 : 0,
+				32, 32, 32, 64);
+		if (empty) {
+			guiGraphics.blit(WandBeltScreen.EMPTY_SLOT_TEXTURE, x, y, 0, 0,
+					16, 16, 16, 16);
+		}
 	}
 }

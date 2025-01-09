@@ -39,15 +39,17 @@ public class WandBeltItem extends Item {
 		if (!(stack.getCapability(Capabilities.ItemHandler.ITEM) instanceof IItemHandlerModifiable inv))
 			return InteractionResultHolder.fail(stack);
 		int selectedIndex = getSelectedIndex(stack);
+		int wandBeltInventoryIndex = usedHand == InteractionHand.OFF_HAND ? -1 : player.getInventory().selected;
 
 		player.openMenu(new MenuProvider() {
 			@Override
 			public @NotNull Component getDisplayName() {
-				return stack.getDisplayName();
+				return stack.getHoverName();
 			}
+
 			@Override
 			public @NotNull AbstractContainerMenu createMenu(int containerId, @NotNull Inventory playerInventory, @NotNull Player player) {
-				return new WandBeltMenu(containerId, playerInventory, inv, selectedIndex);
+				return new WandBeltMenu(containerId, playerInventory, inv, selectedIndex, wandBeltInventoryIndex);
 			}
 		});
 

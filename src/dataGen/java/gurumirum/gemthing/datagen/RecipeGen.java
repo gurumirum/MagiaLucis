@@ -104,6 +104,15 @@ public class RecipeGen extends RecipeProvider {
 				.define('3', ItemTags.WOODEN_SLABS)
 				.unlockedBy("has_brightstones", has(ModItemTags.BRIGHTSTONES))
 				.save(out);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.WAND_BELT)
+				.pattern("122")
+				.pattern("2 2")
+				.pattern("222")
+				.define('1', Tags.Items.NUGGETS_IRON)
+				.define('2', Tags.Items.LEATHERS)
+				.unlockedBy("has_wands", has(ModItemTags.WANDS))
+				.save(out);
 	}
 
 	private ShapedRecipeBuilder wandRecipe(boolean tool, ItemLike result) {

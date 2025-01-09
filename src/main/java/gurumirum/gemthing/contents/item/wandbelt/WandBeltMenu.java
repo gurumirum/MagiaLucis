@@ -38,6 +38,7 @@ public class WandBeltMenu extends AbstractContainerMenu {
 
 	private final List<WandBeltSlot> wandBeltSlots;
 	private final DataSlot selectedIndex = DataSlot.standalone();
+	private final DataSlot wandBeltInventoryIndex = DataSlot.standalone();
 
 	private final IItemHandlerModifiable wandBeltInv;
 	private boolean oneRow;
@@ -48,13 +49,15 @@ public class WandBeltMenu extends AbstractContainerMenu {
 		this.wandBeltSlots = setup(playerInv, this.wandBeltInv = new ClientSideItemHandler(), -1);
 	}
 
-	public WandBeltMenu(int containerId, Inventory playerInv, IItemHandlerModifiable wandBeltInv, int selectedIndex) {
+	public WandBeltMenu(int containerId, Inventory playerInv, IItemHandlerModifiable wandBeltInv, int selectedIndex, int wandBeltInventoryIndex) {
 		super(Contents.WANG_BELT_MENU.get(), containerId);
 		this.wandBeltSlots = setup(playerInv, this.wandBeltInv = new ServerSideItemHandlerWrapper(wandBeltInv), selectedIndex);
+		this.wandBeltInventoryIndex.set(wandBeltInventoryIndex);
 	}
 
 	private List<WandBeltSlot> setup(Inventory playerInv, IItemHandlerModifiable wandBeltInv, int selectedIndex) {
 		addDataSlot(this.selectedIndex).set(selectedIndex);
+		addDataSlot(this.wandBeltInventoryIndex);
 
 		List<WandBeltSlot> wandBeltSlots = new ArrayList<>();
 
@@ -76,7 +79,17 @@ public class WandBeltMenu extends AbstractContainerMenu {
 		}
 
 		for (int i = 0; i < 9; i++) {
-			addSlot(new Slot(playerInv, i, 8 + i * 18, PLAYER_INV_Y + 66));
+			addSlot(new Slot(playerInv, i, 8 + i * 18, PLAYER_INV_Y + 66) {
+				@Override
+				public boolean mayPlace(@NotNull ItemStack stack) {
+					return WandBeltMenu.this.wandBeltInventoryIndex.get() != getSlotIndex();
+				}
+
+				@Override
+				public boolean mayPickup(@NotNull Player player) {
+					return WandBeltMenu.this.wandBeltInventoryIndex.get() != getSlotIndex();
+				}
+			});
 		}
 
 		return wandBeltSlots;
@@ -84,6 +97,10 @@ public class WandBeltMenu extends AbstractContainerMenu {
 
 	public int selectedIndex() {
 		return this.selectedIndex.get();
+	}
+
+	public int wandBeltInventoryIndex() {
+		return this.wandBeltInventoryIndex.get();
 	}
 
 	public List<? extends Slot> wandBeltSlots() {

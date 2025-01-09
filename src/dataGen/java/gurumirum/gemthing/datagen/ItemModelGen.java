@@ -114,6 +114,8 @@ public class ItemModelGen extends ItemModelProvider {
 				.predicate(ClientInit.NO_CHARGE, 1)
 				.model(handheld(id(Wands.HEAL_WAND.id().getPath() + "_no_charge")));
 
+		basicItem(ModItems.WAND_BELT.asItem());
+
 		basicItem(ModItems.ANCIENT_CORE.asItem());
 
 		basicItem(ModItems.SILVER_INGOT.asItem());

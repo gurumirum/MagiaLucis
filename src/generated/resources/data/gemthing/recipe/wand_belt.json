@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "c:nuggets/iron"
+    },
+    "2": {
+      "tag": "c:leathers"
+    }
+  },
+  "pattern": [
+    "122",
+    "2 2",
+    "222"
+  ],
+  "result": {
+    "count": 1,
+    "id": "gemthing:wand_belt"
+  }
+}
