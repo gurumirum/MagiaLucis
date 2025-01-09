@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "magialucis:item/icy_configuration_wand"
+  }
+}

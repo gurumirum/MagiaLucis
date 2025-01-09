@@ -5,10 +5,10 @@
   "experience": 1.0,
   "group": "sapphire",
   "ingredient": {
-    "item": "gemthing:deepslate_sapphire_ore"
+    "item": "magialucis:deepslate_sapphire_ore"
   },
   "result": {
     "count": 1,
-    "id": "gemthing:sapphire"
+    "id": "magialucis:sapphire"
   }
 }

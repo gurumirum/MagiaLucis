@@ -4,7 +4,7 @@
   "group": "silver_ingot",
   "key": {
     "#": {
-      "item": "gemthing:silver_nugget"
+      "item": "magialucis:silver_nugget"
     }
   },
   "pattern": [
@@ -14,6 +14,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "gemthing:silver_ingot"
+    "id": "magialucis:silver_ingot"
   }
 }

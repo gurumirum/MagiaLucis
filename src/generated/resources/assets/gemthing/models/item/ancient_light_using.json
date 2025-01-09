@@ -1,6 +1,0 @@
-{
-  "parent": "gemthing:item/beam_channel_wand",
-  "textures": {
-    "layer0": "gemthing:item/ancient_light"
-  }
-}

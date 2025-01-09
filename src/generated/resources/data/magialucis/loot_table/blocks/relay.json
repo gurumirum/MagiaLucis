@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "magialucis:relay_item"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "magialucis:relay"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "magialucis:blocks/relay"
+}

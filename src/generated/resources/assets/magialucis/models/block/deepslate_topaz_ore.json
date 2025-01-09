@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "magialucis:block/deepslate_topaz_ore"
+  }
+}

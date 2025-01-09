@@ -5,10 +5,10 @@
   "experience": 1.0,
   "group": "ruby",
   "ingredient": {
-    "item": "gemthing:ruby_ore"
+    "item": "magialucis:ruby_ore"
   },
   "result": {
     "count": 1,
-    "id": "gemthing:ruby"
+    "id": "magialucis:ruby"
   }
 }

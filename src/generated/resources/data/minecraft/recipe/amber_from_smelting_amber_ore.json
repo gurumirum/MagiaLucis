@@ -5,10 +5,10 @@
   "experience": 1.0,
   "group": "amber",
   "ingredient": {
-    "item": "gemthing:amber_ore"
+    "item": "magialucis:amber_ore"
   },
   "result": {
     "count": 1,
-    "id": "gemthing:amber"
+    "id": "magialucis:amber"
   }
 }

@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "#": {
-      "item": "gemthing:silver_ingot"
+      "item": "magialucis:silver_ingot"
     }
   },
   "pattern": [
@@ -13,6 +13,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "gemthing:silver"
+    "id": "magialucis:silver"
   }
 }

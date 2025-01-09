@@ -5,10 +5,10 @@
   "experience": 1.0,
   "group": "citrine",
   "ingredient": {
-    "item": "gemthing:citrine_ore"
+    "item": "magialucis:citrine_ore"
   },
   "result": {
     "count": 1,
-    "id": "gemthing:citrine"
+    "id": "magialucis:citrine"
   }
 }

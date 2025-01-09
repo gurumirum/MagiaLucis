@@ -1,0 +1,6 @@
+{
+  "parent": "magialucis:item/beam_channel_wand",
+  "textures": {
+    "layer0": "magialucis:item/ancient_light"
+  }
+}

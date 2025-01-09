@@ -1,16 +1,16 @@
 {
   "values": [
-    "gemthing:amber",
-    "gemthing:citrine",
-    "gemthing:aquamarine",
-    "gemthing:pearl",
-    "gemthing:crystallized_redstone",
-    "gemthing:polished_lapis_lazuli",
-    "gemthing:obsidian",
-    "gemthing:ruby",
-    "gemthing:sapphire",
-    "gemthing:topaz",
-    "gemthing:moonstone",
-    "gemthing:jet"
+    "magialucis:amber",
+    "magialucis:citrine",
+    "magialucis:aquamarine",
+    "magialucis:pearl",
+    "magialucis:crystallized_redstone",
+    "magialucis:polished_lapis_lazuli",
+    "magialucis:obsidian",
+    "magialucis:ruby",
+    "magialucis:sapphire",
+    "magialucis:topaz",
+    "magialucis:moonstone",
+    "magialucis:jet"
   ]
 }

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "1": {
+      "tag": "c:ingots/gold"
+    },
+    "2": {
+      "item": "magialucis:aquamarine"
+    },
+    "3": {
+      "tag": "c:leathers"
+    },
+    "4": {
+      "tag": "c:dyes/red"
+    }
+  },
+  "pattern": [
+    " 32",
+    "413",
+    "14 "
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:recall_staff"
+  }
+}

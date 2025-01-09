@@ -5,10 +5,10 @@
   "experience": 1.0,
   "group": "aquamarine",
   "ingredient": {
-    "item": "gemthing:aquamarine_ore"
+    "item": "magialucis:aquamarine_ore"
   },
   "result": {
     "count": 1,
-    "id": "gemthing:aquamarine"
+    "id": "magialucis:aquamarine"
   }
 }

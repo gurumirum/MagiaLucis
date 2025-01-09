@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "gemthing:item/polished_lapis_lazuli"
-  }
-}

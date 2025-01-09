@@ -5,10 +5,10 @@
   "experience": 1.0,
   "group": "topaz",
   "ingredient": {
-    "item": "gemthing:deepslate_topaz_ore"
+    "item": "magialucis:deepslate_topaz_ore"
   },
   "result": {
     "count": 1,
-    "id": "gemthing:topaz"
+    "id": "magialucis:topaz"
   }
 }

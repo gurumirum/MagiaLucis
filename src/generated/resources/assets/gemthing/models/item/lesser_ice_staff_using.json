@@ -1,6 +1,0 @@
-{
-  "parent": "gemthing:item/passive_channel_wand",
-  "textures": {
-    "layer0": "gemthing:item/lesser_ice_staff"
-  }
-}

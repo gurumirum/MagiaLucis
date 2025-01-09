@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "gemthing:silver_ingot"
+      "item": "magialucis:silver_ingot"
     }
   ],
   "result": {
     "count": 9,
-    "id": "gemthing:silver_nugget"
+    "id": "magialucis:silver_nugget"
   }
 }

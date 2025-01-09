@@ -1,15 +1,15 @@
 {
   "values": [
-    "gemthing:silver_ore",
-    "gemthing:deepslate_silver_ore",
-    "gemthing:amber_ore",
-    "gemthing:citrine_ore",
-    "gemthing:aquamarine_ore",
-    "gemthing:ruby_ore",
-    "gemthing:deepslate_ruby_ore",
-    "gemthing:sapphire_ore",
-    "gemthing:deepslate_sapphire_ore",
-    "gemthing:topaz_ore",
-    "gemthing:deepslate_topaz_ore"
+    "magialucis:silver_ore",
+    "magialucis:deepslate_silver_ore",
+    "magialucis:amber_ore",
+    "magialucis:citrine_ore",
+    "magialucis:aquamarine_ore",
+    "magialucis:ruby_ore",
+    "magialucis:deepslate_ruby_ore",
+    "magialucis:sapphire_ore",
+    "magialucis:deepslate_sapphire_ore",
+    "magialucis:topaz_ore",
+    "magialucis:deepslate_topaz_ore"
   ]
 }

@@ -1,0 +1,34 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "0": "magialucis:block/relay/bottom",
+    "1": "magialucis:block/relay/side",
+    "2": "magialucis:block/relay/top",
+    "particle": "magialucis:block/relay/top"
+  },
+  "elements": [
+    {
+      "from": [2, 0, 2],
+      "to": [14, 2, 14],
+      "faces": {
+        "north": {"uv": [2, 14, 14, 16], "texture": "#1"},
+        "east": {"uv": [2, 14, 14, 16], "texture": "#1"},
+        "south": {"uv": [2, 14, 14, 16], "texture": "#1"},
+        "west": {"uv": [2, 14, 14, 16], "texture": "#1"},
+        "up": {"uv": [2, 2, 14, 14], "texture": "#2"},
+        "down": {"uv": [2, 2, 14, 14], "texture": "#0", "cullface": "down"}
+      }
+    },
+    {
+      "from": [4, 2, 4],
+      "to": [12, 4, 12],
+      "faces": {
+        "north": {"uv": [4, 12, 12, 14], "texture": "#1"},
+        "east": {"uv": [4, 12, 12, 14], "texture": "#1"},
+        "south": {"uv": [4, 12, 12, 14], "texture": "#1"},
+        "west": {"uv": [4, 12, 12, 14], "texture": "#1"},
+        "up": {"uv": [4, 4, 12, 12], "texture": "#2"}
+      }
+    }
+  ]
+}

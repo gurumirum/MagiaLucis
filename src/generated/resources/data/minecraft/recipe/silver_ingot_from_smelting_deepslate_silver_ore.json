@@ -5,10 +5,10 @@
   "experience": 1.0,
   "group": "silver_ingot",
   "ingredient": {
-    "item": "gemthing:deepslate_silver_ore"
+    "item": "magialucis:deepslate_silver_ore"
   },
   "result": {
     "count": 1,
-    "id": "gemthing:silver_ingot"
+    "id": "magialucis:silver_ingot"
   }
 }

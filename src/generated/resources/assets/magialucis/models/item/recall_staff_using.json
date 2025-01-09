@@ -1,0 +1,6 @@
+{
+  "parent": "magialucis:item/passive_channel_wand",
+  "textures": {
+    "layer0": "magialucis:item/recall_staff"
+  }
+}

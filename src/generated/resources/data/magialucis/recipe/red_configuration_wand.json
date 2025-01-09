@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "1": {
+      "tag": "minecraft:stone_bricks"
+    },
+    "2": {
+      "item": "magialucis:red_brightstone"
+    }
+  },
+  "pattern": [
+    " 12",
+    " 11",
+    "1  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:red_configuration_wand"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_aquamarine": {
+      "conditions": {
+        "items": [
+          {
+            "items": "magialucis:aquamarine"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "magialucis:recall_staff"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_aquamarine"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "magialucis:recall_staff"
+    ]
+  }
+}

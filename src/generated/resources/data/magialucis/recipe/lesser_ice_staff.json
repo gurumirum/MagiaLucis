@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "1": {
+      "tag": "minecraft:logs"
+    },
+    "2": {
+      "item": "magialucis:icy_brightstone"
+    }
+  },
+  "pattern": [
+    " 12",
+    " 11",
+    "1  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:lesser_ice_staff"
+  }
+}

@@ -5,10 +5,10 @@
   "experience": 1.0,
   "group": "silver_ingot",
   "ingredient": {
-    "item": "gemthing:raw_silver"
+    "item": "magialucis:raw_silver"
   },
   "result": {
     "count": 1,
-    "id": "gemthing:silver_ingot"
+    "id": "magialucis:silver_ingot"
   }
 }

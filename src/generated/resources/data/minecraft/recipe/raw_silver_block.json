@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "#": {
-      "item": "gemthing:raw_silver"
+      "item": "magialucis:raw_silver"
     }
   },
   "pattern": [
@@ -13,6 +13,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "gemthing:raw_silver_block"
+    "id": "magialucis:raw_silver_block"
   }
 }
