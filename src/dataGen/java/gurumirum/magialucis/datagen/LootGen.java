@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
@@ -46,28 +47,30 @@ public class LootGen extends LootTableProvider {
 
 		@Override
 		protected void generate() {
-			dropSelf(ModBlocks.SILVER.block());
-			dropSelf(ModBlocks.RAW_SILVER_BLOCK.block());
-
-			dropSelf(ModBlocks.REMOTE_CHARGER.block());
-			dropSelf(ModBlocks.REMOTE_CHARGER_2.block());
-
-			add(ModBlocks.RELAY.block(), b -> LootTable.lootTable().withPool(
-					applyExplosionCondition(b, LootPool.lootPool()
-							.setRolls(ConstantValue.exactly(1))
-							.add(LootItem.lootTableItem(b)
-									.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-											.include(Contents.RELAY_ITEM.get())
-									)
-							)
-					)
-			));
-
-			dropSelf(ModBlocks.AMBER_CORE.block());
-			dropSelf(ModBlocks.LUX_SOURCE.block());
+			for (ModBlocks modBlocks : ModBlocks.values()) genModBlockModels(modBlocks);
 
 			for (Ore o : Ore.values()) {
 				o.allOreBlocks().forEach(b -> add(b, createOreDrop(b, o.dropItem())));
+			}
+		}
+
+		private void genModBlockModels(ModBlocks modBlock) {
+			if (modBlock.block().getLootTable() == BuiltInLootTables.EMPTY) return;
+			switch (modBlock) {
+				case RELAY -> add(ModBlocks.RELAY.block(), b -> LootTable.lootTable().withPool(
+						applyExplosionCondition(b, LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(b)
+										.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+												.include(Contents.RELAY_ITEM.get())
+										)
+								)
+						)
+				));
+				default -> {
+					if (modBlock.blockItem() != null) dropSelf(modBlock.block());
+					else add(modBlock.block(), noDrop());
+				}
 			}
 		}
 
