@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -77,6 +78,22 @@ public enum Ore {
 	public @NotNull BlockItem expectOreItem(OreType type) {
 		assertExists(type);
 		return Objects.requireNonNull(oreItem(type));
+	}
+
+	public @NotNull Item dropItem() {
+		return this == SILVER ? ModItems.RAW_SILVER.asItem() : smeltItem();
+	}
+
+	public @NotNull Item smeltItem() {
+		return (switch (this) {
+			case SILVER -> ModItems.SILVER_INGOT;
+			case AMBER -> GemItems.AMBER;
+			case CITRINE -> GemItems.CITRINE;
+			case AQUAMARINE -> GemItems.AQUAMARINE;
+			case RUBY -> GemItems.RUBY;
+			case SAPPHIRE -> GemItems.SAPPHIRE;
+			case TOPAZ -> GemItems.TOPAZ;
+		}).asItem();
 	}
 
 	public boolean exists(OreType type) {

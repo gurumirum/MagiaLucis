@@ -36,6 +36,7 @@ public class Datagen {
 		event.getGenerator().addProvider(s, (DataProvider.Factory<DatapackBuiltinEntriesProvider>)output ->
 				new DatapackBuiltinEntriesProvider(output, l, DatapackEntryGen.getEntries(),
 						Set.of(MODID)));
+		event.getGenerator().addProvider(s, new LootGen(o, l));
 		event.getGenerator().addProvider(s, new CuriosGen(o, exf, l));
 	}
 }
