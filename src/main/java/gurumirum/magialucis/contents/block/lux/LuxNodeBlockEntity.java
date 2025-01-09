@@ -1,11 +1,13 @@
 package gurumirum.magialucis.contents.block.lux;
 
 import gurumirum.magialucis.capability.LuxNetComponent;
+import gurumirum.magialucis.contents.block.DebugTextProvider;
 import gurumirum.magialucis.contents.block.SyncedBlockEntity;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.LuxNodeInterface;
+import gurumirum.magialucis.utils.NumberFormats;
 import gurumirum.magialucis.utils.TagUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
@@ -23,10 +25,12 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements LuxNodeInterface, LuxNetComponent, RelaySyncPropertyAccess {
+public abstract class LuxNodeBlockEntity extends SyncedBlockEntity
+		implements LuxNodeInterface, LuxNetComponent, RelaySyncPropertyAccess, DebugTextProvider {
 	private int nodeId;
 	private final Vector3d luxFlow = new Vector3d();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks = new Int2ObjectOpenHashMap<>();
@@ -167,6 +171,45 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity implements Lu
 
 		if (changed) syncToClient();
 	}
+
+	@Override
+	public void addDebugText(@NotNull List<String> list) {
+		list.add("Node: #" + luxNodeId() + " [" + getBlockPos().toShortString() + "]");
+
+		if (!outboundLinks().isEmpty()) {
+			boolean first = true;
+			for (var e : outboundLinks().int2ObjectEntrySet()) {
+				if (e.getValue() == null) continue;
+				if (first) {
+					first = false;
+					list.add("");
+					list.add("Outbound Links:");
+				}
+				list.add("#" + e.getIntKey() + " [" + BlockPos.containing(e.getValue().linkLocation()).toShortString() + "]");
+			}
+		}
+		if (!inboundLinks().isEmpty()) {
+			boolean first = true;
+			for (var e : inboundLinks().int2ObjectEntrySet()) {
+				if (e.getValue() == null) continue;
+				if (first) {
+					first = false;
+					list.add("");
+					list.add("Inbound Links:");
+				}
+				list.add("#" + e.getIntKey() + " [" + e.getValue().origin().toShortString() + "]");
+			}
+		}
+
+		list.add("");
+		list.add("LUX Flow: " + this.luxFlow.toString(NumberFormats.DECIMAL));
+		list.add("color = " + color());
+		list.add("minLuxThreshold = " + NumberFormats.DECIMAL.format(minLuxThreshold()));
+		list.add("rMaxTransfer = " + NumberFormats.DECIMAL.format(rMaxTransfer()));
+		list.add("gMaxTransfer = " + NumberFormats.DECIMAL.format(gMaxTransfer()));
+		list.add("bMaxTransfer = " + NumberFormats.DECIMAL.format(bMaxTransfer()));
+	}
+
 
 	@Override
 	protected void load(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {

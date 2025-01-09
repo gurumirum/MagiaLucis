@@ -10,6 +10,7 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -46,6 +47,12 @@ public final class Contents {
 					.sized(1.4F, 2.7F)
 					.clientTrackingRange(10)
 					.build("gem_golem"));
+
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> FIELD_ID = DATA_COMPONENTS.register("field_id",
+			() -> DataComponentType.<ResourceLocation>builder()
+					.persistent(ResourceLocation.CODEC)
+					.networkSynchronized(ResourceLocation.STREAM_CODEC)
+					.build());
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<RelayItemData>> RELAY_ITEM = DATA_COMPONENTS.register("relay_item",
 			() -> DataComponentType.<RelayItemData>builder()
@@ -101,19 +108,7 @@ public final class Contents {
 								}
 							}
 							for (var i : ModItems.values()) o.accept(i);
-							for (var i : ModBlocks.values()) {
-								if (i.blockItem() != null) o.accept(i);
-
-								if (i == ModBlocks.RELAY) {
-									for (GemStats g : GemStats.values()) {
-										g.forEachItem(item -> {
-											ItemStack stack = new ItemStack(ModBlocks.RELAY.asItem());
-											stack.set(RELAY_ITEM, new RelayItemData(new ItemStack(item)));
-											o.accept(stack);
-										});
-									}
-								}
-							}
+							for (var i : ModBlocks.values()) i.addItem(o);
 						})
 						.build());
 

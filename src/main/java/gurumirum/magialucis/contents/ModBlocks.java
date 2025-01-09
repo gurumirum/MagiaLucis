@@ -1,13 +1,20 @@
 package gurumirum.magialucis.contents;
 
+import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.contents.block.AmberLightBlock;
+import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlock;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
+import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
 import gurumirum.magialucis.contents.block.lux.remotecharger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlock;
+import gurumirum.magialucis.impl.field.Field;
+import gurumirum.magialucis.impl.field.FieldRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -34,7 +41,9 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 	REMOTE_CHARGER_2(BlockProfile.customBlock(RemoteChargerBlock.Advanced::new, Properties.of())),
 	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of())),
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of().lightLevel(state -> 9))),
-	LUX_SOURCE(BlockProfile.customBlock(LuxSourceBlock::new, Properties.of()));
+	LUX_SOURCE(BlockProfile.customBlock(LuxSourceBlock::new, Properties.of())),
+
+	FIELD_MONITOR(BlockProfile.customBlock(FieldMonitorBlock::new, Properties.of()));
 
 	private final DeferredBlock<? extends Block> block;
 	@Nullable
@@ -61,6 +70,30 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 
 	public @Nullable BlockItem blockItem() {
 		return this.item != null ? this.item.get() : null;
+	}
+
+	public void addItem(CreativeModeTab.Output o) {
+		switch (this) {
+			case RELAY -> {
+				o.accept(this);
+				for (GemStats g : GemStats.values()) {
+					g.forEachItem(item -> {
+						ItemStack stack = new ItemStack(this);
+						stack.set(Contents.RELAY_ITEM, new RelayItemData(new ItemStack(item)));
+						o.accept(stack);
+					});
+				}
+			}
+			case FIELD_MONITOR -> {
+				for (Field f : FieldRegistry.fields().values()) {
+					ItemStack stack = new ItemStack(this);
+					stack.set(Contents.FIELD_ID, f.id);
+					o.accept(stack);
+				}
+			}
+			case AMBER_LIGHT -> {}
+			default -> o.accept(this);
+		}
 	}
 
 	public static void init() {}

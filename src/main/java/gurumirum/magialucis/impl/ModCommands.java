@@ -1,13 +1,19 @@
 package gurumirum.magialucis.impl;
 
 import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.impl.field.Field;
+import gurumirum.magialucis.impl.field.FieldInstance;
+import gurumirum.magialucis.impl.field.FieldManager;
+import gurumirum.magialucis.impl.field.FieldRegistry;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxNode;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.DimensionArgument;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -62,7 +68,16 @@ public final class ModCommands {
 										)
 								)
 						)
-				));
+				).then(literal("field")
+						.then(literal("print")
+								.requires(stack -> stack.hasPermission(Commands.LEVEL_GAMEMASTERS))
+								.then(argument("fieldId", ResourceLocationArgument.id())
+										.executes(context ->
+												printField(context.getSource(), context.getSource().getLevel(), ResourceLocationArgument.getId(context, "fieldId")))
+								)
+						)
+				)
+		);
 	}
 
 	private static int printLuxNetNodes(CommandSourceStack source, ServerLevel level) {
@@ -156,6 +171,27 @@ public final class ModCommands {
 	private static int clearLuxNet(CommandSourceStack source, ServerLevel level, LuxNet.ClearMode clearMode) {
 		LuxNet.get(level).clear(clearMode);
 		source.sendSuccess(() -> Component.literal("Cleared lux network configuration in " + level.dimension().location() + "."), true); // TODO localize
+		return 1;
+	}
+
+	private static int printField(CommandSourceStack source, ServerLevel level, ResourceLocation fieldId) {
+		Field field = FieldRegistry.fields().get(fieldId);
+		if (field == null) {
+			source.sendFailure(Component.literal("Field with id " + fieldId + " does not exist"));
+			return 0;
+		}
+
+		FieldManager manager = FieldManager.get(level);
+		FieldInstance fieldInstance = manager.get(field);
+		if (fieldInstance == null) {
+			source.sendSuccess(() -> Component.literal("Field " + fieldId + ": not initialized"), false);
+		} else {
+			source.sendSuccess(() -> Component.literal("Field " + fieldId + ": " + fieldInstance.elements().size() + " elements"), false);
+			for (var e : fieldInstance.elements().entrySet()) {
+				source.sendSuccess(() -> Component.literal("[" + e.getKey().toShortString() + "]"), false);
+			}
+		}
+
 		return 1;
 	}
 }

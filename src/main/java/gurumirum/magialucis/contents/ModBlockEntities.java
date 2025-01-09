@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents;
 
+import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlockEntity;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntity;
 import gurumirum.magialucis.contents.block.lux.remotecharger.RemoteChargerBlockEntity;
@@ -18,6 +19,9 @@ public final class ModBlockEntities {
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmberCoreBlockEntity>> AMBER_CORE =
 			blockEntity("amber_core", AmberCoreBlockEntity::new, ModBlocks.AMBER_CORE);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FieldMonitorBlockEntity>> FIELD_MONITOR =
+			blockEntity("field_monitor", FieldMonitorBlockEntity::new, ModBlocks.FIELD_MONITOR);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RelayBlockEntity>> RELAY =
 			blockEntity("relay", RelayBlockEntity::new, ModBlocks.RELAY);

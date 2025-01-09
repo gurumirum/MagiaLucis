@@ -3,24 +3,23 @@ package gurumirum.magialucis.contents.item.wand;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
-import gurumirum.magialucis.utils.NumberFormats;
+import gurumirum.magialucis.contents.block.DebugTextProvider;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
 	public static final ResourceLocation BORDER = MagiaLucisMod.id("textures/gui/config_wand_overlay_border.png");
+
+	private final List<String> textList = new ArrayList<>();
 
 	@Override
 	public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
@@ -30,45 +29,13 @@ public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
 		if (mc.level != null &&
 				mc.hitResult instanceof BlockHitResult blockHitResult &&
 				blockHitResult.getType() == HitResult.Type.BLOCK &&
-				mc.level.getBlockEntity(blockHitResult.getBlockPos()) instanceof LuxNodeBlockEntity be) {
-			List<String> list = new ArrayList<>();
+				mc.level.getBlockEntity(blockHitResult.getBlockPos()) instanceof DebugTextProvider be) {
 
-			list.add("Node: #" + be.luxNodeId() + " [" + be.getBlockPos().toShortString() + "]");
-
-			if (!be.outboundLinks().isEmpty()) {
-				boolean first = true;
-				for (var e : be.outboundLinks().int2ObjectEntrySet()) {
-					if (e.getValue() == null) continue;
-					if (first) {
-						first = false;
-						list.add("");
-						list.add("Outbound Links:");
-					}
-					list.add("#" + e.getIntKey() + " [" + BlockPos.containing(e.getValue().linkLocation()).toShortString() + "]");
-				}
+			be.addDebugText(this.textList);
+			if (!this.textList.isEmpty()) {
+				drawDebugShit(guiGraphics, this.textList);
+				this.textList.clear();
 			}
-			if (!be.inboundLinks().isEmpty()) {
-				boolean first = true;
-				for (var e : be.inboundLinks().int2ObjectEntrySet()) {
-					if (e.getValue() == null) continue;
-					if (first) {
-						first = false;
-						list.add("");
-						list.add("Inbound Links:");
-					}
-					list.add("#" + e.getIntKey() + " [" + e.getValue().origin().toShortString() + "]");
-				}
-			}
-
-			list.add("");
-			list.add("LUX Flow: " + be.luxFlow(new Vector3d()).toString(NumberFormats.DECIMAL));
-			list.add("color = " + be.color());
-			list.add("minLuxThreshold = " + NumberFormats.DECIMAL.format(be.minLuxThreshold()));
-			list.add("rMaxTransfer = " + NumberFormats.DECIMAL.format(be.rMaxTransfer()));
-			list.add("gMaxTransfer = " + NumberFormats.DECIMAL.format(be.gMaxTransfer()));
-			list.add("bMaxTransfer = " + NumberFormats.DECIMAL.format(be.bMaxTransfer()));
-
-			drawDebugShit(guiGraphics, list);
 		}
 
 		List<String> overlayText = ConfigurationWandOverlay.visualData.overlayText;
