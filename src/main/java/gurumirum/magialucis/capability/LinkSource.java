@@ -1,6 +1,6 @@
 package gurumirum.magialucis.capability;
 
-import gurumirum.magialucis.impl.InWorldLinkState;
+import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;

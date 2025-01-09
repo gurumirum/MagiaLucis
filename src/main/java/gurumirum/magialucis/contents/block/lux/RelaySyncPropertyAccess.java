@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.lux;
 
-import gurumirum.magialucis.impl.InWorldLinkInfo;
+import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -1,4 +1,4 @@
-package gurumirum.magialucis.impl;
+package gurumirum.magialucis.impl.luxnet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

@@ -2,10 +2,10 @@ package gurumirum.magialucis.contents.block.lux;
 
 import gurumirum.magialucis.capability.LuxNetComponent;
 import gurumirum.magialucis.contents.block.SyncedBlockEntity;
-import gurumirum.magialucis.impl.InWorldLinkInfo;
-import gurumirum.magialucis.impl.LuxNet;
-import gurumirum.magialucis.impl.LuxNode;
-import gurumirum.magialucis.impl.LuxNodeInterface;
+import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
+import gurumirum.magialucis.impl.luxnet.LuxNet;
+import gurumirum.magialucis.impl.luxnet.LuxNode;
+import gurumirum.magialucis.impl.luxnet.LuxNodeInterface;
 import gurumirum.magialucis.utils.TagUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;

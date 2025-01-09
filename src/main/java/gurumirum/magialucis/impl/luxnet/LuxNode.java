@@ -1,4 +1,4 @@
-package gurumirum.magialucis.impl;
+package gurumirum.magialucis.impl.luxnet;
 
 import gurumirum.magialucis.capability.LuxStat;
 import net.minecraft.nbt.CompoundTag;

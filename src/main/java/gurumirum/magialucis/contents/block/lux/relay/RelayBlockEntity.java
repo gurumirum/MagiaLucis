@@ -6,7 +6,7 @@ import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
-import gurumirum.magialucis.impl.LuxNet;
+import gurumirum.magialucis.impl.luxnet.LuxNet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;

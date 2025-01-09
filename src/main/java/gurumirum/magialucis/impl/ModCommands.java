@@ -1,6 +1,8 @@
 package gurumirum.magialucis.impl;
 
 import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.impl.luxnet.LuxNet;
+import gurumirum.magialucis.impl.luxnet.LuxNode;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
