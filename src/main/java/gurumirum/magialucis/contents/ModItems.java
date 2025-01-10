@@ -38,5 +38,12 @@ public enum ModItems implements ItemLike {
 		return this.item.asItem();
 	}
 
+	public CreativeTabType getCreativeTab() {
+		return switch (this) {
+			case SILVER_INGOT, SILVER_NUGGET, RAW_SILVER -> CreativeTabType.RESOURCES;
+			default -> CreativeTabType.MAIN;
+		};
+	}
+
 	public static void init() {}
 }

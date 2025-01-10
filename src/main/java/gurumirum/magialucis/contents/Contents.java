@@ -1,7 +1,6 @@
 package gurumirum.magialucis.contents;
 
 import com.mojang.serialization.Codec;
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
 import gurumirum.magialucis.contents.entity.GemGolemEntity;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltMenu;
@@ -21,13 +20,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.RegisterEvent;
 
 import static gurumirum.magialucis.MagiaLucisMod.MODID;
-import static gurumirum.magialucis.MagiaLucisMod.id;
 
 public final class Contents {
 	private Contents() {}
@@ -41,6 +37,7 @@ public final class Contents {
 	static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MODID);
 	static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, MODID);
 	static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
+	static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
 	public static final DeferredHolder<EntityType<?>, EntityType<GemGolemEntity>> GEM_GOLEM = ENTITY_TYPES.register("gem_golem",
 			() -> EntityType.Builder.of(GemGolemEntity::new, MobCategory.MONSTER)
@@ -93,51 +90,7 @@ public final class Contents {
 		MOB_EFFECTS.register(eventBus);
 		PLACED_FEATURES.register(eventBus);
 		ENTITY_TYPES.register(eventBus);
-
-		eventBus.addListener((RegisterEvent event) -> {
-			event.register(Registries.CREATIVE_MODE_TAB, h -> {
-				ResourceLocation main = id("main");
-				ResourceLocation gems = id("gems");
-				ResourceLocation buildingBlocks = id("building_blocks");
-
-				h.register(main, CreativeModeTab.builder()
-						.icon(() -> new ItemStack(Wands.ANCIENT_LIGHT))
-						.displayItems((p, o) -> {
-							for (var i : Wands.values()) {
-								o.accept(i);
-								if (i.luxContainerStat() != null) {
-									ItemStack stack = new ItemStack(i);
-									stack.set(LUX_CHARGE, i.luxContainerStat().maxCharge());
-									o.accept(stack);
-								}
-							}
-							for (var i : ModItems.values()) o.accept(i);
-							for (var i : ModBlocks.values()) i.addItem(o);
-						})
-						.build());
-
-				h.register(gems, CreativeModeTab.builder()
-						.icon(() -> new ItemStack(GemItems.BRIGHTSTONE))
-						.withTabsBefore(main)
-						.displayItems((p, o) -> {
-							for (var ore : Ore.values()) ore.allOreItems().forEach(o::accept);
-							for (var g : GemStats.values()) g.forEachItem(o::accept);
-						})
-						.build());
-
-				h.register(buildingBlocks, CreativeModeTab.builder()
-						.icon(() -> new ItemStack(ModBuildingBlocks.LAPIS_MANALIS))
-						.withTabsBefore(main, gems)
-						.displayItems((p, o) -> {
-							for (var i : ModBuildingBlocks.values()) o.accept(i);
-						})
-						.build());
-			});
-		});
-
-		eventBus.addListener((EntityAttributeCreationEvent event) -> {
-			event.put(Contents.GEM_GOLEM.get(), GemGolemEntity.createAttributes().build());
-		});
+		CREATIVE_MODE_TABS.register(eventBus);
 
 		GemItems.init();
 		ModItems.init();
@@ -146,5 +99,6 @@ public final class Contents {
 		ModBlockEntities.init();
 		Ore.init();
 		Wands.init();
+		CreativeTabType.init();
 	}
 }
