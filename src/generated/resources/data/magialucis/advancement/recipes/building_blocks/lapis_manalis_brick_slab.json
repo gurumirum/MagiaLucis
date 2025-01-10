@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_lapis_manalis": {
+    "has_lapis_manalis_bricks": {
       "conditions": {
         "items": [
           {
-            "items": "magialucis:lapis_manalis"
+            "items": "magialucis:lapis_manalis_bricks"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:lapis_manalis_bricks_stairs_from_lapis_manalis_stonecutting"
+        "recipe": "magialucis:lapis_manalis_brick_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_lapis_manalis"
+      "has_lapis_manalis_bricks"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:lapis_manalis_bricks_stairs_from_lapis_manalis_stonecutting"
+      "magialucis:lapis_manalis_brick_slab"
     ]
   }
 }

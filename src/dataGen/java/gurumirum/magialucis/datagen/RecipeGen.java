@@ -120,7 +120,7 @@ public class RecipeGen extends RecipeProvider {
 				.save(out);
 
 		slab(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_SLAB, LAPIS_MANALIS);
-		slab(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICKS_SLAB, LAPIS_MANALIS_BRICKS);
+		slab(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_SLAB, LAPIS_MANALIS_BRICKS);
 
 		shaped(RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICKS, 4)
 				.pattern("##")
@@ -184,7 +184,7 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_lapis_manalis", has(LAPIS_MANALIS))
 				.save(out);
 
-		stairBuilder(LAPIS_MANALIS_BRICKS_STAIRS, Ingredient.of(LAPIS_MANALIS_BRICKS))
+		stairBuilder(LAPIS_MANALIS_BRICK_STAIRS, Ingredient.of(LAPIS_MANALIS_BRICKS))
 				.unlockedBy("has_lapis_manalis_bricks", has(LAPIS_MANALIS_BRICKS))
 				.save(out);
 
@@ -202,11 +202,11 @@ public class RecipeGen extends RecipeProvider {
 		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_IONIC, LAPIS_MANALIS_PILLAR);
 
 		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_SLAB, LAPIS_MANALIS, 2);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICKS_SLAB, LAPIS_MANALIS, 2);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICKS_SLAB, LAPIS_MANALIS_BRICKS, 2);
+		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_SLAB, LAPIS_MANALIS, 2);
+		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_SLAB, LAPIS_MANALIS_BRICKS, 2);
 		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_STAIRS, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICKS_STAIRS, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICKS_STAIRS, LAPIS_MANALIS_BRICKS);
+		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS);
+		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS_BRICKS);
 	}
 
 	private ShapedRecipeBuilder wandRecipe(boolean tool, ItemLike result) {

@@ -48,10 +48,10 @@ public class BlockStateGen extends BlockStateProvider {
 		itemModels().simpleBlockItem(LAPIS_MANALIS_STAIRS.block());
 
 		texture = LAPIS_MANALIS_BRICKS.id().withPrefix("block/");
-		slabBlock((SlabBlock)LAPIS_MANALIS_BRICKS_SLAB.block(), texture, texture);
-		itemModels().simpleBlockItem(LAPIS_MANALIS_BRICKS_SLAB.block());
-		stairsBlock((StairBlock)LAPIS_MANALIS_BRICKS_STAIRS.block(), texture);
-		itemModels().simpleBlockItem(LAPIS_MANALIS_BRICKS_STAIRS.block());
+		slabBlock((SlabBlock)LAPIS_MANALIS_BRICK_SLAB.block(), texture, texture);
+		itemModels().simpleBlockItem(LAPIS_MANALIS_BRICK_SLAB.block());
+		stairsBlock((StairBlock)LAPIS_MANALIS_BRICK_STAIRS.block(), texture);
+		itemModels().simpleBlockItem(LAPIS_MANALIS_BRICK_STAIRS.block());
 
 		simpleBlock(SILVER_BLOCK.block());
 		itemModels().simpleBlockItem(SILVER_BLOCK.block());

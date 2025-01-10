@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:lapis_manalis_bricks_stairs_from_lapis_manalis_bricks_stonecutting"
+        "recipe": "magialucis:lapis_manalis_brick_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:lapis_manalis_bricks_stairs_from_lapis_manalis_bricks_stonecutting"
+      "magialucis:lapis_manalis_brick_stairs"
     ]
   }
 }

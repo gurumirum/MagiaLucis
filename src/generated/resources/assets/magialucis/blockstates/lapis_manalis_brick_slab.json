@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=bottom": {
-      "model": "magialucis:block/lapis_manalis_bricks_slab"
+      "model": "magialucis:block/lapis_manalis_brick_slab"
     },
     "type=double": {
       "model": "magialucis:block/lapis_manalis_bricks"
     },
     "type=top": {
-      "model": "magialucis:block/lapis_manalis_bricks_slab_top"
+      "model": "magialucis:block/lapis_manalis_brick_slab_top"
     }
   }
 }

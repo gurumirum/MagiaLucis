@@ -29,9 +29,9 @@ public enum ModBuildingBlocks implements ItemLike, BlockProvider {
 	LAPIS_MANALIS_PILLAR_BASE_IONIC(BlockProfile.customBlock(PillarOrnamentBlock::bottom, lapisManalis())),
 
 	LAPIS_MANALIS_SLAB(BlockProfile.customBlock(SlabBlock::new, lapisManalis())),
-	LAPIS_MANALIS_BRICKS_SLAB(BlockProfile.customBlock(SlabBlock::new, lapisManalis())),
+	LAPIS_MANALIS_BRICK_SLAB(BlockProfile.customBlock(SlabBlock::new, lapisManalis())),
 	LAPIS_MANALIS_STAIRS(BlockProfile.customBlock(p -> new StairBlock(LAPIS_MANALIS.block().defaultBlockState(), p), lapisManalis())),
-	LAPIS_MANALIS_BRICKS_STAIRS(BlockProfile.customBlock(p -> new StairBlock(LAPIS_MANALIS_BRICKS.block().defaultBlockState(), p), lapisManalis())),
+	LAPIS_MANALIS_BRICK_STAIRS(BlockProfile.customBlock(p -> new StairBlock(LAPIS_MANALIS_BRICKS.block().defaultBlockState(), p), lapisManalis())),
 
 	SILVER_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL))),
 	RAW_SILVER_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)));

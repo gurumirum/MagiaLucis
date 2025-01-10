@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "magialucis:lapis_manalis_bricks_slab"
+          "name": "magialucis:lapis_manalis_brick_slab"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "magialucis:blocks/lapis_manalis_bricks_slab"
+  "random_sequence": "magialucis:blocks/lapis_manalis_brick_slab"
 }

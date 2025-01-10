@@ -7,10 +7,12 @@
     }
   },
   "pattern": [
+    "#  ",
+    "## ",
     "###"
   ],
   "result": {
-    "count": 6,
-    "id": "magialucis:lapis_manalis_bricks_slab"
+    "count": 4,
+    "id": "magialucis:lapis_manalis_brick_stairs"
   }
 }
