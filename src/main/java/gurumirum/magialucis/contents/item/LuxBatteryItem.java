@@ -26,7 +26,7 @@ public class LuxBatteryItem extends Item {
 		if (luxContainerStat == null) return;
 
 		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
-		tooltip.add(Component.literal(charge + " / " + luxContainerStat.maxCharge()));
+		tooltip.add(Component.translatable("item.magialucis.tooltip.lux_charge", charge, luxContainerStat.maxCharge()));
 		LuxStatTooltip.formatContainerStat(luxContainerStat, tooltip);
 		LuxStatTooltip.skipAutoTooltipFor(stack);
 	}

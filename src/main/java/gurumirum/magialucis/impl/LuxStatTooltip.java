@@ -31,7 +31,6 @@ public final class LuxStatTooltip {
 		tooltipSkippedStack = stack;
 	}
 
-	// TODO localize
 	@SubscribeEvent
 	public static void onItemTooltip(ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
@@ -79,35 +78,42 @@ public final class LuxStatTooltip {
 
 		switch (mode) {
 			case HIDDEN -> {
-				tooltip.add(i, Component.literal(isContainer ?
-						"- " + ChatFormatting.WHITE + "LUX" + ChatFormatting.DARK_GRAY + " Container Stat [Ctrl]" :
-						"- Gem Stat [Ctrl]").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(i, Component.translatable(isContainer ?
+						"item.magialucis.tooltip.lux_container_stat_hidden" :
+						"item.magialucis.tooltip.lux_stat_hidden"));
 				return;
 			}
 			case EXPANDED -> {
-				tooltip.add(i++, Component.literal(isContainer ?
-						"+ " + ChatFormatting.WHITE + "LUX" + ChatFormatting.DARK_GRAY + " Container Stat [Ctrl]" :
-						"+ Gem Stat [Ctrl]").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(i, Component.translatable(isContainer ?
+						"item.magialucis.tooltip.lux_container_stat_expanded" :
+						"item.magialucis.tooltip.lux_stat_expanded"));
 				indent = " ";
 			}
 			default -> indent = "";
 		}
 
-		tooltip.add(i++, Component.literal(isContainer ?
-				indent + "LUX" + ChatFormatting.GRAY + " Charge Rate: " :
-				indent + "LUX" + ChatFormatting.GRAY + " Transfer Rate: "));
+		tooltip.add(i++, Component.literal(indent).append(Component.translatable(
+				"item.magialucis.tooltip.lux_min_threshold",
+				formatLuxThreshold(stat.minLuxThreshold()))));
 
-		tooltip.add(i++, Component.literal(indent + " R: ").withStyle(ChatFormatting.GRAY)
-				.append(component(stat, stat.rMaxTransfer()).withStyle(ChatFormatting.RED)));
+		tooltip.add(i++, Component.literal(indent).append(Component.translatable(isContainer ?
+				"item.magialucis.tooltip.lux_charge_rate" :
+				"item.magialucis.tooltip.lux_transfer_rate")));
 
-		tooltip.add(i++, Component.literal(indent + " G: ").withStyle(ChatFormatting.GRAY)
-				.append(component(stat, stat.gMaxTransfer()).withStyle(ChatFormatting.GREEN)));
+		tooltip.add(i++, Component.literal(indent + " ").append(Component.translatable(
+						"item.magialucis.tooltip.lux_transfer_rate.r",
+						component(stat, stat.rMaxTransfer()).withStyle(ChatFormatting.RED))
+				.withStyle(ChatFormatting.GRAY)));
 
-		tooltip.add(i++, Component.literal(indent + " B: ").withStyle(ChatFormatting.GRAY)
-				.append(component(stat, stat.bMaxTransfer()).withStyle(ChatFormatting.BLUE)));
+		tooltip.add(i++, Component.literal(indent + " ").append(Component.translatable(
+						"item.magialucis.tooltip.lux_transfer_rate.g",
+						component(stat, stat.gMaxTransfer()).withStyle(ChatFormatting.GREEN))
+				.withStyle(ChatFormatting.GRAY)));
 
-		tooltip.add(i++, Component.literal(indent + ChatFormatting.GRAY + "Min. " + ChatFormatting.WHITE + "LUX" + ChatFormatting.GRAY + " Threshold: ")
-				.append(Component.literal(formatLuxThreshold(stat.minLuxThreshold())).withStyle(ChatFormatting.YELLOW)));
+		tooltip.add(i++, Component.literal(indent + " ").append(Component.translatable(
+						"item.magialucis.tooltip.lux_transfer_rate.b",
+						component(stat, stat.bMaxTransfer()).withStyle(ChatFormatting.BLUE))
+				.withStyle(ChatFormatting.GRAY)));
 	}
 
 	private static MutableComponent component(LuxStat stat, double maxTransfer) {

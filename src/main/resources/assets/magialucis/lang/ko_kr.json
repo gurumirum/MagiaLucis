@@ -43,6 +43,10 @@
   "item.magialucis.icy_brightstone": "브라이트스톤",
   "item.magialucis.icy_configuration_wand": "재구성 마법봉",
   "item.magialucis.jet": "흑옥",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.corinthian": "코린토스 양식",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.doric": "도리아 양식",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic": "이오니아 양식",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic_corinthian": "이오니아/코린토스 양식",
   "item.magialucis.lesser_ice_staff": "미약한 빙마법 지팡이",
   "item.magialucis.moonstone": "월장석",
   "item.magialucis.obsidian": "흑요석 파편",
@@ -58,15 +62,21 @@
   "item.magialucis.silver_ingot": "은 주괴",
   "item.magialucis.silver_nugget": "은 조각",
   "item.magialucis.soul_brightstone": "영혼 브라이트스톤",
+  "item.magialucis.tooltip.lux_charge": "§fLUX§7: §f%s§7 / §f%s",
+  "item.magialucis.tooltip.lux_charge_rate": "§fLUX§7 최대 충전량:",
+  "item.magialucis.tooltip.lux_container_stat_expanded": "§7+ §fLUX§7 컨테이너 스탯 [Ctrl]",
+  "item.magialucis.tooltip.lux_container_stat_hidden": "§7- §fLUX§7 컨테이너 스탯 [Ctrl]",
+  "item.magialucis.tooltip.lux_min_threshold": "§fLUX§7 최소 요구량: %s",
+  "item.magialucis.tooltip.lux_stat_expanded": "§7+ 보석 스탯 [Ctrl]",
+  "item.magialucis.tooltip.lux_stat_hidden": "§7- 보석 스탯 [Ctrl]",
+  "item.magialucis.tooltip.lux_transfer_rate": "§fLUX§7 최대 운송량:",
+  "item.magialucis.tooltip.lux_transfer_rate.b": "B: %s",
+  "item.magialucis.tooltip.lux_transfer_rate.g": "G: %s",
+  "item.magialucis.tooltip.lux_transfer_rate.r": "R: %s",
   "item.magialucis.topaz": "토파즈",
   "item.magialucis.wand_belt": "마법봉 벨트",
 
   "itemGroup.magialucis.building_blocks": "Magia Lucis: 건축 블록",
   "itemGroup.magialucis.main": "Magia Lucis",
-  "itemGroup.magialucis.resources": "Magia Lucis: 자원",
-
-  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.doric": "도리아 양식",
-  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic": "이오니아 양식",
-  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.corinthian": "코린토스 양식",
-  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic_corinthian": "이오니아/코린토스 양식"
+  "itemGroup.magialucis.resources": "Magia Lucis: 자원"
 }

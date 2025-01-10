@@ -43,6 +43,10 @@
   "item.magialucis.icy_brightstone": "Brightstone",
   "item.magialucis.icy_configuration_wand": "Configuration Wand",
   "item.magialucis.jet": "Jet",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.corinthian": "Corinthian",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.doric": "Doric",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic": "Ionic",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic_corinthian": "Ionic/Corinthian",
   "item.magialucis.lesser_ice_staff": "Lesser Ice Staff",
   "item.magialucis.moonstone": "Moonstone",
   "item.magialucis.obsidian": "Obsidian Shard",
@@ -58,15 +62,21 @@
   "item.magialucis.silver_ingot": "Silver Ingot",
   "item.magialucis.silver_nugget": "Silver Nugget",
   "item.magialucis.soul_brightstone": "Soul Brightstone",
+  "item.magialucis.tooltip.lux_charge": "§fLUX§7: §f%s§7 / §f%s",
+  "item.magialucis.tooltip.lux_charge_rate": "§fLUX§7 Charge Rate:",
+  "item.magialucis.tooltip.lux_container_stat_expanded": "§7+ §fLUX§7 Container Stat [Ctrl]",
+  "item.magialucis.tooltip.lux_container_stat_hidden": "§7- §fLUX§7 Container Stat [Ctrl]",
+  "item.magialucis.tooltip.lux_min_threshold": "§fLUX§7 Min. Threshold: %s",
+  "item.magialucis.tooltip.lux_stat_expanded": "§7+ Gem Stat [Ctrl]",
+  "item.magialucis.tooltip.lux_stat_hidden": "§7- Gem Stat [Ctrl]",
+  "item.magialucis.tooltip.lux_transfer_rate": "§fLUX§7 Transfer Rate:",
+  "item.magialucis.tooltip.lux_transfer_rate.b": "B: %s",
+  "item.magialucis.tooltip.lux_transfer_rate.g": "G: %s",
+  "item.magialucis.tooltip.lux_transfer_rate.r": "R: %s",
   "item.magialucis.topaz": "Topaz",
   "item.magialucis.wand_belt": "Wand Belt",
 
   "itemGroup.magialucis.building_blocks": "Magia Lucis: Building Blocks",
   "itemGroup.magialucis.main": "Magia Lucis",
-  "itemGroup.magialucis.resources": "Magia Lucis: Resources",
-
-  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.doric": "Doric",
-  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic": "Ionic",
-  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.corinthian": "Corinthian",
-  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic_corinthian": "Ionic/Corinthian"
+  "itemGroup.magialucis.resources": "Magia Lucis: Resources"
 }
