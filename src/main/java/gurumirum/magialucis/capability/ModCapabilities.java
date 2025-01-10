@@ -5,7 +5,6 @@ import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModItems;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
-import gurumirum.magialucis.impl.RGB332;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -48,8 +47,6 @@ public final class ModCapabilities {
 				registerLuxContainer(event, w.luxContainerStat(), w);
 			}
 		}
-
-		registerLuxContainer(event, LuxContainerStat.simple(1000, RGB332.WHITE, 0, 100), ModItems.LUX_BATTERY);
 
 		event.registerItem(ItemHandler.ITEM, (s, v) -> new WandBeltItem.ItemHandler(s), ModItems.WAND_BELT);
 
