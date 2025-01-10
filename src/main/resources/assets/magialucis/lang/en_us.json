@@ -63,5 +63,10 @@
 
   "itemGroup.magialucis.building_blocks": "Magia Lucis: Building Blocks",
   "itemGroup.magialucis.main": "Magia Lucis",
-  "itemGroup.magialucis.resources": "Magia Lucis: Resources"
+  "itemGroup.magialucis.resources": "Magia Lucis: Resources",
+
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.doric": "Doric",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic": "Ionic",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.corinthian": "Corinthian",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic_corinthian": "Ionic/Corinthian"
 }

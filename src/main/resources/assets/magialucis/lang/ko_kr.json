@@ -63,5 +63,10 @@
 
   "itemGroup.magialucis.building_blocks": "Magia Lucis: 건축 블록",
   "itemGroup.magialucis.main": "Magia Lucis",
-  "itemGroup.magialucis.resources": "Magia Lucis: 자원"
+  "itemGroup.magialucis.resources": "Magia Lucis: 자원",
+
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.doric": "도리아 양식",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic": "이오니아 양식",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.corinthian": "코린토스 양식",
+  "item.magialucis.lapis_manalis_pillar_ornament.tooltip.ionic_corinthian": "이오니아/코린토스 양식"
 }

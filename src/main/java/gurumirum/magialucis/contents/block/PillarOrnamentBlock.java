@@ -1,6 +1,11 @@
 package gurumirum.magialucis.contents.block;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -10,22 +15,19 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Locale;
+
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
 public class PillarOrnamentBlock extends Block {
 	private final boolean top;
+	private final OrnamentType type;
 
-	public static PillarOrnamentBlock top(Properties properties) {
-		return new PillarOrnamentBlock(properties, true);
-	}
-
-	public static PillarOrnamentBlock bottom(Properties properties) {
-		return new PillarOrnamentBlock(properties, false);
-	}
-
-	public PillarOrnamentBlock(Properties properties, boolean top) {
+	public PillarOrnamentBlock(Properties properties, boolean top, OrnamentType type) {
 		super(properties);
 		this.top = top;
+		this.type = type;
 	}
 
 	public boolean isTopOrnament() {
@@ -59,6 +61,12 @@ public class PillarOrnamentBlock extends Block {
 		return defaultBlockState().setValue(FACING, facing);
 	}
 
+	@Override
+	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
+	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+		tooltip.add(this.type.description());
+	}
+
 	private static boolean isConnectedPillarBlock(BlockState state, Direction direction) {
 		if (state.getBlock() instanceof PillarOrnamentBlock pillarOrnamentBlock) {
 			return state.getValue(FACING) == (pillarOrnamentBlock.isTopOrnament() ? direction : direction.getOpposite());
@@ -66,6 +74,21 @@ public class PillarOrnamentBlock extends Block {
 			return state.getBlock() instanceof RotatedPillarBlock &&
 					state.hasProperty(BlockStateProperties.AXIS) &&
 					state.getValue(BlockStateProperties.AXIS) == direction.getAxis();
+		}
+	}
+
+	public enum OrnamentType {
+		DORIC,
+		IONIC,
+		CORINTHIAN,
+		IONIC_CORINTHIAN;
+
+		private final Component description = Component.translatable(
+						"item.magialucis.lapis_manalis_pillar_ornament.tooltip." + name().toLowerCase(Locale.ROOT))
+				.withStyle(ChatFormatting.GRAY);
+
+		public Component description() {
+			return this.description;
 		}
 	}
 }

@@ -22,11 +22,11 @@ public enum ModBuildingBlocks implements ItemLike, BlockProvider {
 
 	LAPIS_MANALIS_PILLAR(BlockProfile.customBlock(RotatedPillarBlock::new, lapisManalis())),
 
-	LAPIS_MANALIS_PILLAR_ORNAMENT_DORIC(BlockProfile.customBlock(PillarOrnamentBlock::top, lapisManalis())),
-	LAPIS_MANALIS_PILLAR_ORNAMENT_IONIC(BlockProfile.customBlock(PillarOrnamentBlock::top, lapisManalis())),
-	LAPIS_MANALIS_PILLAR_ORNAMENT_CORINTHIAN(BlockProfile.customBlock(PillarOrnamentBlock::top, lapisManalis())),
-	LAPIS_MANALIS_PILLAR_BASE_DORIC(BlockProfile.customBlock(PillarOrnamentBlock::bottom, lapisManalis())),
-	LAPIS_MANALIS_PILLAR_BASE_IONIC(BlockProfile.customBlock(PillarOrnamentBlock::bottom, lapisManalis())),
+	LAPIS_MANALIS_PILLAR_ORNAMENT_DORIC(BlockProfile.customBlock(p -> new PillarOrnamentBlock(p, true, PillarOrnamentBlock.OrnamentType.DORIC), lapisManalis())),
+	LAPIS_MANALIS_PILLAR_ORNAMENT_IONIC(BlockProfile.customBlock(p -> new PillarOrnamentBlock(p, true, PillarOrnamentBlock.OrnamentType.IONIC), lapisManalis())),
+	LAPIS_MANALIS_PILLAR_ORNAMENT_CORINTHIAN(BlockProfile.customBlock(p -> new PillarOrnamentBlock(p, true, PillarOrnamentBlock.OrnamentType.CORINTHIAN), lapisManalis())),
+	LAPIS_MANALIS_PILLAR_BASE_DORIC(BlockProfile.customBlock(p -> new PillarOrnamentBlock(p, false, PillarOrnamentBlock.OrnamentType.DORIC), lapisManalis())),
+	LAPIS_MANALIS_PILLAR_BASE_IONIC(BlockProfile.customBlock(p -> new PillarOrnamentBlock(p, false, PillarOrnamentBlock.OrnamentType.IONIC_CORINTHIAN), lapisManalis())),
 
 	LAPIS_MANALIS_SLAB(BlockProfile.customBlock(SlabBlock::new, lapisManalis())),
 	LAPIS_MANALIS_BRICK_SLAB(BlockProfile.customBlock(SlabBlock::new, lapisManalis())),
