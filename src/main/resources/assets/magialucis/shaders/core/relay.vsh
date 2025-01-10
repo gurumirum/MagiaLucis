@@ -15,10 +15,13 @@ void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
 
     mat4 invModelView = inverse(ModelViewMat);
-    vec3 look = normalize((invModelView *  vec4(0, 0, 1, 1)).xyz);
+    vec4 transformedVec = invModelView * vec4(0, 0, 1, 1);
+    vec3 look = normalize(transformedVec.xyz / transformedVec.w);
 
-    float thing = acos(dot(Normal, look)) / Pi;
+    float thing = acos(dot(normalize(Normal), look)) / (Pi / 2);
+    thing *= thing;
+    thing -= 0.1;
 
     vertexColor = Color;
-    vertexColor.a *= mix(0.2, 0.8, thing);
+    vertexColor.a *= thing;
 }
