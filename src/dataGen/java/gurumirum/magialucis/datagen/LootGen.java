@@ -3,6 +3,7 @@ package gurumirum.magialucis.datagen;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModBlocks;
+import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.Ore;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.WritableRegistry;
@@ -47,7 +48,8 @@ public class LootGen extends LootTableProvider {
 
 		@Override
 		protected void generate() {
-			for (ModBlocks modBlocks : ModBlocks.values()) genModBlockModels(modBlocks);
+			for (ModBlocks block : ModBlocks.values()) genModBlockModels(block);
+			for (ModBuildingBlocks buildingBlock : ModBuildingBlocks.values()) dropSelf(buildingBlock.block());
 
 			for (Ore o : Ore.values()) {
 				o.allOreBlocks().forEach(b -> add(b, createOreDrop(b, o.dropItem())));

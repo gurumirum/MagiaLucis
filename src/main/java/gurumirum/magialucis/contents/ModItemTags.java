@@ -11,4 +11,6 @@ public final class ModItemTags {
 
 	public static final TagKey<Item> WANDS = ItemTags.create(id("wands"));
 	public static final TagKey<Item> BRIGHTSTONES = ItemTags.create(id("brightstones"));
+	// well uh, this is the correct pluralization probably
+	public static final TagKey<Item> LAPIDES_MANALIS = ItemTags.create(id("lapides_manalis"));
 }

@@ -2,6 +2,7 @@ package gurumirum.magialucis.impl;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.GemItems;
+import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.net.msgs.SetBeamCraftingInfoMsg;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -12,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +25,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.*;
 
@@ -40,27 +43,21 @@ public final class InWorldBeamCraftingManager {
 		if (init) return;
 		init = true;
 
-		addRecipe(Blocks.SAND, new Recipe(25, List.of(
-				new ItemStack(GemItems.BRIGHTSTONE)
-		)));
-		addRecipe(Blocks.RED_SAND, new Recipe(25, List.of(
-				new ItemStack(GemItems.BRIGHTSTONE)
-		)));
-		addRecipe(Blocks.ICE, new Recipe(25, List.of(
-				new ItemStack(GemItems.ICY_BRIGHTSTONE)
-		)));
-		addRecipe(Blocks.FROSTED_ICE, new Recipe(25, List.of(
-				new ItemStack(GemItems.ICY_BRIGHTSTONE)
-		)));
-		addRecipe(Blocks.BLUE_ICE, new Recipe(25, List.of(
-				new ItemStack(GemItems.ICY_BRIGHTSTONE)
-		)));
-		addRecipe(Blocks.PACKED_ICE, new Recipe(25, List.of(
-				new ItemStack(GemItems.ICY_BRIGHTSTONE)
-		)));
-		addRecipe(Blocks.SOUL_SAND, new Recipe(25, List.of(
-				new ItemStack(GemItems.SOUL_BRIGHTSTONE)
-		)));
+		addRecipe(Blocks.SAND, new Recipe(25, GemItems.BRIGHTSTONE));
+		addRecipe(Blocks.RED_SAND, new Recipe(25, GemItems.RED_BRIGHTSTONE));
+
+		addRecipe(Blocks.ICE, new Recipe(25, GemItems.ICY_BRIGHTSTONE));
+		addRecipe(Blocks.FROSTED_ICE, new Recipe(25, GemItems.ICY_BRIGHTSTONE));
+		addRecipe(Blocks.BLUE_ICE, new Recipe(25, GemItems.ICY_BRIGHTSTONE));
+		addRecipe(Blocks.PACKED_ICE, new Recipe(25, GemItems.ICY_BRIGHTSTONE));
+
+		addRecipe(Blocks.SOUL_SAND, new Recipe(50, GemItems.SOUL_BRIGHTSTONE));
+
+		addRecipe(Blocks.STONE, new Recipe(50, ModBuildingBlocks.LAPIS_MANALIS));
+	}
+
+	public static @NotNull @Unmodifiable Map<BlockState, Recipe> getRecipes() {
+		return Collections.unmodifiableMap(recipes);
 	}
 
 	private static void addRecipe(BlockState blockState, Recipe recipe) {
@@ -125,12 +122,10 @@ public final class InWorldBeamCraftingManager {
 				focus.remove(p.getUUID());
 				level.destroyBlock(focusPos, false);
 
-				List<ItemStack> stacks = List.copyOf(recipe.output);
-
-				for (ItemStack s : stacks) {
+				for (ItemStack s : recipe.output) {
 					ItemEntity itemEntity = new ItemEntity(level,
 							focusPos.getX() + .5, focusPos.getY() + .5, focusPos.getZ() + .5,
-							s);
+							s.copy());
 					level.addFreshEntity(itemEntity);
 				}
 			} else {
@@ -151,14 +146,15 @@ public final class InWorldBeamCraftingManager {
 		}
 	}
 
-	public static Map<BlockState, Recipe> getRecipes(){
-		return Collections.unmodifiableMap(recipes);
-	}
 	@SuppressWarnings("SuspiciousMethodCalls") // wdym
 	@SubscribeEvent
 	public static void onLevelUnload(LevelEvent.Unload event) {
 		beam.remove(event.getLevel());
 	}
 
-	public record Recipe(int processTicks, @NotNull List<ItemStack> output) {}
+	public record Recipe(int processTicks, @NotNull @Unmodifiable List<ItemStack> output) {
+		public Recipe(int processTicks, ItemLike itemLike) {
+			this(processTicks, List.of(new ItemStack(itemLike)));
+		}
+	}
 }

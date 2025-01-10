@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "1": {
+      "item": "magialucis:lapis_manalis"
+    },
+    "2": {
+      "item": "magialucis:lapis_manalis_pillar"
+    }
+  },
+  "pattern": [
+    "11",
+    "22"
+  ],
+  "result": {
+    "count": 4,
+    "id": "magialucis:lapis_manalis_pillar_ornament_ionic"
+  }
+}

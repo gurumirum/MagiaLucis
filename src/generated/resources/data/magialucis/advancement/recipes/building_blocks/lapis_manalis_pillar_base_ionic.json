@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_silver_ingot": {
+    "has_lapis_manalis_pillar": {
       "conditions": {
         "items": [
           {
-            "items": "magialucis:silver_ingot"
+            "items": "magialucis:lapis_manalis_pillar"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:silver"
+        "recipe": "magialucis:lapis_manalis_pillar_base_ionic"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_silver_ingot"
+      "has_lapis_manalis_pillar"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:silver"
+      "magialucis:lapis_manalis_pillar_base_ionic"
     ]
   }
 }

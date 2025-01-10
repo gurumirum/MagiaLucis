@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "magialucis:block/lapis_manalis_slab"
+    },
+    "type=double": {
+      "model": "magialucis:block/lapis_manalis"
+    },
+    "type=top": {
+      "model": "magialucis:block/lapis_manalis_slab_top"
+    }
+  }
+}

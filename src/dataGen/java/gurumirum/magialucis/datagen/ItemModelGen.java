@@ -144,8 +144,6 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(GemItems.SAPPHIRE.asItem());
 
 		for (Ore ore : Ore.values()) registerOreModels(ore);
-		itemBlock(ModBlocks.SILVER.id().getPath(), "silver");
-		itemBlock(ModBlocks.RAW_SILVER_BLOCK.id().getPath());
 	}
 
 	@SuppressWarnings("UnusedReturnValue")

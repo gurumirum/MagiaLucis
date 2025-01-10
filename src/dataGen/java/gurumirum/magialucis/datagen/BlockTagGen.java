@@ -1,7 +1,7 @@
 package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.contents.ModBlocks;
+import gurumirum.magialucis.contents.ModBlockTags;
 import gurumirum.magialucis.contents.Ore;
 import gurumirum.magialucis.contents.OreType;
 import net.minecraft.core.HolderLookup;
@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
+
+import static gurumirum.magialucis.contents.ModBuildingBlocks.*;
 
 public class BlockTagGen extends BlockTagsProvider {
 	public BlockTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
@@ -46,10 +48,19 @@ public class BlockTagGen extends BlockTagsProvider {
 			}
 		}
 
-		c("storage_blocks/silver").add(ModBlocks.SILVER.block());
-		c("storage_blocks/raw_silver").add(ModBlocks.RAW_SILVER_BLOCK.block());
+		c("storage_blocks/silver").add(SILVER_BLOCK.block());
+		c("storage_blocks/raw_silver").add(RAW_SILVER_BLOCK.block());
 
-		tag(BlockTags.BEACON_BASE_BLOCKS).add(ModBlocks.SILVER.block());
+		tag(BlockTags.BEACON_BASE_BLOCKS).add(SILVER_BLOCK.block());
+		tag(ModBlockTags.LAPIDES_MANALIS).add(
+				LAPIS_MANALIS.block(),
+				LAPIS_MANALIS_BRICKS.block(),
+				LAPIS_MANALIS_PILLAR.block(),
+				LAPIS_MANALIS_PILLAR_ORNAMENT_DORIC.block(),
+				LAPIS_MANALIS_PILLAR_ORNAMENT_IONIC.block(),
+				LAPIS_MANALIS_PILLAR_ORNAMENT_CORINTHIAN.block(),
+				LAPIS_MANALIS_PILLAR_BASE_DORIC.block(),
+				LAPIS_MANALIS_PILLAR_BASE_IONIC.block());
 	}
 
 	private IntrinsicTagAppender<Block> c(String path) {

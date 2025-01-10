@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_silver": {
+    "has_silver_block": {
       "conditions": {
         "items": [
           {
-            "items": "magialucis:silver"
+            "items": "magialucis:silver_block"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_silver"
+      "has_silver_block"
     ]
   ],
   "rewards": {

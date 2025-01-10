@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "tag": "magialucis:lapides_manalis"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:lapis_manalis"
+  }
+}

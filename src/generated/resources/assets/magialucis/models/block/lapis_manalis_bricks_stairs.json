@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "magialucis:block/lapis_manalis_bricks",
+    "side": "magialucis:block/lapis_manalis_bricks",
+    "top": "magialucis:block/lapis_manalis_bricks"
+  }
+}

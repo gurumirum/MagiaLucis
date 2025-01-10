@@ -49,6 +49,7 @@ public class ItemTagGen extends ItemTagsProvider {
 		}
 
 		tag(ModItemTags.BRIGHTSTONES).add(GemItems.BRIGHTSTONE.asItem(), GemItems.RED_BRIGHTSTONE.asItem(), GemItems.ICY_BRIGHTSTONE.asItem());
+		copy(ModBlockTags.LAPIDES_MANALIS, ModItemTags.LAPIDES_MANALIS);
 	}
 
 	private IntrinsicTagAppender<Item> c(String path) {

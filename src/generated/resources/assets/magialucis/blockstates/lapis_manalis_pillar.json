@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "magialucis:block/lapis_manalis_pillar_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "magialucis:block/lapis_manalis_pillar"
+    },
+    "axis=z": {
+      "model": "magialucis:block/lapis_manalis_pillar_horizontal",
+      "x": 90
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "magialucis:lapis_manalis_bricks"
+  },
+  "result": {
+    "count": 1,
+    "id": "magialucis:lapis_manalis_bricks_stairs"
+  }
+}

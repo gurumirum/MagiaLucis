@@ -96,7 +96,11 @@ public final class Contents {
 
 		eventBus.addListener((RegisterEvent event) -> {
 			event.register(Registries.CREATIVE_MODE_TAB, h -> {
-				h.register(id("main"), CreativeModeTab.builder()
+				ResourceLocation main = id("main");
+				ResourceLocation gems = id("gems");
+				ResourceLocation buildingBlocks = id("building_blocks");
+
+				h.register(main, CreativeModeTab.builder()
 						.icon(() -> new ItemStack(Wands.ANCIENT_LIGHT))
 						.displayItems((p, o) -> {
 							for (var i : Wands.values()) {
@@ -112,11 +116,20 @@ public final class Contents {
 						})
 						.build());
 
-				h.register(id("gems"), CreativeModeTab.builder()
+				h.register(gems, CreativeModeTab.builder()
 						.icon(() -> new ItemStack(GemItems.BRIGHTSTONE))
+						.withTabsBefore(main)
 						.displayItems((p, o) -> {
 							for (var ore : Ore.values()) ore.allOreItems().forEach(o::accept);
 							for (var g : GemStats.values()) g.forEachItem(o::accept);
+						})
+						.build());
+
+				h.register(buildingBlocks, CreativeModeTab.builder()
+						.icon(() -> new ItemStack(ModBuildingBlocks.LAPIS_MANALIS))
+						.withTabsBefore(main, gems)
+						.displayItems((p, o) -> {
+							for (var i : ModBuildingBlocks.values()) o.accept(i);
 						})
 						.build());
 			});
@@ -129,6 +142,7 @@ public final class Contents {
 		GemItems.init();
 		ModItems.init();
 		ModBlocks.init();
+		ModBuildingBlocks.init();
 		ModBlockEntities.init();
 		Ore.init();
 		Wands.init();
