@@ -1,6 +1,7 @@
 package gurumirum.magialucis.impl.luxnet;
 
 import gurumirum.magialucis.capability.LinkSource;
+import gurumirum.magialucis.capability.LuxNetLinkDestination;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -74,7 +75,7 @@ public final class LuxUtils {
 
 	public static boolean linkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
 	                                        float xRot, float yRot, double linkDistance,
-	                                        int sourceNodeId, int linkIndex, @Nullable LinkDestinationSelector selector) {
+	                                        int linkIndex, @Nullable LinkDestinationSelector selector) {
 		Level level = blockEntity.getLevel();
 		if (level == null) return false;
 
@@ -92,10 +93,14 @@ public final class LuxUtils {
 
 		if (hitResult.getType() == HitResult.Type.BLOCK && !hitResult.getBlockPos().equals(pos)) {
 			if (selector == null) selector = LinkDestinationSelector.DEFAULT;
-			int link = selector.getLinkDestination(level, sourceNodeId, hitResult);
-			return linkCollector.inWorldLink(linkIndex, link, pos, hitResult.getLocation());
+			LuxNetLinkDestination dest = selector.chooseLinkDestination(level, linkCollector, hitResult);
+			if (dest != null) {
+				return linkCollector.inWorldLink(linkIndex,
+						dest.linkWithSource(new LinkContext(level, linkCollector.luxNet(), linkCollector.luxNode(), hitResult)).nodeId(),
+						pos, hitResult.getBlockPos(), hitResult.getLocation());
+			}
 		}
-		linkCollector.inWorldLinkFail(linkIndex, pos, hitResult.getLocation());
+		linkCollector.inWorldLinkFail(linkIndex, pos, hitResult.getBlockPos(), hitResult.getLocation());
 		return false;
 	}
 

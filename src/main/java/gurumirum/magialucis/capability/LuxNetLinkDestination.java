@@ -1,11 +1,23 @@
 package gurumirum.magialucis.capability;
 
+import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
-import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public interface LuxNetLinkDestination {
 	int NO_ID = LuxNet.NO_ID;
 
-	int getLinkDestinationId(int sourceId, @Nullable BlockHitResult hitResult);
+	@NotNull LinkTestResult linkWithSource(@NotNull LinkContext context);
+
+	record LinkTestResult(boolean isLinkable, int nodeId) {
+		private static final LinkTestResult FAIL = new LinkTestResult(false, NO_ID);
+
+		public static LinkTestResult linkable(int nodeId) {
+			return new LinkTestResult(true, nodeId);
+		}
+
+		public static LinkTestResult reject() {
+			return LinkTestResult.FAIL;
+		}
+	}
 }

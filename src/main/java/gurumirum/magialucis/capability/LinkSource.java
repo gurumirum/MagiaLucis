@@ -1,6 +1,8 @@
 package gurumirum.magialucis.capability;
 
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
+import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
+import gurumirum.magialucis.impl.luxnet.LuxNodeInterface;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -17,8 +19,14 @@ public interface LinkSource {
 	@Nullable InWorldLinkState getLinkState(int index);
 	void setLink(int index, @Nullable Orientation orientation);
 
+	@Nullable LinkDestinationSelector linkDestinationSelector();
+
 	default double linkDistance() {
 		return DEFAULT_LINK_DISTANCE;
+	}
+
+	default @Nullable LuxNodeInterface clientSideInterface() {
+		return this instanceof LuxNodeInterface iface ? iface : null;
 	}
 
 	default void unlinkAll() {

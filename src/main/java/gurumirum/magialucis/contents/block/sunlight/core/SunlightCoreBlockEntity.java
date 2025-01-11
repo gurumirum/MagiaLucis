@@ -1,6 +1,7 @@
 package gurumirum.magialucis.contents.block.sunlight.core;
 
 import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.capability.LuxNetLinkDestination;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
@@ -10,7 +11,6 @@ import gurumirum.magialucis.impl.luxnet.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -43,18 +43,15 @@ public class SunlightCoreBlockEntity extends LuxNodeBlockEntity implements LuxSo
 	@Override
 	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {
 		LuxUtils.linkToInWorldNode(this, linkCollector, (float)(Math.PI / 2), 0, LINK_DISTANCE,
-				luxNodeId(), 0, null);
+				0, null);
 	}
 
 	@Override
 	public void syncLinkStatus(@NotNull @UnmodifiableView Int2ObjectMap<InWorldLinkState> linkIndexToState) {}
 
 	@Override
-	public int getLinkDestinationId(int sourceId, @Nullable BlockHitResult hitResult) {
-		LuxNet luxNet = getLuxNet();
-		if (luxNet == null) return NO_ID;
-		LuxNode src = luxNet.get(sourceId);
-		if (src == null) return NO_ID;
-		return src.iface() instanceof SunlightFocusBlockEntity ? luxNodeId() : NO_ID;
+	public @NotNull LuxNetLinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
+		if (!(context.sourceInterface() instanceof SunlightFocusBlockEntity)) return LinkTestResult.reject();
+		return LinkTestResult.linkable(luxNodeId());
 	}
 }

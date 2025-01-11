@@ -6,8 +6,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public record InWorldLinkState(boolean linked, @NotNull InWorldLinkInfo info) {
-	public InWorldLinkState(boolean linked, @NotNull BlockPos origin, @NotNull Vec3 linkLocation) {
-		this(linked, new InWorldLinkInfo(origin, linkLocation));
+	public InWorldLinkState(boolean linked, @NotNull BlockPos origin, @NotNull BlockPos linkPos, @NotNull Vec3 linkLocation) {
+		this(linked, new InWorldLinkInfo(origin, linkPos, linkLocation));
 	}
 
 	public InWorldLinkState(CompoundTag tag) {
@@ -16,6 +16,10 @@ public record InWorldLinkState(boolean linked, @NotNull InWorldLinkInfo info) {
 
 	public @NotNull BlockPos origin() {
 		return this.info.origin();
+	}
+
+	public @NotNull BlockPos linkPos() {
+		return this.info.linkPos();
 	}
 
 	public @NotNull Vec3 linkLocation() {

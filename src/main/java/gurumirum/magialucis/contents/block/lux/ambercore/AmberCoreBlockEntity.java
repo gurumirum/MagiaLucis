@@ -12,6 +12,7 @@ import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.field.Fields;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
+import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxSourceNodeInterface;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -97,7 +98,9 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourc
 			if (state.is(ModBlocks.RELAY.block()) && state.getValue(BlockStateProperties.FACING) == dir) {
 				LuxNetLinkDestination dest = this.level.getCapability(ModCapabilities.LUX_NET_LINK_DESTINATION, this.mpos, null);
 				if (dest != null) {
-					linkCollector.inWorldLink(i++, dest.getLinkDestinationId(luxNodeId(), null), pos, Vec3.atCenterOf(this.mpos));
+					linkCollector.inWorldLink(i++,
+							dest.linkWithSource(new LinkContext(this.level, getLuxNet(), luxNodeId(), null)).nodeId(),
+							pos, this.mpos.immutable(), Vec3.atCenterOf(this.mpos));
 				}
 			}
 		}

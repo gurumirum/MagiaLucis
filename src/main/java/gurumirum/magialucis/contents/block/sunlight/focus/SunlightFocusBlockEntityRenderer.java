@@ -47,7 +47,7 @@ public class SunlightFocusBlockEntityRenderer extends BasicRelayBlockEntityRende
 
 		poseStack.pushPose();
 		poseStack.translate(8 / 16.0, 10 / 16.0, 8 / 16.0);
-		poseStack.mulPose(this.q.identity().rotateX(o != null ? (-o.xRot() - (float)(Math.PI / 2)) / 2 : -(float)Math.PI / 6));
+		poseStack.mulPose(this.q.identity().rotateX(o != null ? (-Math.min(0, o.xRot()) - (float)(Math.PI / 2)) / 2 : -(float)Math.PI / 6));
 		poseStack.translate(-8 / 16.0, -10 / 16.0, -8 / 16.0);
 
 		draw(blockEntity, poseStack, bufferSource, packedOverlay, model3);

@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import gurumirum.magialucis.capability.LinkSource;
+import gurumirum.magialucis.capability.LuxNetLinkDestination;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.ModRenderTypes;
 import gurumirum.magialucis.client.RenderShapes;
@@ -9,6 +10,8 @@ import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.block.lux.LuxNodeSyncPropertyAccess;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
+import gurumirum.magialucis.impl.luxnet.LinkContext;
+import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -97,14 +100,17 @@ public final class ConfigurationWandOverlay {
 	private static void update(LocalPlayer player, Level level, ItemStack stack) {
 		Minecraft mc = Minecraft.getInstance();
 		GlobalPos linkSourcePos = stack.get(Contents.LINK_SOURCE);
+		@Nullable BlockHitResult blockHit;
 		@Nullable BlockPos cursorHitPos;
 		@Nullable Vec3 cursorHitLocation;
 
 		if (mc.hitResult != null && mc.hitResult.getType() == HitResult.Type.BLOCK &&
-				mc.hitResult instanceof BlockHitResult blockHit) {
+				mc.hitResult instanceof BlockHitResult _blockHit) {
+			blockHit = _blockHit;
 			cursorHitPos = blockHit.getBlockPos();
 			cursorHitLocation = blockHit.getLocation();
 		} else {
+			blockHit = null;
 			cursorHitPos = null;
 			cursorHitLocation = null;
 		}
@@ -170,7 +176,7 @@ public final class ConfigurationWandOverlay {
 								continue;
 							}
 							InWorldLinkState linkState = linkSource.getLinkState(i);
-							if (linkState != null && BlockPos.containing(linkState.linkLocation()).equals(cursorHitPos)) {
+							if (linkState != null && linkState.linkPos().equals(cursorHitPos)) {
 								// duplicate detected; remove preexisting connection instead
 								visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
 								removeLink = true;
@@ -186,8 +192,15 @@ public final class ConfigurationWandOverlay {
 									visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
 								}
 							}
+
+							LinkDestinationSelector dstSelector = linkSource.linkDestinationSelector();
+							if (dstSelector == null) dstSelector = LinkDestinationSelector.DEFAULT;
+							LuxNetLinkDestination dst = dstSelector.chooseLinkDestination(level, null, blockHit);
+
+							boolean linkable = dst != null && dst.linkWithSource(new LinkContext(level, linkSource.clientSideInterface(), blockHit)).isLinkable();
 							visualData.lines.add(new Line(linkSourcePos.pos(),
-									isCtrlPressed() ? cursorHitLocation : Vec3.atCenterOf(cursorHitPos), TINT_SELECT));
+									isCtrlPressed() ? cursorHitLocation : Vec3.atCenterOf(cursorHitPos),
+									linkable ? TINT_SELECT : TINT_MISSING));
 						}
 					}
 				}

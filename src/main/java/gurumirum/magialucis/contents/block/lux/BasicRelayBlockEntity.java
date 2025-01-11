@@ -46,12 +46,13 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 			Orientation o = this.links.get(i);
 			if (o != null) {
 				LuxUtils.linkToInWorldNode(this, linkCollector, o.xRot(), o.yRot(), linkDistance(),
-						luxNodeId(), i, linkDestinationSelector());
+						i, linkDestinationSelector());
 			}
 		}
 	}
 
-	protected @Nullable LinkDestinationSelector linkDestinationSelector(){
+	@Override
+	public @Nullable LinkDestinationSelector linkDestinationSelector() {
 		return null;
 	}
 

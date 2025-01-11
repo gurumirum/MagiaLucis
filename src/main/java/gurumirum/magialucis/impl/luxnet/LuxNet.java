@@ -502,7 +502,7 @@ public final class LuxNet extends SavedData {
 		setDirty();
 	}
 
-	public final class LinkCollector {
+	public final class LinkCollector implements ServerSideLinkContext {
 		public final Vector3d mutableVec3d = new Vector3d();
 
 		private final Int2IntMap links = new Int2IntOpenHashMap();
@@ -513,10 +513,15 @@ public final class LuxNet extends SavedData {
 			this.node = node;
 		}
 
-		private void reset() {
-			this.links.clear();
-			this.inWorldLinks.clear();
-			this.node = null;
+		@Override
+		public @NotNull LuxNet luxNet() {
+			return LuxNet.this;
+		}
+
+		@Override
+		public @NotNull LuxNode luxNode() {
+			if (this.node == null) throw new IllegalStateException();
+			return this.node;
 		}
 
 		public void implicitLink(int nodeId) {
@@ -529,7 +534,7 @@ public final class LuxNet extends SavedData {
 			this.links.put(nodeId, -1);
 		}
 
-		public boolean inWorldLink(int linkIndex, int nodeId, @NotNull BlockPos origin, @NotNull Vec3 linkLocation) {
+		public boolean inWorldLink(int linkIndex, int nodeId, @NotNull BlockPos origin, @NotNull BlockPos linkPos, @NotNull Vec3 linkLocation) {
 			if (this.node == null) throw new IllegalStateException();
 			if (linkIndex < 0) throw new IllegalArgumentException("linkIndex < 0");
 
@@ -539,17 +544,26 @@ public final class LuxNet extends SavedData {
 			if (connected) this.links.put(nodeId, linkIndex);
 			this.inWorldLinks.put(linkIndex, new InWorldLinkState(connected,
 					Objects.requireNonNull(origin),
+					Objects.requireNonNull(linkPos),
 					Objects.requireNonNull(linkLocation)));
 
 			return connected;
 		}
 
-		public void inWorldLinkFail(int linkIndex, @NotNull BlockPos origin, @NotNull Vec3 linkLocation) {
+		public void inWorldLinkFail(int linkIndex, @NotNull BlockPos origin, @NotNull BlockPos linkPos, @NotNull Vec3 linkLocation) {
 			if (this.node == null) throw new IllegalStateException();
 			if (linkIndex < 0) throw new IllegalArgumentException("linkIndex < 0");
 
-			this.inWorldLinks.put(linkIndex, new InWorldLinkState(false, Objects.requireNonNull(origin),
+			this.inWorldLinks.put(linkIndex, new InWorldLinkState(false,
+					Objects.requireNonNull(origin),
+					Objects.requireNonNull(linkPos),
 					Objects.requireNonNull(linkLocation)));
+		}
+
+		private void reset() {
+			this.links.clear();
+			this.inWorldLinks.clear();
+			this.node = null;
 		}
 	}
 

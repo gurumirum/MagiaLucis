@@ -3,10 +3,7 @@ package gurumirum.magialucis.contents.block.lux;
 import gurumirum.magialucis.capability.LuxNetLinkDestination;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
 import gurumirum.magialucis.contents.block.SyncedBlockEntity;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxNode;
-import gurumirum.magialucis.impl.luxnet.LuxNodeInterface;
+import gurumirum.magialucis.impl.luxnet.*;
 import gurumirum.magialucis.utils.NumberFormats;
 import gurumirum.magialucis.utils.TagUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -19,7 +16,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -128,8 +124,8 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity
 	}
 
 	@Override
-	public int getLinkDestinationId(int sourceId, @Nullable BlockHitResult hitResult) {
-		return this.nodeId;
+	public @NotNull LuxNetLinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
+		return LinkTestResult.linkable(this.nodeId);
 	}
 
 	@Override
@@ -262,6 +258,7 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity
 		tag.remove("nodeId"); // do NOT copy node id lmao
 	}
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private static boolean equals(Int2ObjectMap<@Nullable InWorldLinkInfo> m1, Map<LuxNode, @Nullable InWorldLinkInfo> m2) {
 		if (m1.size() != m2.size()) return false;
 		for (var e : m2.entrySet()) {

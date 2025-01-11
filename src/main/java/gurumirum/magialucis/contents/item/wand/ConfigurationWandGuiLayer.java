@@ -26,6 +26,8 @@ public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
 		if (!ConfigurationWandOverlay.visualData.active) return;
 
 		Minecraft mc = Minecraft.getInstance();
+		if (mc.options.hideGui) return;
+
 		if (mc.level != null &&
 				mc.hitResult instanceof BlockHitResult blockHitResult &&
 				blockHitResult.getType() == HitResult.Type.BLOCK &&
