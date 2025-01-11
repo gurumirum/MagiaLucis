@@ -1,8 +1,6 @@
 package gurumirum.magialucis.client;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.contents.block.lux.relay.RelayItemExtension;
-import gurumirum.magialucis.contents.item.wand.WandItemExtension;
 import gurumirum.magialucis.client.render.entity.GemGolemRenderer;
 import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModBlockEntities;
@@ -10,6 +8,9 @@ import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.lux.relay.RelayItemExtension;
+import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusItemExtension;
 import gurumirum.magialucis.contents.item.wand.*;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltScreen;
@@ -88,6 +89,7 @@ public final class ClientInit {
 		event.registerItem(new WandItemExtension(), Arrays.stream(Wands.values())
 				.map(Wands::asItem).toArray(Item[]::new));
 		event.registerItem(new RelayItemExtension(), ModBlocks.RELAY.asItem());
+		event.registerItem(new SunlightFocusItemExtension(), ModBlocks.SUNLIGHT_FOCUS.blockItem());
 	}
 
 	@SubscribeEvent
@@ -107,6 +109,6 @@ public final class ClientInit {
 
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(ModBlockEntities.SUNLIGHT_FOCUS.get(), BasicRelayBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.SUNLIGHT_FOCUS.get(), SunlightFocusBlockEntityRenderer::new);
 	}
 }

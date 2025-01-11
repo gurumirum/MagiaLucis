@@ -1,7 +1,10 @@
 package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.client.ClientInit;
-import gurumirum.magialucis.contents.*;
+import gurumirum.magialucis.contents.GemItems;
+import gurumirum.magialucis.contents.ModItems;
+import gurumirum.magialucis.contents.Ore;
+import gurumirum.magialucis.contents.Wands;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;

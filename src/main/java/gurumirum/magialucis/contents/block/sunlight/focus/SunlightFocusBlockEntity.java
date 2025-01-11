@@ -1,8 +1,10 @@
-package gurumirum.magialucis.contents.block.sunlight;
+package gurumirum.magialucis.contents.block.sunlight.focus;
 
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
+import gurumirum.magialucis.contents.block.sunlight.core.SunlightCoreBlockEntity;
+import gurumirum.magialucis.contents.block.sunlight.SunlightLogic;
 import gurumirum.magialucis.impl.RGB332;
 import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
 import gurumirum.magialucis.impl.luxnet.LuxNet;

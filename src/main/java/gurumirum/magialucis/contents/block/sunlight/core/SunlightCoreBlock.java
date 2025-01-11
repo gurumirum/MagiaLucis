@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.sunlight;
+package gurumirum.magialucis.contents.block.sunlight.core;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;

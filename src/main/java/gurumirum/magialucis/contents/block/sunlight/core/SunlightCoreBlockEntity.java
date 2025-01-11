@@ -1,9 +1,11 @@
-package gurumirum.magialucis.contents.block.sunlight;
+package gurumirum.magialucis.contents.block.sunlight.core;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
+import gurumirum.magialucis.contents.block.sunlight.SunlightLogic;
+import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusBlockEntity;
 import gurumirum.magialucis.impl.luxnet.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
