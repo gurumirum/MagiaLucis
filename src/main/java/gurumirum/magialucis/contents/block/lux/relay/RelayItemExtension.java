@@ -15,11 +15,11 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,10 +49,12 @@ public class RelayItemExtension implements IClientItemExtensions {
 			Minecraft mc = Minecraft.getInstance();
 			float partialTicks = mc.getTimer().getGameTimeDeltaPartialTick(false);
 
-			mc.getBlockRenderer().renderSingleBlock(
-					ModBlocks.RELAY.block().defaultBlockState(),
-					poseStack, buffer, packedLight, packedOverlay,
-					ModelData.EMPTY, RenderType.SOLID);
+			BakedModel blockModel = mc.getBlockRenderer().getBlockModel(ModBlocks.RELAY.block().defaultBlockState());
+
+			for (RenderType renderType : blockModel.getRenderTypes(stack, true)) {
+				mc.getItemRenderer().renderModelLists(blockModel, stack, packedLight, packedOverlay,
+						poseStack, buffer.getBuffer(renderType));
+			}
 
 			ItemStack relayItem = RelayItemData.getItem(stack);
 			if (!relayItem.isEmpty()) {
