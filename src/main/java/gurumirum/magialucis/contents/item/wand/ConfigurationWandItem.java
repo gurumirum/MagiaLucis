@@ -3,8 +3,8 @@ package gurumirum.magialucis.contents.item.wand;
 import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.Contents;
-import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
 import gurumirum.magialucis.net.msgs.SetLinkMsg;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
@@ -173,7 +173,7 @@ public class ConfigurationWandItem extends Item {
 
 			if (o != null) {
 				o.toVector(vec);
-				return BasicRelayBlockEntity.safeClip(level, new ClipContext(
+				return LuxUtils.safeClip(level, new ClipContext(
 						origin.add(vec.x, vec.y, vec.z),
 						new Vec3(
 								origin.x + vec.x * linkDistance,

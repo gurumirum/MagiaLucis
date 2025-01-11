@@ -10,7 +10,7 @@ import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
 import gurumirum.magialucis.impl.luxnet.LuxConsumerNodeInterface;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.utils.LuxUtils;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.NumberFormats;
 import gurumirum.magialucis.utils.TagUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;

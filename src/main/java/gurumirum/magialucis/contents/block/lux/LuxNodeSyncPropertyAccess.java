@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
-public interface RelaySyncPropertyAccess {
+public interface LuxNodeSyncPropertyAccess {
 	int luxNodeId();
 	Vector3d luxFlow(Vector3d dest);
 	@NotNull @UnmodifiableView Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks();

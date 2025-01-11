@@ -1,32 +1,22 @@
 package gurumirum.magialucis.contents.block.lux;
 
 import gurumirum.magialucis.capability.LinkSource;
-import gurumirum.magialucis.capability.LuxNetComponent;
-import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
+import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
-import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,36 +42,17 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 	@Override
 	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {
 		if (this.links.isEmpty()) return;
-
-		Level level = this.level;
-		if (level == null) return;
-
-		BlockPos pos = getBlockPos();
-		double linkDistance = linkDistance();
-
 		for (int i = 0; i < this.links.size(); i++) {
 			Orientation o = this.links.get(i);
-			if (o == null) continue;
-			Vector3d vec = o.toVector(linkCollector.mutableVec3d);
-
-			BlockHitResult hitResult = safeClip(level, new ClipContext(
-					Vec3.atCenterOf(pos).add(vec.x, vec.y, vec.z),
-					new Vec3(
-							pos.getX() + .5f + vec.x * linkDistance,
-							pos.getY() + .5f + vec.y * linkDistance,
-							pos.getZ() + .5f + vec.z * linkDistance),
-					ClipContext.Block.VISUAL, ClipContext.Fluid.ANY,
-					CollisionContext.empty()));
-
-			if (hitResult.getType() == HitResult.Type.BLOCK && !hitResult.getBlockPos().equals(pos)) {
-				LuxNetComponent luxNetComponent = level.getCapability(ModCapabilities.LUX_NET_COMPONENT, hitResult.getBlockPos(), hitResult.getDirection());
-				if (luxNetComponent != null) {
-					linkCollector.inWorldLink(i, luxNetComponent.luxNodeId(), pos, hitResult.getLocation());
-					continue;
-				}
+			if (o != null) {
+				LuxUtils.linkToInWorldNode(this, linkCollector, o.xRot(), o.yRot(), linkDistance(),
+						luxNodeId(), i, linkDestinationSelector());
 			}
-			linkCollector.inWorldLinkFail(i, pos, hitResult.getLocation());
 		}
+	}
+
+	protected @Nullable LinkDestinationSelector linkDestinationSelector(){
+		return null;
 	}
 
 	@Override
@@ -173,30 +144,5 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 				this.linkIndexToState.put(tag2.getInt("index"), new InWorldLinkState(tag2));
 			}
 		}
-	}
-
-	/**
-	 * {@link net.minecraft.world.level.BlockGetter#clip(ClipContext)} that does not incur chunk loading
-	 *
-	 * @return Block hit result
-	 */
-	public static BlockHitResult safeClip(Level level, ClipContext context) {
-		return BlockGetter.traverseBlocks(context.getFrom(), context.getTo(), context, (ctx, pos) -> {
-			if (!level.isLoaded(pos)) {
-				Vec3 center = Vec3.atCenterOf(pos);
-				return BlockHitResult.miss(center, Direction.getNearest(center), pos);
-			}
-
-			BlockState state = level.getBlockState(pos);
-			FluidState fluidState = level.getFluidState(pos);
-			BlockHitResult blockHit = level.clipWithInteractionOverride(ctx.getFrom(), ctx.getTo(), pos, ctx.getBlockShape(state, level, pos), state);
-			BlockHitResult fluidHit = ctx.getFluidShape(fluidState, level, pos).clip(ctx.getFrom(), ctx.getTo(), pos);
-			double blockHitDist = blockHit == null ? Double.MAX_VALUE : ctx.getFrom().distanceToSqr(blockHit.getLocation());
-			double fluidHitDist = fluidHit == null ? Double.MAX_VALUE : ctx.getFrom().distanceToSqr(fluidHit.getLocation());
-			return blockHitDist <= fluidHitDist ? blockHit : fluidHit;
-		}, ctx -> {
-			Vec3 dist = ctx.getFrom().subtract(ctx.getTo());
-			return BlockHitResult.miss(ctx.getTo(), Direction.getNearest(dist.x, dist.y, dist.z), BlockPos.containing(ctx.getTo()));
-		});
 	}
 }

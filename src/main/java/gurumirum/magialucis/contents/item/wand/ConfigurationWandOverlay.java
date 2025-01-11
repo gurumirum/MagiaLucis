@@ -6,7 +6,7 @@ import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.ModRenderTypes;
 import gurumirum.magialucis.client.RenderShapes;
 import gurumirum.magialucis.contents.Contents;
-import gurumirum.magialucis.contents.block.lux.RelaySyncPropertyAccess;
+import gurumirum.magialucis.contents.block.lux.LuxNodeSyncPropertyAccess;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
 import net.minecraft.ChatFormatting;
@@ -126,7 +126,7 @@ public final class ConfigurationWandOverlay {
 
 				if (player.isSecondaryUseActive()) {
 					boxTint = TINT_REMOVE;
-					if (linkSource != null) addAllConnections(linkSource, true);
+					addAllConnections(level, linkSourcePos.pos(), linkSource, true);
 				}
 				visualData.boxes.add(new Box(linkSourcePos.pos(), boxTint));
 				return;
@@ -210,9 +210,8 @@ public final class ConfigurationWandOverlay {
 
 		if (cursorHitPos != null) {
 			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, cursorHitPos);
+			addAllConnections(level, cursorHitPos, linkSource, player.isSecondaryUseActive());
 			if (linkSource != null) {
-				addAllConnections(linkSource, player.isSecondaryUseActive());
-
 				visualData.overlayText.add(ChatFormatting.YELLOW + "RClick" + ChatFormatting.RESET + " to start link");
 				visualData.overlayText.add(ChatFormatting.YELLOW + "SHIFT+RClick" + ChatFormatting.RESET + " to remove all links");
 			}
@@ -253,20 +252,29 @@ public final class ConfigurationWandOverlay {
 		poseStack.popPose();
 	}
 
-	private static void addAllConnections(LinkSource linkSource, boolean remove) {
-		for (int i = 0, maxLinks = linkSource.maxLinks(); i < maxLinks; i++) {
-			InWorldLinkState linkState = linkSource.getLinkState(i);
+	private static void addAllConnections(Level level, BlockPos pos, @Nullable LinkSource linkSource, boolean remove) {
+		if (!(level.getBlockEntity(pos) instanceof LuxNodeSyncPropertyAccess props)) return;
+
+		for (var e : props.outboundLinks().int2ObjectEntrySet()) {
+			InWorldLinkInfo linkState = e.getValue();
 			if (linkState == null) continue;
 			visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(),
-					remove ? TINT_REMOVE : linkState.linked() ? TINT_SELECT : TINT_MISSING));
+					remove && linkSource != null ? TINT_REMOVE : TINT_SELECT));
 		}
 
-		if (linkSource instanceof RelaySyncPropertyAccess a) {
-			for (var e : a.inboundLinks().int2ObjectEntrySet()) {
-				InWorldLinkInfo linkState = e.getValue();
-				if (linkState == null) continue;
-				visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_INPUT));
+		if (linkSource != null) {
+			for (int i = 0, maxLinks = linkSource.maxLinks(); i < maxLinks; i++) {
+				InWorldLinkState linkState = linkSource.getLinkState(i);
+				if (linkState == null || linkState.linked()) continue;
+				visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(),
+						remove ? TINT_REMOVE : TINT_MISSING));
 			}
+		}
+
+		for (var e : props.inboundLinks().int2ObjectEntrySet()) {
+			InWorldLinkInfo linkState = e.getValue();
+			if (linkState == null) continue;
+			visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_INPUT));
 		}
 	}
 

@@ -17,8 +17,8 @@ public enum GemStats implements LuxStat {
 	BRIGHTSTONE(0, RGB332.WHITE, 0, 100, false),
 	SOUL_BRIGHTSTONE(0, RGB332.of(1, 0, 0), 0, 100, false),
 
-	AMBER(1, RGB332.of(6, 3, 0), 30, 300),
-	CITRINE(1, RGB332.of(6, 6, 1), 10, 200),
+	AMBER(1, RGB332.of(6, 3, 0), 5, 300),
+	CITRINE(1, RGB332.of(6, 6, 1), 25, 250),
 	AQUAMARINE(1, RGB332.of(0, 5, 3), 20, 160),
 	PEARL(1, RGB332.of(7, 6, 3), 50, 150),
 

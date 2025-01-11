@@ -104,6 +104,9 @@ public class RelayBlock extends Block implements EntityBlock {
 	                                                   @NotNull Level level, @NotNull BlockPos pos,
 	                                                   @NotNull Player player, @NotNull InteractionHand hand,
 	                                                   @NotNull BlockHitResult hitResult) {
+		if (hitResult.getDirection() == state.getValue(FACING).getOpposite())
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+
 		LuxStat gemStat = stack.getCapability(ModCapabilities.GEM_STAT);
 
 		if (level.getBlockEntity(pos) instanceof RelayBlockEntity relay) {

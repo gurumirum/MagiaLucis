@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.ambercore;
 
 import gurumirum.magialucis.capability.GemStats;
-import gurumirum.magialucis.capability.LuxNetComponent;
+import gurumirum.magialucis.capability.LuxNetLinkDestination;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModBlockEntities;
@@ -95,9 +95,9 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourc
 			this.mpos.set(pos).move(dir);
 			BlockState state = this.level.getBlockState(this.mpos);
 			if (state.is(ModBlocks.RELAY.block()) && state.getValue(BlockStateProperties.FACING) == dir) {
-				LuxNetComponent luxNetComponent = this.level.getCapability(ModCapabilities.LUX_NET_COMPONENT, this.mpos, null);
-				if (luxNetComponent != null) {
-					linkCollector.inWorldLink(i++, luxNetComponent.luxNodeId(), pos, Vec3.atCenterOf(this.mpos));
+				LuxNetLinkDestination dest = this.level.getCapability(ModCapabilities.LUX_NET_LINK_DESTINATION, this.mpos, null);
+				if (dest != null) {
+					linkCollector.inWorldLink(i++, dest.getLinkDestinationId(luxNodeId(), null), pos, Vec3.atCenterOf(this.mpos));
 				}
 			}
 		}

@@ -2,7 +2,6 @@ package gurumirum.magialucis.impl.luxnet;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.capability.LuxStat;
-import gurumirum.magialucis.utils.LuxUtils;
 import it.unimi.dsi.fastutil.ints.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
@@ -530,17 +529,19 @@ public final class LuxNet extends SavedData {
 			this.links.put(nodeId, -1);
 		}
 
-		public void inWorldLink(int linkIndex, int nodeId, @NotNull BlockPos origin, @NotNull Vec3 linkLocation) {
+		public boolean inWorldLink(int linkIndex, int nodeId, @NotNull BlockPos origin, @NotNull Vec3 linkLocation) {
 			if (this.node == null) throw new IllegalStateException();
 			if (linkIndex < 0) throw new IllegalArgumentException("linkIndex < 0");
 
 			// disallow null source and self connection
 			boolean connected = nodeId != NO_ID && this.node.id != nodeId && LuxNet.this.nodes.containsKey(nodeId);
 
-			this.links.put(nodeId, linkIndex);
+			if (connected) this.links.put(nodeId, linkIndex);
 			this.inWorldLinks.put(linkIndex, new InWorldLinkState(connected,
 					Objects.requireNonNull(origin),
 					Objects.requireNonNull(linkLocation)));
+
+			return connected;
 		}
 
 		public void inWorldLinkFail(int linkIndex, @NotNull BlockPos origin, @NotNull Vec3 linkLocation) {

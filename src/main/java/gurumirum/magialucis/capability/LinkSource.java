@@ -52,24 +52,32 @@ public interface LinkSource {
 					(float)(Mth.atan2(z, x) - Math.PI / 2));
 		}
 
+		public static Vector3d toVector(float xRot, float yRot, Vector3d vector) {
+			float yCos = Mth.cos(-yRot);
+			float ySin = Mth.sin(-yRot);
+			float xCos = Mth.cos(xRot);
+			float xSin = Mth.sin(xRot);
+			return vector.set(ySin * xCos, -xSin, yCos * xCos);
+		}
+
+		public static Vector3f toVector(float xRot, float yRot, Vector3f vector) {
+			float yCos = Mth.cos(-yRot);
+			float ySin = Mth.sin(-yRot);
+			float xCos = Mth.cos(xRot);
+			float xSin = Mth.sin(xRot);
+			return vector.set(ySin * xCos, -xSin, yCos * xCos);
+		}
+
 		public long packageToLong() {
 			return ((long)Float.floatToRawIntBits(this.xRot) << 32) | Integer.toUnsignedLong(Float.floatToRawIntBits(this.yRot));
 		}
 
 		public Vector3d toVector(Vector3d vector) {
-			float yCos = Mth.cos(-this.yRot);
-			float ySin = Mth.sin(-this.yRot);
-			float xCos = Mth.cos(this.xRot);
-			float xSin = Mth.sin(this.xRot);
-			return vector.set(ySin * xCos, -xSin, yCos * xCos);
+			return toVector(this.xRot, this.yRot, vector);
 		}
 
 		public Vector3f toVector(Vector3f vector) {
-			float yCos = Mth.cos(-this.yRot);
-			float ySin = Mth.sin(-this.yRot);
-			float xCos = Mth.cos(this.xRot);
-			float xSin = Mth.sin(this.xRot);
-			return vector.set(ySin * xCos, -xSin, yCos * xCos);
+			return toVector(this.xRot, this.yRot, vector);
 		}
 
 		public Quaternionf toQuat(Quaternionf dest) {

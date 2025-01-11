@@ -5,6 +5,8 @@ import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntity;
 import gurumirum.magialucis.contents.block.lux.remotecharger.RemoteChargerBlockEntity;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlockEntity;
+import gurumirum.magialucis.contents.block.sunlight.SunlightCoreBlockEntity;
+import gurumirum.magialucis.contents.block.sunlight.SunlightFocusBlockEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,6 +24,12 @@ public final class ModBlockEntities {
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FieldMonitorBlockEntity>> FIELD_MONITOR =
 			blockEntity("field_monitor", FieldMonitorBlockEntity::new, ModBlocks.FIELD_MONITOR);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SunlightCoreBlockEntity>> SUNLIGHT_CORE =
+			blockEntity("sunlight_core", SunlightCoreBlockEntity::new, ModBlocks.SUNLIGHT_CORE);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SunlightFocusBlockEntity>> SUNLIGHT_FOCUS =
+			blockEntity("sunlight_focus", SunlightFocusBlockEntity::new, ModBlocks.SUNLIGHT_FOCUS);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RelayBlockEntity>> RELAY =
 			blockEntity("relay", RelayBlockEntity::new, ModBlocks.RELAY);

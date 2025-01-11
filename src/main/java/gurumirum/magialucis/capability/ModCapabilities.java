@@ -30,7 +30,7 @@ public final class ModCapabilities {
 	public static final ItemCapability<LuxStat, Void> GEM_STAT = ItemCapability.createVoid(id("gem_stat"), LuxStat.class);
 
 	public static final BlockCapability<LinkSource, Void> LINK_SOURCE = BlockCapability.createVoid(id("linkable"), LinkSource.class);
-	public static final BlockCapability<LuxNetComponent, Direction> LUX_NET_COMPONENT = BlockCapability.createSided(id("lux_net_component"), LuxNetComponent.class);
+	public static final BlockCapability<LuxNetLinkDestination, Direction> LUX_NET_LINK_DESTINATION = BlockCapability.createSided(id("lux_net_link_destination"), LuxNetLinkDestination.class);
 
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -51,13 +51,16 @@ public final class ModCapabilities {
 		event.registerItem(ItemHandler.ITEM, (s, v) -> new WandBeltItem.ItemHandler(s), ModItems.WAND_BELT);
 
 		registerRelayLinkSource(event, ModBlockEntities.RELAY.get());
-		event.registerBlockEntity(LUX_NET_COMPONENT, ModBlockEntities.RELAY.get(), (be, dir) ->
+		event.registerBlockEntity(LUX_NET_LINK_DESTINATION, ModBlockEntities.RELAY.get(), (be, dir) ->
 				be.getBlockState().getValue(BlockStateProperties.FACING).getOpposite() != dir ? be : null);
 
 		registerRelayLinkSource(event, ModBlockEntities.LUX_SOURCE.get());
-		registerLuxNetComponent(event, ModBlockEntities.LUX_SOURCE.get());
-		registerLuxNetComponent(event, ModBlockEntities.REMOTE_CHARGER.get());
-		registerLuxNetComponent(event, ModBlockEntities.REMOTE_CHARGER_2.get());
+		registerLuxNetLinkDestination(event, ModBlockEntities.LUX_SOURCE.get());
+		registerLuxNetLinkDestination(event, ModBlockEntities.REMOTE_CHARGER.get());
+		registerLuxNetLinkDestination(event, ModBlockEntities.REMOTE_CHARGER_2.get());
+		registerLuxNetLinkDestination(event, ModBlockEntities.SUNLIGHT_FOCUS.get());
+		registerRelayLinkSource(event, ModBlockEntities.SUNLIGHT_FOCUS.get());
+		registerLuxNetLinkDestination(event, ModBlockEntities.SUNLIGHT_CORE.get());
 	}
 
 	private static void registerLuxContainer(RegisterCapabilitiesEvent event, LuxContainerStat stat, ItemLike... items) {
@@ -69,7 +72,7 @@ public final class ModCapabilities {
 		event.registerBlockEntity(LINK_SOURCE, type, (be, context) -> be);
 	}
 
-	private static <T extends BlockEntity & LuxNetComponent> void registerLuxNetComponent(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
-		event.registerBlockEntity(LUX_NET_COMPONENT, type, (be, context) -> be);
+	private static <T extends BlockEntity & LuxNetLinkDestination> void registerLuxNetLinkDestination(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
+		event.registerBlockEntity(LUX_NET_LINK_DESTINATION, type, (be, context) -> be);
 	}
 }

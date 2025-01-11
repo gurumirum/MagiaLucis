@@ -1,7 +1,7 @@
 package gurumirum.magialucis.capability;
 
 import gurumirum.magialucis.contents.Contents;
-import gurumirum.magialucis.utils.LuxUtils;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;

@@ -107,5 +107,6 @@ public final class ClientInit {
 
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.SUNLIGHT_FOCUS.get(), BasicRelayBlockEntityRenderer::new);
 	}
 }

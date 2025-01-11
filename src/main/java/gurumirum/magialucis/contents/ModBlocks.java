@@ -8,6 +8,8 @@ import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
 import gurumirum.magialucis.contents.block.lux.remotecharger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlock;
+import gurumirum.magialucis.contents.block.sunlight.SunlightCoreBlock;
+import gurumirum.magialucis.contents.block.sunlight.SunlightFocusBlock;
 import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.FieldRegistry;
 import net.minecraft.resources.ResourceLocation;
@@ -36,6 +38,9 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 	REMOTE_CHARGER_2(BlockProfile.customBlock(RemoteChargerBlock.Advanced::new, Properties.of())),
 	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of())),
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of().lightLevel(state -> 9))),
+	SUNLIGHT_CORE(BlockProfile.customBlock(SunlightCoreBlock::new, Properties.of())),
+	SUNLIGHT_FOCUS(BlockProfile.customBlock(SunlightFocusBlock::new, Properties.of())),
+
 	LUX_SOURCE(BlockProfile.customBlock(LuxSourceBlock::new, Properties.of())),
 
 	FIELD_MONITOR(BlockProfile.customBlock(FieldMonitorBlock::new, Properties.of()));

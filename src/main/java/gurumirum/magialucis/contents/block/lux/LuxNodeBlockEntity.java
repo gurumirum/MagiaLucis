@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.lux;
 
-import gurumirum.magialucis.capability.LuxNetComponent;
+import gurumirum.magialucis.capability.LuxNetLinkDestination;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
 import gurumirum.magialucis.contents.block.SyncedBlockEntity;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
@@ -19,6 +19,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public abstract class LuxNodeBlockEntity extends SyncedBlockEntity
-		implements LuxNodeInterface, LuxNetComponent, RelaySyncPropertyAccess, DebugTextProvider {
+		implements LuxNodeInterface, LuxNetLinkDestination, LuxNodeSyncPropertyAccess, DebugTextProvider {
 	private int nodeId;
 	private final Vector3d luxFlow = new Vector3d();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks = new Int2ObjectOpenHashMap<>();
@@ -127,6 +128,11 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity
 	}
 
 	@Override
+	public int getLinkDestinationId(int sourceId, @Nullable BlockHitResult hitResult) {
+		return this.nodeId;
+	}
+
+	@Override
 	public void syncLuxFlow(Vector3d amount) {
 		if (this.luxFlow.equals(amount)) return;
 		this.luxFlow.set(amount);
@@ -176,30 +182,8 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity
 	public void addDebugText(@NotNull List<String> list) {
 		list.add("Node: #" + luxNodeId() + " [" + getBlockPos().toShortString() + "]");
 
-		if (!outboundLinks().isEmpty()) {
-			boolean first = true;
-			for (var e : outboundLinks().int2ObjectEntrySet()) {
-				if (e.getValue() == null) continue;
-				if (first) {
-					first = false;
-					list.add("");
-					list.add("Outbound Links:");
-				}
-				list.add("#" + e.getIntKey() + " [" + BlockPos.containing(e.getValue().linkLocation()).toShortString() + "]");
-			}
-		}
-		if (!inboundLinks().isEmpty()) {
-			boolean first = true;
-			for (var e : inboundLinks().int2ObjectEntrySet()) {
-				if (e.getValue() == null) continue;
-				if (first) {
-					first = false;
-					list.add("");
-					list.add("Inbound Links:");
-				}
-				list.add("#" + e.getIntKey() + " [" + e.getValue().origin().toShortString() + "]");
-			}
-		}
+		addLinkDebugText(list, outboundLinks(), false);
+		addLinkDebugText(list, inboundLinks(), true);
 
 		list.add("");
 		list.add("LUX Flow: " + this.luxFlow.toString(NumberFormats.DECIMAL));
@@ -210,6 +194,28 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity
 		list.add("bMaxTransfer = " + NumberFormats.DECIMAL.format(bMaxTransfer()));
 	}
 
+	private void addLinkDebugText(List<String> list, Int2ObjectMap<@Nullable InWorldLinkInfo> links, boolean inbound) {
+		boolean first = true;
+		int writtenEntries = 0;
+		int skippedEntries = 0;
+		final int limit = 5;
+
+		for (var e : links.int2ObjectEntrySet()) {
+			if (e.getValue() == null) continue;
+			if (first) {
+				first = false;
+				list.add("");
+				list.add(inbound ? "Inbound Links:" : "Outbound Links:");
+			}
+			if (writtenEntries < limit) {
+				BlockPos pos = inbound ? e.getValue().origin() : BlockPos.containing(e.getValue().linkLocation());
+				list.add("#" + e.getIntKey() + " [" + pos.toShortString() + "]");
+				writtenEntries++;
+			} else skippedEntries++;
+		}
+		if (skippedEntries > 0)
+			list.add("... And " + skippedEntries + " more");
+	}
 
 	@Override
 	protected void load(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
