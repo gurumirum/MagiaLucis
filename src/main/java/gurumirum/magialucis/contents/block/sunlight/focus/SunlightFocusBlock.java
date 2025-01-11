@@ -37,4 +37,9 @@ public class SunlightFocusBlock extends Block implements EntityBlock {
 	protected @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
 		return RenderShape.INVISIBLE;
 	}
+
+	@Override
+	protected boolean useShapeForLightOcclusion(@NotNull BlockState state) {
+		return true;
+	}
 }
