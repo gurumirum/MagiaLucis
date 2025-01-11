@@ -10,11 +10,11 @@
       "y": 90
     },
     "facing=north": {
-      "model": "magialucis:block/lapis_manalis_pillar_base_doric_mirrored",
+      "model": "magialucis:block/lapis_manalis_pillar_base_doric",
       "x": 90
     },
     "facing=south": {
-      "model": "magialucis:block/lapis_manalis_pillar_base_doric",
+      "model": "magialucis:block/lapis_manalis_pillar_base_doric_mirrored",
       "x": 90,
       "y": 180
     },

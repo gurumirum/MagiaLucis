@@ -10,11 +10,11 @@
       "y": 90
     },
     "facing=north": {
-      "model": "magialucis:block/lapis_manalis_pillar_ornament_corinthian_mirrored",
+      "model": "magialucis:block/lapis_manalis_pillar_ornament_corinthian",
       "x": 90
     },
     "facing=south": {
-      "model": "magialucis:block/lapis_manalis_pillar_ornament_corinthian",
+      "model": "magialucis:block/lapis_manalis_pillar_ornament_corinthian_mirrored",
       "x": 90,
       "y": 180
     },

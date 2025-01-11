@@ -2,7 +2,6 @@ package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.Ore;
-import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -85,8 +84,11 @@ public class BlockStateGen extends BlockStateProvider {
 		ModelFile modelFileMirrored = new ModelFile.UncheckedModelFile(modelAndTextureName.withSuffix("_mirrored"));
 
 		directionalBlock(block.block(), state -> {
-			boolean positiveAxis = state.getValue(BlockStateProperties.FACING).getAxisDirection() == Direction.AxisDirection.POSITIVE;
-			return positiveAxis ? modelFile : modelFileMirrored;
+			boolean mirror = switch (state.getValue(BlockStateProperties.FACING)) {
+				case UP, NORTH, EAST -> false;
+				default -> true;
+			};
+			return mirror ? modelFileMirrored : modelFile;
 		});
 
 		itemModels().simpleBlockItem(block.block());
