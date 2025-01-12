@@ -236,8 +236,32 @@ public final class RenderShapes {
 	}
 
 	public static void sphere(PoseStack poseStack, VertexConsumer vc, int color) {
+		upperSphere(poseStack, vc, color);
+		lowerSphere(poseStack, vc, color);
+	}
+
+	public static void cylinder(PoseStack poseStack, VertexConsumer vc, float length, int color) {
 		PoseStack.Pose pose = poseStack.last();
-		for (int i = 0; i < SPHERE_Y_SLICE - 1; i++) {
+		int ySlice = (SPHERE_Y_SLICE - 1) / 2;
+
+		for (int j = 0; j < SPHERE_X_SLICE; j++) {
+			int nextSliceIndex = (j + 1) % SPHERE_X_SLICE;
+			Vector3f v1 = sphereVectorCache[ySlice][j];
+			Vector3f v2 = sphereVectorCache[ySlice][nextSliceIndex];
+
+			vc.addVertex(pose, v1).setColor(color);
+			vc.addVertex(pose, v1.x, v1.y + length, v1.z).setColor(color);
+			vc.addVertex(pose, v2.x, v2.y + length, v2.z).setColor(color);
+
+			vc.addVertex(pose, v1).setColor(color);
+			vc.addVertex(pose, v2.x, v2.y + length, v2.z).setColor(color);
+			vc.addVertex(pose, v2).setColor(color);
+		}
+	}
+
+	public static void upperSphere(PoseStack poseStack, VertexConsumer vc, int color) {
+		PoseStack.Pose pose = poseStack.last();
+		for (int i = 0, end = (SPHERE_Y_SLICE - 1) / 2; i < end; i++) {
 			if (i == 0) {
 				for (int j = 0; j < SPHERE_X_SLICE; j++) {
 					int nextSliceIndex = (j + 1) % SPHERE_X_SLICE;
@@ -245,14 +269,6 @@ public final class RenderShapes {
 					vc.addVertex(pose, 0, 1, 0).setColor(color);
 					vc.addVertex(pose, sphereVectorCache[i][nextSliceIndex]).setColor(color);
 				}
-			} else if (i == SPHERE_Y_SLICE - 2) {
-				for (int j = 0; j < SPHERE_X_SLICE; j++) {
-					int nextSliceIndex = (j + 1) % SPHERE_X_SLICE;
-					vc.addVertex(pose, 0, -1, 0).setColor(color);
-					vc.addVertex(pose, sphereVectorCache[i][j]).setColor(color);
-					vc.addVertex(pose, sphereVectorCache[i][nextSliceIndex]).setColor(color);
-				}
-				continue;
 			}
 
 			for (int j = 0; j < SPHERE_X_SLICE; j++) {
@@ -264,6 +280,31 @@ public final class RenderShapes {
 				vc.addVertex(pose, sphereVectorCache[i + 1][j]).setColor(color);
 				vc.addVertex(pose, sphereVectorCache[i][nextSliceIndex]).setColor(color);
 				vc.addVertex(pose, sphereVectorCache[i + 1][nextSliceIndex]).setColor(color);
+			}
+		}
+	}
+
+	public static void lowerSphere(PoseStack poseStack, VertexConsumer vc, int color) {
+		PoseStack.Pose pose = poseStack.last();
+		for (int i = (SPHERE_Y_SLICE - 1) / 2; i < SPHERE_Y_SLICE - 1; i++) {
+			if (i == SPHERE_Y_SLICE - 2) {
+				for (int j = 0; j < SPHERE_X_SLICE; j++) {
+					int nextSliceIndex = (j + 1) % SPHERE_X_SLICE;
+					vc.addVertex(pose, 0, -1, 0).setColor(color);
+					vc.addVertex(pose, sphereVectorCache[i][j]).setColor(color);
+					vc.addVertex(pose, sphereVectorCache[i][nextSliceIndex]).setColor(color);
+				}
+			} else {
+				for (int j = 0; j < SPHERE_X_SLICE; j++) {
+					int nextSliceIndex = (j + 1) % SPHERE_X_SLICE;
+					vc.addVertex(pose, sphereVectorCache[i + 1][j]).setColor(color);
+					vc.addVertex(pose, sphereVectorCache[i][j]).setColor(color);
+					vc.addVertex(pose, sphereVectorCache[i][nextSliceIndex]).setColor(color);
+
+					vc.addVertex(pose, sphereVectorCache[i + 1][j]).setColor(color);
+					vc.addVertex(pose, sphereVectorCache[i][nextSliceIndex]).setColor(color);
+					vc.addVertex(pose, sphereVectorCache[i + 1][nextSliceIndex]).setColor(color);
+				}
 			}
 		}
 	}

@@ -11,7 +11,9 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import org.joml.Quaternionf;
 import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,17 +64,34 @@ public record LightEffect(
 
 		poseStack.pushPose();
 		poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
+		VertexConsumer vc = mc.renderBuffers().bufferSource().getBuffer(ModRenderTypes.LIGHT);
 
 		for (LightEffect e : lightEffects) {
 			poseStack.pushPose();
+
 			if (e.start.equals(e.end)) {
 				poseStack.translate(e.start.x, e.start.y, e.start.z);
 				poseStack.scale(e.radius, e.radius, e.radius);
 
-				VertexConsumer vc = mc.renderBuffers().bufferSource().getBuffer(ModRenderTypes.LIGHT);
 				RenderShapes.sphere(poseStack, vc, e.color);
 			} else {
+				Vec3 vec = e.end.subtract(e.start);
+				Quaternionf angle = new Vector3f(0, 1, 0)
+						.rotationTo((float)vec.x, (float)vec.y, (float)vec.z, new Quaternionf());
 
+				poseStack.translate(e.start.x, e.start.y, e.start.z);
+				poseStack.mulPose(angle);
+
+				poseStack.pushPose();
+				poseStack.scale(e.radius, e.radius, e.radius);
+				RenderShapes.lowerSphere(poseStack, vc, e.color);
+				double len = vec.length();
+				RenderShapes.cylinder(poseStack, vc, (float)(len / e.radius), e.color);
+				poseStack.popPose();
+
+				poseStack.translate(0, len, 0);
+				poseStack.scale(e.radius, e.radius, e.radius);
+				RenderShapes.upperSphere(poseStack, vc, e.color);
 			}
 			poseStack.popPose();
 		}

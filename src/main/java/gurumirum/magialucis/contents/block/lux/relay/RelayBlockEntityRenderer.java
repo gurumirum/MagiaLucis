@@ -8,6 +8,8 @@ import gurumirum.magialucis.client.ModRenderTypes;
 import gurumirum.magialucis.client.RenderShapes;
 import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
+import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
+import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
 import gurumirum.magialucis.utils.AprilFoolsUtils;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
@@ -86,11 +88,33 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 		if (transformed) poseStack.popPose();
 
 		Vector3d luxFlow = blockEntity.luxFlow(new Vector3d());
-		if (luxFlow.x > 0 || luxFlow.y > 0 || luxFlow.z > 0)
-			LightEffect.addCircularEffect(Vec3.atCenterOf(blockEntity.getBlockPos()),
-					blockEntity.color(),
-					luxFlow,
-					blockEntity.rMaxTransfer(), blockEntity.gMaxTransfer(), blockEntity.bMaxTransfer());
+		if (luxFlow.x > 0 || luxFlow.y > 0 || luxFlow.z > 0) {
+			Vec3 center = Vec3.atCenterOf(blockEntity.getBlockPos());
+			byte color = blockEntity.color();
+			double rMaxTransfer = blockEntity.rMaxTransfer();
+			double gMaxTransfer = blockEntity.gMaxTransfer();
+			double bMaxTransfer = blockEntity.bMaxTransfer();
+
+			LightEffect.addCircularEffect(center, color, luxFlow, rMaxTransfer, gMaxTransfer, bMaxTransfer);
+
+			var outboundLinks = blockEntity.outboundLinks();
+			luxFlow.div(Math.max(1, outboundLinks.size()));
+
+			for (var e : outboundLinks.int2ObjectEntrySet()) {
+				InWorldLinkInfo info = e.getValue();
+				if (info == null) continue;
+				LightEffect.addCylindricalEffect(center, info.linkLocation(), color, luxFlow,
+						rMaxTransfer, gMaxTransfer, bMaxTransfer);
+			}
+
+			for (int i = 0; i < blockEntity.maxLinks(); i++) {
+				InWorldLinkState linkState = blockEntity.getLinkState(i);
+				if (linkState != null && !linkState.linked()) {
+					LightEffect.addCylindricalEffect(center, linkState.linkLocation(), color, luxFlow,
+							rMaxTransfer, gMaxTransfer, bMaxTransfer);
+				}
+			}
+		}
 	}
 
 	public static void drawItem(@Nullable Level level, float partialTick, PoseStack poseStack,
