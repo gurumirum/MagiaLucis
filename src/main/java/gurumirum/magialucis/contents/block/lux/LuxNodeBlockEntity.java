@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.block.lux;
 
 import gurumirum.magialucis.capability.LuxNetLinkDestination;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
-import gurumirum.magialucis.contents.block.SyncedBlockEntity;
+import gurumirum.magialucis.contents.block.BlockEntityBase;
 import gurumirum.magialucis.impl.luxnet.*;
 import gurumirum.magialucis.utils.NumberFormats;
 import gurumirum.magialucis.utils.TagUtils;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class LuxNodeBlockEntity extends SyncedBlockEntity
+public abstract class LuxNodeBlockEntity extends BlockEntityBase
 		implements LuxNodeInterface, LuxNetLinkDestination, LuxNodeSyncPropertyAccess, DebugTextProvider {
 	private int nodeId;
 	private final Vector3d luxFlow = new Vector3d();
@@ -89,35 +89,13 @@ public abstract class LuxNodeBlockEntity extends SyncedBlockEntity
 	}
 
 	@Override
-	public void onLoad() {
-		super.onLoad();
-		registerLuxNode();
-	}
-
-	@Override
-	public void onChunkUnloaded() {
-		super.onChunkUnloaded();
-		unregisterLuxNode(false);
-	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		unregisterLuxNode(true);
-	}
-
-	@Override
-	public void clearRemoved() {
-		super.clearRemoved();
-		registerLuxNode();
-	}
-
-	protected void registerLuxNode() {
+	protected void register() {
 		LuxNet luxNet = LuxNet.tryGet(this.level);
 		if (luxNet != null) this.nodeId = luxNet.register(this, this.nodeId);
 	}
 
-	protected void unregisterLuxNode(boolean destroyed) {
+	@Override
+	protected void unregister(boolean destroyed) {
 		LuxNet luxNet = LuxNet.tryGet(this.level);
 		if (luxNet != null) luxNet.unregister(this.nodeId, destroyed);
 		this.nodeId = NO_ID;

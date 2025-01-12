@@ -37,6 +37,10 @@ public final class FieldElement {
 
 	void setPower(double power) {
 		this.power = power;
+		notifyPowerChangedOnNextUpdate();
+	}
+
+	void broadcastPowerChanged() {
 		if (this.powerChangedEventListeners != null) {
 			for (DoubleConsumer l : this.powerChangedEventListeners) l.accept(power);
 		}
@@ -45,6 +49,11 @@ public final class FieldElement {
 	public FieldElement listenPowerChange(@NotNull DoubleConsumer listener) {
 		if (this.powerChangedEventListeners == null) this.powerChangedEventListeners = new ArrayList<>();
 		this.powerChangedEventListeners.add(listener);
+		return this;
+	}
+
+	public FieldElement notifyPowerChangedOnNextUpdate() {
+		this.fieldInstance.notifyPowerChangedOnNextUpdate(this.pos);
 		return this;
 	}
 }

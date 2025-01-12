@@ -1,6 +1,7 @@
 package gurumirum.magialucis.impl.field;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -10,12 +11,15 @@ import org.jetbrains.annotations.UnmodifiableView;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class FieldInstance {
 	private final Field field;
 
 	private final Map<BlockPos, FieldElement> elements = new Object2ObjectOpenHashMap<>();
 	private final Map<BlockPos, FieldElement> elementsView = Collections.unmodifiableMap(this.elements);
+
+	private final Set<BlockPos> notifyPowerChangedOnNextUpdate = new ObjectOpenHashSet<>();
 
 	private boolean dirty;
 
@@ -77,6 +81,10 @@ public class FieldInstance {
 		return sum;
 	}
 
+	void notifyPowerChangedOnNextUpdate(BlockPos pos) {
+		this.notifyPowerChangedOnNextUpdate.add(pos);
+	}
+
 	void update() {
 		if (!this.dirty) return;
 		this.dirty = false;
@@ -90,5 +98,11 @@ public class FieldInstance {
 				e.setPower(FieldMath.power(this.field.interferenceThreshold(), newSum));
 			}
 		}
+
+		this.notifyPowerChangedOnNextUpdate.forEach(pos -> {
+			FieldElement element = this.elements.get(pos);
+			if (element != null) element.broadcastPowerChanged();
+		});
+		this.notifyPowerChangedOnNextUpdate.clear();
 	}
 }

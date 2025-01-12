@@ -5,8 +5,10 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectSortedMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectSortedMaps;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
@@ -53,7 +55,7 @@ public final class SunlightLogic {
 
 	// TODO support for custom stats?
 	public static void getColor(@Nullable Level level, BlockPos pos, double baseIntensity, Vector3d dest) {
-		if (level == null || !level.canSeeSky(pos.above())) {
+		if (level == null) {
 			dest.zero();
 			return;
 		}
@@ -87,6 +89,34 @@ public final class SunlightLogic {
 		if (rainLevel > 0) dest.mul(Mth.lerp(rainLevel, 1, 0.5));
 		float thunderLevel = level.getThunderLevel(0);
 		if (thunderLevel > 0) dest.mul(Mth.lerp(thunderLevel, 1, 0.5));
+	}
+
+	public static int calculateSkyVisibility(Level level, BlockPos pos, BlockState state) {
+		if (!state.canOcclude()) {
+			if (!level.canSeeSky(pos)) return 0;
+		}
+
+		BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
+
+		if (state.canOcclude()) {
+			mpos.set(pos).move(Direction.UP);
+			if (!level.canSeeSky(mpos) || level.getBlockState(mpos).canOcclude()) return 0;
+		}
+
+		int visibility = 15;
+
+		for (int i = 0; i < 9; i++) {
+			if (i == 4) continue;
+
+			mpos.set(pos).move(
+					(i % 3) - 1,
+					0,
+					(i / 3) - 1);
+			if (!level.canSeeSky(mpos) || level.getBlockState(mpos).canOcclude())
+				visibility -= i % 2 == 1 ? 2 : 1; // odd indices are block positions at cardinal directions
+		}
+
+		return visibility;
 	}
 
 	public record SkyColor(byte color, boolean isNight) {

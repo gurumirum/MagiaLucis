@@ -6,10 +6,10 @@ import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModBlocks;
+import gurumirum.magialucis.utils.ServerTickQueue;
+import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
-import gurumirum.magialucis.impl.field.FieldElement;
-import gurumirum.magialucis.impl.field.FieldInstance;
-import gurumirum.magialucis.impl.field.FieldManager;
+import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.Fields;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
@@ -20,6 +20,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
@@ -30,9 +32,13 @@ import org.joml.Vector3d;
 
 import java.util.List;
 
-public class AmberCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourceNodeInterface {
-	private @Nullable BlockPos.MutableBlockPos mpos;
+import static gurumirum.magialucis.contents.block.ModBlockStateProps.OVERSATURATED;
+import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKYLIGHT_INTERFERENCE;
 
+public class AmberCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourceNodeInterface, Ticker {
+	private static final int CYCLE = 50;
+
+	private @Nullable BlockPos.MutableBlockPos mpos;
 	private double power;
 
 	public AmberCoreBlockEntity(BlockPos pos, BlockState blockState) {
@@ -40,43 +46,47 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourc
 	}
 
 	@Override
-	public void onLoad() {
-		super.onLoad();
-		registerField();
+	protected void register() {
+		super.register();
+		if (!getBlockState().getValue(OVERSATURATED)) registerField(Fields.AMBER_CORE);
 	}
 
 	@Override
-	public void onChunkUnloaded() {
-		super.onChunkUnloaded();
-		unregisterField();
+	protected void unregister(boolean destroyed) {
+		super.unregister(destroyed);
+		unregisterField(Fields.AMBER_CORE);
 	}
 
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		unregisterField();
-	}
-
-	@Override
-	public void clearRemoved() {
-		super.clearRemoved();
-		registerField();
-	}
-
-	private void registerField() {
-		FieldInstance fieldInstance = FieldManager.tryGetField(this.level, Fields.AMBER_CORE);
-		if (fieldInstance != null) {
-			FieldElement e = fieldInstance.add(getBlockPos()).listenPowerChange(power -> {
-				this.power = power;
-				syncToClient();
-			});
-			this.power = e.power();
+	protected void setFieldPower(@NotNull Field field, double power) {
+		if (field == Fields.AMBER_CORE) {
+			this.power = power;
+			ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);
 		}
 	}
 
-	private void unregisterField() {
-		FieldInstance fieldInstance = FieldManager.tryGetField(this.level, Fields.AMBER_CORE);
-		if (fieldInstance != null) fieldInstance.remove(getBlockPos());
+	private void updateOversaturatedProperty() {
+		if (!updateProperty(OVERSATURATED, !getBlockState().getValue(SKYLIGHT_INTERFERENCE) && this.power < 1))
+			syncToClient();
+	}
+
+	@Override
+	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+		if (level.getGameTime() % CYCLE != 0) return;
+
+		if (this.mpos == null) this.mpos = new BlockPos.MutableBlockPos();
+		int brightnessMax = 0;
+
+		for (Direction d : Direction.values()) {
+			this.mpos.set(getBlockPos()).move(d);
+			brightnessMax = Math.max(brightnessMax, level.getBrightness(LightLayer.SKY, this.mpos));
+		}
+
+		boolean skylightInterference = brightnessMax >= 8;
+		if (updateProperty(SKYLIGHT_INTERFERENCE, skylightInterference)) {
+			if (skylightInterference) unregisterField(Fields.AMBER_CORE);
+			else registerField(Fields.AMBER_CORE);
+		}
 	}
 
 	@Override
@@ -111,7 +121,7 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourc
 
 	@Override
 	public void generateLux(Vector3d dest) {
-		dest.set(10, 5, 0).mul(this.power);
+		if (!getBlockState().getValue(SKYLIGHT_INTERFERENCE)) dest.set(10, 5, 0).mul(this.power);
 	}
 
 	@Override

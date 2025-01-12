@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents.block.fieldmonitor;
 import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
-import gurumirum.magialucis.contents.block.SyncedBlockEntity;
+import gurumirum.magialucis.contents.block.BlockEntityBase;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.FieldInstance;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FieldMonitorBlockEntity extends SyncedBlockEntity implements Ticker, DebugTextProvider {
+public class FieldMonitorBlockEntity extends BlockEntityBase implements Ticker, DebugTextProvider {
 	private static final double CYCLE = 5;
 
 	private @Nullable ResourceLocation fieldId;

@@ -3,6 +3,7 @@ package gurumirum.magialucis.contents.block.sunlight.focus;
 import gurumirum.magialucis.capability.LuxNetLinkDestination;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.ModBlockEntities;
+import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
 import gurumirum.magialucis.contents.block.sunlight.SunlightLogic;
 import gurumirum.magialucis.contents.block.sunlight.core.SunlightCoreBlockEntity;
@@ -16,7 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
-public class SunlightFocusBlockEntity extends BasicRelayBlockEntity implements LuxSourceNodeInterface, LinkDestinationSelector {
+import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKY_VISIBILITY;
+
+public class SunlightFocusBlockEntity extends BasicRelayBlockEntity implements LuxSourceNodeInterface, LinkDestinationSelector, Ticker {
 	public static final LuxStat STAT = LuxStat.simple(RGB332.WHITE,
 			0,
 			// use max throughput of foci for the stat
@@ -25,6 +28,8 @@ public class SunlightFocusBlockEntity extends BasicRelayBlockEntity implements L
 			SunlightLogic.DEFAULT_BASE_INTENSITY);
 
 	public static final double LINK_DISTANCE = 10;
+
+	private static final int CYCLE = 50;
 
 	public SunlightFocusBlockEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.SUNLIGHT_FOCUS.get(), pos, blockState);
@@ -46,8 +51,17 @@ public class SunlightFocusBlockEntity extends BasicRelayBlockEntity implements L
 	}
 
 	@Override
+	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+		if (level.getGameTime() % CYCLE != 0) return;
+
+		updateProperty(SKY_VISIBILITY, SunlightLogic.calculateSkyVisibility(level, pos, state));
+	}
+
+	@Override
 	public void generateLux(Vector3d dest) {
-		SunlightLogic.getColor(this.level, getBlockPos(), SunlightLogic.DEFAULT_BASE_INTENSITY, dest);
+		int skyVisibility = getBlockState().getValue(SKY_VISIBILITY);
+		SunlightLogic.getColor(this.level, getBlockPos(),
+				SunlightLogic.DEFAULT_BASE_INTENSITY * (skyVisibility / 16.0), dest);
 	}
 
 	@Override

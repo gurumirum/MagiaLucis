@@ -10,5 +10,9 @@ public final class Fields {
 			.interferenceThreshold(3)
 			.build(id("amber_core")));
 
+	public static final Field SUNLIGHT_CORE = register(new FieldBuilder()
+			.interferenceThreshold(2)
+			.build(id("sunlight_core")));
+
 	public static void init() {}
 }
