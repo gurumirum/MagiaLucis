@@ -107,6 +107,23 @@ public final class ModRenderTypes {
 					.setOutputState(RenderType.PARTICLES_TARGET)
 					.createCompositeState(true)));
 
+	public static final RenderType LIGHT = RenderType.create(
+			MODID + "_light",
+			DefaultVertexFormat.POSITION_COLOR,
+			VertexFormat.Mode.TRIANGLES,
+			RenderType.SMALL_BUFFER_SIZE,
+			false,
+			true,
+			RenderType.CompositeState.builder()
+					.setShaderState(new RenderStateShard.ShaderStateShard(
+							GameRenderer::getPositionColorShader
+					))
+					.setWriteMaskState(RenderType.COLOR_WRITE)
+					// .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
+					.setTransparencyState(RenderType.ADDITIVE_TRANSPARENCY)
+					.setOutputState(RenderType.PARTICLES_TARGET)
+					.createCompositeState(true));
+
 	private static ShaderInstance relayShader;
 
 	public static RenderType positionTextureColor(ResourceLocation texture) {

@@ -4,7 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.MagiaLucisMod;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Vector2d;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 public final class RenderShapes {
 	private RenderShapes() {}
@@ -200,5 +202,69 @@ public final class RenderShapes {
 		vc.addVertex(pose, x2, y2, z2).setUv(0, 0).setColor(c1);
 		vc.addVertex(pose, x1, y2, z2).setUv(1, 0).setColor(c1);
 		vc.addVertex(pose, x1, y1, z2).setUv(1, 1).setColor(c1);
+	}
+
+	private static final int SPHERE_Y_SLICE = 16;
+	private static final int SPHERE_X_SLICE = 32;
+
+	private static final Vector3f[][] sphereVectorCache = new Vector3f[SPHERE_Y_SLICE - 1][SPHERE_X_SLICE];
+
+	static {
+		Vector2d[] sinCosPhi = new Vector2d[SPHERE_Y_SLICE - 1];
+
+		for (int i = 0; i < SPHERE_Y_SLICE - 1; i++) {
+			int ySliceIndex = i + 1;
+			double phi = Math.PI * ((double)ySliceIndex / SPHERE_Y_SLICE) + Math.PI / 2;
+			double sinPhi = Math.sin(phi);
+			double cosPhi = Math.cos(phi);
+			sinCosPhi[i] = new Vector2d().set(sinPhi, cosPhi);
+		}
+
+		for (int j = 0; j < SPHERE_X_SLICE; j++) {
+			double theta = 2 * Math.PI * ((double)j / SPHERE_X_SLICE);
+			double sinTheta = Math.sin(theta);
+			double cosTheta = Math.cos(theta);
+
+			for (int i = 0; i < SPHERE_Y_SLICE - 1; i++) {
+				Vector2d phi = sinCosPhi[i];
+				double sinPhi = phi.x;
+				double cosPhi = phi.y;
+
+				sphereVectorCache[i][j] = new Vector3f().set(cosPhi * cosTheta, sinPhi, cosPhi * sinTheta);
+			}
+		}
+	}
+
+	public static void sphere(PoseStack poseStack, VertexConsumer vc, int color) {
+		PoseStack.Pose pose = poseStack.last();
+		for (int i = 0; i < SPHERE_Y_SLICE - 1; i++) {
+			if (i == 0) {
+				for (int j = 0; j < SPHERE_X_SLICE; j++) {
+					int nextSliceIndex = (j + 1) % SPHERE_X_SLICE;
+					vc.addVertex(pose, sphereVectorCache[i][j]).setColor(color);
+					vc.addVertex(pose, 0, 1, 0).setColor(color);
+					vc.addVertex(pose, sphereVectorCache[i][nextSliceIndex]).setColor(color);
+				}
+			} else if (i == SPHERE_Y_SLICE - 2) {
+				for (int j = 0; j < SPHERE_X_SLICE; j++) {
+					int nextSliceIndex = (j + 1) % SPHERE_X_SLICE;
+					vc.addVertex(pose, 0, -1, 0).setColor(color);
+					vc.addVertex(pose, sphereVectorCache[i][j]).setColor(color);
+					vc.addVertex(pose, sphereVectorCache[i][nextSliceIndex]).setColor(color);
+				}
+				continue;
+			}
+
+			for (int j = 0; j < SPHERE_X_SLICE; j++) {
+				int nextSliceIndex = (j + 1) % SPHERE_X_SLICE;
+				vc.addVertex(pose, sphereVectorCache[i + 1][j]).setColor(color);
+				vc.addVertex(pose, sphereVectorCache[i][j]).setColor(color);
+				vc.addVertex(pose, sphereVectorCache[i][nextSliceIndex]).setColor(color);
+
+				vc.addVertex(pose, sphereVectorCache[i + 1][j]).setColor(color);
+				vc.addVertex(pose, sphereVectorCache[i][nextSliceIndex]).setColor(color);
+				vc.addVertex(pose, sphereVectorCache[i + 1][nextSliceIndex]).setColor(color);
+			}
+		}
 	}
 }

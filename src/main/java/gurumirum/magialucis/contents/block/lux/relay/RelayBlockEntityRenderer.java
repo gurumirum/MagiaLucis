@@ -3,6 +3,7 @@ package gurumirum.magialucis.contents.block.lux.relay;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import gurumirum.magialucis.client.LightEffect;
 import gurumirum.magialucis.client.ModRenderTypes;
 import gurumirum.magialucis.client.RenderShapes;
 import gurumirum.magialucis.client.RotationLogic;
@@ -19,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
@@ -82,6 +84,13 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 		}
 
 		if (transformed) poseStack.popPose();
+
+		Vector3d luxFlow = blockEntity.luxFlow(new Vector3d());
+		if (luxFlow.x > 0 || luxFlow.y > 0 || luxFlow.z > 0)
+			LightEffect.addCircularEffect(Vec3.atCenterOf(blockEntity.getBlockPos()),
+					blockEntity.color(),
+					luxFlow,
+					blockEntity.rMaxTransfer(), blockEntity.gMaxTransfer(), blockEntity.bMaxTransfer());
 	}
 
 	public static void drawItem(@Nullable Level level, float partialTick, PoseStack poseStack,
