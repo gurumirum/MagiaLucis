@@ -124,17 +124,8 @@ public record LightEffect(
 
 				poseStack.mulPose(new Vector3f(0, 1, 0)
 						.rotationTo((float)vec.x, (float)vec.y, (float)vec.z, new Quaternionf()));
-
-				poseStack.pushPose();
 				poseStack.scale(e.radius, e.radius, e.radius);
-				RenderShapes.lowerSphere(poseStack, bufferBuilder, e.color);
-				double len = vec.length();
-				RenderShapes.cylinder(poseStack, bufferBuilder, (float)(len / e.radius), e.color);
-				poseStack.popPose();
-
-				poseStack.translate(0, len, 0);
-				poseStack.scale(e.radius, e.radius, e.radius);
-				RenderShapes.upperSphere(poseStack, bufferBuilder, e.color);
+				RenderShapes.cylinder(poseStack, bufferBuilder, (float)(vec.length() / e.radius), e.color);
 			}
 
 			BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());

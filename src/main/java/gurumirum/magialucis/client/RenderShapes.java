@@ -249,6 +249,10 @@ public final class RenderShapes {
 			Vector3f v1 = sphereVectorCache[ySlice][j];
 			Vector3f v2 = sphereVectorCache[ySlice][nextSliceIndex];
 
+			vc.addVertex(pose, 0, 0, 0).setColor(color);
+			vc.addVertex(pose, v1).setColor(color);
+			vc.addVertex(pose, v2).setColor(color);
+
 			vc.addVertex(pose, v1).setColor(color);
 			vc.addVertex(pose, v1.x, v1.y + length, v1.z).setColor(color);
 			vc.addVertex(pose, v2.x, v2.y + length, v2.z).setColor(color);
@@ -256,6 +260,10 @@ public final class RenderShapes {
 			vc.addVertex(pose, v1).setColor(color);
 			vc.addVertex(pose, v2.x, v2.y + length, v2.z).setColor(color);
 			vc.addVertex(pose, v2).setColor(color);
+
+			vc.addVertex(pose, v1.x, v1.y + length, v1.z).setColor(color);
+			vc.addVertex(pose, 0, length, 0).setColor(color);
+			vc.addVertex(pose, v2.x, v2.y + length, v2.z).setColor(color);
 		}
 	}
 
