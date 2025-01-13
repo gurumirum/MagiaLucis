@@ -1,9 +1,4 @@
 {
-  "arblend": {
-    "func": "add",
-    "srcrgb": "srcalpha",
-    "dstrgb": "1-srcalpha"
-  },
   "vertex": "magialucis:relay",
   "fragment": "magialucis:relay",
   "attributes": [

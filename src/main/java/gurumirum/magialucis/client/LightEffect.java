@@ -1,7 +1,8 @@
 package gurumirum.magialucis.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.impl.RGB332;
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
@@ -23,33 +25,53 @@ public record LightEffect(
 		float radius,
 		Vec3 start,
 		Vec3 end,
-		int color
+		int color,
+		boolean fallOff
 ) {
-	private static final List<LightEffect> lightEffects = new ArrayList<>();
-
-	public static void addCircularEffect(Vec3 point, byte color, Vector3d luxFlow,
-	                                     double rMaxTransfer, double gMaxTransfer, double bMaxTransfer) {
-		addEffect(new LightEffect(.8f, point, point,
-				getProportionalLight(color, luxFlow, rMaxTransfer, gMaxTransfer, bMaxTransfer)));
+	public LightEffect(float radius, Vec3 point, int color) {
+		this(radius, point, point, color, false);
 	}
 
-	public static void addCylindricalEffect(Vec3 start, Vec3 end, byte color, Vector3d luxFlow,
-	                                        double rMaxTransfer, double gMaxTransfer, double bMaxTransfer) {
-		addEffect(new LightEffect(.4f, start, end,
-				getProportionalLight(color, luxFlow, rMaxTransfer, gMaxTransfer, bMaxTransfer)));
+	private static final List<LightEffect> lightEffects = new ArrayList<>();
+
+	public static void addCircularEffect(float radius, Vec3 point, int color) {
+		addEffect(new LightEffect(radius, point, color));
+	}
+
+	public static void addCylindricalEffect(float radius, Vec3 start, Vec3 end, int color, boolean fallOff) {
+		addEffect(new LightEffect(radius, start, end, color, fallOff));
 	}
 
 	public static void addEffect(LightEffect lightEffect) {
 		lightEffects.add(lightEffect);
 	}
 
-	private static int getProportionalLight(byte color, Vector3d luxFlow,
-	                                        double rMaxTransfer, double gMaxTransfer, double bMaxTransfer) {
+	public static int getProportionalLight(byte color, Vector3d luxFlow,
+	                                       double rMaxTransfer, double gMaxTransfer, double bMaxTransfer) {
 		int r = rMaxTransfer <= 0 ? 0 : (int)(RGB332.rBrightness(color) * (luxFlow.x / rMaxTransfer) * 255);
 		int g = gMaxTransfer <= 0 ? 0 : (int)(RGB332.gBrightness(color) * (luxFlow.y / gMaxTransfer) * 255);
 		int b = bMaxTransfer <= 0 ? 0 : (int)(RGB332.bBrightness(color) * (luxFlow.z / bMaxTransfer) * 255);
 
 		return FastColor.ARGB32.color(r, g, b);
+	}
+
+	private static @Nullable LightEffect currentLightEffect;
+	private static final Vector3f currentLightStart = new Vector3f();
+	private static final Vector3f currentLightEnd = new Vector3f();
+
+	public static Vector3f lightStart(Vector3f dest) {
+		if (currentLightEffect == null) return dest.zero();
+		return dest.set(currentLightStart);
+	}
+
+	public static Vector3f lightEnd(Vector3f dest) {
+		if (currentLightEffect == null) return dest.zero();
+		return dest.set(currentLightEnd);
+	}
+
+	public static float lightRadius() {
+		if (currentLightEffect == null) return 0;
+		return currentLightEffect.radius;
 	}
 
 	@SubscribeEvent
@@ -60,43 +82,73 @@ public record LightEffect(
 		if (mc.level == null) return;
 
 		PoseStack poseStack = event.getPoseStack();
-		Vec3 cameraPos = event.getCamera().getPosition();
 
-		poseStack.pushPose();
-		poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-		VertexConsumer vc = mc.renderBuffers().bufferSource().getBuffer(ModRenderTypes.LIGHT);
+		boolean setup = false;
 
 		for (LightEffect e : lightEffects) {
+			// cull check
+
+			if (!setup) {
+				setup = true;
+				RenderSystem.colorMask(true, true, true, true);
+				RenderSystem.depthMask(false);
+				RenderSystem.enableBlend();
+				RenderSystem.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+
+				Vec3 cameraPos = event.getCamera().getPosition();
+				poseStack.pushPose();
+				poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
+			}
+
+			BufferBuilder bufferBuilder = Tesselator.getInstance()
+					.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR);
 			poseStack.pushPose();
+			poseStack.translate(e.start.x, e.start.y, e.start.z);
+
+			currentLightEffect = e;
+			currentLightStart.set(0, 0, 0);
+			poseStack.last().pose().transformPosition(currentLightStart);
 
 			if (e.start.equals(e.end)) {
-				poseStack.translate(e.start.x, e.start.y, e.start.z);
+				RenderSystem.setShader(ModRenderTypes::lightSphereShader);
+
 				poseStack.scale(e.radius, e.radius, e.radius);
 
-				RenderShapes.sphere(poseStack, vc, e.color);
+				RenderShapes.sphere(poseStack, bufferBuilder, e.color);
 			} else {
-				Vec3 vec = e.end.subtract(e.start);
-				Quaternionf angle = new Vector3f(0, 1, 0)
-						.rotationTo((float)vec.x, (float)vec.y, (float)vec.z, new Quaternionf());
+				currentLightEnd.set(e.end.x - e.start.x, e.end.y - e.start.y, e.end.z - e.start.z);
+				poseStack.last().pose().transformPosition(currentLightEnd);
 
-				poseStack.translate(e.start.x, e.start.y, e.start.z);
-				poseStack.mulPose(angle);
+				RenderSystem.setShader(ModRenderTypes::lightCylinderShader);
+				Vec3 vec = e.end.subtract(e.start);
+
+				poseStack.mulPose(new Vector3f(0, 1, 0)
+						.rotationTo((float)vec.x, (float)vec.y, (float)vec.z, new Quaternionf()));
 
 				poseStack.pushPose();
 				poseStack.scale(e.radius, e.radius, e.radius);
-				RenderShapes.lowerSphere(poseStack, vc, e.color);
+				RenderShapes.lowerSphere(poseStack, bufferBuilder, e.color);
 				double len = vec.length();
-				RenderShapes.cylinder(poseStack, vc, (float)(len / e.radius), e.color);
+				RenderShapes.cylinder(poseStack, bufferBuilder, (float)(len / e.radius), e.color);
 				poseStack.popPose();
 
 				poseStack.translate(0, len, 0);
 				poseStack.scale(e.radius, e.radius, e.radius);
-				RenderShapes.upperSphere(poseStack, vc, e.color);
+				RenderShapes.upperSphere(poseStack, bufferBuilder, e.color);
 			}
+
+			BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+
 			poseStack.popPose();
+			currentLightEffect = null;
 		}
 
-		poseStack.popPose();
+		if (setup) {
+			poseStack.popPose();
+			RenderSystem.depthMask(true);
+			RenderSystem.disableBlend();
+			RenderSystem.defaultBlendFunc();
+		}
 		lightEffects.clear();
 	}
 }

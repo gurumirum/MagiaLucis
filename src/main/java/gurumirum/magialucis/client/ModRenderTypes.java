@@ -33,9 +33,7 @@ public final class ModRenderTypes {
 			true,
 			false,
 			RenderType.CompositeState.builder()
-					.setShaderState(new RenderStateShard.ShaderStateShard(
-							GameRenderer::getPositionColorShader
-					))
+					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorShader))
 					.setWriteMaskState(RenderType.COLOR_DEPTH_WRITE)
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setOutputState(RenderType.PARTICLES_TARGET)
@@ -49,9 +47,7 @@ public final class ModRenderTypes {
 			false,
 			true,
 			RenderType.CompositeState.builder()
-					.setShaderState(new RenderStateShard.ShaderStateShard(
-							() -> Objects.requireNonNull(ModRenderTypes.relayShader)
-					))
+					.setShaderState(new RenderStateShard.ShaderStateShard(ModRenderTypes::relayShader))
 					.setWriteMaskState(RenderType.COLOR_WRITE)
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setOutputState(RenderType.TRANSLUCENT_TARGET)
@@ -65,9 +61,7 @@ public final class ModRenderTypes {
 			false,
 			false,
 			RenderType.CompositeState.builder()
-					.setShaderState(new RenderStateShard.ShaderStateShard(
-							() -> Objects.requireNonNull(ModRenderTypes.relayShader)
-					))
+					.setShaderState(new RenderStateShard.ShaderStateShard(ModRenderTypes::relayShader))
 					.setWriteMaskState(RenderType.COLOR_WRITE)
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setOutputState(RenderType.ITEM_ENTITY_TARGET)
@@ -81,9 +75,7 @@ public final class ModRenderTypes {
 			true,
 			false,
 			RenderType.CompositeState.builder()
-					.setShaderState(new RenderStateShard.ShaderStateShard(
-							GameRenderer::getPositionTexColorShader
-					))
+					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexColorShader))
 					.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
 					.setWriteMaskState(RenderType.COLOR_DEPTH_WRITE)
 					.setCullState(RenderStateShard.NO_CULL)
@@ -97,9 +89,7 @@ public final class ModRenderTypes {
 			true,
 			false,
 			RenderType.CompositeState.builder()
-					.setShaderState(new RenderStateShard.ShaderStateShard(
-							GameRenderer::getPositionTexColorShader
-					))
+					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexColorShader))
 					.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
 					.setWriteMaskState(RenderType.COLOR_DEPTH_WRITE)
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
@@ -115,9 +105,7 @@ public final class ModRenderTypes {
 			false,
 			true,
 			RenderType.CompositeState.builder()
-					.setShaderState(new RenderStateShard.ShaderStateShard(
-							GameRenderer::getPositionColorShader
-					))
+					.setShaderState(new RenderStateShard.ShaderStateShard(ModRenderTypes::lightCylinderShader))
 					.setWriteMaskState(RenderType.COLOR_WRITE)
 					// .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
 					.setTransparencyState(RenderType.ADDITIVE_TRANSPARENCY)
@@ -125,6 +113,8 @@ public final class ModRenderTypes {
 					.createCompositeState(true));
 
 	private static ShaderInstance relayShader;
+	private static ShaderInstance lightCylinderShader;
+	private static ShaderInstance lightSphereShader;
 
 	public static RenderType positionTextureColor(ResourceLocation texture) {
 		return POS_TEX_C.apply(texture);
@@ -134,14 +124,30 @@ public final class ModRenderTypes {
 		return BLOCK_HIGHLIGHT.apply(texture);
 	}
 
+	public static ShaderInstance relayShader() {
+		return Objects.requireNonNull(relayShader);
+	}
+
+	public static ShaderInstance lightCylinderShader() {
+		return Objects.requireNonNull(lightCylinderShader);
+	}
+
+	public static ShaderInstance lightSphereShader() {
+		return Objects.requireNonNull(lightSphereShader);
+	}
+
 	@SubscribeEvent
 	public static void registerShaders(RegisterShadersEvent event) throws IOException {
 		event.registerShader(new ShaderInstance(event.getResourceProvider(), id("relay"),
 				DefaultVertexFormat.POSITION_COLOR_NORMAL), s -> relayShader = s);
+		event.registerShader(new LightCylinderShaderInstance(event.getResourceProvider(), id("light_cylinder"),
+				DefaultVertexFormat.POSITION_COLOR), s -> lightCylinderShader = s);
+		event.registerShader(new LightSphereShaderInstance(event.getResourceProvider(), id("light_sphere"),
+				DefaultVertexFormat.POSITION_COLOR), s -> lightSphereShader = s);
 	}
 
 	@SubscribeEvent
-	public static void registerRenderBuffers(RegisterRenderBuffersEvent event){
+	public static void registerRenderBuffers(RegisterRenderBuffersEvent event) {
 		event.registerRenderBuffer(RELAY);
 		event.registerRenderBuffer(RELAY_ITEM_ENTITY);
 	}

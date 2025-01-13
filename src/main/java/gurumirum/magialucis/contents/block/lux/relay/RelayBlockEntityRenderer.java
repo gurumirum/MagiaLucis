@@ -95,23 +95,23 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 			double gMaxTransfer = blockEntity.gMaxTransfer();
 			double bMaxTransfer = blockEntity.bMaxTransfer();
 
-			LightEffect.addCircularEffect(center, color, luxFlow, rMaxTransfer, gMaxTransfer, bMaxTransfer);
+			LightEffect.addCircularEffect(.8f, center,
+					LightEffect.getProportionalLight(color, luxFlow, rMaxTransfer, gMaxTransfer, bMaxTransfer));
 
 			var outboundLinks = blockEntity.outboundLinks();
 			luxFlow.div(Math.max(1, outboundLinks.size()));
+			int light = LightEffect.getProportionalLight(color, luxFlow, rMaxTransfer, gMaxTransfer, bMaxTransfer);
 
 			for (var e : outboundLinks.int2ObjectEntrySet()) {
 				InWorldLinkInfo info = e.getValue();
 				if (info == null) continue;
-				LightEffect.addCylindricalEffect(center, info.linkLocation(), color, luxFlow,
-						rMaxTransfer, gMaxTransfer, bMaxTransfer);
+				LightEffect.addCylindricalEffect(.3f, center, Vec3.atCenterOf(info.linkPos()), light, false);
 			}
 
 			for (int i = 0; i < blockEntity.maxLinks(); i++) {
 				InWorldLinkState linkState = blockEntity.getLinkState(i);
 				if (linkState != null && !linkState.linked()) {
-					LightEffect.addCylindricalEffect(center, linkState.linkLocation(), color, luxFlow,
-							rMaxTransfer, gMaxTransfer, bMaxTransfer);
+					LightEffect.addCylindricalEffect(.3f, center, linkState.linkLocation(), light, true);
 				}
 			}
 		}
