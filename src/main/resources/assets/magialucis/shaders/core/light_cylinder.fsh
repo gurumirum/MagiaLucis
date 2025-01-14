@@ -12,58 +12,26 @@ uniform float LightRadius;
 
 out vec4 fragColor;
 
-// https://www.shadertoy.com/view/4lcSRn
 // https://iquilezles.org/articles/intersectors/
 // The MIT License
 // Copyright © 2016 Inigo Quilez
-float iCylinder(in vec3 ro, in vec3 rd, in vec3 pa, in vec3 pb, float ra) {
-    vec3 ba = pb - pa;
-    vec3 oc = ro - pa;
-
-    float baba = dot(ba, ba);
-    float bard = dot(ba, rd);
-    float baoc = dot(ba, oc);
-
-    float k2 = baba - bard * bard;
-    float k1 = baba * dot(oc, rd) - baoc * bard;
-    float k0 = baba * dot(oc, oc) - baoc * baoc - ra * ra * baba;
-
-    if(k2 == 0.0) {
-        float ta = -dot(ro - pa, ba) / bard;
-        float tb = ta + baba / bard;
-
-        vec4 pt = (bard > 0.0) ? vec4(pa, -ta) : vec4(pb, tb);
-
-        vec3 q = ro + rd * abs(pt.w) - pt.xyz;
-        if(dot(q, q) > ra * ra) {
-            return -1.0;
-        }
-
-        return abs(pt.w);
-    }
-
-    float h = k1 * k1 - k2 * k0;
-    if(h < 0.0)
-        return -1.0;
+vec2 cylIntersect(in vec3 ro, in vec3 rd, in vec3 cb, in vec3 ca, float cr){
+    vec3  oc = ro - cb;
+    float card = dot(ca,rd);
+    float caoc = dot(ca,oc);
+    float a = 1.0 - card*card;
+    float b = dot( oc, rd) - caoc*card;
+    float c = dot( oc, oc) - caoc*caoc - cr*cr;
+    float h = b*b - a*c;
+    if( h<0.0 ) return vec2(-1.0); //no intersection
     h = sqrt(h);
-    float t = (-k1 - h) / k2;
-
-    // body
-    float y = baoc + t * bard;
-    if(y > 0.0 && y < baba)
-        return t;
-
-    // caps
-    t = (((y < 0.0) ? 0.0 : baba) - baoc) / bard;
-    if(abs(k1 + k2 * t) < h)
-        return t;
-
-    return -1.0;
+    return vec2(-b-h,-b+h)/a;
 }
 
 float lightStrength(in vec2 intersection) {
     float fogAmount = exp(-intersection.x * 0.05);
-    float lightAmount = asin((intersection.y - intersection.x) / 2 / LightRadius);
+    //float lightAmount = asin((intersection.y - intersection.x) / 2 / (LightRadius - 0.1));
+    float lightAmount = 1 - pow(0.5, (intersection.y - intersection.x));
     return lightAmount * fogAmount; // idk what i am doing here lol
 
     // return ((intersection.y - intersection.x) / 2) / sqrt(intersection.x);
@@ -82,31 +50,37 @@ void main() {
 
     vec3 worldNear = nearClip.xyz / nearClip.w;
     vec3 worldFar = farClip.xyz / farClip.w;
+    vec3 rayDirection = normalize(worldFar - worldNear);
+    vec3 cylDirection = normalize(LightEnd.xyz - LightStart.xyz);
 
-    float frontIntersection = iCylinder(worldNear,
-            normalize(worldFar - worldNear),
+    vec2 intersection = cylIntersect(worldNear,
+            rayDirection,
             LightStart.xyz,
-            LightEnd.xyz,
+            cylDirection,
             LightRadius - 0.1);
 
-    float offsetAmount = max(frontIntersection, 0) + length(LightStart.xyz - LightEnd.xyz) + 1;
-    vec3 offset = normalize(worldFar - worldNear) * offsetAmount;
-
-    float backIntersection = iCylinder(worldNear + offset,
-            normalize(worldNear - worldFar),
-            LightStart.xyz,
-            LightEnd.xyz,
-            LightRadius - 0.1);
-
-    if(backIntersection <= 0) {
+    if(intersection.y <= 0) {
         discard;
     }
 
-    vec2 intersection = vec2(frontIntersection, -backIntersection + offsetAmount);
+    vec2 p = vec2(
+            dot((worldNear + intersection.x * rayDirection) - LightStart.xyz, cylDirection),
+            dot((worldNear + intersection.y * rayDirection) - LightStart.xyz, cylDirection));
 
-    fragColor = min(
-            vec4(vec3(0.95), 1),
-            color * ColorModulator * lightStrength(intersection));
+    float innerLightCylRadius = 0.015; //LightRadius / 5 - 0.1;
+    vec2 innerIntersection = cylIntersect(worldNear,
+            rayDirection,
+            LightStart.xyz,
+            cylDirection,
+            innerLightCylRadius) * step(0, innerLightCylRadius);
     
-    // fragColor = vec4(intersection.xy, 0, 1);
+    fragColor = max(
+            vec4(step(0, innerIntersection.y)),
+            min(
+                    vec4(vec3(0.95), 1),
+                    color * ColorModulator * lightStrength(intersection)
+            )
+    );
+
+    // fragColor = vec4(p / length(LightEnd.xyz - LightStart.xyz), 0, 1);
 }

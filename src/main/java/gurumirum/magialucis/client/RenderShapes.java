@@ -240,8 +240,7 @@ public final class RenderShapes {
 		lowerSphere(poseStack, vc, color);
 	}
 
-	public static void cylinder(PoseStack poseStack, VertexConsumer vc, float length, int color) {
-		PoseStack.Pose pose = poseStack.last();
+	public static void cylinder(PoseStack poseStack, VertexConsumer vc, float startOffset, float endOffset, int color, boolean reverseCull) {
 		int ySlice = (SPHERE_Y_SLICE - 1) / 2;
 
 		for (int j = 0; j < SPHERE_X_SLICE; j++) {
@@ -249,21 +248,29 @@ public final class RenderShapes {
 			Vector3f v1 = sphereVectorCache[ySlice][j];
 			Vector3f v2 = sphereVectorCache[ySlice][nextSliceIndex];
 
-			vc.addVertex(pose, 0, 0, 0).setColor(color);
-			vc.addVertex(pose, v1).setColor(color);
-			vc.addVertex(pose, v2).setColor(color);
+			tri(poseStack, vc,
+					0, startOffset, 0,
+					v1.x, v1.y + startOffset, v1.z,
+					v2.x, v2.y + startOffset, v2.z,
+					color, reverseCull);
 
-			vc.addVertex(pose, v1).setColor(color);
-			vc.addVertex(pose, v1.x, v1.y + length, v1.z).setColor(color);
-			vc.addVertex(pose, v2.x, v2.y + length, v2.z).setColor(color);
+			tri(poseStack, vc,
+					v1.x, v1.y + startOffset, v1.z,
+					v1.x, v1.y + endOffset, v1.z,
+					v2.x, v2.y + endOffset, v2.z,
+					color, reverseCull);
 
-			vc.addVertex(pose, v1).setColor(color);
-			vc.addVertex(pose, v2.x, v2.y + length, v2.z).setColor(color);
-			vc.addVertex(pose, v2).setColor(color);
+			tri(poseStack, vc,
+					v1.x, v1.y + startOffset, v1.z,
+					v2.x, v2.y + endOffset, v2.z,
+					v2.x, v2.y + startOffset, v2.z,
+					color, reverseCull);
 
-			vc.addVertex(pose, v1.x, v1.y + length, v1.z).setColor(color);
-			vc.addVertex(pose, 0, length, 0).setColor(color);
-			vc.addVertex(pose, v2.x, v2.y + length, v2.z).setColor(color);
+			tri(poseStack, vc,
+					v1.x, v1.y + endOffset, v1.z,
+					0, endOffset, 0,
+					v2.x, v2.y + endOffset, v2.z,
+					color, reverseCull);
 		}
 	}
 
@@ -315,5 +322,17 @@ public final class RenderShapes {
 				}
 			}
 		}
+	}
+
+	private static void tri(PoseStack poseStack, VertexConsumer vc,
+	                        float x1, float y1, float z1,
+	                        float x2, float y2, float z2,
+	                        float x3, float y3, float z3,
+	                        int color, boolean reverseCull) {
+		PoseStack.Pose pose = poseStack.last();
+		if (!reverseCull) vc.addVertex(pose, x1, y1, z1).setColor(color);
+		vc.addVertex(pose, x2, y2, z2).setColor(color);
+		if (reverseCull) vc.addVertex(pose, x1, y1, z1).setColor(color);
+		vc.addVertex(pose, x3, y3, z3).setColor(color);
 	}
 }

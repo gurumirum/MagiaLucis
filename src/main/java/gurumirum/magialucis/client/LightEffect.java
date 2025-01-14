@@ -125,7 +125,11 @@ public record LightEffect(
 				poseStack.mulPose(new Vector3f(0, 1, 0)
 						.rotationTo((float)vec.x, (float)vec.y, (float)vec.z, new Quaternionf()));
 				poseStack.scale(e.radius, e.radius, e.radius);
-				RenderShapes.cylinder(poseStack, bufferBuilder, (float)(vec.length() / e.radius), e.color);
+
+				// TODO variable falloff padding with hit angle?
+				RenderShapes.cylinder(poseStack, bufferBuilder,
+						-0.015f / e.radius, (float)((vec.length() + (e.fallOff ? 0.3 : 0.015)) / e.radius),
+						e.color, false);
 			}
 
 			BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());

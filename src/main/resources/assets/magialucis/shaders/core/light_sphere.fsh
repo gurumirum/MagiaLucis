@@ -26,10 +26,10 @@ vec2 sphIntersect(in vec3 ro, in vec3 rd, in vec3 ce, float ra) {
     return vec2(-b - h, -b + h);
 }
 
-float lightStrength(in vec2 intersection) {
-    float fogAmount = exp(-intersection.x * 0.05);
-    float lightAmount = asin((intersection.y - intersection.x) / 2 / LightRadius);
-    return lightAmount * fogAmount; // idk what i am doing here lol
+float lightStrength(in vec2 intersection, in float lightRadius) {
+    float fogAmount = exp(-intersection.x * 0.1);
+    float lightAmount = asin((intersection.y - intersection.x) / 2 / lightRadius);
+    return lightAmount * lightAmount * fogAmount; // idk what i am doing here lol
 
     // return ((intersection.y - intersection.x) / 2) / sqrt(intersection.x);
 }
@@ -57,7 +57,15 @@ void main() {
         discard;
     }
 
-    fragColor = min(
-            vec4(vec3(0.95), 1),
-            color * ColorModulator * lightStrength(intersection));
+    float innerLightRadius = 0.5; //LightRadius / 5 - 0.1;
+    vec2 innerIntersection = sphIntersect(worldNear,
+            normalize(worldFar - worldNear),
+            LightPosition.xyz,
+            innerLightRadius);
+
+    fragColor = vec4(min(
+            vec3(0.95),
+            smoothstep(0, 2.5, ColorModulator.xyz * color.xyz * lightStrength(intersection, LightRadius - 0.1)) +
+                    vec3(smoothstep(0, 3.5, lightStrength(innerIntersection, innerLightRadius) - 0.2))
+    ), color.a * ColorModulator.a);
 }

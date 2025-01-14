@@ -1,6 +1,7 @@
 package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.block.AmberLightBlock;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlock;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
@@ -10,6 +11,7 @@ import gurumirum.magialucis.contents.block.lux.remotecharger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlock;
 import gurumirum.magialucis.contents.block.sunlight.core.SunlightCoreBlock;
 import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusBlock;
+import gurumirum.magialucis.impl.RGB332;
 import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.FieldRegistry;
 import net.minecraft.resources.ResourceLocation;
@@ -43,7 +45,10 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.requiresCorrectToolForDrops()
 			.strength(3.5f))),
 
-	LUX_SOURCE(BlockProfile.customBlock(LuxSourceBlock::new, Properties.of())),
+	LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
+			GemStats.BRIGHTSTONE, 10), Properties.of())),
+	LUX_SOURCE_2(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
+			LuxStat.simple(RGB332.WHITE, 0, 100000), 100000), Properties.of())),
 
 	FIELD_MONITOR(BlockProfile.customBlock(FieldMonitorBlock::new, Properties.of()));
 
