@@ -19,7 +19,7 @@ import org.joml.Vector3d;
 
 import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKY_VISIBILITY;
 
-public class SunlightFocusBlockEntity extends BasicRelayBlockEntity implements LuxSourceNodeInterface, LinkDestinationSelector, Ticker {
+public class SunlightFocusBlockEntity extends BasicRelayBlockEntity implements LuxSourceNodeInterface, LinkDestinationSelector, Ticker.Server {
 	public static final LuxStat STAT = LuxStat.simple(RGB332.WHITE,
 			0,
 			// use max throughput of foci for the stat

@@ -3,6 +3,8 @@ package gurumirum.magialucis.contents.block.sunlight.core;
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxNetLinkDestination;
 import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
+import gurumirum.magialucis.client.render.light.LightEffectRender;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
@@ -25,9 +27,10 @@ import org.joml.Vector3d;
 
 import java.util.List;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.*;
+import static gurumirum.magialucis.contents.block.ModBlockStateProps.OVERSATURATED;
+import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKY_VISIBILITY;
 
-public class SunlightCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourceNodeInterface, Ticker {
+public class SunlightCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourceNodeInterface, Ticker.Server {
 	public static final LuxStat STAT = LuxStat.simple(
 			GemStats.CITRINE.color(),
 			0, // don't make cores just ignore foci
@@ -43,6 +46,14 @@ public class SunlightCoreBlockEntity extends LuxNodeBlockEntity implements LuxSo
 
 	public SunlightCoreBlockEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.SUNLIGHT_CORE.get(), pos, blockState);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		if (this.level != null && this.level.isClientSide) {
+			LightEffectRender.register(new BlockLightEffectProvider<>(this));
+		}
 	}
 
 	@Override

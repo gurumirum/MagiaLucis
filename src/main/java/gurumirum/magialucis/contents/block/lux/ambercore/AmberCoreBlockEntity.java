@@ -35,7 +35,7 @@ import java.util.List;
 import static gurumirum.magialucis.contents.block.ModBlockStateProps.OVERSATURATED;
 import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKYLIGHT_INTERFERENCE;
 
-public class AmberCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourceNodeInterface, Ticker {
+public class AmberCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourceNodeInterface, Ticker.Server {
 	private static final int CYCLE = 50;
 
 	private @Nullable BlockPos.MutableBlockPos mpos;

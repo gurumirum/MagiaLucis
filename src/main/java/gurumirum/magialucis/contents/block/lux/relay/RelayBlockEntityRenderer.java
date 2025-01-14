@@ -3,19 +3,15 @@ package gurumirum.magialucis.contents.block.lux.relay;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import gurumirum.magialucis.client.LightEffect;
 import gurumirum.magialucis.client.ModRenderTypes;
 import gurumirum.magialucis.client.RenderShapes;
 import gurumirum.magialucis.client.RotationLogic;
-import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
-import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.AprilFoolsUtils;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -23,25 +19,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
-public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<RelayBlockEntity> {
+public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockEntity> {
 	public static final long ROTATION_PERIOD = 160;
 
 	private final Vector3d luxFlow = new Vector3d();
 
-	public RelayBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-		super(context);
-	}
+	public RelayBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}
 
 	@Override
 	public void render(@NotNull RelayBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack,
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		// super.render(blockEntity, partialTick, poseStack, bufferSource, packedLight, packedOverlay);
-
 		BlockState state = blockEntity.getBlockState();
 		boolean transformed = false;
 
@@ -88,32 +79,6 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 
 		if (transformed) poseStack.popPose();
 
-		Vector3d luxFlow = blockEntity.luxFlow(new Vector3d());
-		if (luxFlow.x > 0 || luxFlow.y > 0 || luxFlow.z > 0) {
-			Vec3 center = Vec3.atCenterOf(blockEntity.getBlockPos());
-			int color = LightEffect.getLightColor(luxFlow);
-
-			float radius = (float)(1 / 4.0 * (Math.log10(LuxUtils.sum(luxFlow))));
-
-			LightEffect.addCircularEffect(radius, center, color);
-
-			var outboundLinks = blockEntity.outboundLinks();
-			if(outboundLinks.size() > 1) luxFlow.div(outboundLinks.size());
-			radius = (float)(1 / 10.0 * (Math.log10(LuxUtils.sum(luxFlow))));
-
-			for (var e : outboundLinks.int2ObjectEntrySet()) {
-				InWorldLinkInfo info = e.getValue();
-				if (info == null) continue;
-				LightEffect.addCylindricalEffect(radius, center, Vec3.atCenterOf(info.linkPos()), color, false);
-			}
-
-			for (int i = 0; i < blockEntity.maxLinks(); i++) {
-				InWorldLinkState linkState = blockEntity.getLinkState(i);
-				if (linkState != null && !linkState.linked()) {
-					LightEffect.addCylindricalEffect(radius, center, linkState.linkLocation(), color, true);
-				}
-			}
-		}
 	}
 
 	public static void drawItem(@Nullable Level level, float partialTick, PoseStack poseStack,

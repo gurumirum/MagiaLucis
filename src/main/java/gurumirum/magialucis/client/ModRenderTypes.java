@@ -2,6 +2,8 @@ package gurumirum.magialucis.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import gurumirum.magialucis.client.render.light.LightCylinderShaderInstance;
+import gurumirum.magialucis.client.render.light.LightSphereShaderInstance;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;

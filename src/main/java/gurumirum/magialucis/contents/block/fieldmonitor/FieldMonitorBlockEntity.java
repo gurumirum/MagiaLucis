@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FieldMonitorBlockEntity extends BlockEntityBase implements Ticker, DebugTextProvider {
+public class FieldMonitorBlockEntity extends BlockEntityBase implements Ticker.Server, DebugTextProvider {
 	private static final double CYCLE = 5;
 
 	private @Nullable ResourceLocation fieldId;

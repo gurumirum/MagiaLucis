@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
-public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Ticker, LuxConsumerNodeInterface {
+public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Ticker.Server, LuxConsumerNodeInterface {
 	private static final int CYCLE = 10;
 
 	public static RemoteChargerBlockEntity basic(BlockPos pos, BlockState blockState) {

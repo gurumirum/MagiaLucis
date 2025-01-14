@@ -8,35 +8,41 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface Ticker {
-	default void updateClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {}
-	default void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {}
+public final class Ticker {
+	private Ticker() {}
 
-	BlockEntityTicker<?> CLIENT_TICKER = (level, pos, state, blockEntity) ->
-			((Ticker)blockEntity).updateClient(level, pos, state);
-	BlockEntityTicker<?> SERVER_TICKER = (level, pos, state, blockEntity) ->
-			((Ticker)blockEntity).updateServer(level, pos, state);
+	private static final BlockEntityTicker<?> CLIENT_TICKER = (level, pos, state, blockEntity) ->
+			((Client)blockEntity).updateClient(level, pos, state);
+	private static final BlockEntityTicker<?> SERVER_TICKER = (level, pos, state, blockEntity) ->
+			((Server)blockEntity).updateServer(level, pos, state);
 
-	static <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(@NotNull Level level, boolean hasClient, boolean hasServer) {
-		return (level.isClientSide ? hasClient : hasServer) ? getTicker(level.isClientSide) : null;
+	public static <T extends BlockEntity> @Nullable BlockEntityTicker<T> client(@NotNull Level level) {
+		return level.isClientSide ? client() : null;
+	}
+
+	public static <T extends BlockEntity> @Nullable BlockEntityTicker<T> server(@NotNull Level level) {
+		return level.isClientSide ? null : server();
+	}
+
+	public static <T extends BlockEntity> @NotNull BlockEntityTicker<T> both(@NotNull Level level) {
+		return level.isClientSide ? client() : server();
 	}
 
 	@SuppressWarnings("unchecked")
-	static <T extends BlockEntity> BlockEntityTicker<T> getTicker(boolean clientSide) {
-		return (BlockEntityTicker<T>)(clientSide ? CLIENT_TICKER : SERVER_TICKER);
+	private static <T extends BlockEntity> @NotNull BlockEntityTicker<T> client() {
+		return (BlockEntityTicker<T>)CLIENT_TICKER;
 	}
 
-	interface OneSided extends Ticker {
-		void update(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state);
+	@SuppressWarnings("unchecked")
+	private static <T extends BlockEntity> @NotNull BlockEntityTicker<T> server() {
+		return (BlockEntityTicker<T>)SERVER_TICKER;
+	}
 
-		@Override
-		default void updateClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
-			update(level, pos, state);
-		}
+	public interface Client {
+		void updateClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state);
+	}
 
-		@Override
-		default void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
-			update(level, pos, state);
-		}
+	public interface Server {
+		void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state);
 	}
 }

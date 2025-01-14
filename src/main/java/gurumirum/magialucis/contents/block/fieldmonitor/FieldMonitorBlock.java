@@ -34,7 +34,7 @@ public class FieldMonitorBlock extends Block implements EntityBlock {
 	public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level,
 	                                                                        @NotNull BlockState state,
 	                                                                        @NotNull BlockEntityType<T> blockEntityType) {
-		return Ticker.getTicker(level, false, true);
+		return Ticker.server(level);
 	}
 
 	@Override

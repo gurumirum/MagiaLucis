@@ -1,4 +1,4 @@
-package gurumirum.magialucis.client;
+package gurumirum.magialucis.client.render.light;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.shaders.Uniform;
@@ -34,8 +34,8 @@ public class LightCylinderShaderInstance extends ShaderInstance {
 	                               @NotNull Matrix4f frustrumMatrix, @NotNull Window window) {
 		super.setDefaultUniforms(mode, projectionMatrix, frustrumMatrix, window);
 
-		if (this.lightStart != null) this.lightStart.set(this.vec4.set(LightEffect.lightStart(this.vec3), 0));
-		if (this.lightEnd != null) this.lightEnd.set(this.vec4.set(LightEffect.lightEnd(this.vec3), 0));
-		if (this.lightRadius != null) this.lightRadius.set(LightEffect.lightRadius());
+		if (this.lightStart != null) this.lightStart.set(this.vec4.set(LightEffectRender.lightStart(this.vec3), 0));
+		if (this.lightEnd != null) this.lightEnd.set(this.vec4.set(LightEffectRender.lightEnd(this.vec3), 0));
+		if (this.lightRadius != null) this.lightRadius.set(LightEffectRender.lightRadius());
 	}
 }

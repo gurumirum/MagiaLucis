@@ -3,6 +3,8 @@ package gurumirum.magialucis.contents.block.lux.relay;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
+import gurumirum.magialucis.client.render.light.LightEffectRender;
 import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
@@ -36,6 +38,14 @@ public class RelayBlockEntity extends BasicRelayBlockEntity {
 		if (luxNet != null) luxNet.queueStatUpdate(luxNodeId());
 		setChanged();
 		syncToClient();
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		if (this.level != null && this.level.isClientSide) {
+			LightEffectRender.register(new BlockLightEffectProvider<>(this));
+		}
 	}
 
 	@Override
