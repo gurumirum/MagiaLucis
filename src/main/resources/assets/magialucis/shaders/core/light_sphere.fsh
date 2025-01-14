@@ -57,7 +57,8 @@ void main() {
         discard;
     }
 
-    float innerLightRadius = 0.5; //LightRadius / 5 - 0.1;
+    float innerLightRadius = LightRadius * 0.5;
+    innerLightRadius *= step(0.35, innerLightRadius);
     vec2 innerIntersection = sphIntersect(worldNear,
             normalize(worldFar - worldNear),
             LightPosition.xyz,

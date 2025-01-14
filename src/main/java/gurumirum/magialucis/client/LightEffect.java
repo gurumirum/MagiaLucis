@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.impl.RGB332;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec3;
@@ -46,11 +46,23 @@ public record LightEffect(
 		lightEffects.add(lightEffect);
 	}
 
-	public static int getProportionalLight(byte color, Vector3d luxFlow,
-	                                       double rMaxTransfer, double gMaxTransfer, double bMaxTransfer) {
-		int r = rMaxTransfer <= 0 ? 0 : (int)(RGB332.rBrightness(color) * (luxFlow.x / rMaxTransfer) * 255);
-		int g = gMaxTransfer <= 0 ? 0 : (int)(RGB332.gBrightness(color) * (luxFlow.y / gMaxTransfer) * 255);
-		int b = bMaxTransfer <= 0 ? 0 : (int)(RGB332.bBrightness(color) * (luxFlow.z / bMaxTransfer) * 255);
+	public static int getLightColor(Vector3d luxFlow) {
+		double u = LuxUtils.sum(luxFlow) / 3;
+		if (u <= 0) return 0;
+
+		double rv = Math.max(0, luxFlow.x) / u;
+		double gv = Math.max(0, luxFlow.y) / u;
+		double bv = Math.max(0, luxFlow.z) / u;
+
+		double mv = Math.max(Math.max(rv, gv), bv);
+
+		rv /= mv;
+		gv /= mv;
+		bv /= mv;
+
+		int r = (int)(rv * 255);
+		int g = (int)(gv * 255);
+		int b = (int)(bv * 255);
 
 		return FastColor.ARGB32.color(r, g, b);
 	}
@@ -116,9 +128,6 @@ public record LightEffect(
 
 				RenderShapes.sphere(poseStack, bufferBuilder, e.color);
 			} else {
-				currentLightEnd.set(e.end.x - e.start.x, e.end.y - e.start.y, e.end.z - e.start.z);
-				poseStack.last().pose().transformPosition(currentLightEnd);
-
 				RenderSystem.setShader(ModRenderTypes::lightCylinderShader);
 				Vec3 vec = e.end.subtract(e.start);
 
@@ -127,8 +136,13 @@ public record LightEffect(
 				poseStack.scale(e.radius, e.radius, e.radius);
 
 				// TODO variable falloff padding with hit angle?
+				float endOffset = (float)((vec.length() + (e.fallOff ? 0.1 : 0.015)) / e.radius);
+
+				currentLightEnd.set(0, endOffset, 0);
+				poseStack.last().pose().transformPosition(currentLightEnd);
+
 				RenderShapes.cylinder(poseStack, bufferBuilder,
-						-0.015f / e.radius, (float)((vec.length() + (e.fallOff ? 0.3 : 0.015)) / e.radius),
+						-0.015f / e.radius, endOffset,
 						e.color, false);
 			}
 

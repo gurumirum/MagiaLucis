@@ -129,6 +129,10 @@ public final class LuxUtils {
 		});
 	}
 
+	public static double sum(Vector3d vec) {
+		return Math.max(0, vec.x) + Math.max(0, vec.y) + Math.max(0, vec.z);
+	}
+
 	public enum ColorComponent {
 		R, G, B
 	}

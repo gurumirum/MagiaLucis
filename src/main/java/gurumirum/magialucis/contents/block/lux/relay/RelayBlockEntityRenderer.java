@@ -10,6 +10,7 @@ import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.AprilFoolsUtils;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
@@ -39,7 +40,7 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 	@Override
 	public void render(@NotNull RelayBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack,
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		super.render(blockEntity, partialTick, poseStack, bufferSource, packedLight, packedOverlay);
+		// super.render(blockEntity, partialTick, poseStack, bufferSource, packedLight, packedOverlay);
 
 		BlockState state = blockEntity.getBlockState();
 		boolean transformed = false;
@@ -90,28 +91,26 @@ public class RelayBlockEntityRenderer extends BasicRelayBlockEntityRenderer<Rela
 		Vector3d luxFlow = blockEntity.luxFlow(new Vector3d());
 		if (luxFlow.x > 0 || luxFlow.y > 0 || luxFlow.z > 0) {
 			Vec3 center = Vec3.atCenterOf(blockEntity.getBlockPos());
-			byte color = blockEntity.color();
-			double rMaxTransfer = blockEntity.rMaxTransfer();
-			double gMaxTransfer = blockEntity.gMaxTransfer();
-			double bMaxTransfer = blockEntity.bMaxTransfer();
+			int color = LightEffect.getLightColor(luxFlow);
 
-			LightEffect.addCircularEffect(.8f, center,
-					LightEffect.getProportionalLight(color, luxFlow, rMaxTransfer, gMaxTransfer, bMaxTransfer));
+			float radius = (float)(1 / 4.0 * (Math.log10(LuxUtils.sum(luxFlow))));
+
+			LightEffect.addCircularEffect(radius, center, color);
 
 			var outboundLinks = blockEntity.outboundLinks();
-			luxFlow.div(Math.max(1, outboundLinks.size()));
-			int light = LightEffect.getProportionalLight(color, luxFlow, rMaxTransfer, gMaxTransfer, bMaxTransfer);
+			if(outboundLinks.size() > 1) luxFlow.div(outboundLinks.size());
+			radius = (float)(1 / 10.0 * (Math.log10(LuxUtils.sum(luxFlow))));
 
 			for (var e : outboundLinks.int2ObjectEntrySet()) {
 				InWorldLinkInfo info = e.getValue();
 				if (info == null) continue;
-				LightEffect.addCylindricalEffect(.3f, center, Vec3.atCenterOf(info.linkPos()), light, false);
+				LightEffect.addCylindricalEffect(radius, center, Vec3.atCenterOf(info.linkPos()), color, false);
 			}
 
 			for (int i = 0; i < blockEntity.maxLinks(); i++) {
 				InWorldLinkState linkState = blockEntity.getLinkState(i);
 				if (linkState != null && !linkState.linked()) {
-					LightEffect.addCylindricalEffect(.3f, center, linkState.linkLocation(), light, true);
+					LightEffect.addCylindricalEffect(radius, center, linkState.linkLocation(), color, true);
 				}
 			}
 		}

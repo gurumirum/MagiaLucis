@@ -1,5 +1,7 @@
 #version 150
 
+#define Pi 3.1415926535897932384626433832795
+
 in vec4 vertexColor;
 in mat4 invProj;
 in mat4 invModelView;
@@ -28,13 +30,21 @@ vec2 cylIntersect(in vec3 ro, in vec3 rd, in vec3 cb, in vec3 ca, float cr){
     return vec2(-b-h,-b+h)/a;
 }
 
-float lightStrength(in vec2 intersection) {
-    float fogAmount = exp(-intersection.x * 0.05);
-    //float lightAmount = asin((intersection.y - intersection.x) / 2 / (LightRadius - 0.1));
-    float lightAmount = 1 - pow(0.5, (intersection.y - intersection.x));
-    return lightAmount * fogAmount; // idk what i am doing here lol
+float intersectionPoint(in vec3 worldNear, in float point, in vec3 rayDirection, in vec3 cylDirection) {
+    return dot((worldNear + point * rayDirection) - LightStart.xyz, cylDirection);
+}
 
-    // return ((intersection.y - intersection.x) / 2) / sqrt(intersection.x);
+float lightStrength(in vec2 intersection, in float cylLen, in float cylRadius, in vec3 worldNear, in vec3 rayDirection, in vec3 cylDirection) { // TODO shit shitfuckshitshitshit
+    float fogAmount = exp(-intersection.x * 0.1);
+
+    float midpoint = (intersection.y + intersection.x) / 2;
+    float b = intersectionPoint(worldNear, midpoint, rayDirection, cylDirection);
+    float c = length((worldNear + midpoint * rayDirection) - LightStart.xyz);
+    float a = sqrt(c * c - b * b);
+
+    return fogAmount * sin((1 - smoothstep(0, cylRadius, a)) * Pi / 2)
+            * smoothstep(-0.1, 0, c)
+            * (1 - smoothstep(cylLen, cylLen + 0.1, c));
 }
 
 void main() {
@@ -52,6 +62,7 @@ void main() {
     vec3 worldFar = farClip.xyz / farClip.w;
     vec3 rayDirection = normalize(worldFar - worldNear);
     vec3 cylDirection = normalize(LightEnd.xyz - LightStart.xyz);
+    float cylLen = length(LightEnd.xyz - LightStart.xyz);
 
     vec2 intersection = cylIntersect(worldNear,
             rayDirection,
@@ -63,24 +74,33 @@ void main() {
         discard;
     }
 
-    vec2 p = vec2(
-            dot((worldNear + intersection.x * rayDirection) - LightStart.xyz, cylDirection),
-            dot((worldNear + intersection.y * rayDirection) - LightStart.xyz, cylDirection));
-
-    float innerLightCylRadius = 0.015; //LightRadius / 5 - 0.1;
+    float innerLightRadius = LightRadius * 0.4;
     vec2 innerIntersection = cylIntersect(worldNear,
             rayDirection,
             LightStart.xyz,
             cylDirection,
-            innerLightCylRadius) * step(0, innerLightCylRadius);
-    
-    fragColor = max(
-            vec4(step(0, innerIntersection.y)),
-            min(
-                    vec4(vec3(0.95), 1),
-                    color * ColorModulator * lightStrength(intersection)
-            )
-    );
+            innerLightRadius);
 
-    // fragColor = vec4(p / length(LightEnd.xyz - LightStart.xyz), 0, 1);
+    float beamLightCylRadius = LightRadius * 0.02;
+    vec2 beamIntersection = cylIntersect(worldNear,
+            rayDirection,
+            LightStart.xyz,
+            cylDirection,
+            beamLightCylRadius);
+
+    float beamNear = intersectionPoint(worldNear, beamIntersection.x, rayDirection, cylDirection);
+    float beamFar = intersectionPoint(worldNear, beamIntersection.y, rayDirection, cylDirection);
+
+    fragColor = vec4(max(
+            min(
+                    vec3(0.95),
+                    smoothstep(0, 2.5, ColorModulator.xyz * color.xyz * lightStrength(intersection, cylLen, LightRadius - 0.1, worldNear, rayDirection, cylDirection)) +
+                            vec3(step(0.15, innerLightRadius) * smoothstep(0, 2.5, lightStrength(innerIntersection, cylLen, innerLightRadius, worldNear, rayDirection, cylDirection) - 0.2))
+            ),
+            // beam
+            vec3(step(0.005, beamLightCylRadius) *
+                    step(0, beamIntersection.y) *
+                    step(min(beamNear, beamFar), cylLen) *
+                    step(0, max(beamNear, beamFar)))
+    ), color.a * ColorModulator.a) /* + vec4(0, 0.1, 0, 0) */;
 }
