@@ -6,13 +6,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SunlightCoreBlock extends BaseSunlightCoreBlock {
-	public SunlightCoreBlock(Properties properties) {
+public class MoonlightCoreBlock extends BaseSunlightCoreBlock{
+	public MoonlightCoreBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-		return new SunlightCoreBlockEntity(pos, state);
+		return new MoonlightCoreBlockEntity(pos, state);
 	}
 }

@@ -14,5 +14,9 @@ public final class Fields {
 			.interferenceThreshold(2)
 			.build(id("sunlight_core")));
 
+	public static final Field MOONLIGHT_CORE = register(new FieldBuilder()
+			.interferenceThreshold(2)
+			.build(id("moonlight_core")));
+
 	public static void init() {}
 }

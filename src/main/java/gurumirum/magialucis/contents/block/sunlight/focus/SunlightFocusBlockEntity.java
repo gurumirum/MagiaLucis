@@ -6,7 +6,7 @@ import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
 import gurumirum.magialucis.contents.block.sunlight.SunlightLogic;
-import gurumirum.magialucis.contents.block.sunlight.core.SunlightCoreBlockEntity;
+import gurumirum.magialucis.contents.block.sunlight.core.BaseSunlightCoreBlockEntity;
 import gurumirum.magialucis.impl.RGB332;
 import gurumirum.magialucis.impl.luxnet.*;
 import net.minecraft.core.BlockPos;
@@ -79,7 +79,7 @@ public class SunlightFocusBlockEntity extends BasicRelayBlockEntity implements L
 	                                                             @Nullable ServerSideLinkContext context,
 	                                                             @NotNull BlockHitResult hitResult) {
 		if (hitResult.getBlockPos().getY() < this.getBlockPos().getY()) return null;
-		return level.getBlockEntity(hitResult.getBlockPos()) instanceof SunlightCoreBlockEntity sunlightCore ?
+		return level.getBlockEntity(hitResult.getBlockPos()) instanceof BaseSunlightCoreBlockEntity sunlightCore ?
 				sunlightCore : null;
 	}
 }

@@ -10,21 +10,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class SunlightCoreBlockEntity extends BaseSunlightCoreBlockEntity {
+public class MoonlightCoreBlockEntity extends BaseSunlightCoreBlockEntity {
 	public static final LuxStat STAT = LuxStat.simple(
-			GemStats.CITRINE.color(),
+			GemStats.IOLITE.color(),
 			0, // don't make cores just ignore foci
-			GemStats.CITRINE.rMaxTransfer(),
-			GemStats.CITRINE.gMaxTransfer(),
-			0); // regular sunlight cores cannot receive blue light
+			GemStats.IOLITE.rMaxTransfer(),
+			GemStats.IOLITE.gMaxTransfer(),
+			GemStats.IOLITE.bMaxTransfer());
 
-	public SunlightCoreBlockEntity(BlockPos pos, BlockState blockState) {
-		super(ModBlockEntities.SUNLIGHT_CORE.get(), pos, blockState);
+	public MoonlightCoreBlockEntity(BlockPos pos, BlockState blockState) {
+		super(ModBlockEntities.MOONLIGHT_CORE.get(), pos, blockState);
 	}
 
 	@Override
 	protected @Nullable Field field() {
-		return Fields.SUNLIGHT_CORE;
+		return Fields.MOONLIGHT_CORE;
 	}
 
 	@Override

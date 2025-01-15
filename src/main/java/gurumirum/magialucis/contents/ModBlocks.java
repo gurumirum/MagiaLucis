@@ -9,6 +9,8 @@ import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
 import gurumirum.magialucis.contents.block.lux.remotecharger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlock;
+import gurumirum.magialucis.contents.block.sunlight.core.BaseSunlightCoreBlock;
+import gurumirum.magialucis.contents.block.sunlight.core.MoonlightCoreBlock;
 import gurumirum.magialucis.contents.block.sunlight.core.SunlightCoreBlock;
 import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusBlock;
 import gurumirum.magialucis.impl.RGB332;
@@ -43,6 +45,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of())),
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of().lightLevel(state -> 9))),
 	SUNLIGHT_CORE(BlockProfile.customBlock(SunlightCoreBlock::new, Properties.of())),
+	MOONLIGHT_CORE(BlockProfile.customBlock(MoonlightCoreBlock::new, Properties.of())),
 	SUNLIGHT_FOCUS(BlockProfile.customBlock(SunlightFocusBlock::new, Properties.of()
 			.requiresCorrectToolForDrops()
 			.strength(3.5f))),
