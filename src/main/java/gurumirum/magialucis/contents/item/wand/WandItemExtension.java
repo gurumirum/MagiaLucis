@@ -6,8 +6,10 @@ import gurumirum.magialucis.client.BeamRender;
 import gurumirum.magialucis.client.ModArmPose;
 import gurumirum.magialucis.client.WandEffect;
 import gurumirum.magialucis.contents.item.BeamSource;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,16 +33,18 @@ public class WandItemExtension implements IClientItemExtensions {
 	public boolean applyForgeHandTransform(@NotNull PoseStack poseStack, @NotNull LocalPlayer player,
 	                                       @NotNull HumanoidArm arm, @NotNull ItemStack itemInHand,
 	                                       float partialTick, float equipProcess, float swingProcess) {
-		if (!player.isUsingItem() ||
-				(player.getUsedItemHand() == InteractionHand.MAIN_HAND ?
-						player.getMainArm() : player.getMainArm().getOpposite()) != arm) return false;
+		InteractionHand hand = arm == player.getMainArm() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 
 		BeamSource beamSource = BeamSource.from(itemInHand);
-		boolean canProduceBeam = beamSource != null && beamSource.canProduceBeam(player, itemInHand);
-		WandEffect wandEffect = WandEffect.from(itemInHand, player);
+		boolean canProduceBeam = beamSource != null && beamSource.canProduceBeam(player, itemInHand, hand);
+		WandEffect wandEffect = WandEffect.from(itemInHand, player, hand);
 		if (!canProduceBeam && wandEffect == null) return false;
 
-		applyItemArmTransform(poseStack, arm, equipProcess);
+		ItemInHandRenderer itemInHandRenderer = Minecraft.getInstance()
+				.getEntityRenderDispatcher().getItemInHandRenderer();
+
+		itemInHandRenderer.applyItemArmTransform(poseStack, arm, equipProcess);
+		itemInHandRenderer.applyItemArmAttackTransform(poseStack, arm, swingProcess);
 
 		poseStack.pushPose();
 
@@ -58,10 +62,5 @@ public class WandItemExtension implements IClientItemExtensions {
 
 		poseStack.popPose();
 		return true;
-	}
-
-	// ItemInHandRenderer#applyItemArmTransform
-	private void applyItemArmTransform(PoseStack poseStack, HumanoidArm hand, float equipProcess) {
-		poseStack.translate((hand == HumanoidArm.RIGHT ? 1 : -1) * 0.56f, -0.52f + equipProcess * -0.6f, -0.72f);
 	}
 }

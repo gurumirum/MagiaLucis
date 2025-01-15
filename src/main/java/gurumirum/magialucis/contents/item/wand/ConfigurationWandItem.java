@@ -36,7 +36,7 @@ public class ConfigurationWandItem extends Item {
 	public static final double MAX_DISTANCE = 30;
 
 	public ConfigurationWandItem(Properties properties) {
-		super(properties.stacksTo(1));
+		super(properties);
 	}
 
 	@Override

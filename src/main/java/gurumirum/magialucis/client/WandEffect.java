@@ -2,16 +2,18 @@ package gurumirum.magialucis.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 @FunctionalInterface
@@ -19,14 +21,17 @@ public interface WandEffect {
 	@OnlyIn(Dist.CLIENT)
 	void render(PoseStack poseStack, Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective);
 
-	static @Nullable WandEffect from(ItemStack stack, Player player) {
-		return stack.getItem() instanceof WandEffectSource wandEffectSource ? wandEffectSource.getWandEffect(player, stack) : null;
+	static @Nullable WandEffect from(ItemStack stack, Player player, InteractionHand hand) {
+		return stack.getItem() instanceof WandEffectSource wandEffectSource ? wandEffectSource.getWandEffect(player, stack, hand) : null;
 	}
 
 	abstract class SpinningTipEffect implements WandEffect {
 		public static final long DEFAULT_ROTATION_PERIOD = 18;
 
+		protected static final float deg2rad = Mth.TWO_PI / 360;
+
 		private final Vector3f offset = new Vector3f();
+		private final Quaternionf rot = new Quaternionf();
 
 		protected abstract void offset(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective, Vector3f dest);
 
@@ -34,8 +39,8 @@ public interface WandEffect {
 			return 1;
 		}
 
-		protected float getRotationDegrees(Player player, ItemStack stack, int ticksUsingItem, boolean firstPersonPerspective, float partialTicks) {
-			return -RotationLogic.rotation(ticksUsingItem, DEFAULT_ROTATION_PERIOD, partialTicks);
+		protected void getRotation(Player player, ItemStack stack, boolean firstPersonPerspective, float partialTicks, Quaternionf dest) {
+			dest.rotateX(-RotationLogic.rotation(player.getTicksUsingItem(), DEFAULT_ROTATION_PERIOD, partialTicks) * deg2rad);
 		}
 
 		protected void draw(PoseStack poseStack, Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
@@ -58,15 +63,14 @@ public interface WandEffect {
 
 		@Override
 		public void render(PoseStack poseStack, Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
-			offset(player, stack, partialTicks, firstPersonPerspective, this.offset);
+			offset(player, stack, partialTicks, firstPersonPerspective, this.offset.set(1, 1, .5f));
 			poseStack.translate(this.offset.x / 16, this.offset.y / 16, this.offset.z / 16);
 
 			float scale = scale(player, stack, partialTicks, firstPersonPerspective);
 			if (scale != 1) poseStack.scale(scale, scale, scale);
 
-			poseStack.mulPose(Axis.ZP.rotationDegrees(45));
-			int ticksUsingItem = player.getTicksUsingItem();
-			poseStack.mulPose(Axis.XP.rotationDegrees(getRotationDegrees(player, stack, ticksUsingItem, firstPersonPerspective, partialTicks)));
+			getRotation(player, stack, firstPersonPerspective, partialTicks, this.rot.identity().rotateZ((float)(Math.PI / 4)));
+			poseStack.mulPose(this.rot);
 
 			draw(poseStack, player, stack, partialTicks, firstPersonPerspective);
 		}

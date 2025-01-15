@@ -14,7 +14,9 @@ public class ShieldWandItem extends LuxBatteryItem {
 	public static final int COST_PER_SHIELD = 1;
 	public static final int COST_PER_BLOCKING = 5;
 
-	public ShieldWandItem(Properties properties) {super(properties);}
+	public ShieldWandItem(Properties properties) {
+		super(properties);
+	}
 
 	@Override
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {

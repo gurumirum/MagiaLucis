@@ -64,7 +64,7 @@ public class HealWandItem extends LuxBatteryItem implements WandEffectSource {
 	}
 
 	@Override
-	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack) {
-		return HealWandEffect.INSTANCE;
+	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack, InteractionHand hand) {
+		return player.isUsingItem() && player.getUsedItemHand() == hand ? HealWandEffect.INSTANCE : null;
 	}
 }

@@ -22,7 +22,7 @@ public class RecallStaffWandItem extends LuxBatteryItem implements WandEffectSou
 	public static final int RECALL_FATIGUE_DURATION = 20 * 75;
 
 	public RecallStaffWandItem(Properties properties) {
-		super(properties.stacksTo(1));
+		super(properties);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class RecallStaffWandItem extends LuxBatteryItem implements WandEffectSou
 	}
 
 	@Override
-	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack) {
-		return RecallStaffWandEffect.INSTANCE;
+	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack, InteractionHand hand) {
+		return player.isUsingItem() && player.getUsedItemHand() == hand ? RecallStaffWandEffect.INSTANCE : null;
 	}
 }

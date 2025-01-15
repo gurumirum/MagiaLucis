@@ -24,7 +24,7 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 	public static final double DISTANCE = 10;
 
 	public AncientLightWandItem(Properties properties) {
-		super(properties.stacksTo(1));
+		super(properties);
 	}
 
 	@Override
@@ -36,7 +36,10 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 
 	@Override
 	public void onUseTick(@NotNull Level level, @NotNull LivingEntity entity, @NotNull ItemStack stack, int remainingUseDuration) {
-		if (!level.isClientSide || !(entity instanceof LocalPlayer player) || !canProduceBeam(player, stack)) return;
+		if (!level.isClientSide ||
+				!(entity instanceof LocalPlayer player) ||
+				!canProduceBeam(player, stack, player.getUsedItemHand())) return;
+
 		Vec3 start = player.getEyePosition();
 		Vec3 end = start.add(player.getLookAngle().scale(DISTANCE));
 		BlockHitResult hitResult = trace(player, start, end);
@@ -89,7 +92,7 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 	}
 
 	@Override
-	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack) {
-		return AncientLightWandEffect.INSTANCE;
+	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack, InteractionHand hand) {
+		return player.isUsingItem() && player.getUsedItemHand() == hand ? AncientLightWandEffect.INSTANCE : null;
 	}
 }

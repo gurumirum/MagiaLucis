@@ -27,7 +27,7 @@ public class AmberTorchWandItem extends LuxBatteryItem {
 	private static final int PARTICLE_COUNT = 8;
 
 	public AmberTorchWandItem(Properties properties) {
-		super(properties.stacksTo(1));
+		super(properties);
 	}
 
 	@Override

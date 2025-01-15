@@ -33,9 +33,8 @@ public enum Wands implements ItemLike {
 	SHIELD_WAND(ItemProfile.customItem(ShieldWandItem::new, StandardWandShape.WAND),
 			LuxContainerStat.withBaseStat(ShieldWandItem.COST_PER_SHIELD * 100, GemStats.POLISHED_LAPIS_LAZULI)),
 
-	DIAMOND_STAFF(ItemProfile.customItem(DiamondStaffItem::new, StandardWandShape.STAFF),
-			LuxContainerStat.withBaseStat(DiamondStaffItem.COST_PER_DEBUFF * 10, GemStats.DIAMOND))
-	;
+	DIAMOND_MACE(ItemProfile.customItem(DiamondMaceItem::new),
+			LuxContainerStat.withBaseStat(DiamondMaceItem.COST_PER_ATTACK * 10, GemStats.DIAMOND));
 
 	private final DeferredItem<Item> item;
 	@Nullable
@@ -68,8 +67,8 @@ public enum Wands implements ItemLike {
 		@Override
 		public void accept(Item.Properties properties) {
 			switch (this) {
-				case WAND -> properties.attributes(WandAttributes.wandAttributes());
-				case STAFF -> properties.attributes(WandAttributes.staffAttributes());
+				case WAND -> properties.stacksTo(1).attributes(WandAttributes.wand());
+				case STAFF -> properties.stacksTo(1).attributes(WandAttributes.staff());
 			}
 		}
 	}

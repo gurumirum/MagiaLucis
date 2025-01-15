@@ -5,6 +5,7 @@ import gurumirum.magialucis.client.WandEffect;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import static gurumirum.magialucis.MagiaLucisMod.id;
@@ -21,8 +22,9 @@ public class HealWandEffect extends WandEffect.SpinningTipEffect {
 	}
 
 	@Override
-	protected float getRotationDegrees(Player player, ItemStack stack, int ticksUsingItem, boolean firstPersonPerspective, float partialTicks) {
-		return -RotationLogic.rotation(ticksUsingItem, ROTATION_PERIOD, partialTicks);
+	protected void getRotation(Player player, ItemStack stack, boolean firstPersonPerspective, float partialTicks,
+	                           Quaternionf dest) {
+		dest.rotateX(-RotationLogic.rotation(player.getTicksUsingItem(), ROTATION_PERIOD, partialTicks) * deg2rad);
 	}
 
 	@Override

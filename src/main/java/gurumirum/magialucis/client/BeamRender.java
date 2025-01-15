@@ -124,7 +124,7 @@ public final class BeamRender {
 
 		ItemStack useItem = player.getUseItem();
 		if (!(useItem.getItem() instanceof BeamSource beamSource)) return;
-		if (!beamSource.canProduceBeam(player, useItem)) return;
+		if (!beamSource.canProduceBeam(player, useItem, player.getUsedItemHand())) return;
 
 		Vec3 start = player.getEyePosition();
 		Vec3 end = start.add(player.getLookAngle().scale(AncientLightWandItem.DISTANCE));

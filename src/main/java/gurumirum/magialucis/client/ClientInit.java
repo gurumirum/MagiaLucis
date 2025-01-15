@@ -47,18 +47,12 @@ public final class ClientInit {
 			ItemPropertyFunction wandUsing = (stack, level, entity, seed) ->
 					entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0;
 
-			for (Wands w : Wands.values()) {
-				ItemProperties.register(w.asItem(), USING, wandUsing);
-			}
+			ItemProperties.register(Wands.ANCIENT_LIGHT.asItem(), USING, wandUsing);
 
-			ItemProperties.register(Wands.AMBER_TORCH.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
-				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < AmberTorchWandItem.COST_PER_LIGHT_SOURCE ? 1 : 0;
-			});
+			ItemProperties.register(Wands.AMBER_TORCH.asItem(), NO_CHARGE, noCharge(AmberTorchWandItem.COST_PER_LIGHT_SOURCE));
 
 			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), USING, wandUsing);
-			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
-				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < LesserIceStaffWandItem.COST_PER_ATTACK ? 1 : 0;
-			});
+			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), NO_CHARGE, noCharge(LesserIceStaffWandItem.COST_PER_ATTACK));
 
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), USING, wandUsing);
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
@@ -67,9 +61,9 @@ public final class ClientInit {
 			});
 
 			ItemProperties.register(Wands.HEAL_WAND.asItem(), USING, wandUsing);
-			ItemProperties.register(Wands.HEAL_WAND.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
-				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < HealWandItem.COST_PER_CAST ? 1 : 0;
-			});
+			ItemProperties.register(Wands.HEAL_WAND.asItem(), NO_CHARGE, noCharge(HealWandItem.COST_PER_CAST));
+
+			ItemProperties.register(Wands.DIAMOND_MACE.asItem(), NO_CHARGE, noCharge(DiamondMaceItem.COST_PER_ATTACK));
 		});
 	}
 
@@ -110,5 +104,12 @@ public final class ClientInit {
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.SUNLIGHT_FOCUS.get(), SunlightFocusBlockEntityRenderer::new);
+	}
+
+	@SuppressWarnings("deprecation")
+	private static ItemPropertyFunction noCharge(long minimumCharge) {
+		return (stack, level, entity, seed) -> {
+			return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < minimumCharge ? 1 : 0;
+		};
 	}
 }

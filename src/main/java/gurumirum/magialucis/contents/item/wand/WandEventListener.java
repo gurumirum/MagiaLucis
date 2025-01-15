@@ -36,12 +36,12 @@ public final class WandEventListener {
 	public static void onEntityHurt(LivingDamageEvent.Post event) {
 		ItemStack stack = event.getSource().getWeaponItem();
 		if (stack != null && event.getSource().getEntity() instanceof Player player
-				&& stack.getItem() instanceof DiamondStaffItem
+				&& stack.getItem() instanceof DiamondMaceItem
 				&& player.getAttackStrengthScale(0.0f) == 1f
-				&& stack.getOrDefault(Contents.LUX_CHARGE, 0L) >= DiamondStaffItem.COST_PER_DEBUFF) {
+				&& stack.getOrDefault(Contents.LUX_CHARGE, 0L) >= DiamondMaceItem.COST_PER_ATTACK) {
 			long current = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
-			event.getEntity().addEffect(new MobEffectInstance(Contents.DOUBLE_MAGIC_DAMAGE, DiamondStaffItem.DEBUFF_DURATION));
-			stack.set(Contents.LUX_CHARGE, current - DiamondStaffItem.COST_PER_DEBUFF);
+			event.getEntity().addEffect(new MobEffectInstance(Contents.DOUBLE_MAGIC_DAMAGE, DiamondMaceItem.DEBUFF_DURATION));
+			stack.set(Contents.LUX_CHARGE, current - DiamondMaceItem.COST_PER_ATTACK);
 		}
 	}
 
