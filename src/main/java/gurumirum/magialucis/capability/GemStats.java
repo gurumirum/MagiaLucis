@@ -19,6 +19,7 @@ public enum GemStats implements LuxStat {
 
 	AMBER(1, RGB332.of(6, 3, 0), 5, 300),
 	CITRINE(1, RGB332.of(6, 6, 1), 25, 250),
+	IOLITE(1, RGB332.of(0, 0,1), 10, 600),
 	AQUAMARINE(1, RGB332.of(0, 5, 3), 20, 160),
 	PEARL(1, RGB332.of(7, 6, 3), 50, 150),
 
@@ -38,16 +39,10 @@ public enum GemStats implements LuxStat {
 	AMETHYST(3, RGB332.of(7, 2, 3), 500, 4000, true, true),
 	TOPAZ(3, RGB332.of(6, 6, 0), 5000, 10000),
 	MOONSTONE(3, RGB332.of(4, 6, 3), 1500, 20000),
-	JET(3, RGB332.of(0, 0, 0), 100, 20000),
+	JET(3, RGB332.of(0, 0, 0), 100, 20000)
 
-	BRILLIANT_DIAMOND(4, RGB332.of(6, 6, 3), 100, 10000, false),
-	RUBY2(4, RGB332.of(7, 0, 0), 1000, 25000, false),
-	EMERALD2(4, RGB332.of(0, 7, 0), 1000, 25000, false),
-	SAPPHIRE2(4, RGB332.of(0, 0, 3), 1000, 25000, false),
-
-	// Artificial gems onwards?
-
-	DAIMONIUM(5, RGB332.of(0, 0, 0), Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, false);
+	// artificial gems onwards?
+	;
 
 	private final byte color;
 	private final double minLuxThreshold;
@@ -115,6 +110,7 @@ public enum GemStats implements LuxStat {
 			case SOUL_BRIGHTSTONE -> GemItems.SOUL_BRIGHTSTONE.asItem();
 			case AMBER -> GemItems.AMBER.asItem();
 			case CITRINE -> GemItems.CITRINE.asItem();
+			case IOLITE -> GemItems.IOLITE.asItem();
 			case AQUAMARINE -> GemItems.AQUAMARINE.asItem();
 			case PEARL -> GemItems.PEARL.asItem();
 			case PRISMARINE -> Items.PRISMARINE_SHARD.asItem();
@@ -131,11 +127,6 @@ public enum GemStats implements LuxStat {
 			case TOPAZ -> GemItems.TOPAZ.asItem();
 			case MOONSTONE -> GemItems.MOONSTONE.asItem();
 			case JET -> GemItems.JET.asItem();
-			case BRILLIANT_DIAMOND -> GemItems.BRILLIANT_DIAMOND.asItem();
-			case RUBY2 -> GemItems.RUBY2.asItem();
-			case EMERALD2 -> GemItems.EMERALD2.asItem();
-			case SAPPHIRE2 -> GemItems.SAPPHIRE2.asItem();
-			case DAIMONIUM -> GemItems.DAIMONIUM.asItem();
 		};
 	}
 

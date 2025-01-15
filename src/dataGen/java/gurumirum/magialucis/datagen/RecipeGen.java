@@ -30,15 +30,7 @@ public class RecipeGen extends RecipeProvider {
 	@Override
 	protected void buildRecipes(@NotNull RecipeOutput out, HolderLookup.@NotNull Provider provider) {
 		for (Ore ore : Ore.values()) {
-			ItemLike smeltResult = switch (ore) {
-				case SILVER -> ModItems.SILVER_INGOT;
-				case AMBER -> GemItems.AMBER;
-				case CITRINE -> GemItems.CITRINE;
-				case AQUAMARINE -> GemItems.AQUAMARINE;
-				case RUBY -> GemItems.RUBY;
-				case SAPPHIRE -> GemItems.SAPPHIRE;
-				case TOPAZ -> GemItems.TOPAZ;
-			};
+			ItemLike smeltResult = ore.smeltItem();
 			String group = ore == Ore.SILVER ? "silver_ingot" : ore.oreBaseName();
 
 			oreSmelting(out, ingredients(ore), RecipeCategory.MISC, smeltResult, 1, 200, group);

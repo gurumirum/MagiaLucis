@@ -17,6 +17,7 @@ public enum GemItems implements ItemLike {
 
 	AMBER(GemStats.AMBER),
 	CITRINE(GemStats.CITRINE),
+	IOLITE(GemStats.IOLITE),
 	AQUAMARINE(GemStats.AQUAMARINE),
 	PEARL(GemStats.PEARL),
 
@@ -33,14 +34,7 @@ public enum GemItems implements ItemLike {
 	// amethyst
 	TOPAZ(GemStats.TOPAZ),
 	MOONSTONE(GemStats.MOONSTONE),
-	JET(GemStats.JET),
-
-	BRILLIANT_DIAMOND(GemStats.BRILLIANT_DIAMOND),
-	RUBY2(GemStats.RUBY2),
-	EMERALD2(GemStats.EMERALD2),
-	SAPPHIRE2(GemStats.SAPPHIRE2),
-
-	DAIMONIUM(GemStats.DAIMONIUM);
+	JET(GemStats.JET);
 
 	public final GemStats gem;
 	private final DeferredItem<Item> item;

@@ -24,6 +24,7 @@ public enum Ore {
 
 	AMBER(OreType.STONE),
 	CITRINE(OreType.STONE),
+	CORDIERITE(OreType.STONE),
 	AQUAMARINE(OreType.STONE),
 
 	RUBY(OreType.STONE, OreType.DEEPSLATE),
@@ -89,6 +90,7 @@ public enum Ore {
 			case SILVER -> ModItems.SILVER_INGOT;
 			case AMBER -> GemItems.AMBER;
 			case CITRINE -> GemItems.CITRINE;
+			case CORDIERITE -> GemItems.IOLITE;
 			case AQUAMARINE -> GemItems.AQUAMARINE;
 			case RUBY -> GemItems.RUBY;
 			case SAPPHIRE -> GemItems.SAPPHIRE;

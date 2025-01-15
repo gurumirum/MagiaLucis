@@ -130,26 +130,7 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(ModItems.SILVER_NUGGET.asItem());
 		basicItem(ModItems.RAW_SILVER.asItem());
 
-		basicItem(GemItems.BRIGHTSTONE.asItem());
-		basicItem(GemItems.RED_BRIGHTSTONE.asItem());
-		basicItem(GemItems.ICY_BRIGHTSTONE.asItem());
-		basicItem(GemItems.SOUL_BRIGHTSTONE.asItem());
-
-		basicItem(GemItems.AMBER.asItem());
-		basicItem(GemItems.CITRINE.asItem());
-		basicItem(GemItems.AQUAMARINE.asItem());
-		basicItem(GemItems.PEARL.asItem());
-
-		basicItem(GemItems.PURIFIED_QUARTZ.asItem());
-		basicItem(GemItems.CRYSTALLIZED_REDSTONE.asItem());
-		basicItem(GemItems.POLISHED_LAPIS_LAZULI.asItem());
-		basicItem(GemItems.OBSIDIAN.asItem());
-
-		basicItem(GemItems.TOPAZ.asItem());
-		basicItem(GemItems.MOONSTONE.asItem());
-		basicItem(GemItems.JET.asItem());
-		basicItem(GemItems.RUBY.asItem());
-		basicItem(GemItems.SAPPHIRE.asItem());
+		for (GemItems i : GemItems.values()) basicItem(i.asItem());
 
 		for (Ore ore : Ore.values()) registerOreModels(ore);
 	}

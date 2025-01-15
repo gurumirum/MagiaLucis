@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "cordierite",
+  "ingredient": {
+    "item": "magialucis:cordierite_ore"
+  },
+  "result": {
+    "count": 1,
+    "id": "magialucis:iolite"
+  }
+}
