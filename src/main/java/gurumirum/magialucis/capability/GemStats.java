@@ -22,6 +22,9 @@ public enum GemStats implements LuxStat {
 	AQUAMARINE(1, RGB332.of(0, 5, 3), 20, 160),
 	PEARL(1, RGB332.of(7, 6, 3), 50, 150),
 
+	PRISMARINE(1, RGB332.of(0, 5, 2), 50, 150, true, true),
+	ENDER_PEARL(1, RGB332.of(0, 2, 1), 50, 150, true, true),
+
 	PURIFIED_QUARTZ(2, RGB332.WHITE, 10, 1000, false),
 	CRYSTALLIZED_REDSTONE(2, RGB332.of(5, 0, 0), 400, 800),
 	POLISHED_LAPIS_LAZULI(2, RGB332.of(1, 1, 2), 10, 200),
@@ -114,6 +117,8 @@ public enum GemStats implements LuxStat {
 			case CITRINE -> GemItems.CITRINE.asItem();
 			case AQUAMARINE -> GemItems.AQUAMARINE.asItem();
 			case PEARL -> GemItems.PEARL.asItem();
+			case PRISMARINE -> Items.PRISMARINE_SHARD.asItem();
+			case ENDER_PEARL -> Items.ENDER_PEARL.asItem();
 			case PURIFIED_QUARTZ -> GemItems.PURIFIED_QUARTZ.asItem();
 			case CRYSTALLIZED_REDSTONE -> GemItems.CRYSTALLIZED_REDSTONE.asItem();
 			case POLISHED_LAPIS_LAZULI -> GemItems.POLISHED_LAPIS_LAZULI.asItem();
