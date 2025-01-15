@@ -123,7 +123,7 @@ public final class SunlightLogic {
 		public void getIntensity(Level level, Vector3d dest) {
 			dest.set(RGB332.rBrightness(this.color), RGB332.gBrightness(this.color), RGB332.bBrightness(this.color));
 			if (this.isNight) {
-				dest.mul(level.getMoonBrightness());
+				dest.mul(Mth.lerp(level.getMoonBrightness(), 0.5, 1));
 			}
 		}
 	}
