@@ -6,7 +6,8 @@ import gurumirum.magialucis.contents.ModItems;
 import gurumirum.magialucis.contents.item.wand.ConfigurationWandItem;
 import gurumirum.magialucis.contents.item.wandbelt.WandBelt;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
-import gurumirum.magialucis.impl.InWorldBeamCraftingManager;
+import gurumirum.magialucis.impl.ancientlight.AncientLightCrafting;
+import gurumirum.magialucis.impl.ancientlight.ServerAncientLightManager;
 import gurumirum.magialucis.net.msgs.SetBeamCraftingInfoMsg;
 import gurumirum.magialucis.net.msgs.SetLinkMsg;
 import gurumirum.magialucis.net.msgs.SetWandBeltSelectedIndexMsg;
@@ -19,9 +20,12 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public class ServerSideHandlers {
+public final class ServerSideHandlers {
+	private ServerSideHandlers() {}
+
 	public static void handleSetBeamCraftingInfo(SetBeamCraftingInfoMsg msg, IPayloadContext context) {
-		InWorldBeamCraftingManager.setFocus(context.player(), msg.blockPos());
+		ServerAncientLightManager m = AncientLightCrafting.tryGetManager(context.player().level());
+		if (m != null) m.setFocus(context.player(), msg.blockPos());
 	}
 
 	public static void handleSetWandBeltSelectedIndex(SetWandBeltSelectedIndexMsg msg, IPayloadContext context) {

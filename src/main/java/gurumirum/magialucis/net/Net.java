@@ -1,10 +1,7 @@
 package gurumirum.magialucis.net;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.net.msgs.SetBeamCraftingInfoMsg;
-import gurumirum.magialucis.net.msgs.SetLinkMsg;
-import gurumirum.magialucis.net.msgs.SetWandBeltSelectedIndexMsg;
-import gurumirum.magialucis.net.msgs.SwapWandBeltItemMsg;
+import gurumirum.magialucis.net.msgs.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -36,5 +33,10 @@ public final class Net {
 				SetLinkMsg.TYPE,
 				SetLinkMsg.STREAM_CODEC,
 				ServerSideHandlers::handleSetLink);
+
+		registrar.commonToClient(
+				SyncAncientLightProgressMsg.TYPE,
+				SyncAncientLightProgressMsg.STREAM_CODEC,
+				ClientSideHandlers::handleSyncAncientLightProgress);
 	}
 }

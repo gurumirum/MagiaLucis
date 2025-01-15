@@ -1,7 +1,8 @@
 package gurumirum.magialucis.jei;
 
+import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.Wands;
-import gurumirum.magialucis.impl.InWorldBeamCraftingManager;
+import gurumirum.magialucis.impl.ancientlight.AncientLightRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.placement.HorizontalAlignment;
@@ -16,38 +17,46 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BeamCraftingRecipeCategory implements IRecipeCategory<BeamCraftingRecipeCategory.BeamCraftingRecipe> {
+public class AncientLightRecipeCategory implements IRecipeCategory<AncientLightRecipeCategory.Recipe> {
+	public static final RecipeType<Recipe> RECIPE_TYPE = new RecipeType<>(
+			MagiaLucisMod.id("ancient_light"), Recipe.class);
+
 	private final IDrawable icon;
 
-	public BeamCraftingRecipeCategory(IGuiHelper guiHelper){
+	public AncientLightRecipeCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableItemLike(Wands.ANCIENT_LIGHT);
 	}
 
-	@Override public @NotNull RecipeType<BeamCraftingRecipe> getRecipeType(){
-		return MagiaLucisJeiPlugin.BEAM_RECIPE_TYPE;
+	@Override
+	public @NotNull RecipeType<Recipe> getRecipeType() {
+		return RECIPE_TYPE;
 	}
 
-	@Override public @NotNull Component getTitle(){
-		return Component.translatable("jei.magialucis.beam_crafting");
+	@Override
+	public @NotNull Component getTitle() {
+		return Component.translatable("jei.magialucis.ancient_light");
 	}
 
-	@Override public @Nullable IDrawable getIcon(){
+	@Override
+	public @Nullable IDrawable getIcon() {
 		return icon;
 	}
 
-	@Override public void setRecipe(IRecipeLayoutBuilder builder, BeamCraftingRecipe recipe, @NotNull IFocusGroup focuses){
+	@Override
+	public void setRecipe(IRecipeLayoutBuilder builder, Recipe recipe, @NotNull IFocusGroup focuses) {
 		builder.addInputSlot(1, 9)
 				.setStandardSlotBackground()
 				.addItemLike(recipe.input.getBlock());
 
-		builder.addOutputSlot(61,  9)
+		builder.addOutputSlot(61, 9)
 				.setOutputSlotBackground()
 				.addItemStacks(recipe.recipe.output());
 	}
 
-	@Override public void createRecipeExtras(IRecipeExtrasBuilder builder, BeamCraftingRecipe recipe, @NotNull IFocusGroup focuses){
+	@Override
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, Recipe recipe, @NotNull IFocusGroup focuses) {
 		builder.addRecipeArrow().setPosition(26, 9);
-		double cookTimeSeconds = Math.floor((recipe.recipe.processTicks() / 20.0) * 100)/100;
+		double cookTimeSeconds = Math.floor((recipe.recipe.processTicks() / 20.0) * 100) / 100;
 
 		Component timeString = Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds);
 		builder.addText(timeString, getWidth() - 20, 10)
@@ -56,12 +65,16 @@ public class BeamCraftingRecipeCategory implements IRecipeCategory<BeamCraftingR
 				.setTextAlignment(VerticalAlignment.BOTTOM)
 				.setColor(0xFF808080);
 	}
-	@Override public int getWidth(){
+
+	@Override
+	public int getWidth() {
 		return 82;
 	}
 
-	@Override public int getHeight(){
+	@Override
+	public int getHeight() {
 		return 45;
 	}
-	public record BeamCraftingRecipe(BlockState input, InWorldBeamCraftingManager.Recipe recipe){}
+
+	public record Recipe(BlockState input, AncientLightRecipe recipe) {}
 }

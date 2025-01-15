@@ -2,13 +2,19 @@ package gurumirum.magialucis.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import gurumirum.magialucis.contents.item.BeamSource;
 import gurumirum.magialucis.contents.item.wand.AncientLightWandItem;
+import gurumirum.magialucis.impl.ancientlight.AncientLightCrafting;
+import gurumirum.magialucis.impl.ancientlight.AncientLightRecord;
+import gurumirum.magialucis.impl.ancientlight.LocalAncientLightManager;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,6 +33,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import java.util.List;
 import java.util.UUID;
 
 import static gurumirum.magialucis.MagiaLucisMod.MODID;
@@ -35,18 +42,60 @@ import static gurumirum.magialucis.MagiaLucisMod.MODID;
 public final class BeamRender {
 	private BeamRender() {}
 
-	private static final Object2ObjectOpenHashMap<UUID, Vector3f> PLAYER_BEAM_STARTS = new Object2ObjectOpenHashMap<>();
+	private static final Object2ObjectOpenHashMap<UUID, Vector3f> playerBeamStarts = new Object2ObjectOpenHashMap<>();
 
 	private static final Vector3f _beamEnd = new Vector3f();
 
 	public static Vector3f getOrCreatePlayerBeamStart(Player player) {
-		return PLAYER_BEAM_STARTS.computeIfAbsent(player.getUUID(), u -> new Vector3f(Float.NaN));
+		return playerBeamStarts.computeIfAbsent(player.getUUID(), u -> new Vector3f(Float.NaN));
 	}
 
 	@SubscribeEvent
 	public static void onRender(RenderLevelStageEvent event) {
-		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
+		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) {
+			renderCrumblingEffect(event);
+		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+			renderBeam(event);
+		}
+	}
 
+	private static void renderCrumblingEffect(RenderLevelStageEvent event) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null) return;
+
+		Vec3 cameraPos = event.getCamera().getPosition();
+		LocalAncientLightManager m = AncientLightCrafting.tryGetLocalManager();
+		if (m == null) return;
+		AncientLightRecord record = m.record();
+		if (record == null) return;
+
+		record.forEachBlock((pos, progress, totalProgress) -> {
+			double x = pos.getX() - cameraPos.x;
+			double y = pos.getY() - cameraPos.y;
+			double z = pos.getZ() - cameraPos.z;
+			if (x * x + y * y + z * z > 1024.0) return;
+
+			List<RenderType> destroyStages = ModRenderTypes.whiteDestroyStages();
+
+			int i = Math.clamp((int)(progress / (double)totalProgress * destroyStages.size()), 0, destroyStages.size() - 1);
+
+			PoseStack poseStack = event.getPoseStack();
+
+			poseStack.pushPose();
+			poseStack.translate(pos.getX() - cameraPos.x, pos.getY() - cameraPos.y, pos.getZ() - cameraPos.z);
+
+			VertexConsumer vc = new SheetedDecalTextureGenerator(mc.renderBuffers()
+					.crumblingBufferSource()
+					.getBuffer(destroyStages.get(i)), poseStack.last(), 1);
+
+			mc.getBlockRenderer().renderBreakingTexture(mc.level.getBlockState(pos), pos, mc.level, poseStack,
+					vc, mc.level.getModelData(pos));
+
+			poseStack.popPose();
+		});
+	}
+
+	private static void renderBeam(RenderLevelStageEvent event) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null) return;
 
@@ -58,7 +107,7 @@ public final class BeamRender {
 		poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 
 		for (AbstractClientPlayer player : mc.level.players()) {
-			var beamStart = PLAYER_BEAM_STARTS.get(player.getUUID());
+			var beamStart = playerBeamStarts.get(player.getUUID());
 			if (beamStart == null || !beamStart.isFinite()) continue;
 
 			drawBeam(player, poseStack, beamStart, cameraPos, partialTicks);

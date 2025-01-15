@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents.item.wand;
 import gurumirum.magialucis.client.WandEffect;
 import gurumirum.magialucis.contents.item.BeamSource;
 import gurumirum.magialucis.contents.item.WandEffectSource;
-import gurumirum.magialucis.impl.InWorldBeamCraftingManager;
+import gurumirum.magialucis.impl.ancientlight.AncientLightCrafting;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -40,18 +40,21 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 		Vec3 start = player.getEyePosition();
 		Vec3 end = start.add(player.getLookAngle().scale(DISTANCE));
 		BlockHitResult hitResult = trace(player, start, end);
-		InWorldBeamCraftingManager.setFocus(player, hitResult.getType() == HitResult.Type.BLOCK ? hitResult.getBlockPos() : null);
+		AncientLightCrafting.getLocalManager()
+				.setFocus(player, hitResult.getType() == HitResult.Type.BLOCK ? hitResult.getBlockPos() : null);
 	}
 
 	@Override
 	public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity) {
-		if (entity instanceof Player player) InWorldBeamCraftingManager.removeFocus(player);
+		if (entity instanceof Player player && level.isClientSide)
+			AncientLightCrafting.getLocalManager().removeFocus(player);
 		return stack;
 	}
 
 	@Override
 	public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeCharged) {
-		if (entity instanceof Player player) InWorldBeamCraftingManager.removeFocus(player);
+		if (entity instanceof Player player && level.isClientSide)
+			AncientLightCrafting.getLocalManager().removeFocus(player);
 	}
 
 	@Override
