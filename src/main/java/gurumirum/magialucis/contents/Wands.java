@@ -31,7 +31,10 @@ public enum Wands implements ItemLike {
 			LuxContainerStat.withBaseStat(HealWandItem.COST_PER_CAST * 5, GemStats.PEARL)),
 
 	SHIELD_WAND(ItemProfile.customItem(ShieldWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(ShieldWandItem.COST_PER_SHIELD * 100, GemStats.POLISHED_LAPIS_LAZULI))
+			LuxContainerStat.withBaseStat(ShieldWandItem.COST_PER_SHIELD * 100, GemStats.POLISHED_LAPIS_LAZULI)),
+
+	DIAMOND_STAFF(ItemProfile.customItem(DiamondStaffItem::new, StandardWandShape.STAFF),
+			LuxContainerStat.withBaseStat(DiamondStaffItem.COST_PER_DEBUFF * 10, GemStats.DIAMOND))
 	;
 
 	private final DeferredItem<Item> item;

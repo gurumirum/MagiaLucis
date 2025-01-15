@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
 import gurumirum.magialucis.contents.entity.GemGolemEntity;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltMenu;
+import gurumirum.magialucis.contents.mobeffect.DoubleMagicDamageMobEffect;
 import gurumirum.magialucis.contents.mobeffect.RecallFatigueMobEffect;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponentType;
@@ -80,6 +81,9 @@ public final class Contents {
 
 	public static final DeferredHolder<MobEffect, MobEffect> RECALL_FATIGUE = MOB_EFFECTS.register("recall_fatigue",
 			RecallFatigueMobEffect::new);
+
+	public static final DeferredHolder<MobEffect, MobEffect> DOUBLE_MAGIC_DAMAGE = MOB_EFFECTS.register("double_magic_damage",
+			DoubleMagicDamageMobEffect::new);
 
 	public static void init(IEventBus eventBus) {
 		ITEMS.register(eventBus);
