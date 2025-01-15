@@ -14,8 +14,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static gurumirum.magialucis.MagiaLucisMod.MODID;
 import static gurumirum.magialucis.MagiaLucisMod.id;
-import static gurumirum.magialucis.contents.ModBlocks.RELAY;
-import static gurumirum.magialucis.contents.ModBlocks.SUNLIGHT_FOCUS;
+import static gurumirum.magialucis.contents.ModBlocks.*;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.*;
 
 public class BlockStateGen extends BlockStateProvider {
@@ -57,6 +56,9 @@ public class BlockStateGen extends BlockStateProvider {
 		itemModels().simpleBlockItem(SILVER_BLOCK.block());
 		simpleBlock(RAW_SILVER_BLOCK.block());
 		itemModels().simpleBlockItem(RAW_SILVER_BLOCK.block());
+
+		simpleBlock(AMBER_LIGHT.block(), new ModelFile.UncheckedModelFile(AMBER_LIGHT.id().withPrefix("block/")));
+		models().getBuilder(AMBER_LIGHT.id().getPath()).texture("particle", "block/empty");
 
 		directionalBlock(RELAY.block(), models().getExistingFile(id("block/relay")));
 		models().getBuilder(SUNLIGHT_FOCUS.id().getPath()).texture("particle", "block/sunlight_focus_mirror_top_center");
