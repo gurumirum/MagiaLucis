@@ -35,6 +35,6 @@ public class DiamondMaceEffect extends WandEffect.SpinningTipEffect {
 
 	@Override
 	protected float scale(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
-		return 31 / 32f;
+		return firstPersonPerspective ?  31 / 32f :19 / 32f;
 	}
 }
