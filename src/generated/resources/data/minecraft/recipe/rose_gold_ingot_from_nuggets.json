@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "rose_gold_ingot",
+  "key": {
+    "#": {
+      "item": "magialucis:rose_gold_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:rose_gold_ingot"
+  }
+}

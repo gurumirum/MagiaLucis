@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "sterling_silver_ingot",
+  "key": {
+    "#": {
+      "item": "magialucis:sterling_silver_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:sterling_silver_ingot"
+  }
+}

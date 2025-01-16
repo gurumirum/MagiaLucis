@@ -9,6 +9,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
@@ -19,6 +20,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static gurumirum.magialucis.contents.ModBuildingBlocks.*;
+import static gurumirum.magialucis.contents.ModItems.*;
+import static gurumirum.magialucis.contents.Wands.*;
+import static net.minecraft.data.recipes.RecipeCategory.*;
 import static net.minecraft.data.recipes.ShapedRecipeBuilder.shaped;
 import static net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless;
 
@@ -33,49 +37,80 @@ public class RecipeGen extends RecipeProvider {
 			ItemLike smeltResult = ore.smeltItem();
 			String group = ore == Ore.SILVER ? "silver_ingot" : ore.oreBaseName();
 
-			oreSmelting(out, ingredients(ore), RecipeCategory.MISC, smeltResult, 1, 200, group);
-			oreBlasting(out, ingredients(ore), RecipeCategory.MISC, smeltResult, 1, 100, group);
+			oreSmelting(out, ingredients(ore), MISC, smeltResult, 1, 200, group);
+			oreBlasting(out, ingredients(ore), MISC, smeltResult, 1, 100, group);
 		}
 
-		nineBlockStorageRecipes(out, RecipeCategory.MISC, ModItems.SILVER_INGOT, RecipeCategory.BUILDING_BLOCKS, SILVER_BLOCK);
-		nineBlockStorageRecipes(out, RecipeCategory.MISC, ModItems.RAW_SILVER, RecipeCategory.BUILDING_BLOCKS, RAW_SILVER_BLOCK);
-		nineBlockStorageRecipesWithCustomPacking(out, RecipeCategory.MISC, ModItems.SILVER_NUGGET, RecipeCategory.MISC, ModItems.SILVER_INGOT, "silver_ingot_from_nuggets", "silver_ingot");
+		nineBlockStorageRecipes(out, MISC, SILVER_INGOT, BUILDING_BLOCKS, SILVER_BLOCK);
+		nineBlockStorageRecipes(out, MISC, RAW_SILVER, BUILDING_BLOCKS, RAW_SILVER_BLOCK);
+		nineBlockStorageRecipes(out, MISC, ELECTRUM_INGOT, BUILDING_BLOCKS, ELECTRUM_BLOCK);
+		nineBlockStorageRecipes(out, MISC, ROSE_GOLD_INGOT, BUILDING_BLOCKS, ROSE_GOLD_BLOCK);
+		nineBlockStorageRecipes(out, MISC, STERLING_SILVER_INGOT, BUILDING_BLOCKS, STERLING_SILVER_BLOCK);
 
-		wandRecipe(true, Wands.ANCIENT_LIGHT)
+		nineBlockStorageRecipesWithCustomPacking(out, MISC, COPPER_NUGGET,
+				MISC, Items.COPPER_INGOT, "copper_ingot_from_nuggets", "copper_ingot");
+		nineBlockStorageRecipesWithCustomPacking(out, MISC, SILVER_NUGGET,
+				MISC, SILVER_INGOT, "silver_ingot_from_nuggets", "silver_ingot");
+		nineBlockStorageRecipesWithCustomPacking(out, MISC, ELECTRUM_NUGGET,
+				MISC, ELECTRUM_INGOT, "electrum_ingot_from_nuggets", "electrum_ingot");
+		nineBlockStorageRecipesWithCustomPacking(out, MISC, ROSE_GOLD_NUGGET,
+				MISC, ROSE_GOLD_INGOT, "rose_gold_ingot_from_nuggets", "rose_gold_ingot");
+		nineBlockStorageRecipesWithCustomPacking(out, MISC, STERLING_SILVER_NUGGET,
+				MISC, STERLING_SILVER_INGOT, "sterling_silver_ingot_from_nuggets", "sterling_silver_ingot");
+
+		shapeless(MISC, ELECTRUM_NUGGET, 2)
+				.requires(Ingredient.of(Tags.Items.NUGGETS_GOLD), 2)
+				.requires(ModItemTags.SILVER_NUGGETS)
+				.unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))
+				.save(out, "electrum_hand_alloying");
+
+		shapeless(MISC, ROSE_GOLD_NUGGET, 2)
+				.requires(Ingredient.of(Tags.Items.NUGGETS_GOLD), 2)
+				.requires(ModItemTags.COPPER_NUGGETS)
+				.unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))
+				.save(out, "rose_gold_hand_alloying");
+
+		shapeless(MISC, STERLING_SILVER_NUGGET, 2)
+				.requires(Ingredient.of(ModItemTags.SILVER_NUGGETS), 2)
+				.requires(ModItemTags.COPPER_NUGGETS)
+				.unlockedBy("has_silver", has(ModItemTags.SILVER_INGOTS))
+				.save(out, "sterling_silver_hand_alloying");
+
+		wandRecipe(true, ANCIENT_LIGHT)
 				.define('1', ItemTags.STONE_BRICKS)
-				.define('2', ModItems.ANCIENT_CORE)
-				.unlockedBy("has_ancient_core", has(ModItems.ANCIENT_CORE))
+				.define('2', ANCIENT_CORE)
+				.unlockedBy("has_ancient_core", has(ANCIENT_CORE))
 				.save(out);
 
-		wandRecipe(true, Wands.CONFIGURATION_WAND)
+		wandRecipe(true, CONFIGURATION_WAND)
 				.define('1', ItemTags.STONE_BRICKS)
 				.define('2', GemItems.BRIGHTSTONE)
 				.unlockedBy("has_brightstone", has(GemItems.BRIGHTSTONE))
 				.save(out);
-		wandRecipe(true, Wands.RED_CONFIGURATION_WAND)
+		wandRecipe(true, RED_CONFIGURATION_WAND)
 				.define('1', ItemTags.STONE_BRICKS)
 				.define('2', GemItems.RED_BRIGHTSTONE)
 				.unlockedBy("has_red_brightstone", has(GemItems.RED_BRIGHTSTONE))
 				.save(out);
-		wandRecipe(true, Wands.ICY_CONFIGURATION_WAND)
+		wandRecipe(true, ICY_CONFIGURATION_WAND)
 				.define('1', ItemTags.STONE_BRICKS)
 				.define('2', GemItems.ICY_BRIGHTSTONE)
 				.unlockedBy("has_icy_brightstone", has(GemItems.ICY_BRIGHTSTONE))
 				.save(out);
 
-		wandRecipe(true, Wands.AMBER_TORCH)
+		wandRecipe(true, AMBER_TORCH)
 				.define('1', ItemTags.LOGS)
 				.define('2', GemStats.AMBER.tag())
 				.unlockedBy("has_amber", has(GemStats.AMBER.tag()))
 				.save(out);
 
-		wandRecipe(false, Wands.LESSER_ICE_STAFF)
+		wandRecipe(false, LESSER_ICE_STAFF)
 				.define('1', ItemTags.LOGS)
 				.define('2', GemItems.ICY_BRIGHTSTONE)
 				.unlockedBy("has_icy_brightstone", has(GemItems.ICY_BRIGHTSTONE))
 				.save(out);
 
-		shaped(RecipeCategory.TOOLS, Wands.RECALL_STAFF)
+		shaped(TOOLS, RECALL_STAFF)
 				.pattern(" 32")
 				.pattern("413")
 				.pattern("14 ")
@@ -86,13 +121,13 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_aquamarine", has(GemItems.AQUAMARINE))
 				.save(out);
 
-		wandRecipe(false, Wands.HEAL_WAND)
+		wandRecipe(false, HEAL_WAND)
 				.define('1', Tags.Items.INGOTS_GOLD)
 				.define('2', GemItems.PEARL)
 				.unlockedBy("has_pearl", has(GemItems.PEARL))
 				.save(out);
 
-		shaped(RecipeCategory.MISC, ModBlocks.RELAY)
+		shaped(MISC, ModBlocks.RELAY)
 				.pattern(" 1 ")
 				.pattern("1 1")
 				.pattern("232")
@@ -102,7 +137,7 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_brightstones", has(ModItemTags.BRIGHTSTONES))
 				.save(out);
 
-		shaped(RecipeCategory.MISC, ModItems.WAND_BELT)
+		shaped(MISC, WAND_BELT)
 				.pattern("122")
 				.pattern("2 2")
 				.pattern("222")
@@ -111,24 +146,24 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_wands", has(ModItemTags.WANDS))
 				.save(out);
 
-		slab(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_SLAB, LAPIS_MANALIS);
-		slab(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_SLAB, LAPIS_MANALIS_BRICKS);
+		slab(out, BUILDING_BLOCKS, LAPIS_MANALIS_SLAB, LAPIS_MANALIS);
+		slab(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_SLAB, LAPIS_MANALIS_BRICKS);
 
-		shaped(RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICKS, 4)
+		shaped(BUILDING_BLOCKS, LAPIS_MANALIS_BRICKS, 4)
 				.pattern("##")
 				.pattern("##")
 				.define('#', LAPIS_MANALIS)
 				.unlockedBy("has_lapis_manalis", has(LAPIS_MANALIS))
 				.save(out);
 
-		shaped(RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR, 2)
+		shaped(BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR, 2)
 				.pattern("#")
 				.pattern("#")
 				.define('#', LAPIS_MANALIS)
 				.unlockedBy("has_lapis_manalis", has(LAPIS_MANALIS))
 				.save(out);
 
-		shaped(RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_DORIC, 2)
+		shaped(BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_DORIC, 2)
 				.pattern("1")
 				.pattern("2")
 				.define('1', LAPIS_MANALIS)
@@ -136,7 +171,7 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_lapis_manalis_pillar", has(LAPIS_MANALIS_PILLAR))
 				.save(out);
 
-		shaped(RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_IONIC, 4)
+		shaped(BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_IONIC, 4)
 				.pattern("11")
 				.pattern("22")
 				.define('1', LAPIS_MANALIS)
@@ -144,14 +179,14 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_lapis_manalis_pillar", has(LAPIS_MANALIS_PILLAR))
 				.save(out);
 
-		shaped(RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_CORINTHIAN, 4)
+		shaped(BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_CORINTHIAN, 4)
 				.pattern("##")
 				.pattern("##")
 				.define('#', LAPIS_MANALIS_PILLAR)
 				.unlockedBy("has_lapis_manalis_pillar", has(LAPIS_MANALIS_PILLAR))
 				.save(out);
 
-		shaped(RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_DORIC, 2)
+		shaped(BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_DORIC, 2)
 				.pattern("2")
 				.pattern("1")
 				.define('1', LAPIS_MANALIS)
@@ -159,7 +194,7 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_lapis_manalis_pillar", has(LAPIS_MANALIS_PILLAR))
 				.save(out);
 
-		shaped(RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_IONIC, 4)
+		shaped(BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_IONIC, 4)
 				.pattern("22")
 				.pattern("11")
 				.define('1', LAPIS_MANALIS)
@@ -167,7 +202,7 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_lapis_manalis_pillar", has(LAPIS_MANALIS_PILLAR))
 				.save(out);
 
-		shapeless(RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS)
+		shapeless(BUILDING_BLOCKS, LAPIS_MANALIS)
 				.requires(ModItemTags.LAPIDES_MANALIS)
 				.unlockedBy("has_lapides_manalis", has(ModItemTags.LAPIDES_MANALIS))
 				.save(out, "lapis_manalis_revert");
@@ -180,29 +215,29 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_lapis_manalis_bricks", has(LAPIS_MANALIS_BRICKS))
 				.save(out);
 
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICKS, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_DORIC, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_IONIC, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_CORINTHIAN, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_DORIC, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_IONIC, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_DORIC, LAPIS_MANALIS_PILLAR);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_IONIC, LAPIS_MANALIS_PILLAR);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_CORINTHIAN, LAPIS_MANALIS_PILLAR);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_DORIC, LAPIS_MANALIS_PILLAR);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_IONIC, LAPIS_MANALIS_PILLAR);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICKS, LAPIS_MANALIS);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR, LAPIS_MANALIS);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_DORIC, LAPIS_MANALIS);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_IONIC, LAPIS_MANALIS);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_CORINTHIAN, LAPIS_MANALIS);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_DORIC, LAPIS_MANALIS);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_IONIC, LAPIS_MANALIS);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_DORIC, LAPIS_MANALIS_PILLAR);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_IONIC, LAPIS_MANALIS_PILLAR);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_ORNAMENT_CORINTHIAN, LAPIS_MANALIS_PILLAR);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_DORIC, LAPIS_MANALIS_PILLAR);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_PILLAR_BASE_IONIC, LAPIS_MANALIS_PILLAR);
 
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_SLAB, LAPIS_MANALIS, 2);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_SLAB, LAPIS_MANALIS, 2);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_SLAB, LAPIS_MANALIS_BRICKS, 2);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_STAIRS, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS);
-		stonecutterResultFromBase(out, RecipeCategory.BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS_BRICKS);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_SLAB, LAPIS_MANALIS, 2);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_SLAB, LAPIS_MANALIS, 2);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_SLAB, LAPIS_MANALIS_BRICKS, 2);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_STAIRS, LAPIS_MANALIS);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS);
+		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS_BRICKS);
 	}
 
 	private ShapedRecipeBuilder wandRecipe(boolean tool, ItemLike result) {
-		return wandRecipe(tool ? RecipeCategory.TOOLS : RecipeCategory.COMBAT, result);
+		return wandRecipe(tool ? TOOLS : COMBAT, result);
 	}
 
 	private ShapedRecipeBuilder wandRecipe(RecipeCategory category, ItemLike result) {
@@ -214,7 +249,7 @@ public class RecipeGen extends RecipeProvider {
 
 	private List<ItemLike> ingredients(Ore ore) {
 		List<ItemLike> list = new ArrayList<>();
-		if (ore == Ore.SILVER) list.add(ModItems.RAW_SILVER);
+		if (ore == Ore.SILVER) list.add(RAW_SILVER);
 
 		ore.allOreItems().forEach(list::add);
 

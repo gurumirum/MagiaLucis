@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "magialucis:sterling_silver_ingot"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "magialucis:sterling_silver_nugget"
+  }
+}
