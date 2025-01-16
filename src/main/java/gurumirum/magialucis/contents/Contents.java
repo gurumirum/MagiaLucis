@@ -4,10 +4,12 @@ import com.mojang.serialization.Codec;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
 import gurumirum.magialucis.contents.entity.GemGolemEntity;
 import gurumirum.magialucis.contents.entity.LesserIceProjectile;
+import gurumirum.magialucis.contents.entity.PiggyBankEntity;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltMenu;
 import gurumirum.magialucis.contents.mobeffect.DoubleMagicDamageMobEffect;
 import gurumirum.magialucis.contents.mobeffect.RecallFatigueMobEffect;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -23,6 +25,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.UUID;
 
 import static gurumirum.magialucis.MagiaLucisMod.MODID;
 
@@ -69,6 +73,12 @@ public final class Contents {
 					.networkSynchronized(ByteBufCodecs.BYTE)
 					.build());
 
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> PIGGY_BANK_UUID = DATA_COMPONENTS.register("piggy_bank_uuid",
+			() -> DataComponentType.<UUID>builder()
+					.persistent(UUIDUtil.CODEC)
+					.networkSynchronized(UUIDUtil.STREAM_CODEC)
+					.build());
+
 	public static final DeferredHolder<MenuType<?>, MenuType<WandBeltMenu>> WANG_BELT_MENU = MENUS.register("wand_belt",
 			() -> new MenuType<>(WandBeltMenu::new, FeatureFlagSet.of()));
 
@@ -90,6 +100,13 @@ public final class Contents {
 					.clientTrackingRange(4)
 					.updateInterval(10)
 					.build("lesser_ice_projectile"));
+
+	public static final DeferredHolder<EntityType<?>, EntityType<PiggyBankEntity>> PIGGY_BANK = ENTITY_TYPES.register("piggy_bank",
+			() -> EntityType.Builder.of(PiggyBankEntity::new, MobCategory.MISC)
+					.sized(1F, 2F)
+					.clientTrackingRange(10)
+					.updateInterval(10)
+					.build("piggy_bank"));
 
 	public static void init(IEventBus eventBus) {
 		ITEMS.register(eventBus);
