@@ -32,13 +32,25 @@ public class ItemTagGen extends ItemTagsProvider {
 
 		curio(WandBeltItem.CURIO_SLOT).add(ModItems.WAND_BELT.asItem());
 
-		c("ingots/silver").add(ModItems.SILVER_INGOT.asItem());
-		c("nuggets/silver").add(ModItems.SILVER_NUGGET.asItem());
-		c("raw_materials/silver").add(ModItems.RAW_SILVER.asItem());
+		tag(ModItemTags.COPPER_NUGGETS).add(ModItems.COPPER_NUGGET.asItem());
+
+		tag(ModItemTags.SILVER_INGOTS).add(ModItems.SILVER_INGOT.asItem());
+		tag(ModItemTags.SILVER_NUGGETS).add(ModItems.SILVER_NUGGET.asItem());
+		tag(ModItemTags.SILVER_RAW_MATERIALS).add(ModItems.RAW_SILVER.asItem());
+
+		tag(ModItemTags.ELECTRUM_INGOTS).add(ModItems.ELECTRUM_INGOT.asItem());
+		tag(ModItemTags.ELECTRUM_NUGGETS).add(ModItems.ELECTRUM_NUGGET.asItem());
+		tag(ModItemTags.ROSE_GOLD_INGOTS).add(ModItems.ROSE_GOLD_INGOT.asItem());
+		tag(ModItemTags.ROSE_GOLD_NUGGETS).add(ModItems.ROSE_GOLD_NUGGET.asItem());
+		tag(ModItemTags.STERLING_SILVER_INGOTS).add(ModItems.STERLING_SILVER_INGOT.asItem());
+		tag(ModItemTags.STERLING_SILVER_NUGGETS).add(ModItems.STERLING_SILVER_NUGGET.asItem());
 
 		for (Ore ore : Ore.values()) copyCommonTag("ores/" + ore.oreId());
-		copyCommonTag("storage_blocks/silver");
-		copyCommonTag("storage_blocks/raw_silver");
+		copyTag(ModBlockTags.SILVER_BLOCKS.location());
+		copyTag(ModBlockTags.RAW_SILVER_BLOCKS.location());
+		copyTag(ModBlockTags.ELECTRUM_BLOCKS.location());
+		copyTag(ModBlockTags.ROSE_GOLD_BLOCKS.location());
+		copyTag(ModBlockTags.STERLING_SILVER_BLOCKS.location());
 
 		var gems = tag(Tags.Items.GEMS);
 		for (GemItems gem : GemItems.values()) {
@@ -50,10 +62,6 @@ public class ItemTagGen extends ItemTagsProvider {
 
 		tag(ModItemTags.BRIGHTSTONES).add(GemItems.BRIGHTSTONE.asItem(), GemItems.RED_BRIGHTSTONE.asItem(), GemItems.ICY_BRIGHTSTONE.asItem());
 		copy(ModBlockTags.LAPIDES_MANALIS, ModItemTags.LAPIDES_MANALIS);
-	}
-
-	private IntrinsicTagAppender<Item> c(String path) {
-		return tag(ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", path)));
 	}
 
 	private void copyCommonTag(String path) {

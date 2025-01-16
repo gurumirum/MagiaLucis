@@ -7,14 +7,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.ItemDisplayParameters;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Locale;
 import java.util.function.Supplier;
 
 public enum CreativeTabType {
-	MAIN(Wands.ANCIENT_LIGHT) {
+	MAIN(() -> new ItemStack(Wands.ANCIENT_LIGHT)) {
 		@Override
 		protected void generate(ItemDisplayParameters p, CreativeModeTab.Output o) {
 			for (var i : Wands.values()) {
@@ -33,7 +32,7 @@ public enum CreativeTabType {
 			for (var i : ModBlocks.values()) i.addItem(o);
 		}
 	},
-	RESOURCES(GemItems.BRIGHTSTONE) {
+	RESOURCES(() -> new ItemStack(GemItems.BRIGHTSTONE)) {
 		@Override
 		protected void generate(ItemDisplayParameters p, CreativeModeTab.Output o) {
 			for (var ore : Ore.values()) ore.allOreItems().forEach(o::accept);
@@ -45,7 +44,7 @@ public enum CreativeTabType {
 			for (var g : GemStats.values()) g.forEachItem(o::accept);
 		}
 	},
-	BUILDING_BLOCKS(ModBuildingBlocks.LAPIS_MANALIS) {
+	BUILDING_BLOCKS(() -> new ItemStack(ModBuildingBlocks.LAPIS_MANALIS)) {
 		@Override
 		protected void generate(ItemDisplayParameters p, CreativeModeTab.Output o) {
 			for (var i : ModBuildingBlocks.values()) o.accept(i);
@@ -53,10 +52,6 @@ public enum CreativeTabType {
 	};
 
 	private final DeferredHolder<CreativeModeTab, CreativeModeTab> holder;
-
-	CreativeTabType(ItemLike icon) {
-		this(() -> new ItemStack(icon));
-	}
 
 	CreativeTabType(Supplier<ItemStack> icon) {
 		String name = name().toLowerCase(Locale.ROOT);

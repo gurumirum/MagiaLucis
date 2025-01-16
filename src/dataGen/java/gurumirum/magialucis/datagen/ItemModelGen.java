@@ -172,9 +172,18 @@ public class ItemModelGen extends ItemModelProvider {
 
 		basicItem(ModItems.ANCIENT_CORE.asItem());
 
+		basicItem(ModItems.COPPER_NUGGET.asItem());
+
 		basicItem(ModItems.SILVER_INGOT.asItem());
 		basicItem(ModItems.SILVER_NUGGET.asItem());
 		basicItem(ModItems.RAW_SILVER.asItem());
+
+		basicItem(ModItems.ELECTRUM_INGOT.asItem());
+		basicItem(ModItems.ELECTRUM_NUGGET.asItem());
+		basicItem(ModItems.ROSE_GOLD_INGOT.asItem());
+		basicItem(ModItems.ROSE_GOLD_NUGGET.asItem());
+		basicItem(ModItems.STERLING_SILVER_INGOT.asItem());
+		basicItem(ModItems.STERLING_SILVER_NUGGET.asItem());
 
 		for (GemItems i : GemItems.values()) basicItem(i.asItem());
 

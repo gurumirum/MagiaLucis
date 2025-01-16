@@ -34,7 +34,11 @@ public enum ModBuildingBlocks implements ItemLike, BlockProvider {
 	LAPIS_MANALIS_BRICK_STAIRS(BlockProfile.customBlock(p -> new StairBlock(LAPIS_MANALIS_BRICKS.block().defaultBlockState(), p), lapisManalis())),
 
 	SILVER_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL))),
-	RAW_SILVER_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)));
+	RAW_SILVER_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))),
+
+	ELECTRUM_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL))),
+	ROSE_GOLD_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL))),
+	STERLING_SILVER_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL)));
 
 	private final DeferredBlock<? extends Block> block;
 	@Nullable

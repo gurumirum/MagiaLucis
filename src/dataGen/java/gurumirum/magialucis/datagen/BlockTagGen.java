@@ -24,6 +24,7 @@ public class BlockTagGen extends BlockTagsProvider {
 		super(output, lookupProvider, MagiaLucisMod.MODID, existingFileHelper);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		var ores = tag(Tags.Blocks.ORES);
@@ -32,7 +33,7 @@ public class BlockTagGen extends BlockTagsProvider {
 		var netherOres = tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK);
 
 		for (Ore ore : Ore.values()) {
-			var tags = tag(BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/" + ore.oreId())));
+			var tags = c("ores/" + ore.oreId());
 			for (OreType oreType : OreType.values()) {
 				if (ore.exists(oreType)) {
 					Block oreBlock = ore.expectOreBlock(oreType);
@@ -48,10 +49,18 @@ public class BlockTagGen extends BlockTagsProvider {
 			}
 		}
 
-		c("storage_blocks/silver").add(SILVER_BLOCK.block());
-		c("storage_blocks/raw_silver").add(RAW_SILVER_BLOCK.block());
 
-		tag(BlockTags.BEACON_BASE_BLOCKS).add(SILVER_BLOCK.block());
+		tag(ModBlockTags.SILVER_BLOCKS).add(SILVER_BLOCK.block());
+		tag(ModBlockTags.RAW_SILVER_BLOCKS).add(RAW_SILVER_BLOCK.block());
+		tag(ModBlockTags.ELECTRUM_BLOCKS).add(ELECTRUM_BLOCK.block());
+		tag(ModBlockTags.ROSE_GOLD_BLOCKS).add(ROSE_GOLD_BLOCK.block());
+		tag(ModBlockTags.STERLING_SILVER_BLOCKS).add(STERLING_SILVER_BLOCK.block());
+
+		tag(BlockTags.BEACON_BASE_BLOCKS).addTags(
+				ModBlockTags.SILVER_BLOCKS,
+				ModBlockTags.ELECTRUM_BLOCKS,
+				ModBlockTags.ROSE_GOLD_BLOCKS,
+				ModBlockTags.STERLING_SILVER_BLOCKS);
 		tag(ModBlockTags.LAPIDES_MANALIS).add(
 				LAPIS_MANALIS.block(),
 				LAPIS_MANALIS_BRICKS.block(),

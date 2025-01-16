@@ -1,9 +1,11 @@
 package gurumirum.magialucis.datagen;
 
+import gurumirum.magialucis.contents.BlockProvider;
 import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.Ore;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -26,10 +28,8 @@ public class BlockStateGen extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		simpleBlock(LAPIS_MANALIS.block());
-		itemModels().simpleBlockItem(LAPIS_MANALIS.block());
-		simpleBlock(LAPIS_MANALIS_BRICKS.block());
-		itemModels().simpleBlockItem(LAPIS_MANALIS_BRICKS.block());
+		s(LAPIS_MANALIS);
+		s(LAPIS_MANALIS_BRICKS);
 
 		axisBlock((RotatedPillarBlock)LAPIS_MANALIS_PILLAR.block());
 		itemModels().simpleBlockItem(LAPIS_MANALIS_PILLAR.block());
@@ -52,10 +52,11 @@ public class BlockStateGen extends BlockStateProvider {
 		stairsBlock((StairBlock)LAPIS_MANALIS_BRICK_STAIRS.block(), texture);
 		itemModels().simpleBlockItem(LAPIS_MANALIS_BRICK_STAIRS.block());
 
-		simpleBlock(SILVER_BLOCK.block());
-		itemModels().simpleBlockItem(SILVER_BLOCK.block());
-		simpleBlock(RAW_SILVER_BLOCK.block());
-		itemModels().simpleBlockItem(RAW_SILVER_BLOCK.block());
+		s(SILVER_BLOCK);
+		s(RAW_SILVER_BLOCK);
+		s(ELECTRUM_BLOCK);
+		s(ROSE_GOLD_BLOCK);
+		s(STERLING_SILVER_BLOCK);
 
 		simpleBlock(AMBER_LIGHT.block(), new ModelFile.UncheckedModelFile(AMBER_LIGHT.id().withPrefix("block/")));
 		models().getBuilder(AMBER_LIGHT.id().getPath()).texture("particle", "block/empty");
@@ -94,5 +95,11 @@ public class BlockStateGen extends BlockStateProvider {
 		});
 
 		itemModels().simpleBlockItem(block.block());
+	}
+
+	private void s(BlockProvider blockProvider) {
+		Block b = blockProvider.block();
+		simpleBlock(b);
+		itemModels().simpleBlockItem(b);
 	}
 }

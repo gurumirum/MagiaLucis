@@ -14,17 +14,35 @@ public enum ModItems implements ItemLike {
 
 	ANCIENT_CORE,
 
-	SILVER_INGOT,
-	SILVER_NUGGET,
-	RAW_SILVER;
+	COPPER_NUGGET(CreativeTabType.RESOURCES),
+
+	SILVER_INGOT(CreativeTabType.RESOURCES),
+	SILVER_NUGGET(CreativeTabType.RESOURCES),
+	RAW_SILVER(CreativeTabType.RESOURCES),
+
+	ELECTRUM_INGOT(CreativeTabType.RESOURCES),
+	ELECTRUM_NUGGET(CreativeTabType.RESOURCES),
+	ROSE_GOLD_INGOT(CreativeTabType.RESOURCES),
+	ROSE_GOLD_NUGGET(CreativeTabType.RESOURCES),
+	STERLING_SILVER_INGOT(CreativeTabType.RESOURCES),
+	STERLING_SILVER_NUGGET(CreativeTabType.RESOURCES);
 
 	private final DeferredItem<Item> item;
+	private final CreativeTabType tab;
 
 	ModItems() {
-		this(ItemProfile.item());
+		this(ItemProfile.item(), CreativeTabType.MAIN);
 	}
 	ModItems(@NotNull ItemProfile<Item> itemProfile) {
+		this(itemProfile, CreativeTabType.MAIN);
+	}
+
+	ModItems(@NotNull CreativeTabType tab) {
+		this(ItemProfile.item(), tab);
+	}
+	ModItems(@NotNull ItemProfile<Item> itemProfile, @NotNull CreativeTabType tab) {
 		this.item = itemProfile.create(name().toLowerCase(Locale.ROOT));
+		this.tab = tab;
 	}
 
 	public @NotNull ResourceLocation id() {
@@ -37,10 +55,7 @@ public enum ModItems implements ItemLike {
 	}
 
 	public CreativeTabType getCreativeTab() {
-		return switch (this) {
-			case SILVER_INGOT, SILVER_NUGGET, RAW_SILVER -> CreativeTabType.RESOURCES;
-			default -> CreativeTabType.MAIN;
-		};
+		return tab;
 	}
 
 	public static void init() {}
