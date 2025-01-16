@@ -1,16 +1,19 @@
 package gurumirum.magialucis.datagen;
 
+import gurumirum.magialucis.contents.ModDamageTypes;
 import gurumirum.magialucis.contents.OreType;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -27,8 +30,7 @@ import java.util.List;
 
 import static gurumirum.magialucis.MagiaLucisMod.id;
 import static gurumirum.magialucis.contents.Ore.SILVER;
-import static net.minecraft.core.registries.Registries.CONFIGURED_FEATURE;
-import static net.minecraft.core.registries.Registries.PLACED_FEATURE;
+import static net.minecraft.core.registries.Registries.*;
 import static net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration.target;
 import static net.neoforged.neoforge.registries.NeoForgeRegistries.Keys.BIOME_MODIFIERS;
 
@@ -94,6 +96,9 @@ public final class DatapackEntryGen {
 											placedFeatures.getOrThrow(ORE_SILVER_LOWER)
 									),
 									GenerationStep.Decoration.UNDERGROUND_ORES));
+				})
+				.add(DAMAGE_TYPE, ctx -> {
+					damageType(ctx, ModDamageTypes.LESSER_ICE_PROJECTILE);
 				});
 	}
 
@@ -103,5 +108,9 @@ public final class DatapackEntryGen {
 
 	private static List<PlacementModifier> commonOrePlacement(int pCount, PlacementModifier pHeightRange) {
 		return orePlacement(CountPlacement.of(pCount), pHeightRange);
+	}
+
+	private static void damageType(BootstrapContext<DamageType> context, ResourceKey<DamageType> key) {
+		context.register(key, new DamageType(key.location().getPath(), 0.1f));
 	}
 }

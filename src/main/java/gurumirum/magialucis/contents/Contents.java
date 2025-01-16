@@ -3,6 +3,7 @@ package gurumirum.magialucis.contents;
 import com.mojang.serialization.Codec;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
 import gurumirum.magialucis.contents.entity.GemGolemEntity;
+import gurumirum.magialucis.contents.entity.LesserIceProjectile;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltMenu;
 import gurumirum.magialucis.contents.mobeffect.DoubleMagicDamageMobEffect;
 import gurumirum.magialucis.contents.mobeffect.RecallFatigueMobEffect;
@@ -19,7 +20,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -36,15 +36,8 @@ public final class Contents {
 	static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
 	static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
 	static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MODID);
-	static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, MODID);
 	static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
 	static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
-
-	public static final DeferredHolder<EntityType<?>, EntityType<GemGolemEntity>> GEM_GOLEM = ENTITY_TYPES.register("gem_golem",
-			() -> EntityType.Builder.of(GemGolemEntity::new, MobCategory.MONSTER)
-					.sized(1.4F, 2.7F)
-					.clientTrackingRange(10)
-					.build("gem_golem"));
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> FIELD_ID = DATA_COMPONENTS.register("field_id",
 			() -> DataComponentType.<ResourceLocation>builder()
@@ -85,6 +78,19 @@ public final class Contents {
 	public static final DeferredHolder<MobEffect, MobEffect> DOUBLE_MAGIC_DAMAGE = MOB_EFFECTS.register("double_magic_damage",
 			DoubleMagicDamageMobEffect::new);
 
+	public static final DeferredHolder<EntityType<?>, EntityType<GemGolemEntity>> GEM_GOLEM = ENTITY_TYPES.register("gem_golem",
+			() -> EntityType.Builder.of(GemGolemEntity::new, MobCategory.MONSTER)
+					.sized(1.4F, 2.7F)
+					.clientTrackingRange(10)
+					.build("gem_golem"));
+
+	public static final DeferredHolder<EntityType<?>, EntityType<LesserIceProjectile>> LESSER_ICE_PROJECTILE = ENTITY_TYPES.register("lesser_ice_projectile",
+			() -> EntityType.Builder.<LesserIceProjectile>of(LesserIceProjectile::new, MobCategory.MISC)
+					.sized(0.25f, 0.25f)
+					.clientTrackingRange(4)
+					.updateInterval(10)
+					.build("lesser_ice_projectile"));
+
 	public static void init(IEventBus eventBus) {
 		ITEMS.register(eventBus);
 		DATA_COMPONENTS.register(eventBus);
@@ -92,7 +98,6 @@ public final class Contents {
 		BLOCK_ENTITIES.register(eventBus);
 		MENUS.register(eventBus);
 		MOB_EFFECTS.register(eventBus);
-		PLACED_FEATURES.register(eventBus);
 		ENTITY_TYPES.register(eventBus);
 		CREATIVE_MODE_TABS.register(eventBus);
 

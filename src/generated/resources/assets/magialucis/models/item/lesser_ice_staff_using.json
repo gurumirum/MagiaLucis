@@ -1,5 +1,5 @@
 {
-  "parent": "magialucis:item/passive_channel_wand",
+  "parent": "magialucis:item/beam_channel_wand",
   "textures": {
     "layer0": "magialucis:item/lesser_ice_staff"
   }

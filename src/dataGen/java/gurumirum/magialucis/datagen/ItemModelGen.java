@@ -88,7 +88,7 @@ public class ItemModelGen extends ItemModelProvider {
 				.override()
 				.predicate(ClientInit.USING, 1)
 				.model(getBuilder(Wands.LESSER_ICE_STAFF.id().getPath() + "_using")
-						.parent(passiveChannelWand) // TODO new transform?
+						.parent(beamChannelWand) // TODO new transform?
 						.texture("layer0", Wands.LESSER_ICE_STAFF.id().withPrefix("item/")))
 				.end()
 				.override()

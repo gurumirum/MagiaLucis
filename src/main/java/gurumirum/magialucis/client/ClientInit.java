@@ -11,6 +11,7 @@ import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemExtension;
 import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusItemExtension;
+import gurumirum.magialucis.contents.entity.LesserIceProjectileRenderer;
 import gurumirum.magialucis.contents.item.wand.*;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltScreen;
@@ -52,7 +53,7 @@ public final class ClientInit {
 			ItemProperties.register(Wands.AMBER_TORCH.asItem(), NO_CHARGE, noCharge(AmberTorchWandItem.COST_PER_LIGHT_SOURCE));
 
 			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), USING, wandUsing);
-			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), NO_CHARGE, noCharge(LesserIceStaffWandItem.COST_PER_ATTACK));
+			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), NO_CHARGE, noCharge(LesserIceStaffItem.COST_PER_ATTACK));
 
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), USING, wandUsing);
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
@@ -103,6 +104,7 @@ public final class ClientInit {
 	@SubscribeEvent
 	public static void registerEntityRegister(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(Contents.GEM_GOLEM.get(), GemGolemRenderer::new);
+		event.registerEntityRenderer(Contents.LESSER_ICE_PROJECTILE.get(), LesserIceProjectileRenderer::new);
 
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);

@@ -30,7 +30,7 @@ public interface WandEffect {
 		private final Vector3f offset = new Vector3f();
 		private final Quaternionf rot = new Quaternionf();
 
-		protected abstract void offset(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective, Vector3f dest);
+		protected void offset(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective, Vector3f dest) {}
 
 		protected float scale(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
 			return 1;

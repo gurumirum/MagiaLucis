@@ -29,14 +29,16 @@ public class Datagen {
 		event.getGenerator().addProvider(c, new BlockStateGen(o, exf));
 		event.getGenerator().addProvider(c, new ItemModelGen(o, exf));
 
-		var blockTags = event.getGenerator().addProvider(s, new BlockTagGen(o, l, exf));
-		MagiaLucisMod.LOGGER.error(blockTags.getName());
-		event.getGenerator().addProvider(s, new ItemTagGen(o, l, blockTags.contentsGetter(), exf));
-		event.getGenerator().addProvider(s, new RecipeGen(o, l));
-		event.getGenerator().addProvider(s, (DataProvider.Factory<DatapackBuiltinEntriesProvider>)output ->
+		var l2 = event.getGenerator().addProvider(s, (DataProvider.Factory<DatapackBuiltinEntriesProvider>)output ->
 				new DatapackBuiltinEntriesProvider(output, l, DatapackEntryGen.getEntries(),
-						Set.of(MODID)));
-		event.getGenerator().addProvider(s, new LootGen(o, l));
-		event.getGenerator().addProvider(s, new CuriosGen(o, exf, l));
+						Set.of(MODID))).getRegistryProvider();
+
+		var blockTags = event.getGenerator().addProvider(s, new BlockTagGen(o, l2, exf));
+		MagiaLucisMod.LOGGER.error(blockTags.getName());
+		event.getGenerator().addProvider(s, new ItemTagGen(o, l2, blockTags.contentsGetter(), exf));
+		event.getGenerator().addProvider(s, new DamageTypeTagGen(o, l2, exf));
+		event.getGenerator().addProvider(s, new RecipeGen(o, l2));
+		event.getGenerator().addProvider(s, new LootGen(o, l2));
+		event.getGenerator().addProvider(s, new CuriosGen(o, exf, l2));
 	}
 }
