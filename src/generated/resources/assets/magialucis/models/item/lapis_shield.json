@@ -1,0 +1,90 @@
+{
+  "parent": "minecraft:item/generated",
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        -45,
+        0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0,
+        1,
+        2
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        -45,
+        0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0,
+        1,
+        2
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ],
+      "translation": [
+        2,
+        -3,
+        2
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ],
+      "translation": [
+        2,
+        -3,
+        2
+      ]
+    }
+  },
+  "overrides": [
+    {
+      "model": "magialucis:item/lapis_shield_using",
+      "predicate": {
+        "minecraft:using": 1.0
+      }
+    },
+    {
+      "model": "magialucis:item/lapis_shield_no_charge",
+      "predicate": {
+        "minecraft:no_charge": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "magialucis:item/lapis_shield"
+  }
+}

@@ -69,7 +69,7 @@ public class RelayItemExtension implements IClientItemExtensions {
 
 				if (level != null) {
 					poseStack.translate(.5f, 0, .5f);
-					poseStack.mulPose(Axis.YP.rotationDegrees(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTicks)));
+					poseStack.mulPose(Axis.YP.rotation(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTicks)));
 					poseStack.translate(-.5f, 0, -.5f);
 				}
 

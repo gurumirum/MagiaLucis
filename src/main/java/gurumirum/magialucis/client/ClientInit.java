@@ -63,6 +63,9 @@ public final class ClientInit {
 			ItemProperties.register(Wands.HEAL_WAND.asItem(), USING, wandUsing);
 			ItemProperties.register(Wands.HEAL_WAND.asItem(), NO_CHARGE, noCharge(HealWandItem.COST_PER_CAST));
 
+			ItemProperties.register(Wands.LAPIS_SHIELD.asItem(), USING, wandUsing);
+			ItemProperties.register(Wands.LAPIS_SHIELD.asItem(), NO_CHARGE, noCharge(LapisShieldItem.COST_PER_BLOCK));
+
 			ItemProperties.register(Wands.DIAMOND_MACE.asItem(), NO_CHARGE, noCharge(DiamondMaceItem.COST_PER_ATTACK));
 		});
 	}

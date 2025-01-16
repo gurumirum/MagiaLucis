@@ -6,7 +6,6 @@ import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,8 +27,6 @@ public interface WandEffect {
 	abstract class SpinningTipEffect implements WandEffect {
 		public static final long DEFAULT_ROTATION_PERIOD = 18;
 
-		protected static final float deg2rad = Mth.TWO_PI / 360;
-
 		private final Vector3f offset = new Vector3f();
 		private final Quaternionf rot = new Quaternionf();
 
@@ -40,7 +37,7 @@ public interface WandEffect {
 		}
 
 		protected void getRotation(Player player, ItemStack stack, boolean firstPersonPerspective, float partialTicks, Quaternionf dest) {
-			dest.rotateX(-RotationLogic.rotation(player.getTicksUsingItem(), DEFAULT_ROTATION_PERIOD, partialTicks) * deg2rad);
+			dest.rotateX(-RotationLogic.rotation(player.getTicksUsingItem(), DEFAULT_ROTATION_PERIOD, partialTicks));
 		}
 
 		protected void draw(PoseStack poseStack, Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
@@ -63,7 +60,7 @@ public interface WandEffect {
 
 		@Override
 		public void render(PoseStack poseStack, Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
-			offset(player, stack, partialTicks, firstPersonPerspective, this.offset.set(1, 1, .5f));
+			offset(player, stack, partialTicks, firstPersonPerspective, this.offset.set(16, 16, 8));
 			poseStack.translate(this.offset.x / 16, this.offset.y / 16, this.offset.z / 16);
 
 			float scale = scale(player, stack, partialTicks, firstPersonPerspective);

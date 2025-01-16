@@ -181,7 +181,7 @@ public final class BeamRender {
 		poseStack.scale(diameter, diameter, 1);
 
 		int ticksUsingItem = player.getTicksUsingItem();
-		poseStack.mulPose(Axis.ZP.rotationDegrees(beamSource.beamRotationDegrees(player, stack, ticksUsingItem, firstPersonPerspective, partialTick)));
+		poseStack.mulPose(Axis.ZP.rotation(beamSource.beamRotation(player, stack, ticksUsingItem, firstPersonPerspective, partialTick)));
 
 		int color = beamSource.beamColor(player, stack, firstPersonPerspective);
 		RenderShapes.untexturedZGradientBox(

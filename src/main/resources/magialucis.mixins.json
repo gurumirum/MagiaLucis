@@ -1,0 +1,6 @@
+{
+  "package": "gurumirum.magialucis.mixin",
+  "mixins": [
+    "PlayerMixin"
+  ]
+}

@@ -7,9 +7,9 @@ public final class RotationLogic {
 	private RotationLogic() {}
 
 	private static float staticRotation(long gameTime, long period, boolean wrapAtZero) {
-		long t = gameTime % period;
+		long t = Long.remainderUnsigned(gameTime, period);
 		if (t == 0 && !wrapAtZero) t = period;
-		return (t / (float)period) * -360;
+		return (t / (float)period) * (float)(-Math.PI * 2);
 	}
 
 	public static float staticRotation(long gameTime, long period) {

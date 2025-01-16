@@ -61,7 +61,7 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 
 			if (level != null) {
 				poseStack.translate(.5f, 0, .5f);
-				poseStack.mulPose(Axis.YP.rotationDegrees(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTick)));
+				poseStack.mulPose(Axis.YP.rotation(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTick)));
 				poseStack.translate(-.5f, 0, -.5f);
 			}
 
@@ -90,7 +90,7 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 		Minecraft mc = Minecraft.getInstance();
 
 		if (level != null) {
-			poseStack.mulPose(Axis.YP.rotationDegrees(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTick)));
+			poseStack.mulPose(Axis.YP.rotation(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTick)));
 		}
 
 		double max = luxFlow == null ? 0 : Math.max(Math.max(luxFlow.x, luxFlow.y), luxFlow.z);

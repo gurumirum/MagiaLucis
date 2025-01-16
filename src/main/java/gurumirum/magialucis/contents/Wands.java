@@ -30,11 +30,11 @@ public enum Wands implements ItemLike {
 	HEAL_WAND(ItemProfile.customItem(HealWandItem::new, StandardWandShape.WAND),
 			LuxContainerStat.withBaseStat(HealWandItem.COST_PER_CAST * 5, GemStats.PEARL)),
 
-	SHIELD_WAND(ItemProfile.customItem(ShieldWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(ShieldWandItem.COST_PER_SHIELD * 100, GemStats.POLISHED_LAPIS_LAZULI)),
+	LAPIS_SHIELD(ItemProfile.customItem(LapisShieldItem::new, StandardWandShape.WAND),
+			LuxContainerStat.withBaseStat(LapisShieldItem.COST_PER_SHIELDING_TICK * 20 * 120, GemStats.POLISHED_LAPIS_LAZULI)),
 
 	DIAMOND_MACE(ItemProfile.customItem(DiamondMaceItem::new),
-			LuxContainerStat.withBaseStat(DiamondMaceItem.COST_PER_ATTACK * 10, GemStats.DIAMOND));
+			LuxContainerStat.withBaseStat(DiamondMaceItem.COST_PER_ATTACK * 150, GemStats.DIAMOND));
 
 	private final DeferredItem<Item> item;
 	@Nullable

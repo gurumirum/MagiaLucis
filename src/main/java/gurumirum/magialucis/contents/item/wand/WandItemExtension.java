@@ -58,7 +58,7 @@ public class WandItemExtension implements IClientItemExtensions {
 					.transformProject(18 / 16f, 18 / 16f, .5f, BeamRender.getOrCreatePlayerBeamStart(player));
 		}
 
-		if (wandEffect != null) wandEffect.render(poseStack, player, itemInHand, partialTick, false);
+		if (wandEffect != null) wandEffect.render(poseStack, player, itemInHand, partialTick, true);
 
 		poseStack.popPose();
 		return true;

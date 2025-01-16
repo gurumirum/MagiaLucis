@@ -20,7 +20,7 @@ public class DiamondMaceEffect extends WandEffect.SpinningTipEffect {
 	protected void getRotation(Player player, ItemStack stack, boolean firstPersonPerspective, float partialTicks,
 	                           Quaternionf dest) {
 		dest.rotateY((float)Math.PI / 2);
-		dest.rotateX(RotationLogic.rotation(player.level().getGameTime(), ROTATION_PERIOD, partialTicks) * deg2rad);
+		dest.rotateX(RotationLogic.rotation(player.level().getGameTime(), ROTATION_PERIOD, partialTicks));
 	}
 
 	@Override

@@ -13,8 +13,8 @@ public interface BeamSource {
 	int beamColor(Player player, ItemStack stack, boolean firstPersonPerspective);
 	float beamDiameter(Player player, ItemStack stack, boolean firstPersonPerspective);
 
-	default float beamRotationDegrees(Player player, ItemStack stack, int ticksUsingItem,
-	                                  boolean firstPersonPerspective, float partialTicks) {
+	default float beamRotation(Player player, ItemStack stack, int ticksUsingItem,
+	                           boolean firstPersonPerspective, float partialTicks) {
 		return -RotationLogic.rotation(ticksUsingItem, DEFAULT_ROTATION_PERIOD, partialTicks);
 	}
 

@@ -1,0 +1,6 @@
+{
+  "parent": "magialucis:item/lapis_shield",
+  "textures": {
+    "layer0": "magialucis:item/lapis_shield_no_charge"
+  }
+}

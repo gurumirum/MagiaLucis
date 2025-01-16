@@ -13,9 +13,8 @@ public class WandSubtypeInterpreter implements ISubtypeInterpreter<ItemStack> {
 	private WandSubtypeInterpreter() {}
 
 	@Override
-	@Nullable
-	public Object getSubtypeData(ItemStack ingredient, @NotNull UidContext context) {
-		return ingredient.getOrDefault(Contents.LUX_CHARGE, 0L);
+	public @Nullable Object getSubtypeData(@NotNull ItemStack ingredient, @NotNull UidContext context) {
+		return context == UidContext.Ingredient ? ingredient.getOrDefault(Contents.LUX_CHARGE, 0L) : null;
 	}
 
 	@Override

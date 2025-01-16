@@ -24,7 +24,7 @@ public class HealWandEffect extends WandEffect.SpinningTipEffect {
 	@Override
 	protected void getRotation(Player player, ItemStack stack, boolean firstPersonPerspective, float partialTicks,
 	                           Quaternionf dest) {
-		dest.rotateX(-RotationLogic.rotation(player.getTicksUsingItem(), ROTATION_PERIOD, partialTicks) * deg2rad);
+		dest.rotateX(-RotationLogic.rotation(player.getTicksUsingItem(), ROTATION_PERIOD, partialTicks));
 	}
 
 	@Override
