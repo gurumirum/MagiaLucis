@@ -35,7 +35,7 @@ public class LesserIceStaffEffect extends WandEffect.SpinningTipEffect {
 	protected ResourceLocation texture(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
 		int ticksUsingItem = player.getTicksUsingItem();
 		return ticksUsingItem < LesserIceStaffItem.CHARGE_DURATION ? TEXTURE_CHARGING :
-				ticksUsingItem - LesserIceStaffItem.CHARGE_DURATION < 10 ? TEXTURE_CHARGED_BLINKING :
+				ticksUsingItem - LesserIceStaffItem.CHARGE_DURATION < 4 ? TEXTURE_CHARGED_BLINKING :
 						TEXTURE_CHARGED;
 	}
 }
