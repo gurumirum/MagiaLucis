@@ -41,6 +41,8 @@ public final class ModCapabilities {
 		event.registerItem(GEM_STAT, (s, v) -> GemStats.AMETHYST, Items.AMETHYST_SHARD);
 		event.registerItem(GEM_STAT, (s, v) -> GemStats.DIAMOND, Items.DIAMOND);
 		event.registerItem(GEM_STAT, (s, v) -> GemStats.EMERALD, Items.EMERALD);
+		event.registerItem(GEM_STAT, (s, v) -> GemStats.PRISMARINE, Items.PRISMARINE_SHARD);
+		event.registerItem(GEM_STAT, (s, v) -> GemStats.ENDER_PEARL, Items.ENDER_PEARL);
 
 		for (Wands w : Wands.values()) {
 			if (w.luxContainerStat() != null) {

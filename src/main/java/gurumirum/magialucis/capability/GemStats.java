@@ -113,8 +113,8 @@ public enum GemStats implements LuxStat {
 			case IOLITE -> GemItems.IOLITE.asItem();
 			case AQUAMARINE -> GemItems.AQUAMARINE.asItem();
 			case PEARL -> GemItems.PEARL.asItem();
-			case PRISMARINE -> Items.PRISMARINE_SHARD.asItem();
-			case ENDER_PEARL -> Items.ENDER_PEARL.asItem();
+			case PRISMARINE -> Items.PRISMARINE_SHARD;
+			case ENDER_PEARL -> Items.ENDER_PEARL;
 			case PURIFIED_QUARTZ -> GemItems.PURIFIED_QUARTZ.asItem();
 			case CRYSTALLIZED_REDSTONE -> GemItems.CRYSTALLIZED_REDSTONE.asItem();
 			case POLISHED_LAPIS_LAZULI -> GemItems.POLISHED_LAPIS_LAZULI.asItem();
