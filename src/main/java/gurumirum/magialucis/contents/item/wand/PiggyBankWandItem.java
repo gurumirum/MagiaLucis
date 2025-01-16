@@ -24,6 +24,14 @@ public class PiggyBankWandItem extends LuxBatteryItem {
 	@Override
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand usedHand) {
 		ItemStack stack = player.getItemInHand(usedHand);
+		UUID piggyBankId = stack.get(Contents.PIGGY_BANK_UUID);
+		if (player.isCrouching() && piggyBankId != null) {
+			if (level instanceof ServerLevel serverLevel
+					&& serverLevel.getEntity(piggyBankId) instanceof PiggyBankEntity piggyBankEntity)
+				piggyBankEntity.kill();
+			stack.set(Contents.PIGGY_BANK_UUID, null);
+			return InteractionResultHolder.success(stack);
+		}
 		long lux = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
 		if (lux < COST_PER_PIGGY) return InteractionResultHolder.fail(stack);
 		if (!(level instanceof ServerLevel serverLevel)) return InteractionResultHolder.consume(stack);
@@ -35,7 +43,6 @@ public class PiggyBankWandItem extends LuxBatteryItem {
 		PiggyBankEntity piggyBank = new PiggyBankEntity(Contents.PIGGY_BANK.get(), level);
 		piggyBank.setPos(player.getX(), player.getY(), player.getZ());
 		piggyBank.setDeltaMovement(look);
-		UUID piggyBankId = stack.get(Contents.PIGGY_BANK_UUID);
 		if (piggyBankId != null && serverLevel.getEntity(piggyBankId) instanceof PiggyBankEntity prevPiggy)
 			prevPiggy.kill();
 		stack.set(Contents.PIGGY_BANK_UUID, piggyBank.getUUID());
