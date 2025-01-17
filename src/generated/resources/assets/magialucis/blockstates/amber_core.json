@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "oversaturated=false,skylight_interference=false": {
+      "model": "magialucis:block/amber_core"
+    },
+    "oversaturated=false,skylight_interference=true": {
+      "model": "magialucis:block/amber_core_disabled"
+    },
+    "oversaturated=true,skylight_interference=false": {
+      "model": "magialucis:block/amber_core_oversaturated"
+    },
+    "oversaturated=true,skylight_interference=true": {
+      "model": "magialucis:block/amber_core_disabled"
+    }
+  }
+}

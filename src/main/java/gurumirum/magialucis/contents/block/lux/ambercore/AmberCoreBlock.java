@@ -40,4 +40,8 @@ public class AmberCoreBlock extends Block implements EntityBlock {
 	                                                                        @NotNull BlockEntityType<T> blockEntityType) {
 		return Ticker.server(level);
 	}
+
+	public static int getLightValue(@NotNull BlockState state) {
+		return state.getValue(SKYLIGHT_INTERFERENCE) ? 0 : state.getValue(OVERSATURATED) ? 6 : 9;
+	}
 }

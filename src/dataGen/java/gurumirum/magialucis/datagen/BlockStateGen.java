@@ -3,6 +3,7 @@ package gurumirum.magialucis.datagen;
 import gurumirum.magialucis.contents.BlockProvider;
 import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.Ore;
+import gurumirum.magialucis.contents.block.ModBlockStateProps;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -10,7 +11,9 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -62,6 +65,20 @@ public class BlockStateGen extends BlockStateProvider {
 		models().getBuilder(AMBER_LIGHT.id().getPath()).texture("particle", "block/empty");
 
 		directionalBlock(RELAY.block(), models().getExistingFile(id("block/relay")));
+
+		BlockModelBuilder amberCore = models().cubeColumnHorizontal(AMBER_CORE.id().getPath(),
+				id("block/amber_core_side"), mcLoc("block/oak_log_top"));
+		BlockModelBuilder amberCoreDisabled = models().cubeColumnHorizontal(AMBER_CORE.id().getPath() + "_disabled",
+				id("block/amber_core_side_disabled"), mcLoc("block/oak_log_top"));
+		BlockModelBuilder amberCoreOversaturated = models().cubeColumnHorizontal(AMBER_CORE.id().getPath() + "_oversaturated",
+				id("block/amber_core_side_oversaturated"), mcLoc("block/oak_log_top"));
+
+		getVariantBuilder(AMBER_CORE.block()).forAllStates(state -> ConfiguredModel.builder()
+				.modelFile(state.getValue(ModBlockStateProps.SKYLIGHT_INTERFERENCE) ? amberCoreDisabled :
+						state.getValue(ModBlockStateProps.OVERSATURATED) ? amberCoreOversaturated : amberCore)
+				.build());
+		simpleBlockItem(AMBER_CORE.block(), amberCore);
+
 		models().getBuilder(SUNLIGHT_FOCUS.id().getPath()).texture("particle", "block/sunlight_focus_mirror_top_center");
 		simpleBlock(SUNLIGHT_FOCUS.block(), new ModelFile.UncheckedModelFile(SUNLIGHT_FOCUS.id().withPrefix("block/")));
 

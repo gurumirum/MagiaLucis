@@ -48,7 +48,7 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourc
 	@Override
 	protected void register() {
 		super.register();
-		if (!getBlockState().getValue(OVERSATURATED)) registerField(Fields.AMBER_CORE);
+		if (!getBlockState().getValue(SKYLIGHT_INTERFERENCE)) registerField(Fields.AMBER_CORE);
 	}
 
 	@Override

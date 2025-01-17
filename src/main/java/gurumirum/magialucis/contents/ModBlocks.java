@@ -47,7 +47,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of()
 			.strength(2.5f)
 			.sound(SoundType.WOOD)
-			.lightLevel(state -> 9))),
+			.lightLevel(AmberCoreBlock::getLightValue))),
 	SUNLIGHT_CORE(BlockProfile.customBlock(SunlightCoreBlock::new, Properties.of()
 			.strength(2.5f)
 			.sound(SoundType.GLASS))),
