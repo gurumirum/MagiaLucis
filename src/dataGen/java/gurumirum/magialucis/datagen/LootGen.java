@@ -8,19 +8,25 @@ import gurumirum.magialucis.contents.Ore;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +58,8 @@ public class LootGen extends LootTableProvider {
 			for (ModBuildingBlocks buildingBlock : ModBuildingBlocks.values()) dropSelf(buildingBlock.block());
 
 			for (Ore o : Ore.values()) {
-				o.allOreBlocks().forEach(b -> add(b, createOreDrop(b, o.dropItem())));
+				o.allOreBlocks().forEach(b -> add(b, o.doubleDrop() ?
+						createDoubleOreDrops(b, o.dropItem()) : createOreDrop(b, o.dropItem())));
 			}
 		}
 
@@ -83,6 +90,13 @@ public class LootGen extends LootTableProvider {
 				ResourceLocation key = BuiltInRegistries.BLOCK.getKey(b);
 				return key != null && key.getNamespace().equals(MagiaLucisMod.MODID);
 			}).iterator();
+		}
+
+		private LootTable.Builder createDoubleOreDrops(Block block, ItemLike dropItem) {
+			HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+			return createSilkTouchDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(dropItem)
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(2)))
+					.apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))));
 		}
 	}
 }

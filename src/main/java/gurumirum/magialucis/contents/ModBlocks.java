@@ -9,7 +9,6 @@ import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
 import gurumirum.magialucis.contents.block.lux.remotecharger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlock;
-import gurumirum.magialucis.contents.block.sunlight.core.BaseSunlightCoreBlock;
 import gurumirum.magialucis.contents.block.sunlight.core.MoonlightCoreBlock;
 import gurumirum.magialucis.contents.block.sunlight.core.SunlightCoreBlock;
 import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusBlock;
@@ -40,22 +39,32 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.noCollission()
 			.noOcclusion())),
 
-	REMOTE_CHARGER(BlockProfile.customBlock(RemoteChargerBlock.Basic::new, Properties.of())),
-	REMOTE_CHARGER_2(BlockProfile.customBlock(RemoteChargerBlock.Advanced::new, Properties.of())),
-	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of())),
-	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of().lightLevel(state -> 9))),
-	SUNLIGHT_CORE(BlockProfile.customBlock(SunlightCoreBlock::new, Properties.of())),
-	MOONLIGHT_CORE(BlockProfile.customBlock(MoonlightCoreBlock::new, Properties.of())),
+	REMOTE_CHARGER(BlockProfile.customBlock(RemoteChargerBlock.Basic::new, Properties.of().strength(2.5f))),
+	REMOTE_CHARGER_2(BlockProfile.customBlock(RemoteChargerBlock.Advanced::new, Properties.of().strength(2.5f))),
+	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of()
+			.strength(1)
+			.sound(SoundType.GLASS))),
+	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of()
+			.strength(2.5f)
+			.sound(SoundType.WOOD)
+			.lightLevel(state -> 9))),
+	SUNLIGHT_CORE(BlockProfile.customBlock(SunlightCoreBlock::new, Properties.of()
+			.strength(2.5f)
+			.sound(SoundType.GLASS))),
+	MOONLIGHT_CORE(BlockProfile.customBlock(MoonlightCoreBlock::new, Properties.of()
+			.strength(2.5f)
+			.sound(SoundType.GLASS))),
 	SUNLIGHT_FOCUS(BlockProfile.customBlock(SunlightFocusBlock::new, Properties.of()
 			.requiresCorrectToolForDrops()
-			.strength(3.5f))),
+			.strength(3.5f)
+			.sound(SoundType.STONE))),
 
 	LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
-			GemStats.BRIGHTSTONE, 10), Properties.of())),
+			GemStats.BRIGHTSTONE, 10), Properties.of().strength(2.5f))),
 	LUX_SOURCE_2(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
-			LuxStat.simple(RGB332.WHITE, 0, 100000), 100000), Properties.of())),
+			LuxStat.simple(RGB332.WHITE, 0, 100000), 100000), Properties.of().strength(2.5f))),
 
-	FIELD_MONITOR(BlockProfile.customBlock(FieldMonitorBlock::new, Properties.of()));
+	FIELD_MONITOR(BlockProfile.customBlock(FieldMonitorBlock::new, Properties.of().strength(1)));
 
 	private final DeferredBlock<? extends Block> block;
 	@Nullable

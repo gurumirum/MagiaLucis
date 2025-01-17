@@ -1,8 +1,8 @@
 package gurumirum.magialucis.contents;
 
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -20,24 +20,23 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public enum Ore {
-	SILVER(OreType.STONE, OreType.DEEPSLATE),
+	SILVER(MiningLevel.STONE, UniformInt.of(0, 1), OreType.STONE, OreType.DEEPSLATE),
 
-	AMBER(OreType.STONE),
-	CITRINE(OreType.STONE),
-	CORDIERITE(OreType.STONE),
-	AQUAMARINE(OreType.STONE),
+	AMBER(MiningLevel.WOOD, UniformInt.of(0, 2), OreType.STONE),
+	CITRINE(MiningLevel.STONE, UniformInt.of(2, 5), OreType.STONE),
+	CORDIERITE(MiningLevel.STONE, UniformInt.of(2, 5), OreType.STONE),
+	AQUAMARINE(MiningLevel.STONE, UniformInt.of(2, 5), OreType.STONE),
 
-	RUBY(OreType.STONE, OreType.DEEPSLATE),
-	SAPPHIRE(OreType.STONE, OreType.DEEPSLATE),
-	TOPAZ(OreType.STONE, OreType.DEEPSLATE);
+	RUBY(MiningLevel.IRON, UniformInt.of(3, 7), OreType.STONE, OreType.DEEPSLATE),
+	SAPPHIRE(MiningLevel.IRON, UniformInt.of(3, 7), OreType.STONE, OreType.DEEPSLATE),
+	TOPAZ(MiningLevel.IRON, UniformInt.of(3, 7), OreType.STONE, OreType.DEEPSLATE);
 
 	private final Map<OreType, Pair<DeferredBlock<DropExperienceBlock>, DeferredItem<BlockItem>>> ores = new EnumMap<>(OreType.class);
+	private final MiningLevel miningLevel;
 
-	Ore(OreType... oreTypes) {
-		this(ConstantInt.of(0), oreTypes);
-	}
-	Ore(@NotNull IntProvider experience, OreType... oreTypes) {
+	Ore(@NotNull MiningLevel miningLevel, @NotNull IntProvider experience, OreType... oreTypes) {
 		if (oreTypes.length == 0) throw new IllegalArgumentException("Write ore types you dingus");
+		this.miningLevel = Objects.requireNonNull(miningLevel);
 
 		for (OreType oreType : oreTypes) {
 			this.ores.computeIfAbsent(oreType, o -> {
@@ -81,6 +80,10 @@ public enum Ore {
 		return Objects.requireNonNull(oreItem(type));
 	}
 
+	public @NotNull MiningLevel miningLevel() {
+		return this.miningLevel;
+	}
+
 	public @NotNull Item dropItem() {
 		return this == SILVER ? ModItems.RAW_SILVER.asItem() : smeltItem();
 	}
@@ -96,6 +99,13 @@ public enum Ore {
 			case SAPPHIRE -> GemItems.SAPPHIRE;
 			case TOPAZ -> GemItems.TOPAZ;
 		}).asItem();
+	}
+
+	public boolean doubleDrop() {
+		return switch (this) {
+			case AMBER, CITRINE, CORDIERITE, AQUAMARINE -> true;
+			default -> false;
+		};
 	}
 
 	public boolean exists(OreType type) {
@@ -119,4 +129,11 @@ public enum Ore {
 	}
 
 	public static void init() {}
+
+	public enum MiningLevel {
+		WOOD,
+		STONE,
+		IRON,
+		DIAMOND;
+	}
 }
