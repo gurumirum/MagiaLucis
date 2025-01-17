@@ -3,6 +3,10 @@
     "minecraft:player"
   ],
   "slots": [
+    "magialucis_ring",
+    "magialucis_bracelet",
+    "magialucis_tiara",
+    "magialucis_necklace",
     "magialucis_wand_belt"
   ]
 }

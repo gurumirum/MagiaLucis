@@ -2,7 +2,6 @@ package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.*;
-import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -30,7 +29,7 @@ public class ItemTagGen extends ItemTagsProvider {
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		tag(ModItemTags.WANDS).add(Arrays.stream(Wands.values()).map(Wands::asItem).toArray(Item[]::new));
 
-		curio(WandBeltItem.CURIO_SLOT).add(ModItems.WAND_BELT.asItem());
+		curio(ModCurioSlots.WAND_BELT).add(ModItems.WAND_BELT.asItem());
 
 		tag(ModItemTags.COPPER_NUGGETS).add(ModItems.COPPER_NUGGET.asItem());
 

@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents.item.wandbelt;
 
-import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModItemTags;
 import net.minecraft.core.component.DataComponents;
@@ -25,8 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class WandBeltItem extends Item {
-	public static final String CURIO_SLOT = MagiaLucisMod.MODID + "_wand_belt";
-
 	public WandBeltItem(Properties properties) {
 		super(properties.stacksTo(1).fireResistant());
 	}
