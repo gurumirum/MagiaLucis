@@ -36,8 +36,8 @@ public enum Wands implements ItemLike {
 	DIAMOND_MACE(ItemProfile.customItem(DiamondMaceItem::new),
 			LuxContainerStat.withBaseStat(DiamondMaceItem.COST_PER_ATTACK * 150, GemStats.DIAMOND)),
 
-	PIGGY_BANK_WAND(ItemProfile.customItem(PiggyBankWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(PiggyBankWandItem.COST_PER_PIGGY * 50, GemStats.ENDER_PEARL));
+	ENDER_WAND(ItemProfile.customItem(EnderChestPortalWandItem::new, StandardWandShape.WAND),
+			LuxContainerStat.withBaseStat(EnderChestPortalWandItem.COST_PER_PORTAL_TICK * 20 * 300, GemStats.ENDER_PEARL));
 
 	private final DeferredItem<Item> item;
 	@Nullable

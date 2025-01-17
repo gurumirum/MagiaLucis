@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import gurumirum.magialucis.client.BeamRender;
+import gurumirum.magialucis.client.render.BeamRender;
 import gurumirum.magialucis.client.ModArmPose;
 import gurumirum.magialucis.client.WandEffect;
 import gurumirum.magialucis.contents.item.BeamSource;

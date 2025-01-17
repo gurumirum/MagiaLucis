@@ -1,4 +1,4 @@
-package gurumirum.magialucis.client;
+package gurumirum.magialucis.client.render;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;

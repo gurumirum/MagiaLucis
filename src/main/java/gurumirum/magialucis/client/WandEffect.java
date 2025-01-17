@@ -2,6 +2,7 @@ package gurumirum.magialucis.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -1,8 +1,8 @@
 package gurumirum.magialucis.client;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.client.render.entity.GemGolemRenderer;
-import gurumirum.magialucis.client.render.entity.PiggyBankRenderer;
+import gurumirum.magialucis.contents.entity.GemGolemRenderer;
+import gurumirum.magialucis.contents.entity.EnderChestPortalRenderer;
 import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModBlocks;
@@ -105,7 +105,7 @@ public final class ClientInit {
 	@SubscribeEvent
 	public static void registerEntityRegister(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(Contents.GEM_GOLEM.get(), GemGolemRenderer::new);
-		event.registerEntityRenderer(Contents.PIGGY_BANK.get(), PiggyBankRenderer::new);
+		event.registerEntityRenderer(Contents.ENDER_CHEST_PORTAL.get(), EnderChestPortalRenderer::new);
 		event.registerEntityRenderer(Contents.LESSER_ICE_PROJECTILE.get(), LesserIceProjectileRenderer::new);
 
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);

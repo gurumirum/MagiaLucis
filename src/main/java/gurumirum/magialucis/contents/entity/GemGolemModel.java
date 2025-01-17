@@ -1,6 +1,5 @@
-package gurumirum.magialucis.client.model;
+package gurumirum.magialucis.contents.entity;
 
-import gurumirum.magialucis.contents.entity.GemGolemEntity;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

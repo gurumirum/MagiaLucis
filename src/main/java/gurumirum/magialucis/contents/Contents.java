@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
 import gurumirum.magialucis.contents.entity.GemGolemEntity;
 import gurumirum.magialucis.contents.entity.LesserIceProjectile;
-import gurumirum.magialucis.contents.entity.PiggyBankEntity;
+import gurumirum.magialucis.contents.entity.EnderChestPortal;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltMenu;
 import gurumirum.magialucis.contents.mobeffect.DoubleMagicDamageMobEffect;
 import gurumirum.magialucis.contents.mobeffect.RecallFatigueMobEffect;
@@ -73,7 +73,7 @@ public final class Contents {
 					.networkSynchronized(ByteBufCodecs.BYTE)
 					.build());
 
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> PIGGY_BANK_UUID = DATA_COMPONENTS.register("piggy_bank_uuid",
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> PORTAL_UUID = DATA_COMPONENTS.register("portal_uuid",
 			() -> DataComponentType.<UUID>builder()
 					.persistent(UUIDUtil.CODEC)
 					.networkSynchronized(UUIDUtil.STREAM_CODEC)
@@ -101,12 +101,12 @@ public final class Contents {
 					.updateInterval(10)
 					.build("lesser_ice_projectile"));
 
-	public static final DeferredHolder<EntityType<?>, EntityType<PiggyBankEntity>> PIGGY_BANK = ENTITY_TYPES.register("piggy_bank",
-			() -> EntityType.Builder.of(PiggyBankEntity::new, MobCategory.MISC)
+	public static final DeferredHolder<EntityType<?>, EntityType<EnderChestPortal>> ENDER_CHEST_PORTAL = ENTITY_TYPES.register("ender_chest_portal",
+			() -> EntityType.Builder.<EnderChestPortal>of(EnderChestPortal::new, MobCategory.MISC)
 					.sized(1F, 2F)
 					.clientTrackingRange(10)
 					.updateInterval(10)
-					.build("piggy_bank"));
+					.build("ender_chest_portal"));
 
 	public static void init(IEventBus eventBus) {
 		ITEMS.register(eventBus);
