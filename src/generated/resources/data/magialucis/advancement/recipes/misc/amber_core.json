@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_aquamarine": {
+    "has_amber": {
       "conditions": {
         "items": [
           {
-            "items": "#c:gems/aquamarine"
+            "items": "#c:gems/amber"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magialucis:recall_staff"
+        "recipe": "magialucis:amber_core"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_aquamarine"
+      "has_amber"
     ]
   ],
   "rewards": {
     "recipes": [
-      "magialucis:recall_staff"
+      "magialucis:amber_core"
     ]
   }
 }

@@ -53,7 +53,7 @@ public class ItemTagGen extends ItemTagsProvider {
 
 		var gems = tag(Tags.Items.GEMS);
 		for (GemItems gem : GemItems.values()) {
-			if (gem.gem.hasTag()) {
+			if (gem.gem.hasTag() && !gem.gem.isVanilla()) {
 				tag(gem.gem.tag()).add(gem.asItem());
 				gems.add(gem.asItem());
 			}

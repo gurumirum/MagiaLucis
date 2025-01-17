@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "c:ingots/silver"
+    },
+    "2": {
+      "tag": "magialucis:lapides_manalis"
+    },
+    "3": [
+      {
+        "item": "magialucis:lapis_manalis_slab"
+      },
+      {
+        "item": "magialucis:lapis_manalis_brick_slab"
+      }
+    ]
+  },
+  "pattern": [
+    "111",
+    "222",
+    "323"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:sunlight_focus"
+  }
+}

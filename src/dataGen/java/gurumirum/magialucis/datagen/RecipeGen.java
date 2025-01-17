@@ -115,10 +115,10 @@ public class RecipeGen extends RecipeProvider {
 				.pattern("413")
 				.pattern("14 ")
 				.define('1', Tags.Items.INGOTS_GOLD)
-				.define('2', GemItems.AQUAMARINE)
+				.define('2', GemStats.AQUAMARINE.tag())
 				.define('3', Tags.Items.LEATHERS)
 				.define('4', Tags.Items.DYES_RED)
-				.unlockedBy("has_aquamarine", has(GemItems.AQUAMARINE))
+				.unlockedBy("has_aquamarine", has(GemStats.AQUAMARINE.tag()))
 				.save(out);
 
 		wandRecipe(false, HEAL_WAND)
@@ -135,6 +135,38 @@ public class RecipeGen extends RecipeProvider {
 				.define('2', Tags.Items.NUGGETS_GOLD)
 				.define('3', ItemTags.WOODEN_SLABS)
 				.unlockedBy("has_brightstones", has(ModItemTags.BRIGHTSTONES))
+				.save(out);
+
+		shaped(MISC, ModBlocks.AMBER_CORE)
+				.pattern("121")
+				.pattern("232")
+				.pattern("121")
+				.define('1', ItemTags.LOGS)
+				.define('2', GemStats.AMBER.tag())
+				.define('3', Items.HONEYCOMB)
+				.unlockedBy("has_amber", has(GemStats.AMBER.tag()))
+				.save(out);
+
+		shaped(MISC, ModBlocks.SUNLIGHT_CORE)
+				.pattern("121")
+				.pattern("232")
+				.pattern("121")
+				.define('1', ModItemTags.BRIGHTSTONES)
+				.define('2', GemStats.CITRINE.tag())
+				.define('3', ModItemTags.LAPIDES_MANALIS)
+				.unlockedBy("has_amber", has(GemStats.CITRINE.tag()))
+				.save(out);
+
+		// TODO MOONLIGHT_CORE
+
+		shaped(MISC, ModBlocks.SUNLIGHT_FOCUS)
+				.pattern("111")
+				.pattern("222")
+				.pattern("323")
+				.define('1', ModItemTags.SILVER_INGOTS)
+				.define('2', ModItemTags.LAPIDES_MANALIS)
+				.define('3', Ingredient.of(LAPIS_MANALIS_SLAB, LAPIS_MANALIS_BRICK_SLAB))
+				.unlockedBy("has_amber", has(ModItemTags.SILVER_INGOTS))
 				.save(out);
 
 		shaped(MISC, WAND_BELT)
