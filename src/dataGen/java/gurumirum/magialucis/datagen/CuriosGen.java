@@ -20,7 +20,7 @@ public class CuriosGen extends CuriosDataProvider {
 
 	@Override
 	public void generate(HolderLookup.Provider registries, ExistingFileHelper fileHelper) {
-		createSlot(TIARA)
+		createSlot(HEADWEAR)
 				.size(1)
 				.order(BASE_ORDER);
 
@@ -43,6 +43,6 @@ public class CuriosGen extends CuriosDataProvider {
 
 		createEntities("player")
 				.addPlayer()
-				.addSlots(TIARA, NECKLACE, BRACELET, RING, WAND_BELT);
+				.addSlots(HEADWEAR, NECKLACE, BRACELET, RING, WAND_BELT);
 	}
 }
