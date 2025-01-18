@@ -2,7 +2,6 @@ package gurumirum.magialucis.contents.block.lux.remotecharger;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
-import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.core.BlockPos;
@@ -39,8 +38,7 @@ public abstract class RemoteChargerBlock extends Block implements EntityBlock {
 	@Override
 	public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state,
 	                                                                        @NotNull BlockEntityType<T> blockEntityType) {
-		return blockEntityType != ModBlockEntities.REMOTE_CHARGER.get() ? null :
-				Ticker.server(level);
+		return Ticker.server(level);
 	}
 
 	@Override
