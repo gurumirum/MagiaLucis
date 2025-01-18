@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.WandEffect;
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.item.LuxBatteryItem;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.world.InteractionHand;
@@ -28,7 +28,7 @@ public class LapisShieldItem extends LuxBatteryItem implements WandEffectSource 
 	@Override
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
 		ItemStack stack = player.getItemInHand(usedHand);
-		if (stack.getOrDefault(Contents.LUX_CHARGE, 0L) < COST_PER_BLOCK)
+		if (stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L) < COST_PER_BLOCK)
 			return InteractionResultHolder.fail(stack);
 
 		player.startUsingItem(usedHand);
@@ -40,9 +40,9 @@ public class LapisShieldItem extends LuxBatteryItem implements WandEffectSource 
 		if (level.isClientSide()) return;
 		if (getUseDuration(stack, livingEntity) - remainingUseDuration < 5) return;
 
-		long lux = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+		long lux = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		if (lux < COST_PER_BLOCK) livingEntity.stopUsingItem();
-		else stack.set(Contents.LUX_CHARGE, lux - COST_PER_SHIELDING_TICK);
+		else stack.set(ModDataComponents.LUX_CHARGE, lux - COST_PER_SHIELDING_TICK);
 	}
 
 	@Override

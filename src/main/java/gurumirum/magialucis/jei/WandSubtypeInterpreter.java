@@ -1,6 +1,6 @@
 package gurumirum.magialucis.jei;
 
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +14,7 @@ public class WandSubtypeInterpreter implements ISubtypeInterpreter<ItemStack> {
 
 	@Override
 	public @Nullable Object getSubtypeData(@NotNull ItemStack ingredient, @NotNull UidContext context) {
-		return context == UidContext.Ingredient ? ingredient.getOrDefault(Contents.LUX_CHARGE, 0L) : null;
+		return context == UidContext.Ingredient ? ingredient.getOrDefault(ModDataComponents.LUX_CHARGE, 0L) : null;
 	}
 
 	@Override

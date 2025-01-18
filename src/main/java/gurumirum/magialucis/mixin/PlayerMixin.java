@@ -1,6 +1,6 @@
 package gurumirum.magialucis.mixin;
 
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.contents.item.wand.LapisShieldItem;
 import net.minecraft.world.entity.EntityType;
@@ -24,8 +24,8 @@ public abstract class PlayerMixin extends LivingEntity {
 		ItemStack stack = getUseItem();
 
 		if (stack.is(Wands.LAPIS_SHIELD.asItem())) {
-			long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
-			stack.set(Contents.LUX_CHARGE, Math.max(0, charge - LapisShieldItem.COST_PER_SHIELD_DISABLE));
+			long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
+			stack.set(ModDataComponents.LUX_CHARGE, Math.max(0, charge - LapisShieldItem.COST_PER_SHIELD_DISABLE));
 			if (charge >= LapisShieldItem.COST_PER_SHIELD_DISABLE) info.cancel();
 		}
 	}

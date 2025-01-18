@@ -1,7 +1,8 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.ModMobEffects;
 import gurumirum.magialucis.contents.Wands;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -25,13 +26,13 @@ public final class WandEventListener {
 		ItemStack stack = event.getEntity().getUseItem();
 		if (!stack.is(Wands.LAPIS_SHIELD.asItem())) return;
 
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		if (charge < LapisShieldItem.COST_PER_BLOCK) return;
 
 		if (!isDamageSourceBlocked(event.getEntity(), event.getDamageSource())) return;
 
 		event.setBlocked(true);
-		stack.set(Contents.LUX_CHARGE, charge - LapisShieldItem.COST_PER_BLOCK);
+		stack.set(ModDataComponents.LUX_CHARGE, charge - LapisShieldItem.COST_PER_BLOCK);
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -72,19 +73,19 @@ public final class WandEventListener {
 		if (stack == null) return;
 
 		if (stack.is(Wands.DIAMOND_MACE.asItem())) {
-			long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+			long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 			if (charge < DiamondMaceItem.COST_PER_ATTACK) return;
 
 			if (event.getSource().getEntity() instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.9f) {
-				event.getEntity().addEffect(new MobEffectInstance(Contents.DOUBLE_MAGIC_DAMAGE, DiamondMaceItem.DEBUFF_DURATION));
-				stack.set(Contents.LUX_CHARGE, charge - DiamondMaceItem.COST_PER_ATTACK);
+				event.getEntity().addEffect(new MobEffectInstance(ModMobEffects.DOUBLE_MAGIC_DAMAGE, DiamondMaceItem.DEBUFF_DURATION));
+				stack.set(ModDataComponents.LUX_CHARGE, charge - DiamondMaceItem.COST_PER_ATTACK);
 			}
 		}
 	}
 
 	@SubscribeEvent
 	public static void onLivingIncomingDamage(LivingIncomingDamageEvent event) {
-		if (event.getEntity().hasEffect(Contents.DOUBLE_MAGIC_DAMAGE) && event.getSource().is(Tags.DamageTypes.IS_MAGIC)) {
+		if (event.getEntity().hasEffect(ModMobEffects.DOUBLE_MAGIC_DAMAGE) && event.getSource().is(Tags.DamageTypes.IS_MAGIC)) {
 			event.setAmount(event.getAmount() * 2);
 		}
 	}

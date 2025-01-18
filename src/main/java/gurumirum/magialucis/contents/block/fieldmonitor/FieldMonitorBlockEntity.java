@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.fieldmonitor;
 
-import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModBlockEntities;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
 import gurumirum.magialucis.contents.block.BlockEntityBase;
 import gurumirum.magialucis.contents.block.Ticker;
@@ -69,13 +69,13 @@ public class FieldMonitorBlockEntity extends BlockEntityBase implements Ticker.S
 	@Override
 	protected void applyImplicitComponents(@NotNull DataComponentInput componentInput) {
 		super.applyImplicitComponents(componentInput);
-		this.fieldId = componentInput.get(Contents.FIELD_ID.get());
+		this.fieldId = componentInput.get(ModDataComponents.FIELD_ID.get());
 	}
 
 	@Override
 	protected void collectImplicitComponents(DataComponentMap.@NotNull Builder components) {
 		super.collectImplicitComponents(components);
-		if (this.fieldId != null) components.set(Contents.FIELD_ID.get(), fieldId);
+		if (this.fieldId != null) components.set(ModDataComponents.FIELD_ID.get(), fieldId);
 	}
 
 	@SuppressWarnings("deprecation")

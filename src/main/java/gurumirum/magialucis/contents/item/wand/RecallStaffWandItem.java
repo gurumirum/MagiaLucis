@@ -1,7 +1,8 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.WandEffect;
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.ModMobEffects;
 import gurumirum.magialucis.contents.item.LuxBatteryItem;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,7 +30,7 @@ public class RecallStaffWandItem extends LuxBatteryItem implements WandEffectSou
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand usedHand) {
 		ItemStack stack = player.getItemInHand(usedHand);
 
-		if (player.hasEffect(Contents.RECALL_FATIGUE) || stack.getOrDefault(Contents.LUX_CHARGE, 0L) < COST_PER_RECALL)
+		if (player.hasEffect(ModMobEffects.RECALL_FATIGUE) || stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L) < COST_PER_RECALL)
 			return InteractionResultHolder.fail(stack);
 
 		player.startUsingItem(usedHand);
@@ -38,8 +39,8 @@ public class RecallStaffWandItem extends LuxBatteryItem implements WandEffectSou
 
 	@Override
 	public void onUseTick(@NotNull Level level, @NotNull LivingEntity livingEntity, @NotNull ItemStack stack, int remainingUseDuration) {
-		if (!level.isClientSide && (livingEntity.hasEffect(Contents.RECALL_FATIGUE) ||
-				stack.getOrDefault(Contents.LUX_CHARGE, 0L) < COST_PER_RECALL)) {
+		if (!level.isClientSide && (livingEntity.hasEffect(ModMobEffects.RECALL_FATIGUE) ||
+				stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L) < COST_PER_RECALL)) {
 			livingEntity.stopUsingItem();
 		}
 	}
@@ -47,13 +48,13 @@ public class RecallStaffWandItem extends LuxBatteryItem implements WandEffectSou
 	@Override
 	public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity) {
 		if (entity instanceof ServerPlayer player) {
-			long luxCharge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+			long luxCharge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 			if (luxCharge < COST_PER_RECALL) return stack;
 
 			DimensionTransition transition = player.findRespawnPositionAndUseSpawnBlock(true, DimensionTransition.DO_NOTHING);
 			player.teleportTo(transition.newLevel(), transition.pos().x, transition.pos().y, transition.pos().z, transition.yRot(), transition.xRot());
-			player.addEffect(new MobEffectInstance(Contents.RECALL_FATIGUE, RECALL_FATIGUE_DURATION, 0, false, false));
-			stack.set(Contents.LUX_CHARGE, luxCharge - COST_PER_RECALL);
+			player.addEffect(new MobEffectInstance(ModMobEffects.RECALL_FATIGUE, RECALL_FATIGUE_DURATION, 0, false, false));
+			stack.set(ModDataComponents.LUX_CHARGE, luxCharge - COST_PER_RECALL);
 		}
 		return stack;
 	}

@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.capability.ModCapabilities;
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.net.msgs.SetLinkMsg;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.ChatFormatting;
@@ -42,7 +42,7 @@ public class ConfigurationWandItem extends Item {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flags) {
-		GlobalPos linkSourcePos = stack.get(Contents.LINK_SOURCE);
+		GlobalPos linkSourcePos = stack.get(ModDataComponents.LINK_SOURCE);
 		if (linkSourcePos != null && context.level() != null &&
 				Objects.requireNonNull(context.level()).dimension().equals(linkSourcePos.dimension())) {
 			tooltip.add(Component.literal("[" + linkSourcePos.pos().toShortString() + "]")
@@ -52,7 +52,7 @@ public class ConfigurationWandItem extends Item {
 
 	@Override
 	public @NotNull InteractionResult onItemUseFirst(ItemStack stack, @NotNull UseOnContext context) {
-		GlobalPos linkSourcePos = stack.get(Contents.LINK_SOURCE.get());
+		GlobalPos linkSourcePos = stack.get(ModDataComponents.LINK_SOURCE.get());
 		Level level = context.getLevel();
 
 		if (linkSourcePos != null &&
@@ -63,7 +63,7 @@ public class ConfigurationWandItem extends Item {
 					LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos.pos());
 					if (linkSource != null) linkSource.unlinkAll();
 				}
-				stack.remove(Contents.LINK_SOURCE.get());
+				stack.remove(ModDataComponents.LINK_SOURCE.get());
 				return InteractionResult.SUCCESS;
 			}
 
@@ -74,7 +74,7 @@ public class ConfigurationWandItem extends Item {
 							linkSource, context.getClickedPos(), context.getClickLocation());
 				}
 
-				stack.remove(Contents.LINK_SOURCE.get());
+				stack.remove(ModDataComponents.LINK_SOURCE.get());
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -85,7 +85,7 @@ public class ConfigurationWandItem extends Item {
 				if (context.isSecondaryUseActive()) {
 					linkSource.unlinkAll();
 				} else {
-					stack.set(Contents.LINK_SOURCE.get(), new GlobalPos(level.dimension(), context.getClickedPos()));
+					stack.set(ModDataComponents.LINK_SOURCE.get(), new GlobalPos(level.dimension(), context.getClickedPos()));
 				}
 			}
 			return InteractionResult.SUCCESS;

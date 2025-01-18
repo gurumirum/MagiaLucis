@@ -1,6 +1,7 @@
 package gurumirum.magialucis.contents.entity;
 
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.ModEntities;
 import gurumirum.magialucis.contents.Wands;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -35,7 +36,7 @@ public class EnderChestPortal extends Entity {
 	}
 
 	public EnderChestPortal(Level level) {
-		super(Contents.ENDER_CHEST_PORTAL.get(), level);
+		super(ModEntities.ENDER_CHEST_PORTAL.get(), level);
 	}
 
 	public int life() {
@@ -80,7 +81,7 @@ public class EnderChestPortal extends Entity {
 						for (int i = 0; i < container.getItems().size(); i++) {
 							ItemStack stack = container.getItem(i);
 							if (stack.is(Wands.ENDER_WAND.asItem()) &&
-									Objects.equals(stack.get(Contents.PORTAL_UUID), portalId)) {
+									Objects.equals(stack.get(ModDataComponents.PORTAL_UUID), portalId)) {
 
 								ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, stack);
 								itemEntity.setDeltaMovement(playerDirection);

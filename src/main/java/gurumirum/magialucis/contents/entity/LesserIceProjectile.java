@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.entity;
 
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModEntities;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -24,11 +24,11 @@ public class LesserIceProjectile extends ThrowableProjectile {
 	}
 
 	public LesserIceProjectile(double x, double y, double z, Level level) {
-		super(Contents.LESSER_ICE_PROJECTILE.get(), x, y, z, level);
+		super(ModEntities.LESSER_ICE_PROJECTILE.get(), x, y, z, level);
 	}
 
 	public LesserIceProjectile(LivingEntity shooter, Level level) {
-		super(Contents.LESSER_ICE_PROJECTILE.get(), shooter, level);
+		super(ModEntities.LESSER_ICE_PROJECTILE.get(), shooter, level);
 	}
 
 	@Override

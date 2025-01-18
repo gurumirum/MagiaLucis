@@ -2,6 +2,7 @@ package gurumirum.magialucis;
 
 import com.mojang.logging.LogUtils;
 import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModEntities;
 import gurumirum.magialucis.contents.entity.GemGolemEntity;
 import gurumirum.magialucis.impl.ancientlight.AncientLightCrafting;
 import gurumirum.magialucis.impl.field.Fields;
@@ -27,7 +28,7 @@ public class MagiaLucisMod {
 		});
 
 		modBus.addListener((EntityAttributeCreationEvent event) -> {
-			event.put(Contents.GEM_GOLEM.get(), GemGolemEntity.createAttributes().build());
+			event.put(ModEntities.GEM_GOLEM.get(), GemGolemEntity.createAttributes().build());
 		});
 	}
 

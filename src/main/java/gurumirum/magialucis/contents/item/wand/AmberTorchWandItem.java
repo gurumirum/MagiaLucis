@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item.wand;
 
-import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModBlocks;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.item.LuxBatteryItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,7 +33,7 @@ public class AmberTorchWandItem extends LuxBatteryItem {
 	@Override
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		if (charge < COST_PER_LIGHT_SOURCE) return InteractionResultHolder.fail(player.getItemInHand(hand));
 
 		HitResult res = player.pick(HIT_DISTANCE, 0, false);
@@ -53,7 +53,7 @@ public class AmberTorchWandItem extends LuxBatteryItem {
 						0.0, 0.0, 0.0);
 			}
 
-			stack.set(Contents.LUX_CHARGE, charge - COST_PER_LIGHT_SOURCE);
+			stack.set(ModDataComponents.LUX_CHARGE, charge - COST_PER_LIGHT_SOURCE);
 			applyCooldown(player);
 		}
 
@@ -63,13 +63,13 @@ public class AmberTorchWandItem extends LuxBatteryItem {
 	@Override
 	public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
 		ItemStack stack = context.getItemInHand();
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		if (charge < COST_PER_LIGHT_SOURCE) return InteractionResult.FAIL;
 
 		InteractionResult result = placeLight(context.getLevel(), context.getPlayer(), context.getHand(),
 				context.getItemInHand(), context.getHitResult());
 		if (result.indicateItemUse()) {
-			stack.set(Contents.LUX_CHARGE, charge - COST_PER_LIGHT_SOURCE);
+			stack.set(ModDataComponents.LUX_CHARGE, charge - COST_PER_LIGHT_SOURCE);
 			applyCooldown(context.getPlayer());
 		}
 

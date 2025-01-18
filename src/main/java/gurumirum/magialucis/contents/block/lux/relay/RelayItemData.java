@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.relay;
 
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ public record RelayItemData(@NotNull ItemStack stack) {
 	}
 
 	public static @NotNull ItemStack getItem(DataComponentHolder holder) {
-		RelayItemData relayItemData = holder.get(Contents.RELAY_ITEM);
+		RelayItemData relayItemData = holder.get(ModDataComponents.RELAY_ITEM);
 		return relayItemData == null ? ItemStack.EMPTY : relayItemData.stack;
 	}
 }

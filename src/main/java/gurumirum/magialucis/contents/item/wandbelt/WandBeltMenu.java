@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item.wandbelt;
 
-import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModItemTags;
+import gurumirum.magialucis.contents.ModMenus;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -45,12 +45,12 @@ public class WandBeltMenu extends AbstractContainerMenu {
 	private boolean updateOneRow = true;
 
 	public WandBeltMenu(int containerId, Inventory playerInv) {
-		super(Contents.WANG_BELT_MENU.get(), containerId);
+		super(ModMenus.WANG_BELT_MENU.get(), containerId);
 		this.wandBeltSlots = setup(playerInv, this.wandBeltInv = new ClientSideItemHandler(), -1);
 	}
 
 	public WandBeltMenu(int containerId, Inventory playerInv, IItemHandlerModifiable wandBeltInv, int selectedIndex, int wandBeltInventoryIndex) {
-		super(Contents.WANG_BELT_MENU.get(), containerId);
+		super(ModMenus.WANG_BELT_MENU.get(), containerId);
 		this.wandBeltSlots = setup(playerInv, this.wandBeltInv = new ServerSideItemHandlerWrapper(wandBeltInv), selectedIndex);
 		this.wandBeltInventoryIndex.set(wandBeltInventoryIndex);
 	}

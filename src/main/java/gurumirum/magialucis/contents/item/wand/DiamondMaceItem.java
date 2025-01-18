@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.WandEffect;
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.item.LuxBatteryItem;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.world.InteractionHand;
@@ -21,13 +21,13 @@ public class DiamondMaceItem extends LuxBatteryItem implements WandEffectSource 
 
 	@Override
 	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack, InteractionHand hand) {
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE.get(), 0L);
+		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE.get(), 0L);
 		return charge >= COST_PER_ATTACK ? DiamondMaceEffect.INSTANCE : null;
 	}
 
 	@Override
 	public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers(@NotNull ItemStack stack) {
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE.get(), 0L);
+		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE.get(), 0L);
 		return charge >= COST_PER_ATTACK ? WandAttributes.diamondMace() : WandAttributes.wand();
 	}
 }

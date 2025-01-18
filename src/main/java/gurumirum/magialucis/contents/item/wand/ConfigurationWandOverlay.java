@@ -6,7 +6,7 @@ import gurumirum.magialucis.capability.LuxNetLinkDestination;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.lux.LuxNodeSyncPropertyAccess;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
@@ -99,7 +99,7 @@ public final class ConfigurationWandOverlay {
 
 	private static void update(LocalPlayer player, Level level, ItemStack stack) {
 		Minecraft mc = Minecraft.getInstance();
-		GlobalPos linkSourcePos = stack.get(Contents.LINK_SOURCE);
+		GlobalPos linkSourcePos = stack.get(ModDataComponents.LINK_SOURCE);
 		@Nullable BlockHitResult blockHit;
 		@Nullable BlockPos cursorHitPos;
 		@Nullable Vec3 cursorHitLocation;

@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.item.wand;
 
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.entity.EnderChestPortal;
 import gurumirum.magialucis.contents.item.LuxBatteryItem;
 import net.minecraft.server.level.ServerLevel;
@@ -27,23 +27,23 @@ public class EnderChestPortalWandItem extends LuxBatteryItem {
 	@Override
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand usedHand) {
 		ItemStack stack = player.getItemInHand(usedHand);
-		UUID portalId = stack.get(Contents.PORTAL_UUID);
+		UUID portalId = stack.get(ModDataComponents.PORTAL_UUID);
 
 		if (player.isSecondaryUseActive()) {
 			if (portalId != null) {
 				if (level instanceof ServerLevel serverLevel
 						&& serverLevel.getEntity(portalId) instanceof EnderChestPortal portal)
 					portal.kill();
-				stack.set(Contents.PORTAL_UUID, null);
+				stack.set(ModDataComponents.PORTAL_UUID, null);
 			}
 			return InteractionResultHolder.consume(stack);
 		}
 
-		long lux = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+		long lux = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		if (lux < COST_PER_PORTAL_SPAWN) return InteractionResultHolder.fail(stack);
 		if (!(level instanceof ServerLevel serverLevel)) return InteractionResultHolder.consume(stack);
 
-		stack.set(Contents.LUX_CHARGE, lux - COST_PER_PORTAL_SPAWN);
+		stack.set(ModDataComponents.LUX_CHARGE, lux - COST_PER_PORTAL_SPAWN);
 
 		Vec3 look = player.getLookAngle();
 
@@ -60,7 +60,7 @@ public class EnderChestPortalWandItem extends LuxBatteryItem {
 		}
 
 		if (level.addFreshEntity(portal)) {
-			stack.set(Contents.PORTAL_UUID, portal.getUUID());
+			stack.set(ModDataComponents.PORTAL_UUID, portal.getUUID());
 		}
 
 		return InteractionResultHolder.consume(stack);
@@ -70,18 +70,18 @@ public class EnderChestPortalWandItem extends LuxBatteryItem {
 	public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
 		if ((slotId == Inventory.SLOT_OFFHAND || (slotId >= 0 && slotId < 9)) &&
 				level instanceof ServerLevel serverLevel) {
-			UUID portalId = stack.get(Contents.PORTAL_UUID);
+			UUID portalId = stack.get(ModDataComponents.PORTAL_UUID);
 			if (portalId == null) return;
 
-			long lux = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+			long lux = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 			if (lux < COST_PER_PORTAL_TICK) return;
 
 			if (serverLevel.getEntity(portalId) instanceof EnderChestPortal portal &&
 					portal.isAlive()) {
 				portal.setLife(60);
-				stack.set(Contents.LUX_CHARGE, lux - COST_PER_PORTAL_TICK);
+				stack.set(ModDataComponents.LUX_CHARGE, lux - COST_PER_PORTAL_TICK);
 			} else {
-				stack.remove(Contents.PORTAL_UUID);
+				stack.remove(ModDataComponents.PORTAL_UUID);
 			}
 		}
 	}

@@ -1,13 +1,10 @@
 package gurumirum.magialucis.client;
 
 import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.contents.*;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntityRenderer;
 import gurumirum.magialucis.contents.entity.GemGolemRenderer;
 import gurumirum.magialucis.contents.entity.EnderChestPortalRenderer;
-import gurumirum.magialucis.contents.Contents;
-import gurumirum.magialucis.contents.ModBlockEntities;
-import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemExtension;
@@ -59,8 +56,8 @@ public final class ClientInit {
 
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), USING, wandUsing);
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
-				return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < RecallStaffWandItem.COST_PER_RECALL ||
-						entity != null && entity.hasEffect(Contents.RECALL_FATIGUE) ? 1 : 0;
+				return stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L) < RecallStaffWandItem.COST_PER_RECALL ||
+						entity != null && entity.hasEffect(ModMobEffects.RECALL_FATIGUE) ? 1 : 0;
 			});
 
 			ItemProperties.register(Wands.HEAL_WAND.asItem(), USING, wandUsing);
@@ -96,7 +93,7 @@ public final class ClientInit {
 
 	@SubscribeEvent
 	public static void registerMenuScreens(RegisterMenuScreensEvent event) {
-		event.register(Contents.WANG_BELT_MENU.get(), WandBeltScreen::new);
+		event.register(ModMenus.WANG_BELT_MENU.get(), WandBeltScreen::new);
 	}
 
 	@SubscribeEvent
@@ -107,9 +104,9 @@ public final class ClientInit {
 
 	@SubscribeEvent
 	public static void registerEntityRegister(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(Contents.GEM_GOLEM.get(), GemGolemRenderer::new);
-		event.registerEntityRenderer(Contents.ENDER_CHEST_PORTAL.get(), EnderChestPortalRenderer::new);
-		event.registerEntityRenderer(Contents.LESSER_ICE_PROJECTILE.get(), LesserIceProjectileRenderer::new);
+		event.registerEntityRenderer(ModEntities.GEM_GOLEM.get(), GemGolemRenderer::new);
+		event.registerEntityRenderer(ModEntities.ENDER_CHEST_PORTAL.get(), EnderChestPortalRenderer::new);
+		event.registerEntityRenderer(ModEntities.LESSER_ICE_PROJECTILE.get(), LesserIceProjectileRenderer::new);
 
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);
@@ -120,7 +117,7 @@ public final class ClientInit {
 	@SuppressWarnings("deprecation")
 	private static ItemPropertyFunction noCharge(long minimumCharge) {
 		return (stack, level, entity, seed) -> {
-			return stack.getOrDefault(Contents.LUX_CHARGE, 0L) < minimumCharge ? 1 : 0;
+			return stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L) < minimumCharge ? 1 : 0;
 		};
 	}
 }

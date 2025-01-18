@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.WandEffect;
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.item.LuxBatteryItem;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.world.InteractionHand;
@@ -31,7 +31,7 @@ public class HealWandItem extends LuxBatteryItem implements WandEffectSource {
 	@Override
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
 		ItemStack stack = player.getItemInHand(usedHand);
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		if (charge < COST_PER_CAST) return InteractionResultHolder.fail(stack);
 		player.startUsingItem(usedHand);
 		return InteractionResultHolder.consume(player.getItemInHand(usedHand));
@@ -40,14 +40,14 @@ public class HealWandItem extends LuxBatteryItem implements WandEffectSource {
 	@Override
 	public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity) {
 		if (!level.isClientSide) {
-			long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+			long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 			if (charge >= COST_PER_CAST) {
 				for (LivingEntity entity : level.getEntities(EntityTypeTest.forClass(LivingEntity.class),
 						livingEntity.getBoundingBox().inflate(5f), e -> !(e instanceof Enemy))) {
 					entity.heal(HEAL_AMOUNT);
 					entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, REGENERATION_EFFECT_DURATION));
 				}
-				stack.set(Contents.LUX_CHARGE, charge - COST_PER_CAST);
+				stack.set(ModDataComponents.LUX_CHARGE, charge - COST_PER_CAST);
 			}
 		}
 

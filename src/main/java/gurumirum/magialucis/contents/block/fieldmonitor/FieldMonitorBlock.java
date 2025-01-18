@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.fieldmonitor;
 
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.Ticker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -40,7 +40,7 @@ public class FieldMonitorBlock extends Block implements EntityBlock {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		ResourceLocation fieldId = stack.get(Contents.FIELD_ID.get());
+		ResourceLocation fieldId = stack.get(ModDataComponents.FIELD_ID.get());
 		if (fieldId != null) tooltip.add(Component.literal(fieldId + ""));
 	}
 }

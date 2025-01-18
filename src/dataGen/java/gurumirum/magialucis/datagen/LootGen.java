@@ -1,10 +1,7 @@
 package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.contents.Contents;
-import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.contents.ModBuildingBlocks;
-import gurumirum.magialucis.contents.Ore;
+import gurumirum.magialucis.contents.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -71,7 +68,7 @@ public class LootGen extends LootTableProvider {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(b)
 										.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-												.include(Contents.RELAY_ITEM.get())
+												.include(ModDataComponents.RELAY_ITEM.get())
 										)
 								)
 						)

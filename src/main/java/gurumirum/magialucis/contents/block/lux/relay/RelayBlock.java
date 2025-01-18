@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.block.lux.relay;
 
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -141,7 +141,7 @@ public class RelayBlock extends Block implements EntityBlock {
 		if (level.getBlockEntity(pos) instanceof RelayBlockEntity relay) {
 			ItemStack relayItem = relay.stack();
 			if (!relayItem.isEmpty()) {
-				stack.set(Contents.RELAY_ITEM, new RelayItemData(relayItem.copy()));
+				stack.set(ModDataComponents.RELAY_ITEM, new RelayItemData(relayItem.copy()));
 			}
 		}
 		return stack;

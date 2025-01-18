@@ -1,6 +1,6 @@
 package gurumirum.magialucis.capability;
 
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +22,7 @@ public class ItemStackLuxAcceptor implements LuxAcceptor {
 		long maxCharge = this.stat.maxCharge();
 		if (maxCharge <= 0) return;
 
-		long luxCharge = Math.max(0, this.stack.getOrDefault(Contents.LUX_CHARGE, 0L));
+		long luxCharge = Math.max(0, this.stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L));
 		if (luxCharge >= maxCharge) return;
 
 		double rMaxTransfer = this.stat.rMaxTransfer();
@@ -47,7 +47,7 @@ public class ItemStackLuxAcceptor implements LuxAcceptor {
 		acceptedOut.y = amountToCharge * (gMaxTransfer / brightnessSum);
 		acceptedOut.z = amountToCharge * (bMaxTransfer / brightnessSum);
 
-		if (!test) this.stack.set(Contents.LUX_CHARGE, luxCharge + amountToCharge);
+		if (!test) this.stack.set(ModDataComponents.LUX_CHARGE, luxCharge + amountToCharge);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class ItemStackLuxAcceptor implements LuxAcceptor {
 		long maxCharge = this.stat.maxCharge();
 		if (maxCharge <= 0) return 0;
 
-		long luxCharge = Math.max(0, this.stack.getOrDefault(Contents.LUX_CHARGE, 0L));
+		long luxCharge = Math.max(0, this.stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L));
 		if (luxCharge >= maxCharge) return 0;
 
 		if (!bypassThreshold) {
@@ -70,7 +70,7 @@ public class ItemStackLuxAcceptor implements LuxAcceptor {
 		}
 
 		long amountToCharge = Math.min(maxCharge - luxCharge, amount);
-		if (!test) stack.set(Contents.LUX_CHARGE, luxCharge + amountToCharge);
+		if (!test) stack.set(ModDataComponents.LUX_CHARGE, luxCharge + amountToCharge);
 
 		return amountToCharge;
 	}

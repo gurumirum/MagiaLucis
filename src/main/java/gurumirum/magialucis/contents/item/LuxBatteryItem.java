@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents.item;
 import gurumirum.magialucis.capability.LuxContainerStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.RotationLogic;
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.impl.RGB332;
 import net.minecraft.network.chat.Component;
@@ -26,7 +26,7 @@ public class LuxBatteryItem extends Item {
 		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (luxContainerStat == null) return;
 
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		tooltip.add(Component.translatable("item.magialucis.tooltip.lux_charge", charge, luxContainerStat.maxCharge()));
 		LuxStatTooltip.formatContainerStat(luxContainerStat, tooltip);
 		LuxStatTooltip.skipAutoTooltipFor(stack);
@@ -43,7 +43,7 @@ public class LuxBatteryItem extends Item {
 		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (luxContainerStat == null) return 0;
 
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		return (int)Math.round(13 * ((double)charge / luxContainerStat.maxCharge()));
 	}
 

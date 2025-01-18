@@ -102,7 +102,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 				for (GemStats g : GemStats.values()) {
 					g.forEachItem(item -> {
 						ItemStack stack = new ItemStack(this);
-						stack.set(Contents.RELAY_ITEM, new RelayItemData(new ItemStack(item)));
+						stack.set(ModDataComponents.RELAY_ITEM, new RelayItemData(new ItemStack(item)));
 						o.accept(stack);
 					});
 				}
@@ -110,7 +110,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			case FIELD_MONITOR -> {
 				for (Field f : FieldRegistry.fields().values()) {
 					ItemStack stack = new ItemStack(this);
-					stack.set(Contents.FIELD_ID, f.id);
+					stack.set(ModDataComponents.FIELD_ID, f.id);
 					o.accept(stack);
 				}
 			}

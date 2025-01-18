@@ -26,7 +26,7 @@ public enum CreativeTabType {
 				o.accept(i);
 				if (i.luxContainerStat() != null) {
 					ItemStack stack = new ItemStack(i);
-					stack.set(Contents.LUX_CHARGE, i.luxContainerStat().maxCharge());
+					stack.set(ModDataComponents.LUX_CHARGE, i.luxContainerStat().maxCharge());
 					o.accept(stack);
 				}
 			}
@@ -57,7 +57,7 @@ public enum CreativeTabType {
 		@Override
 		protected ItemStack icon() {
 			ItemStack stack = new ItemStack(ModBlocks.RELAY);
-			stack.set(Contents.RELAY_ITEM, new RelayItemData(new ItemStack(Items.DIAMOND)));
+			stack.set(ModDataComponents.RELAY_ITEM, new RelayItemData(new ItemStack(Items.DIAMOND)));
 			return stack;
 		}
 

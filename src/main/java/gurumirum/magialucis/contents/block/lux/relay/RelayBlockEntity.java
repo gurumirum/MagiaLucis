@@ -5,8 +5,8 @@ import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.client.render.light.LightEffectRender;
-import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModBlockEntities;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import net.minecraft.core.BlockPos;
@@ -79,14 +79,14 @@ public class RelayBlockEntity extends BasicRelayBlockEntity {
 	@Override
 	protected void applyImplicitComponents(BlockEntity.@NotNull DataComponentInput componentInput) {
 		super.applyImplicitComponents(componentInput);
-		RelayItemData relayItemData = componentInput.get(Contents.RELAY_ITEM.get());
+		RelayItemData relayItemData = componentInput.get(ModDataComponents.RELAY_ITEM.get());
 		this.stack = relayItemData != null ? relayItemData.stack().copy() : ItemStack.EMPTY;
 	}
 
 	@Override
 	protected void collectImplicitComponents(DataComponentMap.@NotNull Builder components) {
 		super.collectImplicitComponents(components);
-		if (!this.stack.isEmpty()) components.set(Contents.RELAY_ITEM.get(), new RelayItemData(this.stack.copy()));
+		if (!this.stack.isEmpty()) components.set(ModDataComponents.RELAY_ITEM.get(), new RelayItemData(this.stack.copy()));
 	}
 
 	@Override

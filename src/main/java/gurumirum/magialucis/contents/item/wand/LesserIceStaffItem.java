@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.WandEffect;
-import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.entity.LesserIceProjectile;
 import gurumirum.magialucis.contents.item.LuxBatteryItem;
 import gurumirum.magialucis.contents.item.WandEffectSource;
@@ -26,7 +26,7 @@ public class LesserIceStaffItem extends LuxBatteryItem implements WandEffectSour
 	@Override
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
 		ItemStack stack = player.getItemInHand(usedHand);
-		if (stack.getOrDefault(Contents.LUX_CHARGE, 0L) < COST_PER_ATTACK)
+		if (stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L) < COST_PER_ATTACK)
 			return InteractionResultHolder.fail(stack);
 
 		player.startUsingItem(usedHand);
@@ -37,7 +37,7 @@ public class LesserIceStaffItem extends LuxBatteryItem implements WandEffectSour
 	public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity, int timeCharged) {
 		if (level.isClientSide || stack.getUseDuration(livingEntity) - timeCharged < CHARGE_DURATION) return;
 
-		long charge = stack.getOrDefault(Contents.LUX_CHARGE, 0L);
+		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		if (charge < COST_PER_ATTACK) return;
 
 		Vec3 lookAngle = livingEntity.getLookAngle();
@@ -52,7 +52,7 @@ public class LesserIceStaffItem extends LuxBatteryItem implements WandEffectSour
 				1.5f, 1.0f);
 		level.addFreshEntity(projectile);
 
-		stack.set(Contents.LUX_CHARGE, charge - COST_PER_ATTACK);
+		stack.set(ModDataComponents.LUX_CHARGE, charge - COST_PER_ATTACK);
 	}
 
 	@Override
