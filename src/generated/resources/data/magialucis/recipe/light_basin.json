@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "c:ingots/rose_gold"
+    },
+    "2": {
+      "tag": "c:ingots/silver"
+    },
+    "3": {
+      "tag": "magialucis:lapides_manalis"
+    }
+  },
+  "pattern": [
+    "121",
+    "333"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:light_basin"
+  }
+}

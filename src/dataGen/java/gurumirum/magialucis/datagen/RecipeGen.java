@@ -151,6 +151,15 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_amber", has(GemStats.AMBER.tag()))
 				.save(out);
 
+		shaped(MISC, ModBlocks.LIGHT_BASIN)
+				.pattern("121")
+				.pattern("333")
+				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
+				.define('2', ModItemTags.SILVER_INGOTS)
+				.define('3', ModItemTags.LAPIDES_MANALIS)
+				.unlockedBy("has_silver_ingots", has(ModItemTags.SILVER_INGOTS))
+				.save(out);
+
 		shaped(MISC, ModBlocks.SUNLIGHT_CORE)
 				.pattern("121")
 				.pattern("232")
