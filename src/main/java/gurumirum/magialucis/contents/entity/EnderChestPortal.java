@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents.entity;
 
 import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.Wands;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -101,7 +102,13 @@ public class EnderChestPortal extends Entity {
 
 		if (!isAlive()) return;
 
-		if (!level().isClientSide) {
+		if (level().isClientSide) {
+			int xm = random.nextInt(2) * 2 - 1;
+			int zm = random.nextInt(2) * 2 - 1;
+			level().addParticle(ParticleTypes.PORTAL,
+					getX() + 0.25 * xm, getY() + random.nextFloat() - 0.5, getZ() + 0.25 * zm,
+					random.nextFloat() * xm, (random.nextFloat() - 0.5) * 0.125, random.nextFloat() * zm);
+		} else {
 			if (this.life <= 0) {
 				kill();
 				return;
@@ -111,7 +118,7 @@ public class EnderChestPortal extends Entity {
 		Vec3 delta = getDeltaMovement();
 		move(MoverType.SELF, delta);
 
-		setDeltaMovement(delta.multiply(.5, .5, .5));
+		setDeltaMovement(delta.scale(.5));
 	}
 
 	@Override

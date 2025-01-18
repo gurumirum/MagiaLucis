@@ -48,7 +48,9 @@ public class EnderChestPortalWandItem extends LuxBatteryItem {
 		Vec3 look = player.getLookAngle();
 
 		EnderChestPortal portal = new EnderChestPortal(level);
-		portal.setPos(player.getX(), player.getY(), player.getZ());
+		portal.setPos(player.getX() + look.x * 1,
+				player.getY() + player.getBbHeight() / 2 + look.y * 1,
+				player.getZ() + look.z * 1);
 		portal.setDeltaMovement(look);
 		portal.setOwnerUuid(player.getUUID());
 		portal.setLife(60);

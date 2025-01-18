@@ -107,7 +107,7 @@ public final class Contents {
 
 	public static final DeferredHolder<EntityType<?>, EntityType<EnderChestPortal>> ENDER_CHEST_PORTAL = ENTITY_TYPES.register("ender_chest_portal",
 			() -> EntityType.Builder.<EnderChestPortal>of(EnderChestPortal::new, MobCategory.MISC)
-					.sized(1F, 2F)
+					.sized(.75f, .75f)
 					.clientTrackingRange(10)
 					.updateInterval(10)
 					.build("ender_chest_portal"));

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "magialucis:item/ender_wand_no_charge"
+  }
+}
