@@ -1,17 +1,19 @@
 package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.capability.GemStats;
-import gurumirum.magialucis.contents.*;
+import gurumirum.magialucis.contents.GemItems;
+import gurumirum.magialucis.contents.ModBlocks;
+import gurumirum.magialucis.contents.ModItemTags;
+import gurumirum.magialucis.contents.Ore;
+import gurumirum.magialucis.datagen.builder.LightBasinRecipeBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static gurumirum.magialucis.MagiaLucisMod.MODID;
+import static gurumirum.magialucis.MagiaLucisMod.id;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.*;
 import static gurumirum.magialucis.contents.ModItems.*;
 import static gurumirum.magialucis.contents.Wands.*;
@@ -62,19 +66,19 @@ public class RecipeGen extends RecipeProvider {
 				.requires(Ingredient.of(Tags.Items.NUGGETS_GOLD), 2)
 				.requires(ModItemTags.SILVER_NUGGETS)
 				.unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))
-				.save(out, "electrum_hand_alloying");
+				.save(out, id("electrum_hand_alloying"));
 
 		shapeless(MISC, ROSE_GOLD_NUGGET, 2)
 				.requires(Ingredient.of(Tags.Items.NUGGETS_GOLD), 2)
 				.requires(ModItemTags.COPPER_NUGGETS)
 				.unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))
-				.save(out, "rose_gold_hand_alloying");
+				.save(out, id("rose_gold_hand_alloying"));
 
 		shapeless(MISC, STERLING_SILVER_NUGGET, 2)
 				.requires(Ingredient.of(ModItemTags.SILVER_NUGGETS), 2)
 				.requires(ModItemTags.COPPER_NUGGETS)
 				.unlockedBy("has_silver", has(ModItemTags.SILVER_INGOTS))
-				.save(out, "sterling_silver_hand_alloying");
+				.save(out, id("sterling_silver_hand_alloying"));
 
 		wandRecipe(true, ANCIENT_LIGHT)
 				.define('1', ItemTags.STONE_BRICKS)
@@ -237,7 +241,7 @@ public class RecipeGen extends RecipeProvider {
 		shapeless(BUILDING_BLOCKS, LAPIS_MANALIS)
 				.requires(ModItemTags.LAPIDES_MANALIS)
 				.unlockedBy("has_lapides_manalis", has(ModItemTags.LAPIDES_MANALIS))
-				.save(out, "lapis_manalis_revert");
+				.save(out, id("lapis_manalis_revert"));
 
 		stairBuilder(LAPIS_MANALIS_STAIRS, Ingredient.of(LAPIS_MANALIS))
 				.unlockedBy("has_lapis_manalis", has(LAPIS_MANALIS))
@@ -266,6 +270,13 @@ public class RecipeGen extends RecipeProvider {
 		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_STAIRS, LAPIS_MANALIS);
 		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS);
 		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS_BRICKS);
+
+		lightBasin()
+				.ingredient(Blocks.STONE)
+				.result(LAPIS_MANALIS)
+				.processTicks(100)
+				.minLuxInputSum(50)
+				.save(out);
 	}
 
 	private ShapedRecipeBuilder wandRecipe(boolean tool, ItemLike result) {
@@ -286,5 +297,67 @@ public class RecipeGen extends RecipeProvider {
 		ore.allOreItems().forEach(list::add);
 
 		return list;
+	}
+
+	protected static void oreSmelting(
+			@NotNull RecipeOutput recipeOutput, List<ItemLike> ingredients, @NotNull RecipeCategory category,
+			@NotNull ItemLike result, float experience, int cookingTime, @NotNull String group) {
+		oreCooking(recipeOutput, RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, ingredients, category, result,
+				experience, cookingTime, group, "_from_smelting");
+	}
+
+	protected static void oreBlasting(
+			@NotNull RecipeOutput recipeOutput, List<ItemLike> ingredients, @NotNull RecipeCategory category,
+			@NotNull ItemLike result, float experience, int cookingTime, @NotNull String group) {
+		oreCooking(recipeOutput, RecipeSerializer.BLASTING_RECIPE, BlastingRecipe::new, ingredients, category, result,
+				experience, cookingTime, group, "_from_blasting");
+	}
+
+	protected static <T extends AbstractCookingRecipe> void oreCooking(
+			@NotNull RecipeOutput recipeOutput, RecipeSerializer<T> serializer,
+			AbstractCookingRecipe.@NotNull Factory<T> recipeFactory, List<ItemLike> ingredients,
+			@NotNull RecipeCategory category, @NotNull ItemLike result, float experience, int cookingTime,
+			@NotNull String group, String suffix) {
+		for (ItemLike itemlike : ingredients) {
+			SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), category, result, experience, cookingTime,
+							serializer, recipeFactory)
+					.group(group)
+					.unlockedBy(getHasName(itemlike), has(itemlike))
+					.save(recipeOutput, MODID + ":" + getItemName(result) + suffix + "_" + getItemName(itemlike));
+		}
+	}
+
+	protected static void nineBlockStorageRecipes(
+			@NotNull RecipeOutput recipeOutput, @NotNull RecipeCategory unpackedCategory, ItemLike unpacked,
+			@NotNull RecipeCategory packedCategory, ItemLike packed) {
+		nineBlockStorageRecipes(recipeOutput, unpackedCategory, unpacked, packedCategory, packed,
+				MODID + ":" + getSimpleRecipeName(packed), null,
+				MODID + ":" + getSimpleRecipeName(unpacked), null
+		);
+	}
+
+	protected static void nineBlockStorageRecipesWithCustomPacking(
+			@NotNull RecipeOutput recipeOutput, @NotNull RecipeCategory unpackedCategory, ItemLike unpacked,
+			@NotNull RecipeCategory packedCategory, ItemLike packed, String packedName, @NotNull String packedGroup) {
+		nineBlockStorageRecipes(recipeOutput, unpackedCategory, unpacked, packedCategory, packed,
+				MODID + ":" + packedName, packedGroup,
+				MODID + ":" + getSimpleRecipeName(unpacked), null);
+	}
+
+	protected static void stonecutterResultFromBase(
+			@NotNull RecipeOutput recipeOutput, @NotNull RecipeCategory category, ItemLike result, ItemLike material) {
+		stonecutterResultFromBase(recipeOutput, category, result, material, 1);
+	}
+
+	protected static void stonecutterResultFromBase(
+			@NotNull RecipeOutput recipeOutput, @NotNull RecipeCategory category, ItemLike result,
+			ItemLike material, int resultCount) {
+		SingleItemRecipeBuilder.stonecutting(Ingredient.of(material), category, result, resultCount)
+				.unlockedBy(getHasName(material), has(material))
+				.save(recipeOutput, MODID + ":" + getConversionRecipeName(result, material) + "_stonecutting");
+	}
+
+	private static LightBasinRecipeBuilder lightBasin() {
+		return new LightBasinRecipeBuilder();
 	}
 }

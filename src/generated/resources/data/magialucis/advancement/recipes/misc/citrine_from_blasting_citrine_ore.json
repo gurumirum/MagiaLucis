@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_citrine_ore": {
+      "conditions": {
+        "items": [
+          {
+            "items": "magialucis:citrine_ore"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "magialucis:citrine_from_blasting_citrine_ore"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_citrine_ore"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "magialucis:citrine_from_blasting_citrine_ore"
+    ]
+  }
+}

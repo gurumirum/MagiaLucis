@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ruby_ore": {
+      "conditions": {
+        "items": [
+          {
+            "items": "magialucis:ruby_ore"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "magialucis:ruby_from_blasting_ruby_ore"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_ruby_ore"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "magialucis:ruby_from_blasting_ruby_ore"
+    ]
+  }
+}

@@ -68,6 +68,7 @@ public class BlockTagGen extends BlockTagsProvider {
 				REMOTE_CHARGER.block(),
 				REMOTE_CHARGER_2.block(),
 				RELAY.block(),
+				LIGHT_BASIN.block(),
 				SUNLIGHT_CORE.block(),
 				MOONLIGHT_CORE.block(),
 				SUNLIGHT_FOCUS.block(),

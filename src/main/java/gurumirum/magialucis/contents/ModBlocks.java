@@ -5,6 +5,7 @@ import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.block.AmberLightBlock;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlock;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
+import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
 import gurumirum.magialucis.contents.block.lux.remotecharger.RemoteChargerBlock;
@@ -48,6 +49,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.strength(2.5f)
 			.sound(SoundType.WOOD)
 			.lightLevel(AmberCoreBlock::getLightValue))),
+	LIGHT_BASIN(BlockProfile.customBlock(LightBasinBlock::new, ModBuildingBlocks.lapisManalis())),
 	SUNLIGHT_CORE(BlockProfile.customBlock(SunlightCoreBlock::new, Properties.of()
 			.strength(2.5f)
 			.sound(SoundType.GLASS))),

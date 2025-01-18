@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lapides_manalis": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#magialucis:lapides_manalis"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "magialucis:lapis_manalis_revert"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lapides_manalis"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "magialucis:lapis_manalis_revert"
+    ]
+  }
+}

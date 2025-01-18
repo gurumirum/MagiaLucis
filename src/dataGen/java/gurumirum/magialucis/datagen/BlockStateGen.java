@@ -6,10 +6,7 @@ import gurumirum.magialucis.contents.Ore;
 import gurumirum.magialucis.contents.block.ModBlockStateProps;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
@@ -78,6 +75,9 @@ public class BlockStateGen extends BlockStateProvider {
 						state.getValue(ModBlockStateProps.OVERSATURATED) ? amberCoreOversaturated : amberCore)
 				.build());
 		simpleBlockItem(AMBER_CORE.block(), amberCore);
+
+		simpleBlock(LIGHT_BASIN.block(), new ModelFile.UncheckedModelFile(LIGHT_BASIN.id().withPrefix("block/")));
+		itemModels().simpleBlockItem(LIGHT_BASIN.block());
 
 		models().getBuilder(SUNLIGHT_FOCUS.id().getPath()).texture("particle", "block/sunlight_focus_mirror_top_center");
 		simpleBlock(SUNLIGHT_FOCUS.block(), new ModelFile.UncheckedModelFile(SUNLIGHT_FOCUS.id().withPrefix("block/")));

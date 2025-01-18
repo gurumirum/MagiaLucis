@@ -57,6 +57,7 @@ public final class ModCapabilities {
 				be.getBlockState().getValue(BlockStateProperties.FACING).getOpposite() != dir ? be : null);
 
 		registerRelayLinkSource(event, ModBlockEntities.LUX_SOURCE.get());
+		registerLuxNetLinkDestination(event, ModBlockEntities.LIGHT_BASIN.get());
 		registerLuxNetLinkDestination(event, ModBlockEntities.LUX_SOURCE.get());
 		registerLuxNetLinkDestination(event, ModBlockEntities.REMOTE_CHARGER.get());
 		registerLuxNetLinkDestination(event, ModBlockEntities.REMOTE_CHARGER_2.get());

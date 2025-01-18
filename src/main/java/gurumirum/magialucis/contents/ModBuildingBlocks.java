@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.function.Supplier;
 
 public enum ModBuildingBlocks implements ItemLike, BlockProvider {
-	LAPIS_MANALIS(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).isValidSpawn(Blocks::never))),
+	LAPIS_MANALIS(BlockProfile.block(lapisManalis())),
 	LAPIS_MANALIS_BRICKS(BlockProfile.block(lapisManalis())),
 
 	LAPIS_MANALIS_PILLAR(BlockProfile.customBlock(RotatedPillarBlock::new, lapisManalis())),
@@ -69,7 +69,7 @@ public enum ModBuildingBlocks implements ItemLike, BlockProvider {
 
 	public static void init() {}
 
-	private static Supplier<BlockBehaviour.Properties> lapisManalis() {
-		return () -> BlockBehaviour.Properties.ofFullCopy(ModBuildingBlocks.LAPIS_MANALIS.block());
+	static Supplier<BlockBehaviour.Properties> lapisManalis() {
+		return () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).isValidSpawn(Blocks::never);
 	}
 }

@@ -1,0 +1,17 @@
+{
+  "type": "magialucis:light_basin",
+  "ingredients": [
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "minecraft:stone"
+      }
+    }
+  ],
+  "minLuxInputSum": 50.0,
+  "processTicks": 100,
+  "result": {
+    "count": 1,
+    "id": "magialucis:lapis_manalis"
+  }
+}
