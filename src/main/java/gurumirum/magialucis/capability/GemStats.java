@@ -17,19 +17,19 @@ public enum GemStats implements LuxStat {
 	BRIGHTSTONE(0, RGB332.WHITE, 0, 100, false),
 	SOUL_BRIGHTSTONE(0, RGB332.of(1, 0, 0), 0, 100, false),
 
-	AMBER(1, RGB332.of(6, 3, 0), 5, 300),
+	AMBER(1, RGB332.of(6, 3, 0), 5, 150),
 	CITRINE(1, RGB332.of(6, 6, 1), 25, 250),
 	IOLITE(1, RGB332.of(0, 0,1), 10, 600),
-	AQUAMARINE(1, RGB332.of(0, 5, 3), 20, 160),
-	PEARL(1, RGB332.of(7, 6, 3), 50, 150, false),
+	AQUAMARINE(1, RGB332.of(0, 5, 3), 20, 500),
+	PEARL(1, RGB332.of(7, 6, 3), 100, 700, false),
 
-	PRISMARINE(1, RGB332.of(0, 5, 2), 50, 150, true, true),
-	ENDER_PEARL(1, RGB332.of(0, 2, 1), 50, 150, false, true),
+	PRISMARINE(1, RGB332.of(0, 5, 2), 30, 400, true, true),
+	ENDER_PEARL(1, RGB332.of(0, 2, 1), 40, 500, false, true),
 
 	PURIFIED_QUARTZ(2, RGB332.WHITE, 10, 1000, false),
-	CRYSTALLIZED_REDSTONE(2, RGB332.of(5, 0, 0), 400, 800, false),
-	POLISHED_LAPIS_LAZULI(2, RGB332.of(1, 1, 2), 10, 200, false),
-	OBSIDIAN(2, RGB332.of(1, 0, 1), 400, 2000, false),
+	CRYSTALLIZED_REDSTONE(2, RGB332.of(5, 0, 0), 400, 1500, false),
+	POLISHED_LAPIS_LAZULI(2, RGB332.of(1, 1, 2), 300, 2500, false),
+	OBSIDIAN(2, RGB332.of(1, 0, 1), 600, 2500, false),
 
 	DIAMOND(2, RGB332.of(4, 7, 3), 800, 4000, true, true),
 	RUBY(2, RGB332.of(7, 0, 0), 50, 5000),
