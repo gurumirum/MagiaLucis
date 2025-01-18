@@ -74,9 +74,9 @@ public class LightBasinBlock extends Block implements EntityBlock {
 		if (level.getBlockEntity(pos) instanceof LightBasinBlockEntity lightBasin) {
 			IItemHandlerModifiable inventory = lightBasin.inventory();
 			for (int i = 0; i < inventory.getSlots(); i++) {
-				stack = inventory.insertItem(i, stack.getCount() == 1 ? stack : stack.copyWithCount(1), level.isClientSide);
-				if (stack.isEmpty()) {
-					if (!level.isClientSide) stack.shrink(1);
+				ItemStack remaining = inventory.insertItem(i, stack, level.isClientSide);
+				if (remaining != stack) {
+					if (!level.isClientSide) player.setItemInHand(hand, remaining);
 					return ItemInteractionResult.SUCCESS;
 				}
 			}

@@ -163,7 +163,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity implements Ticker.
 		BlockPos pos = getBlockPos();
 
 		for (int i = this.inventory.getSlots() - 1; i >= 0; i--) {
-			ItemStack stack = this.inventory.extractItem(i, 1, level.isClientSide);
+			ItemStack stack = this.inventory.extractItem(i, 64, level.isClientSide);
 			if (stack.isEmpty()) continue;
 
 			if (!level.isClientSide) {

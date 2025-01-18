@@ -1,0 +1,23 @@
+{
+  "type": "magialucis:light_basin",
+  "ingredients": [
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:nuggets/gold"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:nuggets/silver"
+      }
+    }
+  ],
+  "minLuxInputSum": 100.0,
+  "processTicks": 20,
+  "result": {
+    "count": 2,
+    "id": "magialucis:electrum_nugget"
+  }
+}

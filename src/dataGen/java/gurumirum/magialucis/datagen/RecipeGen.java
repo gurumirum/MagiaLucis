@@ -272,10 +272,62 @@ public class RecipeGen extends RecipeProvider {
 		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS_BRICKS);
 
 		lightBasin()
+				.ingredient(Blocks.SAND)
+				.result(GemItems.BRIGHTSTONE)
+				.processTicks(40)
+				.minLuxInputSum(25)
+				.save(out);
+
+		lightBasin()
+				.ingredient(Blocks.RED_SAND)
+				.result(GemItems.RED_BRIGHTSTONE)
+				.processTicks(40)
+				.minLuxInputSum(25)
+				.save(out);
+
+		lightBasin()
+				.ingredient(Blocks.ICE)
+				.result(GemItems.ICY_BRIGHTSTONE)
+				.processTicks(40)
+				.minLuxInputSum(25)
+				.save(out);
+
+		lightBasin()
+				.ingredient(Blocks.SOUL_SAND)
+				.result(GemItems.SOUL_BRIGHTSTONE)
+				.processTicks(80)
+				.minLuxInputSum(75)
+				.save(out);
+
+		lightBasin()
 				.ingredient(Blocks.STONE)
 				.result(LAPIS_MANALIS)
-				.processTicks(100)
+				.processTicks(60)
 				.minLuxInputSum(50)
+				.save(out);
+
+		lightBasin()
+				.ingredient(Tags.Items.NUGGETS_GOLD)
+				.ingredient(ModItemTags.SILVER_NUGGETS)
+				.result(ELECTRUM_NUGGET, 2)
+				.processTicks(20)
+				.minLuxInputSum(100)
+				.save(out);
+
+		lightBasin()
+				.ingredient(Tags.Items.NUGGETS_GOLD)
+				.ingredient(ModItemTags.COPPER_NUGGETS)
+				.result(ROSE_GOLD_NUGGET, 2)
+				.processTicks(20)
+				.minLuxInputSum(100)
+				.save(out);
+
+		lightBasin()
+				.ingredient(ModItemTags.SILVER_NUGGETS)
+				.ingredient(ModItemTags.COPPER_NUGGETS)
+				.result(STERLING_SILVER_NUGGET, 2)
+				.processTicks(20)
+				.minLuxInputSum(100)
 				.save(out);
 	}
 

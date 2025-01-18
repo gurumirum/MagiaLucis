@@ -4,14 +4,14 @@
     {
       "count": 1,
       "ingredient": {
-        "item": "minecraft:stone"
+        "item": "minecraft:ice"
       }
     }
   ],
-  "minLuxInputSum": 50.0,
-  "processTicks": 60,
+  "minLuxInputSum": 25.0,
+  "processTicks": 40,
   "result": {
     "count": 1,
-    "id": "magialucis:lapis_manalis"
+    "id": "magialucis:icy_brightstone"
   }
 }

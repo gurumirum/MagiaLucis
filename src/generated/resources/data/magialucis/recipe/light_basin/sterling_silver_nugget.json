@@ -1,0 +1,23 @@
+{
+  "type": "magialucis:light_basin",
+  "ingredients": [
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:nuggets/silver"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:nuggets/copper"
+      }
+    }
+  ],
+  "minLuxInputSum": 100.0,
+  "processTicks": 20,
+  "result": {
+    "count": 2,
+    "id": "magialucis:sterling_silver_nugget"
+  }
+}

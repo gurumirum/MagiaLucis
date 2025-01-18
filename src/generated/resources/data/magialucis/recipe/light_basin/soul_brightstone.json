@@ -4,14 +4,14 @@
     {
       "count": 1,
       "ingredient": {
-        "item": "minecraft:stone"
+        "item": "minecraft:soul_sand"
       }
     }
   ],
-  "minLuxInputSum": 50.0,
-  "processTicks": 60,
+  "minLuxInputSum": 75.0,
+  "processTicks": 80,
   "result": {
     "count": 1,
-    "id": "magialucis:lapis_manalis"
+    "id": "magialucis:soul_brightstone"
   }
 }
