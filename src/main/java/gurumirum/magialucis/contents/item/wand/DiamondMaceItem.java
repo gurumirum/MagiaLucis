@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.WandEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.contents.item.LuxBatteryItem;
+import gurumirum.magialucis.contents.item.LuxContainerItem;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +11,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DiamondMaceItem extends LuxBatteryItem implements WandEffectSource {
+public class DiamondMaceItem extends LuxContainerItem implements WandEffectSource {
 	public static final int COST_PER_ATTACK = 10;
 	public static final int DEBUFF_DURATION = 300;
 

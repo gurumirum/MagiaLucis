@@ -42,6 +42,7 @@ public final class Contents {
 		RECIPE_SERIALIZERS.register(eventBus);
 		RECIPE_TYPES.register(eventBus);
 
+		Accessories.init();
 		CreativeTabType.init();
 		GemItems.init();
 		ModBlockEntities.init();
@@ -55,6 +56,5 @@ public final class Contents {
 		ModRecipes.init();
 		Ore.init();
 		Wands.init();
-		Accessories.init();
 	}
 }

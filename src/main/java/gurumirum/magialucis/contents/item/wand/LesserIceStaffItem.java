@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents.item.wand;
 import gurumirum.magialucis.client.WandEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.entity.LesserIceProjectile;
-import gurumirum.magialucis.contents.item.LuxBatteryItem;
+import gurumirum.magialucis.contents.item.LuxContainerItem;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class LesserIceStaffItem extends LuxBatteryItem implements WandEffectSource {
+public class LesserIceStaffItem extends LuxContainerItem implements WandEffectSource {
 	public static final int COST_PER_ATTACK = 2;
 	public static final int CHARGE_DURATION = 40;
 

@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.WandEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.contents.item.LuxBatteryItem;
+import gurumirum.magialucis.contents.item.LuxContainerItem;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class HealWandItem extends LuxBatteryItem implements WandEffectSource {
+public class HealWandItem extends LuxContainerItem implements WandEffectSource {
 	public static final int COST_PER_CAST = 20;
 
 	private static final int HEAL_AMOUNT = 10;

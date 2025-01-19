@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.entity.EnderChestPortal;
-import gurumirum.magialucis.contents.item.LuxBatteryItem;
+import gurumirum.magialucis.contents.item.LuxContainerItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class EnderChestPortalWandItem extends LuxBatteryItem {
+public class EnderChestPortalWandItem extends LuxContainerItem {
 	public static final int COST_PER_PORTAL_SPAWN = 10;
 	public static final int COST_PER_PORTAL_TICK = 1;
 

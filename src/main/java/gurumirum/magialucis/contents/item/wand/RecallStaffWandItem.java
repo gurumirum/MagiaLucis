@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents.item.wand;
 import gurumirum.magialucis.client.WandEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModMobEffects;
-import gurumirum.magialucis.contents.item.LuxBatteryItem;
+import gurumirum.magialucis.contents.item.LuxContainerItem;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.portal.DimensionTransition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class RecallStaffWandItem extends LuxBatteryItem implements WandEffectSource {
+public class RecallStaffWandItem extends LuxContainerItem implements WandEffectSource {
 	public static final int COST_PER_RECALL = 100;
 	public static final int RECALL_FATIGUE_DURATION = 20 * 75;
 

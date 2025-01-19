@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LuxBatteryItem extends Item {
-	public LuxBatteryItem(Properties properties) {
+public class LuxContainerItem extends Item {
+	public LuxContainerItem(Properties properties) {
 		super(properties.stacksTo(1));
 	}
 

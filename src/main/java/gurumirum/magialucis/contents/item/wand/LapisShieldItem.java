@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.WandEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.contents.item.LuxBatteryItem;
+import gurumirum.magialucis.contents.item.LuxContainerItem;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,7 +16,7 @@ import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class LapisShieldItem extends LuxBatteryItem implements WandEffectSource {
+public class LapisShieldItem extends LuxContainerItem implements WandEffectSource {
 	public static final int COST_PER_SHIELDING_TICK = 1;
 	public static final int COST_PER_BLOCK = 5;
 	public static final int COST_PER_SHIELD_DISABLE = 50;
