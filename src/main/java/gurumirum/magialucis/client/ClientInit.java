@@ -2,15 +2,13 @@ package gurumirum.magialucis.client;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.*;
-import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntityRenderer;
-import gurumirum.magialucis.contents.entity.GemGolemRenderer;
-import gurumirum.magialucis.contents.entity.EnderChestPortalRenderer;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemExtension;
 import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusItemExtension;
-import gurumirum.magialucis.contents.entity.LesserIceProjectileRenderer;
+import gurumirum.magialucis.contents.entity.*;
 import gurumirum.magialucis.contents.item.wand.*;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltScreen;
@@ -73,6 +71,11 @@ public final class ClientInit {
 	}
 
 	@SubscribeEvent
+	public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+		event.registerLayerDefinition(TempleGuardianModel.LAYER, TempleGuardianModel::createBodyLayer);
+	}
+
+	@SubscribeEvent
 	public static void addLayers(EntityRenderersEvent.AddLayers event) {
 		for (var s : event.getSkins()) {
 			if (!(event.getSkin(s) instanceof PlayerRenderer r)) {
@@ -107,6 +110,7 @@ public final class ClientInit {
 		event.registerEntityRenderer(ModEntities.GEM_GOLEM.get(), GemGolemRenderer::new);
 		event.registerEntityRenderer(ModEntities.ENDER_CHEST_PORTAL.get(), EnderChestPortalRenderer::new);
 		event.registerEntityRenderer(ModEntities.LESSER_ICE_PROJECTILE.get(), LesserIceProjectileRenderer::new);
+		event.registerEntityRenderer(ModEntities.TEMPLE_GUARDIAN.get(), TempleGuardianRenderer::new);
 
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);

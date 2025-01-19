@@ -4,6 +4,7 @@ import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,7 +26,9 @@ public enum ModItems implements ItemLike {
 	ROSE_GOLD_INGOT(CreativeTabType.RESOURCES),
 	ROSE_GOLD_NUGGET(CreativeTabType.RESOURCES),
 	STERLING_SILVER_INGOT(CreativeTabType.RESOURCES),
-	STERLING_SILVER_NUGGET(CreativeTabType.RESOURCES);
+	STERLING_SILVER_NUGGET(CreativeTabType.RESOURCES),
+
+	TEMPLE_GUARDIAN_SPAWN_EGG(ItemProfile.customItem(p -> new DeferredSpawnEggItem(ModEntities.TEMPLE_GUARDIAN, -1, -1, p)));
 
 	private final DeferredItem<Item> item;
 	private final CreativeTabType tab;
