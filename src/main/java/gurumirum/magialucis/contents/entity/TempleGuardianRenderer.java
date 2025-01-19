@@ -217,6 +217,14 @@ public class TempleGuardianRenderer extends MobRenderer<TempleGuardian, TempleGu
 		}
 
 		@Override
+		public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight,
+		                   @NotNull TempleGuardian livingEntity, float limbSwing, float limbSwingAmount,
+		                   float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+			if (livingEntity.hasAttackCooldown()) return;
+			super.render(poseStack, buffer, packedLight, livingEntity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+		}
+
+		@Override
 		public @NotNull RenderType renderType() {
 			return renderType;
 		}

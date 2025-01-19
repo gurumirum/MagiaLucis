@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -42,7 +43,7 @@ public class TempleGuardian extends Monster {
 	private static final float ROTATION_BASE_COOLDOWN = 5;
 	private static final float ROTATION_HEAD_ATTACK = 0.5f;
 	private static final float ROTATION_HEAD_RESET = 5;
-	private static final int HEAD_IDLE_DURATION = 20 * 3;
+	private static final int HEAD_IDLE_DURATION = 20 * 2;
 
 	@Nullable
 	private LivingEntity clientSideCachedAttackTarget;
@@ -61,6 +62,14 @@ public class TempleGuardian extends Monster {
 	public TempleGuardian(EntityType<? extends TempleGuardian> entityType, Level level) {
 		super(entityType, level);
 		setPersistenceRequired();
+
+		this.lookControl = new LookControl(this) {
+			@Override
+			public void tick() {
+				if (TempleGuardian.this.attackCooldown > 0) return;
+				super.tick();
+			}
+		};
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -164,7 +173,10 @@ public class TempleGuardian extends Monster {
 
 			if (hasAttackCooldown()) {
 				baseRotation = ROTATION_BASE_COOLDOWN;
+				this.clientSideIdleCounter = 0;
 			} else if (hasActiveAttackTarget()) {
+				this.clientSideIdleCounter = 0;
+
 				if (this.clientSideAttackTime < ATTACK_CHARGE_DURATION) {
 					this.clientSideAttackTime++;
 				}
@@ -174,7 +186,8 @@ public class TempleGuardian extends Monster {
 
 				LivingEntity target = getActiveAttackTarget();
 				if (target != null) {
-					getLookControl().setLookAt(target, 90.0F, 90.0F);
+					getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(),
+							90.0F, 90.0F);
 					getLookControl().tick();
 				}
 
