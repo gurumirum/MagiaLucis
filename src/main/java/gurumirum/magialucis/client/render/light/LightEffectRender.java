@@ -13,6 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.joml.Quaternionf;
 import org.joml.Vector3d;
@@ -169,5 +170,10 @@ public final class LightEffectRender {
 			poseStack.pushPose();
 			poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 		}
+	}
+
+	@SubscribeEvent
+	public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event){
+		lightEffectProviders.clear();
 	}
 }
