@@ -1,13 +1,9 @@
 {
-  "feature": "magialucis:silver_ore_buried",
+  "feature": "magialucis:topaz_ore_medium",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": {
-        "type": "minecraft:uniform",
-        "max_inclusive": 2,
-        "min_inclusive": 0
-      }
+      "count": 2
     },
     {
       "type": "minecraft:in_square"
@@ -17,7 +13,7 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": -48
+          "absolute": -4
         },
         "min_inclusive": {
           "absolute": -64

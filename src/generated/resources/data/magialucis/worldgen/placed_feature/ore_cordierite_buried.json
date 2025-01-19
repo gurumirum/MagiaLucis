@@ -1,13 +1,9 @@
 {
-  "feature": "magialucis:silver_ore_buried",
+  "feature": "magialucis:cordierite_ore_buried",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": {
-        "type": "minecraft:uniform",
-        "max_inclusive": 2,
-        "min_inclusive": 0
-      }
+      "count": 6
     },
     {
       "type": "minecraft:in_square"
@@ -17,10 +13,10 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": -48
+          "absolute": 64
         },
         "min_inclusive": {
-          "absolute": -64
+          "absolute": -16
         }
       }
     },

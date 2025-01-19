@@ -1,13 +1,9 @@
 {
-  "feature": "magialucis:silver_ore_buried",
+  "feature": "magialucis:amber_ore",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": {
-        "type": "minecraft:uniform",
-        "max_inclusive": 2,
-        "min_inclusive": 0
-      }
+      "count": 6
     },
     {
       "type": "minecraft:in_square"
@@ -15,12 +11,12 @@
     {
       "type": "minecraft:height_range",
       "height": {
-        "type": "minecraft:uniform",
+        "type": "minecraft:trapezoid",
         "max_inclusive": {
-          "absolute": -48
+          "absolute": 100
         },
         "min_inclusive": {
-          "absolute": -64
+          "absolute": 0
         }
       }
     },

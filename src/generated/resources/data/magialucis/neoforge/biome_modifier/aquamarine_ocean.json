@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_ocean",
+  "features": "magialucis:ore_aquamarine_ocean",
+  "step": "underground_ores"
+}
