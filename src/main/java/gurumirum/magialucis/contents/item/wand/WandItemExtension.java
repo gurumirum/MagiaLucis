@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import gurumirum.magialucis.client.render.BeamRender;
 import gurumirum.magialucis.client.ModArmPose;
 import gurumirum.magialucis.client.WandEffect;
+import gurumirum.magialucis.client.render.PlayerBeamEffect;
 import gurumirum.magialucis.contents.item.BeamSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 public class WandItemExtension implements IClientItemExtensions {
 	@Override
@@ -51,14 +53,16 @@ public class WandItemExtension implements IClientItemExtensions {
 		BeamRender.applyItemTransform(poseStack, itemInHand, player, arm, true);
 
 		if (canProduceBeam) {
-			_mat.identity()
+			PlayerBeamEffect.setBeamStart(player, _mat.identity()
 					.mul(RenderSystem.getProjectionMatrix())
 					.mul(RenderSystem.getModelViewMatrix())
 					.mul(poseStack.last().pose())
-					.transformProject(18 / 16f, 18 / 16f, .5f, BeamRender.getOrCreatePlayerBeamStart(player));
+					.transformProject(18 / 16f, 18 / 16f, .5f, new Vector3f()));
 		}
 
-		if (wandEffect != null) wandEffect.render(poseStack, player, itemInHand, partialTick, true);
+		if (wandEffect != null) {
+			wandEffect.render(poseStack, player, itemInHand, partialTick, true);
+		}
 
 		poseStack.popPose();
 		return true;

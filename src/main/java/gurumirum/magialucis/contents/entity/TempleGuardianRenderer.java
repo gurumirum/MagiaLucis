@@ -7,6 +7,7 @@ import gurumirum.magialucis.MagiaLucisMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -26,6 +27,12 @@ public class TempleGuardianRenderer extends MobRenderer<TempleGuardian, TempleGu
 	public TempleGuardianRenderer(EntityRendererProvider.Context context) {
 		super(context, new TempleGuardianModel<>(context.bakeLayer(TempleGuardianModel.LAYER)), 0.5f);
 		addLayer(new EmissiveLayer(this));
+	}
+
+	@Override
+	public boolean shouldRender(@NotNull TempleGuardian livingEntity, @NotNull Frustum camera,
+	                            double camX, double camY, double camZ) {
+		return super.shouldRender(livingEntity, camera, camX, camY, camZ);
 	}
 
 	@Override
@@ -59,7 +66,7 @@ public class TempleGuardianRenderer extends MobRenderer<TempleGuardian, TempleGu
 
 			poseStack.pushPose();
 			poseStack.translate(0, 15 / 16f, 0);
-			poseStack.mulPose(Axis.YP.rotation(ringRotation));
+			poseStack.mulPose(Axis.YP.rotation(-ringRotation));
 
 			ring(poseStack, vc, 14, 2, 2, 34, 16, packedLight, false);
 

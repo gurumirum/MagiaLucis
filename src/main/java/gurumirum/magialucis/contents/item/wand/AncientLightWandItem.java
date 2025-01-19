@@ -1,6 +1,7 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.WandEffect;
+import gurumirum.magialucis.client.render.BeamRender;
 import gurumirum.magialucis.contents.item.BeamSource;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import gurumirum.magialucis.impl.ancientlight.AncientLightCrafting;
@@ -12,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -42,9 +42,11 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 
 		Vec3 start = player.getEyePosition();
 		Vec3 end = start.add(player.getLookAngle().scale(DISTANCE));
-		BlockHitResult hitResult = trace(player, start, end);
+		BlockHitResult hitResult = BeamSource.trace(player, start, end);
 		AncientLightCrafting.getLocalManager()
 				.setFocus(player, hitResult.getType() == HitResult.Type.BLOCK ? hitResult.getBlockPos() : null);
+
+		BeamRender.addBeamEffect(player, stack, this);
 	}
 
 	@Override
@@ -70,19 +72,13 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 		return 72000;
 	}
 
-	public static BlockHitResult trace(Player player, Vec3 start, Vec3 end) {
-		return player.level().clip(new ClipContext(start, end,
-				ClipContext.Block.VISUAL, ClipContext.Fluid.ANY,
-				player));
-	}
-
 	@Override
-	public int beamColor(Player player, ItemStack stack, boolean firstPersonPerspective) {
+	public int beamColor(Player player, ItemStack stack, boolean firstPersonPerspective, float partialTicks) {
 		return 0x80FFFFFF;
 	}
 
 	@Override
-	public float beamDiameter(Player player, ItemStack stack, boolean firstPersonPerspective) {
+	public float beamDiameter(Player player, ItemStack stack, boolean firstPersonPerspective, float partialTicks) {
 		return .25f;
 	}
 

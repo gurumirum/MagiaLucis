@@ -1,5 +1,7 @@
 package gurumirum.magialucis.contents.entity;
 
+import gurumirum.magialucis.client.render.BeamRender;
+import gurumirum.magialucis.client.render.TempleGuardianBeamEffect;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,8 +32,9 @@ public class TempleGuardian extends Monster {
 	private static final EntityDataAccessor<Boolean> ATTACK_COOLDOWN_FLAG =
 			SynchedEntityData.defineId(TempleGuardian.class, EntityDataSerializers.BOOLEAN);
 
-	private static final float RANGE = 15;
-	private static final int ATTACK_CHARGE_DURATION = 20 * 5;
+	public static final float RANGE = 15;
+	public static final int ATTACK_CHARGE_DURATION = 20 * 5;
+
 	private static final int ATTACK_COOLDOWN = 20 * 5;
 
 	private static final float ROTATION_BASE = 10;
@@ -39,7 +42,7 @@ public class TempleGuardian extends Monster {
 	private static final float ROTATION_BASE_COOLDOWN = 5;
 	private static final float ROTATION_HEAD_ATTACK = 0.5f;
 	private static final float ROTATION_HEAD_RESET = 5;
-	private static final int HEAD_IDLE_DURATION = 20 * 2;
+	private static final int HEAD_IDLE_DURATION = 20 * 3;
 
 	@Nullable
 	private LivingEntity clientSideCachedAttackTarget;
@@ -104,6 +107,15 @@ public class TempleGuardian extends Monster {
 		return this.entityData.get(ATTACK_COOLDOWN_FLAG);
 	}
 
+	public float getHeadRotation(float partialTicks) {
+		return (float)(Mth.rotLerp(partialTicks, this.clientSideHeadRotationO, this.clientSideHeadRotation) *
+				Math.PI / 180.0);
+	}
+
+	public float getAttackAnimationProgress(float partialTicks) {
+		return Mth.clamp((this.clientSideAttackTime + partialTicks) / ATTACK_CHARGE_DURATION, 0, 1);
+	}
+
 	@Override
 	public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
 		super.onSyncedDataUpdated(key);
@@ -165,6 +177,8 @@ public class TempleGuardian extends Monster {
 					getLookControl().setLookAt(target, 90.0F, 90.0F);
 					getLookControl().tick();
 				}
+
+				BeamRender.addBeamEffect(new TempleGuardianBeamEffect(this));
 			} else {
 				if (this.clientSideIdleCounter < HEAD_IDLE_DURATION) {
 					this.clientSideIdleCounter++;

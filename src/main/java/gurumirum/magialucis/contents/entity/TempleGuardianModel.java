@@ -7,7 +7,6 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
@@ -63,9 +62,6 @@ public class TempleGuardianModel<T extends TempleGuardian> extends EntityModel<T
 
 	@Override
 	public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		double deg2rad = Math.PI / 180.0;
-
-		float headRotation = (float)(Mth.rotLerp(this.partialTick, entity.clientSideHeadRotationO, entity.clientSideHeadRotation) * deg2rad);
 		float bobbing = ageInTicks / 20;
 
 		// wtf why do i need to reapply model offset
@@ -73,9 +69,9 @@ public class TempleGuardianModel<T extends TempleGuardian> extends EntityModel<T
 		this.torso1.y = 10.0f + (float)(Math.sin(bobbing + Math.PI / 2) / 2);
 		this.torso2.y = 7.0f + (float)(Math.sin(bobbing + Math.PI) / 2);
 
-		this.headRotY = netHeadYaw * (float)deg2rad;
-		this.headRotX = headPitch * (float)deg2rad;
-		this.headRotZ = headRotation;
+		this.headRotY = netHeadYaw * (float)(Math.PI / 180.0);
+		this.headRotX = headPitch * (float)(Math.PI / 180.0);
+		this.headRotZ = -entity.getHeadRotation(this.partialTick);
 	}
 
 	@Override

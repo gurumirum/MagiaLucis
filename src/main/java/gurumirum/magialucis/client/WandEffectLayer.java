@@ -3,6 +3,7 @@ package gurumirum.magialucis.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import gurumirum.magialucis.client.render.BeamRender;
+import gurumirum.magialucis.client.render.PlayerBeamEffect;
 import gurumirum.magialucis.contents.item.BeamSource;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 public class WandEffectLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
 	public WandEffectLayer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer) {
@@ -56,10 +58,14 @@ public class WandEffectLayer extends RenderLayer<AbstractClientPlayer, PlayerMod
 
 		BeamRender.applyItemTransform(poseStack, stack, player, arm, false);
 
-		if (canProduceBeam) poseStack.last().pose()
-				.transformProject(18 / 16f, 18 / 16f, .5f, BeamRender.getOrCreatePlayerBeamStart(player));
+		if (canProduceBeam) {
+			PlayerBeamEffect.setBeamStart(player,
+					poseStack.last().pose().transformProject(18 / 16f, 18 / 16f, .5f, new Vector3f()));
+		}
 
-		if (wandEffect != null) wandEffect.render(poseStack, player, stack, partialTick, false);
+		if (wandEffect != null) {
+			wandEffect.render(poseStack, player, stack, partialTick, false);
+		}
 
 		poseStack.popPose();
 	}
