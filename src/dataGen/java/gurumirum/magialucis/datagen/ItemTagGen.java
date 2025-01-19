@@ -31,6 +31,10 @@ public class ItemTagGen extends ItemTagsProvider {
 
 		curio(ModCurioSlots.WAND_BELT).add(ModItems.WAND_BELT.asItem());
 
+		for (var i : Accessories.values()) {
+			curio(i.curioSlot()).add(i.asItem());
+		}
+
 		tag(ModItemTags.COPPER_NUGGETS).add(ModItems.COPPER_NUGGET.asItem());
 
 		tag(ModItemTags.SILVER_INGOTS).add(ModItems.SILVER_INGOT.asItem());

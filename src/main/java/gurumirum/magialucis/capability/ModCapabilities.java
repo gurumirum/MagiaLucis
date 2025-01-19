@@ -1,9 +1,6 @@
 package gurumirum.magialucis.capability;
 
-import gurumirum.magialucis.contents.GemItems;
-import gurumirum.magialucis.contents.ModBlockEntities;
-import gurumirum.magialucis.contents.ModItems;
-import gurumirum.magialucis.contents.Wands;
+import gurumirum.magialucis.contents.*;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Items;
@@ -47,6 +44,12 @@ public final class ModCapabilities {
 		for (Wands w : Wands.values()) {
 			if (w.luxContainerStat() != null) {
 				registerLuxContainer(event, w.luxContainerStat(), w);
+			}
+		}
+
+		for (Accessories a : Accessories.values()) {
+			if (a.luxContainerStat() != null) {
+				registerLuxContainer(event, a.luxContainerStat(), a);
 			}
 		}
 

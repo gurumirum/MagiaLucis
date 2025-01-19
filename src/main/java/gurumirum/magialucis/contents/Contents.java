@@ -55,5 +55,6 @@ public final class Contents {
 		ModRecipes.init();
 		Ore.init();
 		Wands.init();
+		Accessories.init();
 	}
 }
