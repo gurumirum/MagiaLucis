@@ -5,6 +5,7 @@ import gurumirum.magialucis.contents.block.lux.LuxNodeSyncPropertyAccess;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,7 @@ import org.joml.Vector3d;
 
 public class BlockLightEffectProvider<T extends BlockEntity & LuxNodeSyncPropertyAccess> implements LightEffectProvider {
 	private final T blockEntity;
+	private boolean unloaded;
 
 	public BlockLightEffectProvider(T blockEntity) {
 		this.blockEntity = blockEntity;
@@ -52,6 +54,11 @@ public class BlockLightEffectProvider<T extends BlockEntity & LuxNodeSyncPropert
 
 	@Override
 	public boolean isLightEffectProviderValid() {
-		return !this.blockEntity.isRemoved();
+		return !this.unloaded && !this.blockEntity.isRemoved();
+	}
+
+	@Override
+	public void onLevelUnload(LevelAccessor level) {
+		if (level == this.blockEntity.getLevel()) this.unloaded = true;
 	}
 }

@@ -1,5 +1,6 @@
 package gurumirum.magialucis.client.render.light;
 
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -11,6 +12,9 @@ public interface LightEffectProvider {
 
 	@OnlyIn(Dist.CLIENT)
 	boolean isLightEffectProviderValid();
+
+	@OnlyIn(Dist.CLIENT)
+	void onLevelUnload(LevelAccessor level);
 
 	@FunctionalInterface
 	interface Collector {

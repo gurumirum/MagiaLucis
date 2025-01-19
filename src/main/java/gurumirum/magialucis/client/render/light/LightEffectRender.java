@@ -9,12 +9,14 @@ import gurumirum.magialucis.client.render.RenderShapes;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.FastColor;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
@@ -173,7 +175,17 @@ public final class LightEffectRender {
 	}
 
 	@SubscribeEvent
-	public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event){
+	public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
 		lightEffectProviders.clear();
+	}
+
+	@SubscribeEvent
+	public static void onLevelUnload(LevelEvent.Unload event) {
+		LevelAccessor level = event.getLevel();
+		if (!level.isClientSide()) return;
+
+		for (LightEffectProvider p : lightEffectProviders) {
+			p.onLevelUnload(level);
+		}
 	}
 }
