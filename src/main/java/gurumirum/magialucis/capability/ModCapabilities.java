@@ -53,7 +53,7 @@ public final class ModCapabilities {
 			}
 		}
 
-		event.registerItem(ItemHandler.ITEM, (s, v) -> new WandBeltItem.ItemHandler(s), ModItems.WAND_BELT);
+		event.registerItem(ItemHandler.ITEM, (s, v) -> new WandBeltItem.ItemHandler(s), Accessories.WAND_BELT);
 
 		registerRelayLinkSource(event, ModBlockEntities.RELAY.get());
 		event.registerBlockEntity(LUX_NET_LINK_DESTINATION, ModBlockEntities.RELAY.get(), (be, dir) ->

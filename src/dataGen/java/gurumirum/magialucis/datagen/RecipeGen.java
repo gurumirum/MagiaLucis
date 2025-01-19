@@ -23,6 +23,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static gurumirum.magialucis.MagiaLucisMod.MODID;
 import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.contents.Accessories.WAND_BELT;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.*;
 import static gurumirum.magialucis.contents.ModItems.*;
 import static gurumirum.magialucis.contents.Wands.*;
@@ -182,7 +183,7 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_amber", has(ModItemTags.SILVER_INGOTS))
 				.save(out);
 
-		shaped(MISC, WAND_BELT)
+		shaped(TOOLS, WAND_BELT)
 				.pattern("122")
 				.pattern("2 2")
 				.pattern("222")

@@ -31,10 +31,6 @@ public enum CreativeTabType {
 				}
 			}
 
-			for (var i : ModItems.values()) {
-				if (i.getCreativeTab() == this) o.accept(i);
-			}
-
 			for (var i : Accessories.values()) {
 				o.accept(i);
 				if (i.luxContainerStat() != null) {
@@ -42,6 +38,10 @@ public enum CreativeTabType {
 					stack.set(ModDataComponents.LUX_CHARGE, i.luxContainerStat().maxCharge());
 					o.accept(stack);
 				}
+			}
+
+			for (var i : ModItems.values()) {
+				if (i.getCreativeTab() == this) o.accept(i);
 			}
 		}
 	},

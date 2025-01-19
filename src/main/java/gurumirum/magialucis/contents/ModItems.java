@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -11,8 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 
 public enum ModItems implements ItemLike {
-	WAND_BELT(ItemProfile.customItem(WandBeltItem::new)),
-
 	ANCIENT_CORE,
 
 	COPPER_NUGGET(CreativeTabType.RESOURCES),

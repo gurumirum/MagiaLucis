@@ -2,8 +2,9 @@ package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxContainerStat;
-import gurumirum.magialucis.contents.item.LuxContainerItem;
 import gurumirum.magialucis.contents.item.accessory.AccessoryEventListener;
+import gurumirum.magialucis.contents.item.accessory.LuxContainerCurioItem;
+import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -14,7 +15,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 
 public enum Accessories implements ItemLike {
-	FIRE_IMMUNE_BRACELET(ItemProfile.customItem(LuxContainerItem::new), ModCurioSlots.BRACELET,
+	WAND_BELT(ItemProfile.customItem(WandBeltItem::new), ModCurioSlots.WAND_BELT),
+
+	FIRE_IMMUNE_BRACELET(ItemProfile.customItem(LuxContainerCurioItem::new), ModCurioSlots.BRACELET,
 			LuxContainerStat.withBaseStat(AccessoryEventListener.COST_PER_FIRE_RESISTANCE * 20 * 8, GemStats.RUBY));
 
 	private final DeferredItem<Item> item;
@@ -22,6 +25,9 @@ public enum Accessories implements ItemLike {
 	@Nullable
 	private final LuxContainerStat luxContainerStat;
 
+	Accessories(@NotNull ItemProfile<Item> itemProfile, @NotNull String curioSlot) {
+		this(itemProfile, curioSlot, null);
+	}
 	Accessories(@NotNull ItemProfile<Item> itemProfile, @NotNull String curioSlot, @Nullable LuxContainerStat luxContainerStat) {
 		this.item = itemProfile.create(name().toLowerCase(Locale.ROOT));
 		this.curioSlot = curioSlot;

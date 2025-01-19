@@ -2,6 +2,7 @@ package gurumirum.magialucis.net;
 
 import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ModItems;
 import gurumirum.magialucis.contents.item.wand.ConfigurationWandItem;
 import gurumirum.magialucis.contents.item.wandbelt.WandBelt;
@@ -30,7 +31,7 @@ public final class ServerSideHandlers {
 
 	public static void handleSetWandBeltSelectedIndex(SetWandBeltSelectedIndexMsg msg, IPayloadContext context) {
 		ItemStack stack = WandBelt.get(context.player());
-		if (!stack.is(ModItems.WAND_BELT.asItem())) return;
+		if (!stack.is(Accessories.WAND_BELT.asItem())) return;
 
 		WandBeltItem.setSelectedIndex(stack, msg.selectedIndex());
 	}

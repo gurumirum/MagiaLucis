@@ -1,10 +1,7 @@
 package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.client.ClientInit;
-import gurumirum.magialucis.contents.GemItems;
-import gurumirum.magialucis.contents.ModItems;
-import gurumirum.magialucis.contents.Ore;
-import gurumirum.magialucis.contents.Wands;
+import gurumirum.magialucis.contents.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -173,7 +170,7 @@ public class ItemModelGen extends ItemModelProvider {
 				.predicate(ClientInit.NO_CHARGE, 1)
 				.model(handheld(id(Wands.ENDER_WAND.id().getPath() + "_no_charge")));
 
-		basicItem(ModItems.WAND_BELT.asItem());
+		basicItem(Accessories.WAND_BELT.asItem());
 
 		basicItem(ModItems.ANCIENT_CORE.asItem());
 

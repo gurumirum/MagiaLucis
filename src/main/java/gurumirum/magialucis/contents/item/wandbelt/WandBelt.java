@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item.wandbelt;
 
+import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ModCurioSlots;
-import gurumirum.magialucis.contents.ModItems;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +15,7 @@ public final class WandBelt {
 		return CuriosApi.getCuriosInventory(player)
 				.flatMap(h -> h.findCurio(ModCurioSlots.WAND_BELT, 0)
 						.map(SlotResult::stack)
-						.filter(s -> s.is(ModItems.WAND_BELT.asItem())))
+						.filter(s -> s.is(Accessories.WAND_BELT.asItem())))
 				.orElse(ItemStack.EMPTY);
 	}
 }

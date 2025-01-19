@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents.item.wandbelt;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import gurumirum.magialucis.client.ModKeyMappings;
-import gurumirum.magialucis.contents.ModItems;
+import gurumirum.magialucis.contents.Accessories;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -26,7 +26,7 @@ public class WandBeltGuiLayer implements LayeredDraw.Layer {
 		}
 
 		ItemStack wandBeltStack = WandBelt.get(mc.player);
-		if (!wandBeltStack.is(ModItems.WAND_BELT.asItem())) {
+		if (!wandBeltStack.is(Accessories.WAND_BELT.asItem())) {
 			this.alpha = 0;
 			return;
 		}

@@ -29,8 +29,6 @@ public class ItemTagGen extends ItemTagsProvider {
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		tag(ModItemTags.WANDS).add(Arrays.stream(Wands.values()).map(Wands::asItem).toArray(Item[]::new));
 
-		curio(ModCurioSlots.WAND_BELT).add(ModItems.WAND_BELT.asItem());
-
 		for (var i : Accessories.values()) {
 			curio(i.curioSlot()).add(i.asItem());
 		}
