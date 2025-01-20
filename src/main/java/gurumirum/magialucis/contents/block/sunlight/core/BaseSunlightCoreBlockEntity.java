@@ -5,35 +5,35 @@ import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.client.render.light.LightEffectRender;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
-import gurumirum.magialucis.contents.block.sunlight.SunlightLogic;
 import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusBlockEntity;
 import gurumirum.magialucis.impl.field.Field;
-import gurumirum.magialucis.impl.field.Fields;
-import gurumirum.magialucis.impl.luxnet.*;
+import gurumirum.magialucis.impl.luxnet.LinkContext;
+import gurumirum.magialucis.impl.luxnet.LuxNet;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.ServerTickQueue;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
 import java.util.List;
 
 import static gurumirum.magialucis.contents.block.ModBlockStateProps.OVERSATURATED;
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKY_VISIBILITY;
 
-public abstract class BaseSunlightCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourceNodeInterface, Ticker.Server {
+public abstract class BaseSunlightCoreBlockEntity extends LuxNodeBlockEntity implements Ticker.Client {
 	public static final double LINK_DISTANCE = 7;
 
-	private static final int CYCLE = 50;
-
 	private double power;
+
+	private float clientSideRotation;
+	private float clientSideRotationO;
 
 	public BaseSunlightCoreBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
@@ -41,11 +41,15 @@ public abstract class BaseSunlightCoreBlockEntity extends LuxNodeBlockEntity imp
 
 	protected abstract @Nullable Field field();
 
+	public float getClientSideRotation(float partialTicks) {
+		return Mth.rotLerp(partialTicks, this.clientSideRotationO, this.clientSideRotation);
+	}
+
 	@Override
 	public void onLoad() {
 		super.onLoad();
 		if (this.level != null && this.level.isClientSide) {
-			LightEffectRender.register(new BlockLightEffectProvider<>(this));
+			LightEffectRender.register(new BlockLightEffectProvider<>(this, 1.5f));
 		}
 	}
 
@@ -72,39 +76,48 @@ public abstract class BaseSunlightCoreBlockEntity extends LuxNodeBlockEntity imp
 	}
 
 	private void updateOversaturatedProperty() {
-		if (!updateProperty(OVERSATURATED, getBlockState().getValue(SKY_VISIBILITY) > 0 && this.power < 1))
+		if (!updateProperty(OVERSATURATED, this.power < 1))
 			syncToClient();
 	}
 
 	@Override
-	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
-		if (level.getGameTime() % CYCLE != 0) return;
-
-		int skyVisibility = SunlightLogic.calculateSkyVisibility(level, pos, state);
-		if (updateProperty(SKY_VISIBILITY, skyVisibility)) {
-			Field f = field();
-			if (f != null) {
-				if (skyVisibility == 0) unregisterField(Fields.SUNLIGHT_CORE);
-				else registerField(Fields.SUNLIGHT_CORE);
-			}
-		}
+	public void updateClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+		this.clientSideRotationO = this.clientSideRotation;
+		this.clientSideRotation += Mth.lerp(luxInputPercentage(), minRotation(), maxRotation());
+		this.clientSideRotation = Mth.wrapDegrees(this.clientSideRotation);
 	}
 
-	@Override
-	public void generateLux(Vector3d dest) {
-		int skyVisibility = getBlockState().getValue(SKY_VISIBILITY);
-		SunlightLogic.getColor(this.level, getBlockPos(),
-				SunlightLogic.DEFAULT_BASE_INTENSITY * (skyVisibility / 16.0) * power, dest);
+	protected float minRotation() {
+		return 0.5f;
+	}
+
+	protected float maxRotation() {
+		return 30;
+	}
+
+	protected float luxInputPercentage() {
+		var max = rMaxTransfer() + gMaxTransfer() + bMaxTransfer();
+		if (!(max > 0)) return 0;
+		var lux = LuxUtils.sum(luxFlow(new Vector3d()));
+		return Math.min(1, (float)(lux / max));
 	}
 
 	@Override
 	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {
-		LuxUtils.linkToInWorldNode(this, linkCollector, (float)(Math.PI / 2), 0, LINK_DISTANCE,
+		float xRot = 0, yRot = 0;
+
+		switch (getBlockState().getValue(BlockStateProperties.FACING)) {
+			case DOWN -> xRot = Mth.HALF_PI;
+			case UP -> xRot = -Mth.HALF_PI;
+			case NORTH -> yRot = Mth.PI;
+			case SOUTH -> {}
+			case WEST -> yRot = Mth.HALF_PI;
+			case EAST -> yRot = -Mth.HALF_PI;
+		}
+
+		LuxUtils.linkToInWorldNode(this, linkCollector, xRot, yRot, LINK_DISTANCE,
 				0, null);
 	}
-
-	@Override
-	public void syncLinkStatus(@NotNull @UnmodifiableView Int2ObjectMap<InWorldLinkState> linkIndexToState) {}
 
 	@Override
 	public @NotNull LuxNetLinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {

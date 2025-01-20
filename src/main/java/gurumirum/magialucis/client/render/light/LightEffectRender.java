@@ -6,9 +6,7 @@ import com.mojang.blaze3d.vertex.*;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
-import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -18,7 +16,6 @@ import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import org.joml.Quaternionf;
-import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -36,27 +33,6 @@ public final class LightEffectRender {
 
 	public static void register(LightEffectProvider provider) {
 		lightEffectProviders.add(provider);
-	}
-
-	public static int getLightColor(Vector3d luxFlow) {
-		double u = LuxUtils.sum(luxFlow) / 3;
-		if (u <= 0) return 0;
-
-		double rv = Math.max(0, luxFlow.x) / u;
-		double gv = Math.max(0, luxFlow.y) / u;
-		double bv = Math.max(0, luxFlow.z) / u;
-
-		double mv = Math.max(Math.max(rv, gv), bv);
-
-		rv /= mv;
-		gv /= mv;
-		bv /= mv;
-
-		int r = (int)(rv * 255);
-		int g = (int)(gv * 255);
-		int b = (int)(bv * 255);
-
-		return FastColor.ARGB32.color(r, g, b);
 	}
 
 	private static final Vector3f currentLightStart = new Vector3f();
@@ -79,7 +55,13 @@ public final class LightEffectRender {
 
 	@SubscribeEvent
 	public static void onRender(RenderLevelStageEvent event) {
-		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || lightEffectProviders.isEmpty()) return;
+		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+			renderLightEffects(event);
+		}
+	}
+
+	private static void renderLightEffects(RenderLevelStageEvent event) {
+		if (lightEffectProviders.isEmpty()) return;
 
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null) return;

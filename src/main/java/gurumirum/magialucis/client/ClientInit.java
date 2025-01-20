@@ -6,6 +6,10 @@ import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemExtension;
+import gurumirum.magialucis.contents.block.sunlight.core.MoonlightCoreBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.sunlight.core.MoonlightCoreItemExtension;
+import gurumirum.magialucis.contents.block.sunlight.core.SunlightCoreBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.sunlight.core.SunlightCoreItemExtension;
 import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.sunlight.focus.SunlightFocusItemExtension;
 import gurumirum.magialucis.contents.entity.*;
@@ -91,6 +95,8 @@ public final class ClientInit {
 		event.registerItem(new WandItemExtension(), Arrays.stream(Wands.values())
 				.map(Wands::asItem).toArray(Item[]::new));
 		event.registerItem(new RelayItemExtension(), ModBlocks.RELAY.asItem());
+		event.registerItem(new SunlightCoreItemExtension(), ModBlocks.SUNLIGHT_CORE.blockItem());
+		event.registerItem(new MoonlightCoreItemExtension(), ModBlocks.MOONLIGHT_CORE.blockItem());
 		event.registerItem(new SunlightFocusItemExtension(), ModBlocks.SUNLIGHT_FOCUS.blockItem());
 	}
 
@@ -114,6 +120,8 @@ public final class ClientInit {
 
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.SUNLIGHT_CORE.get(), SunlightCoreBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.MOONLIGHT_CORE.get(), MoonlightCoreBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.SUNLIGHT_FOCUS.get(), SunlightFocusBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LIGHT_BASIN.get(), LightBasinBlockEntityRenderer::new);
 	}

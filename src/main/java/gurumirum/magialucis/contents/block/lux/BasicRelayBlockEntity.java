@@ -5,8 +5,6 @@ import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
 import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +25,6 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 	public static final int DEFAULT_MAX_LINKS = 3;
 
 	private final List<@Nullable Orientation> links = new ArrayList<>();
-	private final Int2ObjectMap<InWorldLinkState> linkIndexToState = new Int2ObjectOpenHashMap<>();
 
 	private @Nullable List<@Nullable Orientation> linksView;
 
@@ -68,7 +65,7 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 
 	@Override
 	public @Nullable InWorldLinkState getLinkState(int index) {
-		return getLink(index) == null ? null : this.linkIndexToState.get(index);
+		return getLink(index) == null ? null : super.getLinkState(index);
 	}
 
 	@Override
@@ -83,15 +80,6 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 
 		setChanged();
 		syncToClient();
-	}
-
-	@Override
-	public void syncLinkStatus(@NotNull @UnmodifiableView Int2ObjectMap<InWorldLinkState> linkIndexToState) {
-		if (!this.linkIndexToState.equals(linkIndexToState)) {
-			this.linkIndexToState.clear();
-			this.linkIndexToState.putAll(linkIndexToState);
-			syncToClient();
-		}
 	}
 
 	@Override
@@ -111,16 +99,6 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 			}
 			tag.put("links", list);
 		}
-
-		if (context.isSync()) {
-			ListTag list = new ListTag();
-			for (var e : this.linkIndexToState.int2ObjectEntrySet()) {
-				CompoundTag tag2 = e.getValue().save();
-				tag2.putInt("index", e.getIntKey());
-				list.add(tag2);
-			}
-			tag.put("linkIndexToState", list);
-		}
 	}
 
 	@Override
@@ -134,15 +112,6 @@ public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implement
 				CompoundTag tag2 = list.getCompound(i);
 				int index = tag2.getInt("index");
 				if (index >= 0 && index < maxLinks()) setLink(index, Orientation.fromLong(tag2.getLong("orientation")));
-			}
-		}
-
-		if (context.isSync()) {
-			ListTag list = tag.getList("linkIndexToState", Tag.TAG_COMPOUND);
-			this.linkIndexToState.clear();
-			for (int i = 0; i < list.size(); i++) {
-				CompoundTag tag2 = list.getCompound(i);
-				this.linkIndexToState.put(tag2.getInt("index"), new InWorldLinkState(tag2));
 			}
 		}
 	}

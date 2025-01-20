@@ -269,25 +269,22 @@ public final class ConfigurationWandOverlay {
 		if (!(level.getBlockEntity(pos) instanceof LuxNodeSyncPropertyAccess props)) return;
 
 		for (var e : props.outboundLinks().int2ObjectEntrySet()) {
-			InWorldLinkInfo linkState = e.getValue();
-			if (linkState == null) continue;
-			visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(),
+			InWorldLinkInfo linkInfo = e.getValue();
+			if (linkInfo == null) continue;
+			visualData.lines.add(new Line(linkInfo.origin(), linkInfo.linkLocation(),
 					remove && linkSource != null ? TINT_REMOVE : TINT_SELECT));
 		}
 
-		if (linkSource != null) {
-			for (int i = 0, maxLinks = linkSource.maxLinks(); i < maxLinks; i++) {
-				InWorldLinkState linkState = linkSource.getLinkState(i);
-				if (linkState == null || linkState.linked()) continue;
-				visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(),
-						remove ? TINT_REMOVE : TINT_MISSING));
-			}
+		for (InWorldLinkState linkState : props.linkStates()) {
+			if (linkState.linked()) continue;
+			visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(),
+					remove ? TINT_REMOVE : TINT_MISSING));
 		}
 
 		for (var e : props.inboundLinks().int2ObjectEntrySet()) {
-			InWorldLinkInfo linkState = e.getValue();
-			if (linkState == null) continue;
-			visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_INPUT));
+			InWorldLinkInfo linkInfo = e.getValue();
+			if (linkInfo == null) continue;
+			visualData.lines.add(new Line(linkInfo.origin(), linkInfo.linkLocation(), TINT_INPUT));
 		}
 	}
 

@@ -1,0 +1,8 @@
+{
+  "parent": "magialucis:block/sunlight_core",
+  "textures": {
+    "top": "magialucis:block/moonlight_core_base_top",
+    "side": "magialucis:block/moonlight_core_base_side",
+    "bottom": "magialucis:block/moonlight_core_base_bottom"
+  }
+}

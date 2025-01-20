@@ -42,20 +42,27 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 
 	REMOTE_CHARGER(BlockProfile.customBlock(RemoteChargerBlock.Basic::new, Properties.of().strength(2.5f))),
 	REMOTE_CHARGER_2(BlockProfile.customBlock(RemoteChargerBlock.Advanced::new, Properties.of().strength(2.5f))),
+
 	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of()
 			.strength(1)
 			.sound(SoundType.GLASS))),
+
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of()
 			.strength(2.5f)
 			.sound(SoundType.WOOD)
 			.lightLevel(AmberCoreBlock::getLightValue))),
+
 	LIGHT_BASIN(BlockProfile.customBlock(LightBasinBlock::new, ModBuildingBlocks.lapisManalis())),
+
 	SUNLIGHT_CORE(BlockProfile.customBlock(SunlightCoreBlock::new, Properties.of()
+			.noOcclusion()
 			.strength(2.5f)
 			.sound(SoundType.GLASS))),
 	MOONLIGHT_CORE(BlockProfile.customBlock(MoonlightCoreBlock::new, Properties.of()
+			.noOcclusion()
 			.strength(2.5f)
 			.sound(SoundType.GLASS))),
+
 	SUNLIGHT_FOCUS(BlockProfile.customBlock(SunlightFocusBlock::new, Properties.of()
 			.requiresCorrectToolForDrops()
 			.strength(3.5f)

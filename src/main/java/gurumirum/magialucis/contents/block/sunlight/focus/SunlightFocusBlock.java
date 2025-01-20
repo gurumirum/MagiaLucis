@@ -27,8 +27,7 @@ public class SunlightFocusBlock extends Block implements EntityBlock {
 
 	public SunlightFocusBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(defaultBlockState()
-				.setValue(SKY_VISIBILITY, 9));
+		registerDefaultState(defaultBlockState().setValue(SKY_VISIBILITY, 15));
 	}
 
 	@Override

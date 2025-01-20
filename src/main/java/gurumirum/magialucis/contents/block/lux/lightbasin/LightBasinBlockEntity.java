@@ -10,12 +10,10 @@ import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.recipe.TransfusionRecipeEvaluation;
 import gurumirum.magialucis.contents.recipe.TransfusionRecipeInput;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxConsumerNodeInterface;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -30,7 +28,6 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
 import java.util.Objects;
@@ -67,9 +64,6 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity implements Ticker.
 
 	@Override
 	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {}
-
-	@Override
-	public void syncLinkStatus(@NotNull @UnmodifiableView Int2ObjectMap<InWorldLinkState> linkIndexToState) {}
 
 	@Override
 	public @NotNull LuxNetLinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {

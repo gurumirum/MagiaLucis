@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=down,oversaturated=false": {
+      "model": "magialucis:block/moonlight_core",
+      "x": 180
+    },
+    "facing=down,oversaturated=true": {
+      "model": "magialucis:block/moonlight_core",
+      "x": 180
+    },
+    "facing=east,oversaturated=false": {
+      "model": "magialucis:block/moonlight_core",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,oversaturated=true": {
+      "model": "magialucis:block/moonlight_core",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,oversaturated=false": {
+      "model": "magialucis:block/moonlight_core",
+      "x": 90
+    },
+    "facing=north,oversaturated=true": {
+      "model": "magialucis:block/moonlight_core",
+      "x": 90
+    },
+    "facing=south,oversaturated=false": {
+      "model": "magialucis:block/moonlight_core",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,oversaturated=true": {
+      "model": "magialucis:block/moonlight_core",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,oversaturated=false": {
+      "model": "magialucis:block/moonlight_core"
+    },
+    "facing=up,oversaturated=true": {
+      "model": "magialucis:block/moonlight_core"
+    },
+    "facing=west,oversaturated=false": {
+      "model": "magialucis:block/moonlight_core",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,oversaturated=true": {
+      "model": "magialucis:block/moonlight_core",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

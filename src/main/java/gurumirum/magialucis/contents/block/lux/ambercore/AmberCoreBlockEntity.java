@@ -6,16 +6,14 @@ import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.utils.ServerTickQueue;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.Fields;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxSourceNodeInterface;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import gurumirum.magialucis.utils.ServerTickQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -27,7 +25,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -115,9 +112,6 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity implements LuxSourc
 			}
 		}
 	}
-
-	@Override
-	public void syncLinkStatus(@NotNull @UnmodifiableView Int2ObjectMap<InWorldLinkState> linkIndexToState) {}
 
 	@Override
 	public void generateLux(Vector3d dest) {

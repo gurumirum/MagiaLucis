@@ -22,16 +22,16 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class LuxNodeBlockEntity extends BlockEntityBase
 		implements LuxNodeInterface, LuxNetLinkDestination, LuxNodeSyncPropertyAccess, DebugTextProvider {
-	private int nodeId;
 	private final Vector3d luxFlow = new Vector3d();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks = new Int2ObjectOpenHashMap<>();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> inboundLinks = new Int2ObjectOpenHashMap<>();
+	private final Int2ObjectMap<InWorldLinkState> linkIndexToState = new Int2ObjectOpenHashMap<>();
+
+	private int nodeId;
 
 	private byte color;
 	private double minLuxThreshold;
@@ -84,8 +84,17 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 		return bMaxTransfer;
 	}
 
+	@Override
+	public @NotNull @UnmodifiableView Collection<InWorldLinkState> linkStates() {
+		return Collections.unmodifiableCollection(this.linkIndexToState.values());
+	}
+
 	protected final @Nullable LuxNet getLuxNet() {
 		return LuxNet.tryGet(this.level);
+	}
+
+	protected @Nullable InWorldLinkState getLinkState(int index) {
+		return this.linkIndexToState.get(index);
 	}
 
 	@Override
@@ -153,6 +162,15 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 	}
 
 	@Override
+	public void syncLinkStatus(@NotNull @UnmodifiableView Int2ObjectMap<InWorldLinkState> linkIndexToState) {
+		if (!this.linkIndexToState.equals(linkIndexToState)) {
+			this.linkIndexToState.clear();
+			this.linkIndexToState.putAll(linkIndexToState);
+			syncToClient();
+		}
+	}
+
+	@Override
 	public void addDebugText(@NotNull List<String> list) {
 		list.add("Node: #" + luxNodeId() + " [" + getBlockPos().toShortString() + "]");
 
@@ -207,6 +225,13 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 			this.rMaxTransfer = tag.getDouble("rMaxTransfer");
 			this.gMaxTransfer = tag.getDouble("gMaxTransfer");
 			this.bMaxTransfer = tag.getDouble("bMaxTransfer");
+
+			ListTag list = tag.getList("linkIndexToState", Tag.TAG_COMPOUND);
+			this.linkIndexToState.clear();
+			for (int i = 0; i < list.size(); i++) {
+				CompoundTag tag2 = list.getCompound(i);
+				this.linkIndexToState.put(tag2.getInt("index"), new InWorldLinkState(tag2));
+			}
 		}
 	}
 
@@ -226,6 +251,14 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 			tag.putDouble("rMaxTransfer", this.rMaxTransfer);
 			tag.putDouble("gMaxTransfer", this.gMaxTransfer);
 			tag.putDouble("bMaxTransfer", this.bMaxTransfer);
+
+			ListTag list = new ListTag();
+			for (var e : this.linkIndexToState.int2ObjectEntrySet()) {
+				CompoundTag tag2 = e.getValue().save();
+				tag2.putInt("index", e.getIntKey());
+				list.add(tag2);
+			}
+			tag.put("linkIndexToState", list);
 		}
 	}
 

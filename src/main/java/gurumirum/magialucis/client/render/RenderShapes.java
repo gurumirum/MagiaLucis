@@ -53,56 +53,56 @@ public final class RenderShapes {
 	public static void drawOctahedron(PoseStack poseStack, VertexConsumer vc, int color, boolean reverseCull) {
 		int color2 = color & 0x80ffffff;
 
-		drawOctahedronSide(poseStack, vc,
+		positionColorNormalTri(poseStack, vc,
 				0.5f, 1.0f, 0.5f,
 				0.5f, 0.5f, 1.0f,
 				1.0f, 0.5f, 0.5f,
 				1, 1, 1,
 				color2, reverseCull);
 
-		drawOctahedronSide(poseStack, vc,
+		positionColorNormalTri(poseStack, vc,
 				0.5f, 1.0f, 0.5f,
 				0.0f, 0.5f, 0.5f,
 				0.5f, 0.5f, 1.0f,
 				-1, 1, 1,
 				color, reverseCull);
 
-		drawOctahedronSide(poseStack, vc,
+		positionColorNormalTri(poseStack, vc,
 				0.5f, 1.0f, 0.5f,
 				0.5f, 0.5f, 0.0f,
 				0.0f, 0.5f, 0.5f,
 				-1, 1, -1,
 				color2, reverseCull);
 
-		drawOctahedronSide(poseStack, vc,
+		positionColorNormalTri(poseStack, vc,
 				0.5f, 1.0f, 0.5f,
 				1.0f, 0.5f, 0.5f,
 				0.5f, 0.5f, 0.0f,
 				1, 1, -1,
 				color, reverseCull);
 
-		drawOctahedronSide(poseStack, vc,
+		positionColorNormalTri(poseStack, vc,
 				0.5f, 0.0f, 0.5f,
 				1.0f, 0.5f, 0.5f,
 				0.5f, 0.5f, 1.0f,
 				1, -1, 1,
 				color, reverseCull);
 
-		drawOctahedronSide(poseStack, vc,
+		positionColorNormalTri(poseStack, vc,
 				0.5f, 0.0f, 0.5f,
 				0.5f, 0.5f, 1.0f,
 				0.0f, 0.5f, 0.5f,
 				-1, -1, 1,
 				color2, reverseCull);
 
-		drawOctahedronSide(poseStack, vc,
+		positionColorNormalTri(poseStack, vc,
 				0.5f, 0.0f, 0.5f,
 				0.0f, 0.5f, 0.5f,
 				0.5f, 0.5f, 0.0f,
 				-1, -1, -1,
 				color, reverseCull);
 
-		drawOctahedronSide(poseStack, vc,
+		positionColorNormalTri(poseStack, vc,
 				0.5f, 0.0f, 0.5f,
 				0.5f, 0.5f, 0.0f,
 				1.0f, 0.5f, 0.5f,
@@ -110,12 +110,147 @@ public final class RenderShapes {
 				color2, reverseCull);
 	}
 
-	private static void drawOctahedronSide(PoseStack poseStack, VertexConsumer vc,
-	                                       float x1, float y1, float z1,
-	                                       float x2, float y2, float z2,
-	                                       float x3, float y3, float z3,
-	                                       float normalX, float normalY, float normalZ,
-	                                       int color, boolean reverseCull) {
+	public static void drawTruncatedCube(PoseStack poseStack, VertexConsumer vc, int color, boolean reverseCull) {
+		// top
+		positionColorNormalQuad(poseStack, vc,
+				0.5f, 1.0f, 0.0f,
+				0.0f, 1.0f, 0.5f,
+				0.5f, 1.0f, 1.0f,
+				1.0f, 1.0f, 0.5f,
+				0, 1, 0,
+				color, reverseCull);
+
+		// bottom
+		positionColorNormalQuad(poseStack, vc,
+				0.5f, 0.0f, 0.0f,
+				1.0f, 0.0f, 0.5f,
+				0.5f, 0.0f, 1.0f,
+				0.0f, 0.0f, 0.5f,
+				0, -1, 0,
+				color, reverseCull);
+
+		// sides
+		positionColorNormalQuad(poseStack, vc,
+				1.0f, 0.5f, 0.0f,
+				1.0f, 1.0f, 0.5f,
+				1.0f, 0.5f, 1.0f,
+				1.0f, 0.0f, 0.5f,
+				1, 0, 0,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				0.0f, 0.5f, 0.0f,
+				0.0f, 0.0f, 0.5f,
+				0.0f, 0.5f, 1.0f,
+				0.0f, 1.0f, 0.5f,
+				-1, 0, 0,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				1.0f, 0.5f, 1.0f,
+				0.5f, 1.0f, 1.0f,
+				0.0f, 0.5f, 1.0f,
+				0.5f, 0.0f, 1.0f,
+				0, 0, 1,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				1.0f, 0.5f, 0.0f,
+				0.5f, 0.0f, 0.0f,
+				0.0f, 0.5f, 0.0f,
+				0.5f, 1.0f, 0.0f,
+				0, 0, -1,
+				color, reverseCull);
+
+		// truncated edges
+
+		// top
+		positionColorNormalTri(poseStack, vc,
+				0.5f, 1.0f, 1.0f,
+				1.0f, 0.5f, 1.0f,
+				1.0f, 1.0f, 0.5f,
+				1, 1, 1,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				0.0f, 1.0f, 0.5f,
+				0.0f, 0.5f, 1.0f,
+				0.5f, 1.0f, 1.0f,
+				-1, 1, 1,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				1.0f, 1.0f, 0.5f,
+				1.0f, 0.5f, 0.0f,
+				0.5f, 1.0f, 0.0f,
+				1, 1, -1,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				0.5f, 1.0f, 0.0f,
+				0.0f, 0.5f, 0.0f,
+				0.0f, 1.0f, 0.5f,
+				-1, 1, -1,
+				color, reverseCull);
+
+		// bottom
+		positionColorNormalTri(poseStack, vc,
+				1.0f, 0.5f, 1.0f,
+				0.5f, 0.0f, 1.0f,
+				1.0f, 0.0f, 0.5f,
+				1, -1, 1,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				0.0f, 0.5f, 1.0f,
+				0.0f, 0.0f, 0.5f,
+				0.5f, 0.0f, 1.0f,
+				-1, -1, 1,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				1.0f, 0.5f, 0.0f,
+				1.0f, 0.0f, 0.5f,
+				0.5f, 0.0f, 0.0f,
+				1, -1, -1,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				0.0f, 0.5f, 0.0f,
+				0.5f, 0.0f, 0.0f,
+				0.0f, 0.0f, 0.5f,
+				-1, -1, -1,
+				color, reverseCull);
+	}
+
+	private static void positionColorNormalQuad(PoseStack poseStack, VertexConsumer vc,
+	                                            float x1, float y1, float z1,
+	                                            float x2, float y2, float z2,
+	                                            float x3, float y3, float z3,
+	                                            float x4, float y4, float z4,
+	                                            float normalX, float normalY, float normalZ,
+	                                            int color, boolean reverseCull) {
+		positionColorNormalTri(poseStack, vc,
+				x1, y1, z1,
+				x2, y2, z2,
+				x3, y3, z3,
+				normalX, normalY, normalZ,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				x3, y3, z3,
+				x4, y4, z4,
+				x1, y1, z1,
+				normalX, normalY, normalZ,
+				color, reverseCull);
+	}
+
+	private static void positionColorNormalTri(PoseStack poseStack, VertexConsumer vc,
+	                                           float x1, float y1, float z1,
+	                                           float x2, float y2, float z2,
+	                                           float x3, float y3, float z3,
+	                                           float normalX, float normalY, float normalZ,
+	                                           int color, boolean reverseCull) {
 		PoseStack.Pose pose = poseStack.last();
 
 		if (reverseCull) {

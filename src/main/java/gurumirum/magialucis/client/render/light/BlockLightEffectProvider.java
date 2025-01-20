@@ -1,6 +1,5 @@
 package gurumirum.magialucis.client.render.light;
 
-import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.contents.block.lux.LuxNodeSyncPropertyAccess;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
@@ -13,10 +12,17 @@ import org.joml.Vector3d;
 
 public class BlockLightEffectProvider<T extends BlockEntity & LuxNodeSyncPropertyAccess> implements LightEffectProvider {
 	private final T blockEntity;
+	private final float radiusModifier;
+
 	private boolean unloaded;
 
 	public BlockLightEffectProvider(T blockEntity) {
+		this(blockEntity, 1);
+	}
+
+	public BlockLightEffectProvider(T blockEntity, float radiusModifier) {
 		this.blockEntity = blockEntity;
+		this.radiusModifier = radiusModifier;
 	}
 
 	@Override
@@ -25,11 +31,13 @@ public class BlockLightEffectProvider<T extends BlockEntity & LuxNodeSyncPropert
 
 		if (luxFlow.x > 0 || luxFlow.y > 0 || luxFlow.z > 0) {
 			Vec3 center = Vec3.atCenterOf(this.blockEntity.getBlockPos());
-			int color = LightEffectRender.getLightColor(luxFlow);
+			int color = LightEffect.getLightColor(luxFlow);
 
 			float radius = (float)(1 / 4.0 * (Math.log10(LuxUtils.sum(luxFlow))));
 
-			collector.addCircularEffect(radius, center, color);
+			if (this.radiusModifier > 0) {
+				collector.addCircularEffect(radius * this.radiusModifier, center, color);
+			}
 
 			var outboundLinks = this.blockEntity.outboundLinks();
 			if (outboundLinks.size() > 1) luxFlow.div(outboundLinks.size());
@@ -41,12 +49,9 @@ public class BlockLightEffectProvider<T extends BlockEntity & LuxNodeSyncPropert
 				collector.addCylindricalEffect(radius, center, Vec3.atCenterOf(info.linkPos()), color, false);
 			}
 
-			if (this.blockEntity instanceof LinkSource linkSource) {
-				for (int i = 0; i < linkSource.maxLinks(); i++) {
-					InWorldLinkState linkState = linkSource.getLinkState(i);
-					if (linkState != null && !linkState.linked()) {
-						collector.addCylindricalEffect(radius, center, linkState.linkLocation(), color, true);
-					}
+			for (InWorldLinkState linkState : this.blockEntity.linkStates()) {
+				if (linkState != null && !linkState.linked()) {
+					collector.addCylindricalEffect(radius, center, linkState.linkLocation(), color, true);
 				}
 			}
 		}
