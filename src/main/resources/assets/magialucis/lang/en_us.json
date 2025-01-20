@@ -73,6 +73,7 @@
   "item.magialucis.tooltip.lux_transfer_rate.b": "B: %s",
   "item.magialucis.tooltip.lux_transfer_rate.g": "G: %s",
   "item.magialucis.tooltip.lux_transfer_rate.r": "R: %s",
+  "item.magialucis.tooltip.damage_absorbed": "Absorbed Damage: %s / %s",
   "item.magialucis.topaz": "Topaz",
   "item.magialucis.wand_belt": "Wand Belt",
 

@@ -51,5 +51,11 @@ public final class ModDataComponents {
 					.networkSynchronized(UUIDUtil.STREAM_CODEC)
 					.build());
 
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> ABSORBED_DAMAGE = Contents.DATA_COMPONENTS.register("absorbed_damage",
+			() -> DataComponentType.<Double>builder()
+					.persistent(Codec.DOUBLE)
+					.networkSynchronized(ByteBufCodecs.DOUBLE)
+					.build());
+
 	public static void init() {}
 }

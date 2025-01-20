@@ -73,6 +73,7 @@
   "item.magialucis.tooltip.lux_transfer_rate.b": "B: %s",
   "item.magialucis.tooltip.lux_transfer_rate.g": "G: %s",
   "item.magialucis.tooltip.lux_transfer_rate.r": "R: %s",
+  "item.magialucis.tooltip.damage_absorbed": "흡수된 데미지: %s / %s",
   "item.magialucis.topaz": "토파즈",
   "item.magialucis.wand_belt": "마법봉 벨트",
 

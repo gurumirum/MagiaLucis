@@ -3,6 +3,7 @@ package gurumirum.magialucis.contents;
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxContainerStat;
 import gurumirum.magialucis.contents.item.accessory.AccessoryEventListener;
+import gurumirum.magialucis.contents.item.accessory.DamageAbsorbNecklaceItem;
 import gurumirum.magialucis.contents.item.accessory.LuxContainerCurioItem;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +19,10 @@ public enum Accessories implements ItemLike {
 	WAND_BELT(ItemProfile.customItem(WandBeltItem::new), ModCurioSlots.WAND_BELT),
 
 	FIRE_IMMUNE_BRACELET(ItemProfile.customItem(LuxContainerCurioItem::new), ModCurioSlots.BRACELET,
-			LuxContainerStat.withBaseStat(AccessoryEventListener.COST_PER_FIRE_RESISTANCE * 20 * 8, GemStats.RUBY));
+			LuxContainerStat.withBaseStat(AccessoryEventListener.COST_PER_FIRE_RESISTANCE * 20 * 8, GemStats.RUBY)),
+
+	DAMAGE_ABSORB_NECKLACE(ItemProfile.customItem(DamageAbsorbNecklaceItem::new), ModCurioSlots.NECKLACE,
+			LuxContainerStat.withBaseStat(DamageAbsorbNecklaceItem.COST_PER_IMPACT * 10, GemStats.POLISHED_LAPIS_LAZULI));
 
 	private final DeferredItem<Item> item;
 	private final String curioSlot;
