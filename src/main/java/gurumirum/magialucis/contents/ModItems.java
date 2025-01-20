@@ -25,7 +25,7 @@ public enum ModItems implements ItemLike {
 	STERLING_SILVER_INGOT(CreativeTabType.RESOURCES),
 	STERLING_SILVER_NUGGET(CreativeTabType.RESOURCES),
 
-	TEMPLE_GUARDIAN_SPAWN_EGG(ItemProfile.customItem(p -> new DeferredSpawnEggItem(ModEntities.TEMPLE_GUARDIAN, -1, -1, p)));
+	TEMPLE_GUARDIAN_SPAWN_EGG(ItemProfile.customItem(p -> new DeferredSpawnEggItem(ModEntities.TEMPLE_GUARDIAN, 0xFF727280, 0xFFDEDEDE, p)));
 
 	private final DeferredItem<Item> item;
 	private final CreativeTabType tab;

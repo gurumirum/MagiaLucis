@@ -187,6 +187,8 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(ModItems.STERLING_SILVER_INGOT.asItem());
 		basicItem(ModItems.STERLING_SILVER_NUGGET.asItem());
 
+		spawnEggItem(ModItems.TEMPLE_GUARDIAN_SPAWN_EGG.asItem());
+
 		for (GemItems i : GemItems.values()) basicItem(i.asItem());
 
 		for (Ore ore : Ore.values()) registerOreModels(ore);
