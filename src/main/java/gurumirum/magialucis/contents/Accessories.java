@@ -3,10 +3,13 @@ package gurumirum.magialucis.contents;
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxContainerStat;
 import gurumirum.magialucis.contents.item.accessory.AccessoryEventListener;
+import gurumirum.magialucis.contents.item.accessory.AttributeModifyRingItem;
 import gurumirum.magialucis.contents.item.accessory.DamageAbsorbNecklaceItem;
 import gurumirum.magialucis.contents.item.accessory.LuxContainerCurioItem;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -22,7 +25,11 @@ public enum Accessories implements ItemLike {
 			LuxContainerStat.withBaseStat(AccessoryEventListener.COST_PER_FIRE_RESISTANCE * 20 * 8, GemStats.RUBY)),
 
 	DAMAGE_ABSORB_NECKLACE(ItemProfile.customItem(DamageAbsorbNecklaceItem::new), ModCurioSlots.NECKLACE,
-			LuxContainerStat.withBaseStat(DamageAbsorbNecklaceItem.COST_PER_IMPACT * 10, GemStats.POLISHED_LAPIS_LAZULI));
+			LuxContainerStat.withBaseStat(DamageAbsorbNecklaceItem.COST_PER_IMPACT * 10, GemStats.POLISHED_LAPIS_LAZULI)),
+
+	MOVEMENT_SPEED_RING(ItemProfile.customItem(p -> new AttributeModifyRingItem(p, 1).addAttribute(Attributes.MOVEMENT_SPEED,
+			new AttributeModifier(ResourceLocation.withDefaultNamespace("effect.speed"), 0.02, AttributeModifier.Operation.ADD_VALUE))), ModCurioSlots.RING,
+			LuxContainerStat.withBaseStat(1000, GemStats.CITRINE));
 
 	private final DeferredItem<Item> item;
 	private final String curioSlot;

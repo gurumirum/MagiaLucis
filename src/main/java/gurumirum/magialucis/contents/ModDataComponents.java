@@ -57,5 +57,11 @@ public final class ModDataComponents {
 					.networkSynchronized(ByteBufCodecs.DOUBLE)
 					.build());
 
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> POWERED_ON = Contents.DATA_COMPONENTS.register("powered_on",
+			() -> DataComponentType.<Boolean>builder()
+					.persistent(Codec.BOOL)
+					.networkSynchronized(ByteBufCodecs.BOOL)
+					.build());
+
 	public static void init() {}
 }
