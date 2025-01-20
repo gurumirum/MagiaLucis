@@ -165,6 +165,7 @@ public final class LightEffectRender {
 			RenderSystem.depthMask(false);
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+			RenderSystem.enableDepthTest();
 
 			Vec3 cameraPos = event.getCamera().getPosition();
 			PoseStack poseStack = event.getPoseStack();
