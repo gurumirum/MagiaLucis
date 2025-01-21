@@ -11,6 +11,11 @@ import java.util.Locale;
 
 public enum ModItems implements ItemLike {
 	ANCIENT_CORE,
+	BASIC_LUX_DRIVE,
+	MECHANICAL_COMPONENT,
+	LUMINOUS_MECHANICAL_COMPONENT,
+	CITRINE_MATRIX,
+	IOLITE_MATRIX,
 
 	COPPER_NUGGET(CreativeTabType.RESOURCES),
 
@@ -24,6 +29,9 @@ public enum ModItems implements ItemLike {
 	ROSE_GOLD_NUGGET(CreativeTabType.RESOURCES),
 	STERLING_SILVER_INGOT(CreativeTabType.RESOURCES),
 	STERLING_SILVER_NUGGET(CreativeTabType.RESOURCES),
+
+	LUMINOUS_ALLOY_INGOT(CreativeTabType.RESOURCES),
+	LUMINOUS_ALLOY_NUGGET(CreativeTabType.RESOURCES),
 
 	TEMPLE_GUARDIAN_SPAWN_EGG(ItemProfile.customItem(p -> new DeferredSpawnEggItem(ModEntities.TEMPLE_GUARDIAN, 0xFF727280, 0xFFDEDEDE, p)));
 

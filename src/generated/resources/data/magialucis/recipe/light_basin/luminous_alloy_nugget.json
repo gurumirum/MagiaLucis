@@ -1,0 +1,30 @@
+{
+  "type": "magialucis:light_basin",
+  "ingredients": [
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:nuggets/gold"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:nuggets/silver"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:nuggets/iron"
+      }
+    }
+  ],
+  "minLuxInputG": 80.0,
+  "minLuxInputR": 80.0,
+  "processTicks": 30,
+  "result": {
+    "count": 3,
+    "id": "magialucis:luminous_alloy_nugget"
+  }
+}

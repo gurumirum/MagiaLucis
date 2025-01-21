@@ -3,22 +3,22 @@
   "category": "equipment",
   "key": {
     "1": {
-      "tag": "c:ingots/gold"
+      "tag": "c:ingots/iron"
     },
     "2": {
-      "item": "magialucis:pearl"
+      "tag": "c:gems/diamond"
     },
     "C": {
       "item": "magialucis:basic_lux_drive"
     }
   },
   "pattern": [
-    " 12",
-    " C1",
+    "  2",
+    " C ",
     "1  "
   ],
   "result": {
     "count": 1,
-    "id": "magialucis:heal_wand"
+    "id": "magialucis:diamond_mace"
   }
 }

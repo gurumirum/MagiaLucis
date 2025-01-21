@@ -25,6 +25,7 @@ public class ItemTagGen extends ItemTagsProvider {
 		super(output, lookupProvider, blockTags, MagiaLucisMod.MODID, existingFileHelper);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		tag(ModItemTags.WANDS).add(Arrays.stream(Wands.values()).map(Wands::asItem).toArray(Item[]::new));
@@ -45,8 +46,14 @@ public class ItemTagGen extends ItemTagsProvider {
 		tag(ModItemTags.ROSE_GOLD_NUGGETS).add(ModItems.ROSE_GOLD_NUGGET.asItem());
 		tag(ModItemTags.STERLING_SILVER_INGOTS).add(ModItems.STERLING_SILVER_INGOT.asItem());
 		tag(ModItemTags.STERLING_SILVER_NUGGETS).add(ModItems.STERLING_SILVER_NUGGET.asItem());
+		tag(ModItemTags.LUMINOUS_ALLOY_INGOTS).add(ModItems.LUMINOUS_ALLOY_INGOT.asItem());
+		tag(ModItemTags.LUMINOUS_ALLOY_NUGGETS).add(ModItems.LUMINOUS_ALLOY_NUGGET.asItem());
 
+		copy(Tags.Blocks.ORES, Tags.Items.ORES);
 		for (Ore ore : Ore.values()) copyCommonTag("ores/" + ore.oreId());
+
+		copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
+
 		copyTag(ModBlockTags.SILVER_BLOCKS.location());
 		copyTag(ModBlockTags.RAW_SILVER_BLOCKS.location());
 		copyTag(ModBlockTags.ELECTRUM_BLOCKS.location());
@@ -63,6 +70,31 @@ public class ItemTagGen extends ItemTagsProvider {
 
 		tag(ModItemTags.BRIGHTSTONES).add(GemItems.BRIGHTSTONE.asItem(), GemItems.RED_BRIGHTSTONE.asItem(), GemItems.ICY_BRIGHTSTONE.asItem());
 		copy(ModBlockTags.LAPIDES_MANALIS, ModItemTags.LAPIDES_MANALIS);
+
+		tag(ModItemTags.BASIC_ALLOY_INGOTS).addTags(
+				ModItemTags.ELECTRUM_INGOTS,
+				ModItemTags.ROSE_GOLD_INGOTS,
+				ModItemTags.STERLING_SILVER_INGOTS);
+
+		tag(ModItemTags.BASIC_ALLOY_NUGGETS).addTags(
+				ModItemTags.ELECTRUM_NUGGETS,
+				ModItemTags.ROSE_GOLD_NUGGETS,
+				ModItemTags.STERLING_SILVER_NUGGETS);
+
+		tag(Tags.Items.INGOTS).addTags(
+				ModItemTags.SILVER_INGOTS,
+				ModItemTags.ELECTRUM_INGOTS,
+				ModItemTags.ROSE_GOLD_INGOTS,
+				ModItemTags.STERLING_SILVER_INGOTS,
+				ModItemTags.LUMINOUS_ALLOY_INGOTS);
+
+		tag(Tags.Items.NUGGETS).addTags(
+				ModItemTags.COPPER_NUGGETS,
+				ModItemTags.SILVER_NUGGETS,
+				ModItemTags.ELECTRUM_NUGGETS,
+				ModItemTags.ROSE_GOLD_NUGGETS,
+				ModItemTags.STERLING_SILVER_NUGGETS,
+				ModItemTags.LUMINOUS_ALLOY_NUGGETS);
 	}
 
 	private void copyCommonTag(String path) {

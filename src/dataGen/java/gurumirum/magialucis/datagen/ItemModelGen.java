@@ -173,6 +173,9 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(Accessories.WAND_BELT.asItem());
 
 		basicItem(ModItems.ANCIENT_CORE.asItem());
+		basicItem(ModItems.BASIC_LUX_DRIVE.asItem());
+		basicItem(ModItems.MECHANICAL_COMPONENT.asItem());
+		basicItem(ModItems.LUMINOUS_MECHANICAL_COMPONENT.asItem());
 
 		basicItem(ModItems.COPPER_NUGGET.asItem());
 
@@ -186,6 +189,9 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(ModItems.ROSE_GOLD_NUGGET.asItem());
 		basicItem(ModItems.STERLING_SILVER_INGOT.asItem());
 		basicItem(ModItems.STERLING_SILVER_NUGGET.asItem());
+
+		basicItem(ModItems.LUMINOUS_ALLOY_INGOT.asItem());
+		basicItem(ModItems.LUMINOUS_ALLOY_NUGGET.asItem());
 
 		spawnEggItem(ModItems.TEMPLE_GUARDIAN_SPAWN_EGG.asItem());
 

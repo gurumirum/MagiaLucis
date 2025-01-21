@@ -1,21 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "equipment",
+  "category": "misc",
   "key": {
     "1": {
       "tag": "magialucis:basic_alloy_nuggets"
     },
     "2": {
-      "tag": "c:leathers"
+      "tag": "c:ingots/luminous_alloy"
+    },
+    "3": {
+      "tag": "magialucis:brightstones"
     }
   },
   "pattern": [
-    "122",
-    "2 2",
-    "222"
+    " 12",
+    "131",
+    "21 "
   ],
   "result": {
     "count": 1,
-    "id": "magialucis:wand_belt"
+    "id": "magialucis:basic_lux_drive"
   }
 }

@@ -25,6 +25,7 @@ public class BlockTagGen extends BlockTagsProvider {
 		super(output, lookupProvider, MagiaLucisMod.MODID, existingFileHelper);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		var ores = tag(Tags.Blocks.ORES);
@@ -63,6 +64,13 @@ public class BlockTagGen extends BlockTagsProvider {
 		tag(ModBlockTags.ELECTRUM_BLOCKS).add(ELECTRUM_BLOCK.block());
 		tag(ModBlockTags.ROSE_GOLD_BLOCKS).add(ROSE_GOLD_BLOCK.block());
 		tag(ModBlockTags.STERLING_SILVER_BLOCKS).add(STERLING_SILVER_BLOCK.block());
+
+		tag(Tags.Blocks.STORAGE_BLOCKS).addTags(
+				ModBlockTags.SILVER_BLOCKS,
+				ModBlockTags.RAW_SILVER_BLOCKS,
+				ModBlockTags.ELECTRUM_BLOCKS,
+				ModBlockTags.ROSE_GOLD_BLOCKS,
+				ModBlockTags.STERLING_SILVER_BLOCKS);
 
 		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
 				REMOTE_CHARGER.block(),

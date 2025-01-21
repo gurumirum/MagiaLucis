@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_citrine": {
+    "has_luminous_alloy": {
       "conditions": {
         "items": [
           {
-            "items": "#c:gems/citrine"
+            "items": "#c:ingots/luminous_alloy"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magialucis:sunlight_core"
+        "recipe": "magialucis:basic_lux_drive"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_citrine"
+      "has_luminous_alloy"
     ]
   ],
   "rewards": {
     "recipes": [
-      "magialucis:sunlight_core"
+      "magialucis:basic_lux_drive"
     ]
   }
 }

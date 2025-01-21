@@ -3,22 +3,22 @@
   "category": "equipment",
   "key": {
     "1": {
-      "tag": "c:ingots/gold"
+      "tag": "c:ingots/rose_gold"
     },
     "2": {
-      "item": "magialucis:pearl"
+      "item": "magialucis:polished_lapis_lazuli"
     },
     "C": {
       "item": "magialucis:basic_lux_drive"
     }
   },
   "pattern": [
-    " 12",
-    " C1",
-    "1  "
+    "121",
+    "1C1",
+    " 1 "
   ],
   "result": {
     "count": 1,
-    "id": "magialucis:heal_wand"
+    "id": "magialucis:lapis_shield"
   }
 }

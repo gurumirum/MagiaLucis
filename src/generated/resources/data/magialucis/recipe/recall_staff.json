@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "1": {
-      "tag": "c:ingots/gold"
+      "tag": "c:ingots/rose_gold"
     },
     "2": {
       "tag": "c:gems/aquamarine"
@@ -13,11 +13,14 @@
     },
     "4": {
       "tag": "c:dyes/red"
+    },
+    "C": {
+      "item": "magialucis:basic_lux_drive"
     }
   },
   "pattern": [
     " 32",
-    "413",
+    "4C3",
     "14 "
   ],
   "result": {

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "luminous_alloy",
+  "key": {
+    "#": {
+      "item": "magialucis:luminous_alloy_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:luminous_alloy_ingot"
+  }
+}

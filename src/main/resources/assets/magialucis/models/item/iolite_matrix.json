@@ -1,0 +1,6 @@
+{
+  "parent": "magialucis:item/citrine_matrix",
+  "textures": {
+    "0": "magialucis:item/iolite_matrix"
+  }
+}

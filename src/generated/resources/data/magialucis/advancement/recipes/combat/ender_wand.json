@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_citrine": {
+    "has_ender_pearl": {
       "conditions": {
         "items": [
           {
-            "items": "#c:gems/citrine"
+            "items": "minecraft:ender_pearl"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magialucis:sunlight_core"
+        "recipe": "magialucis:ender_wand"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_citrine"
+      "has_ender_pearl"
     ]
   ],
   "rewards": {
     "recipes": [
-      "magialucis:sunlight_core"
+      "magialucis:ender_wand"
     ]
   }
 }

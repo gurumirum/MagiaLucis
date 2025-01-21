@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_citrine": {
+    "has_iolite": {
       "conditions": {
         "items": [
           {
-            "items": "#c:gems/citrine"
+            "items": "#c:gems/iolite"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magialucis:sunlight_core"
+        "recipe": "magialucis:moonlight_core"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_citrine"
+      "has_iolite"
     ]
   ],
   "rewards": {
     "recipes": [
-      "magialucis:sunlight_core"
+      "magialucis:moonlight_core"
     ]
   }
 }

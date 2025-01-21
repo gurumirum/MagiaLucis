@@ -6,22 +6,19 @@
       "tag": "magialucis:brightstones"
     },
     "2": {
-      "item": "magialucis:citrine_matrix"
+      "tag": "c:gems/iolite"
     },
     "3": {
-      "tag": "c:nuggets/gold"
-    },
-    "4": {
-      "tag": "minecraft:planks"
+      "item": "magialucis:luminous_mechanical_component"
     }
   },
   "pattern": [
-    "111",
     "121",
-    "343"
+    "232",
+    "121"
   ],
   "result": {
     "count": 1,
-    "id": "magialucis:sunlight_core"
+    "id": "magialucis:iolite_matrix"
   }
 }

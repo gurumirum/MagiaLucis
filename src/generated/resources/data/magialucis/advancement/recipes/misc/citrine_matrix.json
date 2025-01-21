@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magialucis:sunlight_core"
+        "recipe": "magialucis:citrine_matrix"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "magialucis:sunlight_core"
+      "magialucis:citrine_matrix"
     ]
   }
 }

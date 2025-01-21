@@ -15,11 +15,14 @@
       {
         "item": "magialucis:lapis_manalis_brick_slab"
       }
-    ]
+    ],
+    "4": {
+      "item": "magialucis:mechanical_component"
+    }
   },
   "pattern": [
     "111",
-    "222",
+    "242",
     "323"
   ],
   "result": {

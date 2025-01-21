@@ -1,10 +1,7 @@
 package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.capability.GemStats;
-import gurumirum.magialucis.contents.GemItems;
-import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.contents.ModItemTags;
-import gurumirum.magialucis.contents.Ore;
+import gurumirum.magialucis.contents.*;
 import gurumirum.magialucis.datagen.builder.LightBasinRecipeBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -62,6 +59,8 @@ public class RecipeGen extends RecipeProvider {
 				MISC, ROSE_GOLD_INGOT, "rose_gold_ingot_from_nuggets", "rose_gold_ingot");
 		nineBlockStorageRecipesWithCustomPacking(out, MISC, STERLING_SILVER_NUGGET,
 				MISC, STERLING_SILVER_INGOT, "sterling_silver_ingot_from_nuggets", "sterling_silver_ingot");
+		nineBlockStorageRecipesWithCustomPacking(out, MISC, LUMINOUS_ALLOY_NUGGET,
+				MISC, LUMINOUS_ALLOY_INGOT, "luminous_alloy_ingot_from_nuggets", "luminous_alloy");
 
 		shapeless(MISC, ELECTRUM_NUGGET, 2)
 				.requires(Ingredient.of(Tags.Items.NUGGETS_GOLD), 2)
@@ -81,35 +80,83 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_silver", has(ModItemTags.SILVER_INGOTS))
 				.save(out, id("sterling_silver_hand_alloying"));
 
-		wandRecipe(true, ANCIENT_LIGHT)
+		shaped(MISC, BASIC_LUX_DRIVE)
+				.pattern(" 12")
+				.pattern("131")
+				.pattern("21 ")
+				.define('1', ModItemTags.BASIC_ALLOY_NUGGETS)
+				.define('2', ModItemTags.LUMINOUS_ALLOY_INGOTS)
+				.define('3', ModItemTags.BRIGHTSTONES)
+				.unlockedBy("has_luminous_alloy", has(ModItemTags.LUMINOUS_ALLOY_INGOTS))
+				.save(out);
+
+		shaped(MISC, MECHANICAL_COMPONENT, 2)
+				.pattern(" 1 ")
+				.pattern("121")
+				.pattern(" 1 ")
+				.define('1', Tags.Items.INGOTS_IRON)
+				.define('2', ModItemTags.BRIGHTSTONES)
+				.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+				.save(out);
+
+		shaped(MISC, LUMINOUS_MECHANICAL_COMPONENT, 2)
+				.pattern(" 1 ")
+				.pattern("121")
+				.pattern(" 1 ")
+				.define('1', ModItemTags.LUMINOUS_ALLOY_INGOTS)
+				.define('2', ModItemTags.BRIGHTSTONES)
+				.unlockedBy("has_luminous_alloy", has(ModItemTags.LUMINOUS_ALLOY_INGOTS))
+				.save(out);
+
+		shaped(MISC, CITRINE_MATRIX)
+				.pattern("121")
+				.pattern("232")
+				.pattern("121")
+				.define('1', ModItemTags.BRIGHTSTONES)
+				.define('2', GemStats.CITRINE.tag())
+				.define('3', MECHANICAL_COMPONENT)
+				.unlockedBy("has_citrine", has(GemStats.CITRINE.tag()))
+				.save(out);
+
+		shaped(MISC, IOLITE_MATRIX)
+				.pattern("121")
+				.pattern("232")
+				.pattern("121")
+				.define('1', ModItemTags.BRIGHTSTONES)
+				.define('2', GemStats.IOLITE.tag())
+				.define('3', LUMINOUS_MECHANICAL_COMPONENT)
+				.unlockedBy("has_iolite", has(GemStats.IOLITE.tag()))
+				.save(out);
+
+		wandRecipe(true, ANCIENT_LIGHT, WandTier.PRIMITIVE)
 				.define('1', ItemTags.STONE_BRICKS)
 				.define('2', ANCIENT_CORE)
 				.unlockedBy("has_ancient_core", has(ANCIENT_CORE))
 				.save(out);
 
-		wandRecipe(true, CONFIGURATION_WAND)
+		wandRecipe(true, CONFIGURATION_WAND, WandTier.PRIMITIVE)
 				.define('1', ItemTags.STONE_BRICKS)
 				.define('2', GemItems.BRIGHTSTONE)
 				.unlockedBy("has_brightstone", has(GemItems.BRIGHTSTONE))
 				.save(out);
-		wandRecipe(true, RED_CONFIGURATION_WAND)
+		wandRecipe(true, RED_CONFIGURATION_WAND, WandTier.PRIMITIVE)
 				.define('1', ItemTags.STONE_BRICKS)
 				.define('2', GemItems.RED_BRIGHTSTONE)
 				.unlockedBy("has_red_brightstone", has(GemItems.RED_BRIGHTSTONE))
 				.save(out);
-		wandRecipe(true, ICY_CONFIGURATION_WAND)
+		wandRecipe(true, ICY_CONFIGURATION_WAND, WandTier.PRIMITIVE)
 				.define('1', ItemTags.STONE_BRICKS)
 				.define('2', GemItems.ICY_BRIGHTSTONE)
 				.unlockedBy("has_icy_brightstone", has(GemItems.ICY_BRIGHTSTONE))
 				.save(out);
 
-		wandRecipe(true, AMBER_TORCH)
+		wandRecipe(true, AMBER_TORCH, WandTier.PRIMITIVE)
 				.define('1', ItemTags.LOGS)
 				.define('2', GemStats.AMBER.tag())
 				.unlockedBy("has_amber", has(GemStats.AMBER.tag()))
 				.save(out);
 
-		wandRecipe(false, LESSER_ICE_STAFF)
+		wandRecipe(false, LESSER_ICE_STAFF, WandTier.PRIMITIVE)
 				.define('1', ItemTags.LOGS)
 				.define('2', GemItems.ICY_BRIGHTSTONE)
 				.unlockedBy("has_icy_brightstone", has(GemItems.ICY_BRIGHTSTONE))
@@ -117,19 +164,46 @@ public class RecipeGen extends RecipeProvider {
 
 		shaped(TOOLS, RECALL_STAFF)
 				.pattern(" 32")
-				.pattern("413")
+				.pattern("4C3")
 				.pattern("14 ")
-				.define('1', Tags.Items.INGOTS_GOLD)
+				.define('C', BASIC_LUX_DRIVE)
+				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
 				.define('2', GemStats.AQUAMARINE.tag())
 				.define('3', Tags.Items.LEATHERS)
 				.define('4', Tags.Items.DYES_RED)
 				.unlockedBy("has_aquamarine", has(GemStats.AQUAMARINE.tag()))
 				.save(out);
 
-		wandRecipe(false, HEAL_WAND)
+		wandRecipe(false, HEAL_WAND, WandTier.BASIC)
 				.define('1', Tags.Items.INGOTS_GOLD)
 				.define('2', GemItems.PEARL)
 				.unlockedBy("has_pearl", has(GemItems.PEARL))
+				.save(out);
+
+		wandRecipe(false, ENDER_WAND, WandTier.BASIC)
+				.define('1', ModItemTags.SILVER_INGOTS)
+				.define('2', Items.ENDER_PEARL)
+				.unlockedBy("has_ender_pearl", has(Items.ENDER_PEARL))
+				.save(out);
+
+		shaped(COMBAT, LAPIS_SHIELD)
+				.pattern("121")
+				.pattern("1C1")
+				.pattern(" 1 ")
+				.define('C', BASIC_LUX_DRIVE)
+				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
+				.define('2', GemItems.POLISHED_LAPIS_LAZULI)
+				.unlockedBy("has_polished_lapis_lazuli", has(GemItems.POLISHED_LAPIS_LAZULI))
+				.save(out);
+
+		shaped(COMBAT, DIAMOND_MACE)
+				.pattern("  2")
+				.pattern(" C ")
+				.pattern("1  ")
+				.define('C', BASIC_LUX_DRIVE)
+				.define('1', Tags.Items.INGOTS_IRON)
+				.define('2', Tags.Items.GEMS_DIAMOND)
+				.unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
 				.save(out);
 
 		shaped(MISC, ModBlocks.RELAY)
@@ -162,32 +236,43 @@ public class RecipeGen extends RecipeProvider {
 				.save(out);
 
 		shaped(MISC, ModBlocks.SUNLIGHT_CORE)
+				.pattern("111")
 				.pattern("121")
-				.pattern("232")
-				.pattern("121")
+				.pattern("343")
 				.define('1', ModItemTags.BRIGHTSTONES)
-				.define('2', GemStats.CITRINE.tag())
-				.define('3', ModItemTags.LAPIDES_MANALIS)
-				.unlockedBy("has_amber", has(GemStats.CITRINE.tag()))
+				.define('2', CITRINE_MATRIX)
+				.define('3', Tags.Items.NUGGETS_GOLD)
+				.define('4', ItemTags.PLANKS)
+				.unlockedBy("has_citrine", has(GemStats.CITRINE.tag()))
 				.save(out);
 
-		// TODO MOONLIGHT_CORE
+		shaped(MISC, ModBlocks.MOONLIGHT_CORE)
+				.pattern("111")
+				.pattern("121")
+				.pattern("343")
+				.define('1', ModItemTags.BRIGHTSTONES)
+				.define('2', IOLITE_MATRIX)
+				.define('3', ModItemTags.SILVER_NUGGETS)
+				.define('4', ItemTags.PLANKS)
+				.unlockedBy("has_iolite", has(GemStats.IOLITE.tag()))
+				.save(out);
 
 		shaped(MISC, ModBlocks.SUNLIGHT_FOCUS)
 				.pattern("111")
-				.pattern("222")
+				.pattern("242")
 				.pattern("323")
 				.define('1', ModItemTags.SILVER_INGOTS)
 				.define('2', ModItemTags.LAPIDES_MANALIS)
 				.define('3', Ingredient.of(LAPIS_MANALIS_SLAB, LAPIS_MANALIS_BRICK_SLAB))
-				.unlockedBy("has_amber", has(ModItemTags.SILVER_INGOTS))
+				.define('4', MECHANICAL_COMPONENT)
+				.unlockedBy("has_silver", has(ModItemTags.SILVER_INGOTS))
 				.save(out);
 
 		shaped(TOOLS, WAND_BELT)
 				.pattern("122")
 				.pattern("2 2")
 				.pattern("222")
-				.define('1', Tags.Items.NUGGETS_IRON)
+				.define('1', ModItemTags.BASIC_ALLOY_NUGGETS)
 				.define('2', Tags.Items.LEATHERS)
 				.unlockedBy("has_wands", has(ModItemTags.WANDS))
 				.save(out);
@@ -339,17 +424,34 @@ public class RecipeGen extends RecipeProvider {
 				.processTicks(20)
 				.minLuxInputSum(100)
 				.save(out);
+
+		lightBasin()
+				.ingredient(Tags.Items.NUGGETS_GOLD)
+				.ingredient(ModItemTags.SILVER_NUGGETS)
+				.ingredient(Tags.Items.NUGGETS_IRON)
+				.result(LUMINOUS_ALLOY_NUGGET, 3)
+				.processTicks(30)
+				.minLuxInputR(80)
+				.minLuxInputG(80)
+				.save(out);
 	}
 
-	private ShapedRecipeBuilder wandRecipe(boolean tool, ItemLike result) {
-		return wandRecipe(tool ? TOOLS : COMBAT, result);
+	private ShapedRecipeBuilder wandRecipe(boolean tool, ItemLike result, WandTier tier) {
+		return wandRecipe(tool ? TOOLS : COMBAT, result, tier);
 	}
 
-	private ShapedRecipeBuilder wandRecipe(RecipeCategory category, ItemLike result) {
-		return shaped(category, result)
-				.pattern(" 12")
-				.pattern(" 11")
-				.pattern("1  ");
+	private ShapedRecipeBuilder wandRecipe(RecipeCategory category, ItemLike result, WandTier wandTier) {
+		return switch (wandTier) {
+			case PRIMITIVE -> shaped(category, result)
+					.pattern(" 12")
+					.pattern(" 11")
+					.pattern("1  ");
+			case BASIC -> shaped(category, result)
+					.pattern(" 12")
+					.pattern(" C1")
+					.pattern("1  ")
+					.define('C', BASIC_LUX_DRIVE);
+		};
 	}
 
 	private List<ItemLike> ingredients(Ore ore) {
@@ -421,5 +523,10 @@ public class RecipeGen extends RecipeProvider {
 
 	private static LightBasinRecipeBuilder lightBasin() {
 		return new LightBasinRecipeBuilder();
+	}
+
+	private enum WandTier {
+		PRIMITIVE,
+		BASIC
 	}
 }

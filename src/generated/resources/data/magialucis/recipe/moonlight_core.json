@@ -6,10 +6,10 @@
       "tag": "magialucis:brightstones"
     },
     "2": {
-      "item": "magialucis:citrine_matrix"
+      "item": "magialucis:iolite_matrix"
     },
     "3": {
-      "tag": "c:nuggets/gold"
+      "tag": "c:nuggets/silver"
     },
     "4": {
       "tag": "minecraft:planks"
@@ -22,6 +22,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "magialucis:sunlight_core"
+    "id": "magialucis:moonlight_core"
   }
 }
