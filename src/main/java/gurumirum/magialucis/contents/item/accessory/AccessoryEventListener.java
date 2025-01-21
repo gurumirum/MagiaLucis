@@ -51,7 +51,7 @@ public final class AccessoryEventListener {
 		if (!(event.getEntity() instanceof Player player)) return;
 		if (event.getNewDamage() <= 0) return;
 
-		findCurioItemAndDo(Accessories.DAMAGE_ABSORB_NECKLACE, player, stack -> {
+		findCurioItemAndDo(Accessories.SHIELD_NECKLACE, player, stack -> {
 			if (stack.getOrDefault(ModDataComponents.DEPLETED, false)) return false;
 
 			float shieldCharge = stack.getOrDefault(SHIELD_CHARGE, 0f);

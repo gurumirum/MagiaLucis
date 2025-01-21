@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magialucis:basic_lux_drive"
+        "recipe": "magialucis:luminous_lux_drive"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "magialucis:basic_lux_drive"
+      "magialucis:luminous_lux_drive"
     ]
   }
 }

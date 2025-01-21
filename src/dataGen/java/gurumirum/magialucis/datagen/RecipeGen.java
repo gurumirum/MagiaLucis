@@ -80,7 +80,7 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_silver", has(ModItemTags.SILVER_INGOTS))
 				.save(out, id("sterling_silver_hand_alloying"));
 
-		shaped(MISC, BASIC_LUX_DRIVE)
+		shaped(MISC, LUMINOUS_LUX_DRIVE)
 				.pattern(" 12")
 				.pattern("131")
 				.pattern("21 ")
@@ -166,7 +166,7 @@ public class RecipeGen extends RecipeProvider {
 				.pattern(" 32")
 				.pattern("4C3")
 				.pattern("14 ")
-				.define('C', BASIC_LUX_DRIVE)
+				.define('C', LUMINOUS_LUX_DRIVE)
 				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
 				.define('2', GemStats.AQUAMARINE.tag())
 				.define('3', Tags.Items.LEATHERS)
@@ -190,7 +190,7 @@ public class RecipeGen extends RecipeProvider {
 				.pattern("121")
 				.pattern("1C1")
 				.pattern(" 1 ")
-				.define('C', BASIC_LUX_DRIVE)
+				.define('C', LUMINOUS_LUX_DRIVE)
 				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
 				.define('2', GemItems.POLISHED_LAPIS_LAZULI)
 				.unlockedBy("has_polished_lapis_lazuli", has(GemItems.POLISHED_LAPIS_LAZULI))
@@ -200,7 +200,7 @@ public class RecipeGen extends RecipeProvider {
 				.pattern("  2")
 				.pattern(" C ")
 				.pattern("1  ")
-				.define('C', BASIC_LUX_DRIVE)
+				.define('C', LUMINOUS_LUX_DRIVE)
 				.define('1', Tags.Items.INGOTS_IRON)
 				.define('2', Tags.Items.GEMS_DIAMOND)
 				.unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
@@ -450,7 +450,7 @@ public class RecipeGen extends RecipeProvider {
 					.pattern(" 12")
 					.pattern(" C1")
 					.pattern("1  ")
-					.define('C', BASIC_LUX_DRIVE);
+					.define('C', LUMINOUS_LUX_DRIVE);
 		};
 	}
 

@@ -22,7 +22,7 @@ public enum Accessories implements ItemLike {
 	FIRE_IMMUNE_BRACELET(ItemProfile.customItem(LuxContainerCurioItem::new), ModCurioSlots.BRACELET,
 			LuxContainerStat.withBaseStat(AccessoryEventListener.COST_PER_FIRE_RESISTANCE * 20 * 8, GemStats.OBSIDIAN)),
 
-	DAMAGE_ABSORB_NECKLACE(ItemProfile.customItem(DamageAbsorbNecklaceItem::new), ModCurioSlots.NECKLACE,
+	SHIELD_NECKLACE(ItemProfile.customItem(DamageAbsorbNecklaceItem::new), ModCurioSlots.NECKLACE,
 			LuxContainerStat.withBaseStat(DamageAbsorbNecklaceItem.COST_PER_IMPACT * 10, GemStats.POLISHED_LAPIS_LAZULI)),
 
 	MOVEMENT_SPEED_RING(ItemProfile.customItem(p -> new SpeedBoostCurioItem(p,

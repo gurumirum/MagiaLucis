@@ -52,7 +52,7 @@ public class DamageAbsorbNecklaceItem extends LuxContainerCurioItem implements I
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
 		super.appendHoverText(stack, context, tooltip, flag);
-		tooltip.add(Component.translatable("item.magialucis.tooltip.damage_absorbed",
+		tooltip.add(Component.translatable("item.magialucis.shield_necklace.tooltip.shield_charge",
 				stack.getOrDefault(ModDataComponents.SHIELD_CHARGE, 0.0),
 				MAX_SHIELD));
 	}
