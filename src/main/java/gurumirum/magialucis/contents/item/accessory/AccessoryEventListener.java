@@ -6,7 +6,7 @@ import gurumirum.magialucis.contents.ModDataComponents;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.entity.EntityTypeTest;
@@ -17,10 +17,13 @@ import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static gurumirum.magialucis.contents.ModDataComponents.*;
 
 @EventBusSubscriber(modid = MagiaLucisMod.MODID)
 public final class AccessoryEventListener {
@@ -33,50 +36,69 @@ public final class AccessoryEventListener {
 
 		if ((event.getSource().is(DamageTypes.ON_FIRE) || event.getSource().is(DamageTypes.IN_FIRE)) &&
 				!player.hasEffect(MobEffects.FIRE_RESISTANCE)) {
-			findCurioItemAndDo(Accessories.FIRE_IMMUNE_BRACELET, player, stack -> COST_PER_FIRE_RESISTANCE,
-					stack -> event.setInvulnerable(true));
+			findCurioItemAndDo(Accessories.FIRE_IMMUNE_BRACELET, player, stack -> {
+				long charge = stack.getOrDefault(LUX_CHARGE, 0L);
+				if (charge < COST_PER_FIRE_RESISTANCE) return false;
+
+				event.setInvulnerable(true);
+				return true;
+			});
 		}
 	}
 
 	@SubscribeEvent
 	public static void onEntityHurt(LivingDamageEvent.Pre event) {
 		if (!(event.getEntity() instanceof Player player)) return;
+		if (event.getNewDamage() <= 0) return;
 
 		findCurioItemAndDo(Accessories.DAMAGE_ABSORB_NECKLACE, player, stack -> {
-			double absorbedDamage = stack.getOrDefault(ModDataComponents.ABSORBED_DAMAGE, .0);
-			return absorbedDamage >= DamageAbsorbNecklaceItem.ABSORBABLE_DAMAGE_TOTAL ? DamageAbsorbNecklaceItem.COST_PER_IMPACT : DamageAbsorbNecklaceItem.COST_PER_ABSORB;
-		}, stack -> {
-			double absorbedDamage = stack.getOrDefault(ModDataComponents.ABSORBED_DAMAGE, .0);
-			if (absorbedDamage >= DamageAbsorbNecklaceItem.ABSORBABLE_DAMAGE_TOTAL) {
-				stack.set(ModDataComponents.ABSORBED_DAMAGE, .0);
-				player.level().getEntities(EntityTypeTest.forClass(Mob.class), player.getBoundingBox().inflate(4), LivingEntity::isAlive).forEach(entity -> {
-					entity.hurt(player.damageSources().source(DamageTypes.MAGIC, player), DamageAbsorbNecklaceItem.IMPACT_DAMAGE);
-					// Do visual? sth? idk
-				});
-			} else {
-				double damage = event.getOriginalDamage() < DamageAbsorbNecklaceItem.ABSORBABLE_DAMAGE_PER_ATTACK ? event.getOriginalDamage() : DamageAbsorbNecklaceItem.ABSORBABLE_DAMAGE_PER_ATTACK;
-				event.setNewDamage((float)(event.getOriginalDamage() - damage));
-				stack.set(ModDataComponents.ABSORBED_DAMAGE, absorbedDamage + damage);
-			}
-		});
+			if (stack.getOrDefault(ModDataComponents.DEPLETED, false)) return false;
 
+			float shieldCharge = stack.getOrDefault(SHIELD_CHARGE, 0f);
+			float damageReduction = Math.max(event.getNewDamage(), DamageAbsorbNecklaceItem.DAMAGE_ABSORPTION_LIMIT);
+
+			if (shieldCharge < damageReduction) {
+				damageReduction = shieldCharge;
+
+				stack.set(SHIELD_CHARGE, 0f);
+				stack.set(DEPLETED, true);
+
+				long luxCharge = stack.getOrDefault(LUX_CHARGE, 0L);
+				if (luxCharge >= DamageAbsorbNecklaceItem.COST_PER_IMPACT) {
+					// TODO Do visual? sth? idk
+					for (Monster entity : player.level().getEntities(
+							EntityTypeTest.forClass(Monster.class),
+							player.getBoundingBox().inflate(4),
+							LivingEntity::isAlive)) {
+						entity.knockback(1.5f, player.getX() - entity.getX(), player.getZ() - entity.getZ());
+						entity.hurt(player.damageSources().source(DamageTypes.INDIRECT_MAGIC, player),
+								DamageAbsorbNecklaceItem.IMPACT_DAMAGE);
+					}
+				}
+			} else {
+				shieldCharge -= damageReduction;
+				stack.set(SHIELD_CHARGE, shieldCharge);
+			}
+
+			event.setNewDamage(event.getNewDamage() - damageReduction);
+			return true;
+		});
 	}
 
-	private static void findCurioItemAndDo(@NotNull Accessories item, @NotNull Player player, Function<ItemStack, Integer> luxFunction, @NotNull Consumer<ItemStack> consumer) {
-		CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
-			ICurioStacksHandler curios = handler.getCurios().get(item.curioSlot());
+	private static boolean findCurioItemAndDo(@NotNull Accessories item, @NotNull Player player,
+	                                          @NotNull Predicate<ItemStack> action) {
+		ICuriosItemHandler h = CuriosApi.getCuriosInventory(player).orElse(null);
+		if (h == null) return false;
 
-			for (int i = 0; i < curios.getSlots(); ++i) {
-				ItemStack stack = curios.getStacks().getStackInSlot(i);
-				if (!stack.is(item.asItem())) continue;
-				long lux = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
-				int luxConsume = luxFunction.apply(stack);
-				if (lux >= luxConsume) {
-					consumer.accept(stack);
-					stack.set(ModDataComponents.LUX_CHARGE, lux - luxConsume);
-					break;
-				}
-			}
-		});
+		ICurioStacksHandler curios = h.getCurios().get(item.curioSlot());
+		if (curios == null) return false;
+
+		IDynamicStackHandler stacks = curios.getStacks();
+		for (int i = 0; i < stacks.getSlots(); ++i) {
+			ItemStack stack = stacks.getStackInSlot(i);
+			if (stack.is(item.asItem()) && action.test(stack)) return true;
+		}
+
+		return false;
 	}
 }

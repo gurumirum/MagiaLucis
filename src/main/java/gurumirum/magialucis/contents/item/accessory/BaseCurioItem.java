@@ -15,7 +15,7 @@ import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 public class BaseCurioItem extends Item {
 	public BaseCurioItem(Properties properties) {
-		super(properties);
+		super(properties.stacksTo(1));
 	}
 
 	@Override

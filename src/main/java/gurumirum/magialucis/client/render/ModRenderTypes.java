@@ -35,7 +35,7 @@ public final class ModRenderTypes {
 			DefaultVertexFormat.POSITION_COLOR,
 			VertexFormat.Mode.QUADS,
 			RenderType.TRANSIENT_BUFFER_SIZE,
-			true,
+			false,
 			false,
 			RenderType.CompositeState.builder()
 					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorShader))
@@ -77,7 +77,7 @@ public final class ModRenderTypes {
 			DefaultVertexFormat.POSITION_TEX_COLOR,
 			VertexFormat.Mode.QUADS,
 			RenderType.TRANSIENT_BUFFER_SIZE,
-			true,
+			false,
 			false,
 			RenderType.CompositeState.builder()
 					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexColorShader))
@@ -91,7 +91,7 @@ public final class ModRenderTypes {
 			DefaultVertexFormat.POSITION_TEX_COLOR,
 			VertexFormat.Mode.QUADS,
 			RenderType.TRANSIENT_BUFFER_SIZE,
-			true,
+			false,
 			false,
 			RenderType.CompositeState.builder()
 					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexColorShader))
