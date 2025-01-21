@@ -5,6 +5,7 @@ import gurumirum.magialucis.capability.LuxAcceptor;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModBlockEntities;
+import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.impl.luxnet.LuxConsumerNodeInterface;
@@ -26,6 +27,8 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Ticker.Server, LuxConsumerNodeInterface {
 	private static final int CYCLE = 10;
@@ -71,6 +74,18 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity implements Tick
 					if (charge.x <= 0 && charge.y <= 0 && charge.z <= 0) return;
 				}
 			}
+
+			CuriosApi.getCuriosInventory(p).ifPresent(handler -> handler.getCurios().forEach((s, curios) -> {
+				if (curios == null) return;
+
+				IDynamicStackHandler stackHandler = curios.getStacks();
+				for (int i = 0; i < stackHandler.getSlots(); ++i) {
+					ItemStack stack = stackHandler.getStackInSlot(i);
+					if (stack.has(ModDataComponents.LUX_CHARGE) && chargeItem(charge, stack)) {
+						if (charge.x <= 0 && charge.y <= 0 && charge.z <= 0) return;
+					}
+				}
+			}));
 		}
 
 		setChanged();
