@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.sunlight.focus;
+package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import net.minecraft.client.resources.model.ModelResourceLocation;

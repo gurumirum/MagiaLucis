@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.sunlight;
+package gurumirum.magialucis.contents.block.lux.sunlight;
 
 import gurumirum.magialucis.impl.RGB332;
 import it.unimi.dsi.fastutil.longs.Long2ObjectAVLTreeMap;

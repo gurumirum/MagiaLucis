@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.sunlight.core;
+package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
@@ -8,20 +8,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MoonlightCoreBlock extends BaseSunlightCoreBlock {
+public class SunlightCoreBlock extends BaseSunlightCoreBlock {
 	public static final LuxStat STAT = LuxStat.simple(
-			GemStats.IOLITE.color(),
+			GemStats.CITRINE.color(),
 			0, // don't make cores just ignore foci
-			GemStats.IOLITE.rMaxTransfer(),
-			GemStats.IOLITE.gMaxTransfer(),
-			GemStats.IOLITE.bMaxTransfer());
+			GemStats.CITRINE.rMaxTransfer(),
+			GemStats.CITRINE.gMaxTransfer(),
+			0); // regular sunlight cores cannot receive blue light
 
-	public MoonlightCoreBlock(Properties properties) {
+	public SunlightCoreBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-		return new MoonlightCoreBlockEntity(pos, state);
+		return new SunlightCoreBlockEntity(pos, state);
 	}
 }

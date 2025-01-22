@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.sunlight.focus;
+package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 
 import gurumirum.magialucis.contents.block.Ticker;
 import net.minecraft.core.BlockPos;

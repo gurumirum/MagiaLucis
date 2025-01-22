@@ -1,8 +1,8 @@
-package gurumirum.magialucis.contents.block.sunlight.focus;
+package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.LuxNodeTypes;
-import gurumirum.magialucis.contents.block.sunlight.SunlightLogic;
+import gurumirum.magialucis.contents.block.lux.sunlight.SunlightLogic;
 import gurumirum.magialucis.impl.RGB332;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxNode;

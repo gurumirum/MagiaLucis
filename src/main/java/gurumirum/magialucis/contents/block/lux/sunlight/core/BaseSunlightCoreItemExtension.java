@@ -1,6 +1,7 @@
-package gurumirum.magialucis.contents.block.sunlight.focus;
+package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import gurumirum.magialucis.client.RotationLogic;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -8,14 +9,16 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Quaternionf;
 
-public class SunlightFocusItemExtension implements IClientItemExtensions {
+public abstract class BaseSunlightCoreItemExtension implements IClientItemExtensions {
 	private @Nullable Renderer renderer;
 
 	@Override
@@ -27,8 +30,11 @@ public class SunlightFocusItemExtension implements IClientItemExtensions {
 		return this.renderer;
 	}
 
-	public static class Renderer extends BlockEntityWithoutLevelRenderer {
-		private final Quaternionf q = new Quaternionf();
+	protected abstract @NotNull BlockState getBlockState();
+	protected abstract @Nullable ResourceLocation spinningThingTexture();
+
+	public class Renderer extends BlockEntityWithoutLevelRenderer {
+		private static final int ROTATION_PERIOD = 720;
 
 		public Renderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher, EntityModelSet entityModelSet) {
 			super(blockEntityRenderDispatcher, entityModelSet);
@@ -39,29 +45,22 @@ public class SunlightFocusItemExtension implements IClientItemExtensions {
 		                         @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer,
 		                         int packedLight, int packedOverlay) {
 			Minecraft mc = Minecraft.getInstance();
-			BakedModel model1 = mc.getModelManager().getModel(SunlightFocusModels.MODEL_1);
-			BakedModel model2 = mc.getModelManager().getModel(SunlightFocusModels.MODEL_2);
-			BakedModel model3 = mc.getModelManager().getModel(SunlightFocusModels.MODEL_3);
 
-			draw(stack, poseStack, buffer, packedLight, packedOverlay, model1);
-			draw(stack, poseStack, buffer, packedLight, packedOverlay, model2);
+			BakedModel blockModel = mc.getBlockRenderer().getBlockModel(getBlockState());
 
-			poseStack.pushPose();
-			poseStack.translate(8 / 16.0, 10 / 16.0, 8 / 16.0);
-			poseStack.mulPose(this.q.identity().rotateX(-(float)Math.PI / 6));
-			poseStack.translate(-8 / 16.0, -10 / 16.0, -8 / 16.0);
-
-			draw(stack, poseStack, buffer, packedLight, packedOverlay, model3);
-
-			poseStack.popPose();
-		}
-
-		private void draw(@NotNull ItemStack stack, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay, BakedModel model) {
-			for (RenderType renderType : model.getRenderTypes(stack, true)) {
-				Minecraft.getInstance().getItemRenderer().renderModelLists(
-						model, ItemStack.EMPTY, packedLight, packedOverlay, poseStack,
-						buffer.getBuffer(renderType));
+			for (RenderType renderType : blockModel.getRenderTypes(stack, true)) {
+				mc.getItemRenderer().renderModelLists(blockModel, stack, packedLight, packedOverlay,
+						poseStack, buffer.getBuffer(renderType));
 			}
+
+			float partialTicks = mc.getTimer().getGameTimeDeltaPartialTick(false);
+
+			BaseSunlightCoreBlockEntityRenderer.render(poseStack, buffer, spinningThingTexture(),
+					RotationLogic.rotation(
+							mc.level != null ? mc.level.getGameTime() : 0,
+							ROTATION_PERIOD,
+							partialTicks),
+					Direction.UP);
 		}
 	}
 }

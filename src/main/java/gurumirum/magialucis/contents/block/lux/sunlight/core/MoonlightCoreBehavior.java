@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.sunlight.core;
+package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.LuxNodeTypes;

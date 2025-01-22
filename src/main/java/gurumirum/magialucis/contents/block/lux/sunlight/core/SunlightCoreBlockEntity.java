@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.sunlight.core;
+package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.impl.field.Field;

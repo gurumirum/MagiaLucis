@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.sunlight.core;
+package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

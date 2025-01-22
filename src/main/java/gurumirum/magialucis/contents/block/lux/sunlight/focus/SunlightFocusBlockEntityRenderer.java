@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.sunlight.focus;
+package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import gurumirum.magialucis.capability.LinkSource;

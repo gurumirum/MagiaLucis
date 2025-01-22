@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.sunlight.core;
+package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
