@@ -1,7 +1,14 @@
 package gurumirum.magialucis.contents.block.lux.ambercore;
 
+import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.block.Ticker;
+import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -13,10 +20,17 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 import static gurumirum.magialucis.contents.block.ModBlockStateProps.OVERSATURATED;
 import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKYLIGHT_INTERFERENCE;
 
 public class AmberCoreBlock extends Block implements EntityBlock {
+	public static final LuxStat STAT = LuxStat.simple(
+			GemStats.AMBER.color(),
+			0,
+			10, 5, 0);
+
 	public AmberCoreBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState()
@@ -39,6 +53,12 @@ public class AmberCoreBlock extends Block implements EntityBlock {
 	                                                                        @NotNull BlockState state,
 	                                                                        @NotNull BlockEntityType<T> blockEntityType) {
 		return Ticker.server(level);
+	}
+
+	@Override
+	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
+	                            @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
+		LuxStatTooltip.formatStat(STAT, tooltipComponents, LuxStatTooltip.Type.SOURCE);
 	}
 
 	public static int getLightValue(@NotNull BlockState state) {

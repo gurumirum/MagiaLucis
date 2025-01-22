@@ -59,11 +59,14 @@ public final class ModCapabilities {
 		event.registerBlockEntity(LUX_NET_LINK_DESTINATION, ModBlockEntities.RELAY.get(), (be, dir) ->
 				be.getBlockState().getValue(BlockStateProperties.FACING).getOpposite() != dir ? be : null);
 
+		registerLuxNetLinkDestination(event, ModBlockEntities.AMBER_CHARGER.get());
+		registerLuxNetLinkDestination(event, ModBlockEntities.LUMINOUS_CHARGER.get());
+
 		registerRelayLinkSource(event, ModBlockEntities.LUX_SOURCE.get());
 		registerLuxNetLinkDestination(event, ModBlockEntities.LIGHT_BASIN.get());
 		registerLuxNetLinkDestination(event, ModBlockEntities.LUX_SOURCE.get());
-		registerLuxNetLinkDestination(event, ModBlockEntities.REMOTE_CHARGER.get());
-		registerLuxNetLinkDestination(event, ModBlockEntities.REMOTE_CHARGER_2.get());
+		registerLuxNetLinkDestination(event, ModBlockEntities.LUMINOUS_REMOTE_CHARGER.get());
+		registerLuxNetLinkDestination(event, ModBlockEntities.LUSTROUS_REMOTE_CHARGER.get());
 		registerLuxNetLinkDestination(event, ModBlockEntities.SUNLIGHT_FOCUS.get());
 		registerRelayLinkSource(event, ModBlockEntities.SUNLIGHT_FOCUS.get());
 		registerLuxNetLinkDestination(event, ModBlockEntities.SUNLIGHT_CORE.get());

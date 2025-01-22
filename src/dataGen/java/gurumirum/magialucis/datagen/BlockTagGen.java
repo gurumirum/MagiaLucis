@@ -73,8 +73,9 @@ public class BlockTagGen extends BlockTagsProvider {
 				ModBlockTags.STERLING_SILVER_BLOCKS);
 
 		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
-				REMOTE_CHARGER.block(),
-				REMOTE_CHARGER_2.block(),
+				LUMINOUS_CHARGER.block(),
+				LUMINOUS_REMOTE_CHARGER.block(),
+				LUSTROUS_REMOTE_CHARGER.block(),
 				RELAY.block(),
 				LIGHT_BASIN.block(),
 				SUNLIGHT_CORE.block(),
@@ -103,6 +104,7 @@ public class BlockTagGen extends BlockTagsProvider {
 				STERLING_SILVER_BLOCK.block());
 
 		tag(BlockTags.MINEABLE_WITH_AXE).add(
+				AMBER_CHARGER.block(),
 				AMBER_CORE.block());
 
 		tag(BlockTags.NEEDS_STONE_TOOL).add(

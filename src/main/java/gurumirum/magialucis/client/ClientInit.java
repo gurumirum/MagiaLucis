@@ -3,6 +3,7 @@ package gurumirum.magialucis.client;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.*;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemExtension;
@@ -119,6 +120,8 @@ public final class ClientInit {
 		event.registerEntityRenderer(ModEntities.TEMPLE_GUARDIAN.get(), TempleGuardianRenderer::new);
 
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.AMBER_CHARGER.get(), ChargerBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.LUMINOUS_CHARGER.get(), ChargerBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.SUNLIGHT_CORE.get(), SunlightCoreBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.MOONLIGHT_CORE.get(), MoonlightCoreBlockEntityRenderer::new);

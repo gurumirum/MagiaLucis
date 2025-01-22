@@ -3,7 +3,6 @@ package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.LuxNodeTypes;
 import gurumirum.magialucis.contents.block.lux.sunlight.SunlightLogic;
-import gurumirum.magialucis.impl.RGB332;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxGeneratorNodeBehavior;
@@ -18,13 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
 public class SunlightFocusBehavior implements LuxGeneratorNodeBehavior {
-	public static final LuxStat STAT = LuxStat.simple(RGB332.WHITE,
-			0,
-			// use max throughput of foci for the stat
-			SunlightLogic.DEFAULT_BASE_INTENSITY,
-			SunlightLogic.DEFAULT_BASE_INTENSITY,
-			SunlightLogic.DEFAULT_BASE_INTENSITY);
-
 	private final BlockPos pos;
 
 	private int skyVisibility;
@@ -41,7 +33,7 @@ public class SunlightFocusBehavior implements LuxGeneratorNodeBehavior {
 
 	@Override
 	public @NotNull LuxStat stat() {
-		return STAT;
+		return SunlightFocusBlock.STAT;
 	}
 
 	public BlockPos pos() {

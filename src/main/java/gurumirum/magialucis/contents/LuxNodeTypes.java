@@ -1,8 +1,8 @@
 package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBehavior;
-import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBehavior;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBehavior;
+import gurumirum.magialucis.contents.block.lux.source.LuxSourceBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBehavior;
@@ -44,14 +44,19 @@ public final class LuxNodeTypes {
 	public static final LuxNodeType<LightBasinBehavior> LIGHT_BASIN = type("light_basin",
 			LightBasinBehavior.class, LightBasinBehavior::new);
 
-	public static final LuxNodeType<RemoteChargerBehavior.Basic> BASIC_CHARGER = type("basic_charger",
-			RemoteChargerBehavior.Basic.class, RemoteChargerBehavior.Basic::new);
+	public static final LuxNodeType<LuxSourceBehavior> SOURCE = type("source",
+			LuxSourceBehavior.class, LuxSourceBehavior::new);
 
-	public static final LuxNodeType<RemoteChargerBehavior.Advanced> ADVANCED_CHARGER = type("advanced_charger",
-			RemoteChargerBehavior.Advanced.class, RemoteChargerBehavior.Advanced::new);
-
-	public static final LuxNodeType<RemoteChargerBehavior.Advanced> SOURCE = type("source",
-			RemoteChargerBehavior.Advanced.class, RemoteChargerBehavior.Advanced::new);
+	static {
+		for (ChargerTier chargerTier : ChargerTier.values()) {
+			Contents.LUX_NODE_TYPES.register(
+					chargerTier.chargerBehaviorType(false).id().getPath(),
+					() -> chargerTier.chargerBehaviorType(false));
+			Contents.LUX_NODE_TYPES.register(
+					chargerTier.chargerBehaviorType(true).id().getPath(),
+					() -> chargerTier.chargerBehaviorType(true));
+		}
+	}
 
 	public static void init() {}
 

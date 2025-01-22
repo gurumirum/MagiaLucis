@@ -3,6 +3,7 @@ package gurumirum.magialucis.contents.item.wand;
 import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
 import gurumirum.magialucis.net.msgs.SetLinkMsg;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.ChatFormatting;
@@ -180,7 +181,7 @@ public class ConfigurationWandItem extends Item {
 								origin.y + vec.y * linkDistance,
 								origin.z + vec.z * linkDistance),
 						ClipContext.Block.VISUAL, ClipContext.Fluid.ANY,
-						CollisionContext.empty()));
+						LuxNetCollisionContext.EMPTY));
 			}
 			return null;
 		}

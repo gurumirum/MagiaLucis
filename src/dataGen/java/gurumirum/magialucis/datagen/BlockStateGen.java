@@ -66,6 +66,16 @@ public class BlockStateGen extends BlockStateProvider {
 
 		directionalBlock(RELAY.block(), models().getExistingFile(id("block/relay")));
 
+		simpleBlockWithItem(AMBER_CHARGER.block(), models().withExistingParent(AMBER_CHARGER.id().getPath(), id("block/charger"))
+				.texture("top", AMBER_CHARGER.id().withPath(p -> "block/" + p + "_top"))
+				.texture("side", AMBER_CHARGER.id().withPath(p -> "block/" + p + "_side"))
+				.texture("bottom", AMBER_CHARGER.id().withPath(p -> "block/" + p + "_bottom")));
+
+		simpleBlockWithItem(LUMINOUS_CHARGER.block(), models().withExistingParent(LUMINOUS_CHARGER.id().getPath(), id("block/charger"))
+				.texture("top", LUMINOUS_CHARGER.id().withPath(p -> "block/" + p + "_top"))
+				.texture("side", LUMINOUS_CHARGER.id().withPath(p -> "block/" + p + "_side"))
+				.texture("bottom", LUMINOUS_CHARGER.id().withPath(p -> "block/" + p + "_bottom")));
+
 		BlockModelBuilder amberCore = models().cubeColumnHorizontal(AMBER_CORE.id().getPath(),
 				id("block/amber_core_side"), mcLoc("block/oak_log_top"));
 		BlockModelBuilder amberCoreDisabled = models().cubeColumnHorizontal(AMBER_CORE.id().getPath() + "_disabled",

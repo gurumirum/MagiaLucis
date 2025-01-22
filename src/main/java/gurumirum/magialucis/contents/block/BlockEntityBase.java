@@ -91,6 +91,15 @@ public abstract class BlockEntityBase extends BlockEntity {
 		}
 	}
 
+	/**
+	 * Overwritten to not call neighbor changed callback on nearby blocks and reevaluate redstone state. Yes that is a
+	 * real thing original impl does
+	 */
+	@Override
+	public void setChanged() {
+		if (this.level != null) this.level.blockEntityChanged(getBlockPos());
+	}
+
 	public boolean updateProperty(@NotNull BooleanProperty property, boolean newValue) {
 		if (isRemoved()) return false;
 

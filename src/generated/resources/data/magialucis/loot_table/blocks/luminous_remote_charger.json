@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "magialucis:remote_charger_2"
+          "name": "magialucis:luminous_remote_charger"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "magialucis:blocks/remote_charger_2"
+  "random_sequence": "magialucis:blocks/luminous_remote_charger"
 }

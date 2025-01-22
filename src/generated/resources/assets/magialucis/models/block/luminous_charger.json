@@ -1,0 +1,8 @@
+{
+  "parent": "magialucis:block/charger",
+  "textures": {
+    "bottom": "magialucis:block/luminous_charger_bottom",
+    "side": "magialucis:block/luminous_charger_side",
+    "top": "magialucis:block/luminous_charger_top"
+  }
+}

@@ -155,7 +155,7 @@ public class RelayBlock extends Block implements EntityBlock {
 			tooltip.add(s.getHoverName().copy().withStyle(ChatFormatting.GOLD));
 			LuxStat gemStat = s.getCapability(ModCapabilities.GEM_STAT);
 			if (gemStat != null) {
-				LuxStatTooltip.formatStat(gemStat, tooltip);
+				LuxStatTooltip.formatStat(gemStat, tooltip, LuxStatTooltip.Type.GEM);
 				LuxStatTooltip.skipAutoTooltipFor(stack);
 			}
 		}

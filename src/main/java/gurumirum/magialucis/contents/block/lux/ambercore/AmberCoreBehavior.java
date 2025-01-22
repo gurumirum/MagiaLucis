@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents.block.lux.ambercore;
 
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.LuxNodeTypes;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
@@ -13,11 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
 public class AmberCoreBehavior implements LuxNodeBehavior, LuxGeneratorNodeBehavior {
-	public static final LuxStat STAT = LuxStat.simple(
-			GemStats.AMBER.color(),
-			0,
-			10, 5, 0);
-
 	private double power;
 
 	public AmberCoreBehavior() {}
@@ -29,7 +23,7 @@ public class AmberCoreBehavior implements LuxNodeBehavior, LuxGeneratorNodeBehav
 
 	@Override
 	public @NotNull LuxStat stat() {
-		return STAT;
+		return AmberCoreBlock.STAT;
 	}
 
 	@Override

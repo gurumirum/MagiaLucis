@@ -13,7 +13,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
@@ -89,7 +88,7 @@ public final class LuxUtils {
 						pos.getY() + .5f + vec.y * linkDistance,
 						pos.getZ() + .5f + vec.z * linkDistance),
 				ClipContext.Block.VISUAL, ClipContext.Fluid.ANY,
-				CollisionContext.empty()));
+				LuxNetCollisionContext.EMPTY));
 
 		if (hitResult.getType() == HitResult.Type.BLOCK && !hitResult.getBlockPos().equals(pos)) {
 			if (selector == null) selector = LinkDestinationSelector.DEFAULT;

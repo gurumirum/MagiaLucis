@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents.block.fieldmonitor;
 
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.Ticker;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -41,6 +42,7 @@ public class FieldMonitorBlock extends Block implements EntityBlock {
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
 		ResourceLocation fieldId = stack.get(ModDataComponents.FIELD_ID.get());
-		if (fieldId != null) tooltip.add(Component.literal(fieldId + ""));
+		if (fieldId != null) tooltip.add(Component.literal(fieldId + "")
+				.withStyle(ChatFormatting.GOLD));
 	}
 }

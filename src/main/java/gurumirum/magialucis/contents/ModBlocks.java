@@ -5,6 +5,7 @@ import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.block.AmberLightBlock;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlock;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
+import gurumirum.magialucis.contents.block.lux.charger.ChargerBlock;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
@@ -40,12 +41,21 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.noCollission()
 			.noOcclusion())),
 
-	REMOTE_CHARGER(BlockProfile.customBlock(RemoteChargerBlock.Basic::new, Properties.of().strength(2.5f))),
-	REMOTE_CHARGER_2(BlockProfile.customBlock(RemoteChargerBlock.Advanced::new, Properties.of().strength(2.5f))),
-
 	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of()
 			.strength(1)
 			.sound(SoundType.GLASS))),
+
+	AMBER_CHARGER(BlockProfile.customBlock(p -> new ChargerBlock(p, ChargerTier.PRIMITIVE), Properties.of().strength(2.5f))),
+	LUMINOUS_CHARGER(BlockProfile.customBlock(p -> new ChargerBlock(p, ChargerTier.LUMINOUS), Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f))),
+
+	LUMINOUS_REMOTE_CHARGER(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUMINOUS), Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f))),
+	LUSTROUS_REMOTE_CHARGER(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUSTROUS), Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f))),
 
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of()
 			.strength(2.5f)

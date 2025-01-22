@@ -1,7 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
-import gurumirum.magialucis.capability.GemStats;
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.contents.ChargerTier;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.core.BlockPos;
@@ -21,19 +20,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class RemoteChargerBlock extends Block implements EntityBlock {
-	public static final LuxStat BASIC_STAT = GemStats.BRIGHTSTONE;
-	public static final LuxStat ADVANCED_STAT = GemStats.PURIFIED_QUARTZ;
+public class RemoteChargerBlock extends Block implements EntityBlock {
+	private final ChargerTier chargerTier;
 
-	private final LuxStat stat;
-
-	public RemoteChargerBlock(Properties properties, LuxStat stat) {
+	public RemoteChargerBlock(Properties properties, ChargerTier chargerTier) {
 		super(properties);
-		this.stat = stat;
+		this.chargerTier = chargerTier;
 	}
 
 	@Override
-	public abstract @Nullable RemoteChargerBlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state);
+	public @Nullable RemoteChargerBlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+		return new RemoteChargerBlockEntity(this.chargerTier, pos, state);
+	}
 
 	@Override
 	public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state,
@@ -44,28 +42,6 @@ public abstract class RemoteChargerBlock extends Block implements EntityBlock {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		LuxStatTooltip.formatStat(this.stat, tooltip);
-	}
-
-	public static class Basic extends RemoteChargerBlock {
-		public Basic(Properties properties) {
-			super(properties, BASIC_STAT);
-		}
-
-		@Override
-		public @Nullable RemoteChargerBlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-			return RemoteChargerBlockEntity.basic(pos, state);
-		}
-	}
-
-	public static class Advanced extends RemoteChargerBlock {
-		public Advanced(Properties properties) {
-			super(properties, ADVANCED_STAT);
-		}
-
-		@Override
-		public @Nullable RemoteChargerBlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-			return RemoteChargerBlockEntity.advanced(pos, state);
-		}
+		LuxStatTooltip.formatStat(this.chargerTier.stat(), tooltip, LuxStatTooltip.Type.CONTAINER);
 	}
 }

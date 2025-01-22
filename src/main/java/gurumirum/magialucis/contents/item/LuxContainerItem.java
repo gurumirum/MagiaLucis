@@ -28,7 +28,7 @@ public class LuxContainerItem extends Item {
 
 		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		tooltip.add(Component.translatable("item.magialucis.tooltip.lux_charge", charge, luxContainerStat.maxCharge()));
-		LuxStatTooltip.formatContainerStat(luxContainerStat, tooltip);
+		LuxStatTooltip.formatStat(luxContainerStat, tooltip, LuxStatTooltip.Type.CONTAINER);
 		LuxStatTooltip.skipAutoTooltipFor(stack);
 	}
 

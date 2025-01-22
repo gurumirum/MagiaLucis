@@ -1,8 +1,9 @@
-package gurumirum.magialucis.contents.block.lux.lightbasin;
+package gurumirum.magialucis.contents.block.lux.charger;
 
-import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.contents.ChargerTier;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
+import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -29,42 +30,23 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LightBasinBlock extends Block implements EntityBlock {
-	private static final VoxelShape SHAPE = box(0, 0, 0, 16, 12, 16);
+public class ChargerBlock extends Block implements EntityBlock {
+	private static final VoxelShape SHAPE = box(2, 0, 2, 14, 4, 14);
+	private static final VoxelShape SHAPE_LUX_NET_COLLISION = box(2, 0, 2, 14, 14, 14);
 
-	public LightBasinBlock(Properties properties) {
+	private final ChargerTier chargerTier;
+
+	public ChargerBlock(Properties properties, ChargerTier chargerTier) {
 		super(properties);
-	}
-
-	@Override
-	public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-		return new LightBasinBlockEntity(pos, state);
-	}
-
-	@Override
-	public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level,
-	                                                                        @NotNull BlockState state,
-	                                                                        @NotNull BlockEntityType<T> blockEntityType) {
-		return Ticker.server(level);
-	}
-
-	@Override
-	protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level,
-	                                       @NotNull BlockPos pos, @NotNull CollisionContext context) {
-		return SHAPE;
+		this.chargerTier = chargerTier;
 	}
 
 	@Override
 	protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level,
 	                                                    @NotNull BlockPos pos, @NotNull Player player,
 	                                                    @NotNull BlockHitResult hitResult) {
-		if (level.getBlockEntity(pos) instanceof LightBasinBlockEntity lightBasin) {
-			if (player.isSecondaryUseActive()) {
-				lightBasin.dropAllContents();
-				return InteractionResult.SUCCESS;
-			} else {
-				return lightBasin.dropLastContent() ? InteractionResult.SUCCESS : InteractionResult.PASS;
-			}
+		if (level.getBlockEntity(pos) instanceof ChargerBlockEntity charger) {
+			return charger.dropItem() ? InteractionResult.SUCCESS : InteractionResult.PASS;
 		}
 		return InteractionResult.FAIL;
 	}
@@ -78,8 +60,8 @@ public class LightBasinBlock extends Block implements EntityBlock {
 			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		}
 
-		if (level.getBlockEntity(pos) instanceof LightBasinBlockEntity lightBasin) {
-			IItemHandlerModifiable inventory = lightBasin.inventory();
+		if (level.getBlockEntity(pos) instanceof ChargerBlockEntity charger) {
+			IItemHandlerModifiable inventory = charger.inventory();
 			for (int i = 0; i < inventory.getSlots(); i++) {
 				ItemStack remaining = inventory.insertItem(i, stack, level.isClientSide);
 				if (remaining != stack) {
@@ -96,8 +78,8 @@ public class LightBasinBlock extends Block implements EntityBlock {
 	protected void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
 	                        @NotNull BlockState newState, boolean movedByPiston) {
 		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof LightBasinBlockEntity lightBasin) {
-				lightBasin.dropAllContents();
+			if (level.getBlockEntity(pos) instanceof ChargerBlockEntity charger) {
+				charger.dropItem();
 			}
 		}
 
@@ -105,8 +87,31 @@ public class LightBasinBlock extends Block implements EntityBlock {
 	}
 
 	@Override
+	public @Nullable ChargerBlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+		return new ChargerBlockEntity(this.chargerTier, pos, state);
+	}
+
+	@Override
+	public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state,
+	                                                                        @NotNull BlockEntityType<T> blockEntityType) {
+		return Ticker.server(level);
+	}
+
+	@Override
+	protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level,
+	                                       @NotNull BlockPos pos, @NotNull CollisionContext context) {
+		return SHAPE;
+	}
+
+	@Override
+	protected @NotNull VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level,
+	                                             @NotNull BlockPos pos, @NotNull CollisionContext context) {
+		return context instanceof LuxNetCollisionContext ? SHAPE_LUX_NET_COLLISION : SHAPE;
+	}
+
+	@Override
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
-	                            @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-		LuxStatTooltip.formatStat(GemStats.BRIGHTSTONE, tooltipComponents, LuxStatTooltip.Type.CONTAINER);
+	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+		LuxStatTooltip.formatStat(this.chargerTier.stat(), tooltip, LuxStatTooltip.Type.CONTAINER);
 	}
 }

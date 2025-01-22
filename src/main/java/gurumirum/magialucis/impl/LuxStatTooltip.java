@@ -42,13 +42,13 @@ public final class LuxStatTooltip {
 
 		LuxContainerStat containerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (containerStat != null) {
-			formatInternal(containerStat, event.getToolTip(), 1, expandedMode(event.getFlags()), true);
+			formatInternal(containerStat, event.getToolTip(), 1, expandedMode(event.getFlags()), Type.CONTAINER);
 			return;
 		}
 
 		LuxStat sourceStat = stack.getCapability(ModCapabilities.GEM_STAT);
 		if (sourceStat != null) {
-			formatInternal(sourceStat, event.getToolTip(), 1, expandedMode(event.getFlags()), false);
+			formatInternal(sourceStat, event.getToolTip(), 1, expandedMode(event.getFlags()), Type.GEM);
 		}
 	}
 
@@ -56,49 +56,49 @@ public final class LuxStatTooltip {
 		return flag.hasControlDown() ? Mode.EXPANDED : Mode.HIDDEN;
 	}
 
-	public static void formatContainerStat(LuxContainerStat stat, List<Component> tooltip) {
-		formatContainerStat(stat, tooltip, Mode.ALWAYS_VISIBLE);
+	public static void formatStat(LuxStat stat, List<Component> tooltip, Type type) {
+		formatStat(stat, tooltip, Mode.ALWAYS_VISIBLE, type);
 	}
 
-	public static void formatContainerStat(LuxContainerStat stat, List<Component> tooltip, Mode mode) {
-		formatInternal(stat, tooltip, -1, mode, true);
+	public static void formatStat(LuxStat stat, List<Component> tooltip, Mode mode, Type type) {
+		formatInternal(stat, tooltip, -1, mode, type);
 	}
 
-	public static void formatStat(LuxStat stat, List<Component> tooltip) {
-		formatStat(stat, tooltip, Mode.ALWAYS_VISIBLE);
-	}
-
-	public static void formatStat(LuxStat stat, List<Component> tooltip, Mode mode) {
-		formatInternal(stat, tooltip, -1, mode, false);
-	}
-
-	private static void formatInternal(LuxStat stat, List<Component> tooltip, int startIndex, Mode mode, boolean isContainer) {
+	private static void formatInternal(LuxStat stat, List<Component> tooltip, int startIndex, Mode mode, Type type) {
 		int i = startIndex < 0 ? tooltip.size() : startIndex;
 		String indent;
 
 		switch (mode) {
 			case HIDDEN -> {
-				tooltip.add(i, Component.translatable(isContainer ?
-						"item.magialucis.tooltip.lux_container_stat_hidden" :
-						"item.magialucis.tooltip.lux_stat_hidden"));
+				tooltip.add(i, Component.translatable(switch (type) {
+					case GEM -> "item.magialucis.tooltip.lux_stat_hidden";
+					case CONTAINER -> "item.magialucis.tooltip.lux_container_stat_hidden";
+					case SOURCE -> "item.magialucis.tooltip.lux_source_stat_hidden";
+				}));
 				return;
 			}
 			case EXPANDED -> {
-				tooltip.add(i, Component.translatable(isContainer ?
-						"item.magialucis.tooltip.lux_container_stat_expanded" :
-						"item.magialucis.tooltip.lux_stat_expanded"));
+				tooltip.add(i, Component.translatable(switch (type) {
+					case GEM -> "item.magialucis.tooltip.lux_stat_expanded";
+					case CONTAINER -> "item.magialucis.tooltip.lux_container_stat_expanded";
+					case SOURCE -> "item.magialucis.tooltip.lux_source_stat_expanded";
+				}));
 				indent = " ";
 			}
 			default -> indent = "";
 		}
 
-		tooltip.add(i++, Component.literal(indent).append(Component.translatable(
-				"item.magialucis.tooltip.lux_min_threshold",
-				formatLuxThreshold(stat.minLuxThreshold()))));
+		if (stat.minLuxThreshold() > 0) {
+			tooltip.add(i++, Component.literal(indent).append(Component.translatable(
+					"item.magialucis.tooltip.lux_min_threshold",
+					formatLuxThreshold(stat.minLuxThreshold()))));
+		}
 
-		tooltip.add(i++, Component.literal(indent).append(Component.translatable(isContainer ?
-				"item.magialucis.tooltip.lux_charge_rate" :
-				"item.magialucis.tooltip.lux_transfer_rate")));
+		tooltip.add(i++, Component.literal(indent).append(Component.translatable(switch (type) {
+			case GEM -> "item.magialucis.tooltip.lux_transfer_rate";
+			case CONTAINER -> "item.magialucis.tooltip.lux_charge_rate";
+			case SOURCE -> "item.magialucis.tooltip.lux_generation_rate";
+		})));
 
 		tooltip.add(i++, Component.literal(indent + " ").append(Component.translatable(
 						"item.magialucis.tooltip.lux_transfer_rate.r",
@@ -117,7 +117,7 @@ public final class LuxStatTooltip {
 	}
 
 	private static MutableComponent component(LuxStat stat, double maxTransfer) {
-		if (maxTransfer < stat.minLuxThreshold() || Double.isInfinite(stat.minLuxThreshold())) {
+		if (maxTransfer <= 0 || maxTransfer < stat.minLuxThreshold() || Double.isInfinite(stat.minLuxThreshold())) {
 			return Component.empty().append(Component.literal("  0").withStyle(ChatFormatting.DARK_GRAY));
 		} else {
 			double level = (Math.log10(maxTransfer) - 1) * 2;
@@ -126,7 +126,7 @@ public final class LuxStatTooltip {
 	}
 
 	private static String bar(double level) {
-		if (level <= 0) return MINI_BLOCK + "";
+		if (level <= .5) return MINI_BLOCK + "";
 
 		StringBuilder stb = new StringBuilder();
 		while (level >= 1) {
@@ -147,5 +147,11 @@ public final class LuxStatTooltip {
 		HIDDEN,
 		EXPANDED,
 		ALWAYS_VISIBLE
+	}
+
+	public enum Type {
+		GEM,
+		CONTAINER,
+		SOURCE
 	}
 }

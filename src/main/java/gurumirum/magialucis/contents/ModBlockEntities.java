@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlockEntity;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlockEntity;
+import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntity;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntity;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntity;
 import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlockEntity;
@@ -42,11 +43,25 @@ public final class ModBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RelayBlockEntity>> RELAY =
 			blockEntity("relay", RelayBlockEntity::new, ModBlocks.RELAY);
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> REMOTE_CHARGER =
-			blockEntity("remote_charger", RemoteChargerBlockEntity::basic, ModBlocks.REMOTE_CHARGER);
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChargerBlockEntity>> AMBER_CHARGER =
+			blockEntity("amber_charger",
+					(pos, state) -> new ChargerBlockEntity(ChargerTier.PRIMITIVE, pos, state),
+					ModBlocks.AMBER_CHARGER);
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> REMOTE_CHARGER_2 =
-			blockEntity("remote_charger_2", RemoteChargerBlockEntity::advanced, ModBlocks.REMOTE_CHARGER_2);
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChargerBlockEntity>> LUMINOUS_CHARGER =
+			blockEntity("luminous_charger",
+					(pos, state) -> new ChargerBlockEntity(ChargerTier.LUMINOUS, pos, state),
+					ModBlocks.LUMINOUS_CHARGER);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> LUMINOUS_REMOTE_CHARGER =
+			blockEntity("remote_charger",
+					(pos, state) -> new RemoteChargerBlockEntity(ChargerTier.LUMINOUS, pos, state),
+					ModBlocks.LUMINOUS_REMOTE_CHARGER);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> LUSTROUS_REMOTE_CHARGER =
+			blockEntity("lustrous_remote_charger",
+					(pos, state) -> new RemoteChargerBlockEntity(ChargerTier.LUSTROUS, pos, state),
+					ModBlocks.LUSTROUS_REMOTE_CHARGER);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LuxSourceBlockEntity>> LUX_SOURCE =
 			blockEntity("lux_source", LuxSourceBlockEntity::new, ModBlocks.LUX_SOURCE, ModBlocks.LUX_SOURCE_2);
