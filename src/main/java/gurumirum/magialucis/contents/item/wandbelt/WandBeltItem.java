@@ -1,7 +1,9 @@
 package gurumirum.magialucis.contents.item.wandbelt;
 
+import gurumirum.magialucis.client.ModKeyMappings;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModItemTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -15,6 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.MutableDataComponentHolder;
 import net.neoforged.neoforge.items.ComponentItemHandler;
@@ -56,11 +60,21 @@ public class WandBeltItem extends Item {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
-		if (contents == null || contents.getSlots() <= 0) return;
+		tooltip.add(Component.translatable("item.magialucis.wand_belt.tooltip.0"));
+		tooltip.add(Component.translatable("item.magialucis.wand_belt.tooltip.1",
+				FMLEnvironment.dist == Dist.CLIENT ? getKeyText() : ""));
+		tooltip.add(Component.translatable("item.magialucis.wand_belt.tooltip.2"));
+		tooltip.add(Component.translatable("item.magialucis.wand_belt.tooltip.3"));
 
-		// TODO localize
-		tooltip.add(Component.literal(contents.getSlots() + " things?"));
+		ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
+		if (contents != null) {
+			int count = 0;
+			for (ItemStack _s : contents.nonEmptyItems()) count++;
+			if (count > 0) {
+				tooltip.add(Component.translatable("item.magialucis.wand_belt.tooltip.stored",
+						Component.literal(count+"").withStyle(ChatFormatting.YELLOW)));
+			}
+		}
 	}
 
 	@Override
@@ -81,6 +95,11 @@ public class WandBeltItem extends Item {
 	public static void setSelectedIndex(ItemStack stack, int newIndex) {
 		if (newIndex < 0) stack.remove(ModDataComponents.WAND_BELT_SELECTED_INDEX);
 		else stack.set(ModDataComponents.WAND_BELT_SELECTED_INDEX, (byte)newIndex);
+	}
+
+	private static Component getKeyText() {
+		return ModKeyMappings.CHANGE_WAND.getTranslatedKeyMessage()
+				.copy().withStyle(ChatFormatting.YELLOW);
 	}
 
 	public static class ItemHandler extends ComponentItemHandler {

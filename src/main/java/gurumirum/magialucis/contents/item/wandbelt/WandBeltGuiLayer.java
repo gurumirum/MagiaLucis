@@ -100,10 +100,10 @@ public class WandBeltGuiLayer implements LayeredDraw.Layer {
 
 	private static void drawWandBeltSlot(@NotNull GuiGraphics guiGraphics, int x, int y, boolean selected, boolean empty) {
 		RenderSystem.setShaderTexture(0, WandBeltScreen.TEXTURE);
-		guiGraphics.blit(WandBeltScreen.TEXTURE, x - 8, y - 8, 0, selected ? 32 : 0,
+		guiGraphics.blit(WandBeltScreen.TEXTURE, x, y, 0, selected ? 32 : 0,
 				32, 32, 32, 64);
 		if (empty) {
-			guiGraphics.blit(WandBeltScreen.EMPTY_SLOT_TEXTURE, x, y, 0, 0,
+			guiGraphics.blit(WandBeltScreen.EMPTY_SLOT_TEXTURE, x + 8, y + 8, 0, 0,
 					16, 16, 16, 16);
 		}
 	}

@@ -108,6 +108,11 @@
   "item.magialucis.tooltip.lux_transfer_rate.r": "R: %s",
   "item.magialucis.topaz": "토파즈",
   "item.magialucis.wand_belt": "마법봉 벨트",
+  "item.magialucis.wand_belt.tooltip.0": "§7편리한 마법봉 저장소",
+  "item.magialucis.wand_belt.tooltip.1": "%s§7를 눌러 오버레이 열기, §e스크롤§7로 선택",
+  "item.magialucis.wand_belt.tooltip.2": "§e우클릭§7으로 들고 있는 아이템과 맞바꾸기",
+  "item.magialucis.wand_belt.tooltip.3": "§7(들고 있는 아이템이 마법봉이 아니면 안 됩니다!)",
+  "item.magialucis.wand_belt.tooltip.stored": "§6안에 담긴 마법봉 %s§6개",
 
   "itemGroup.magialucis.building_blocks": "Magia Lucis: 건축 블록",
   "itemGroup.magialucis.main": "Magia Lucis",

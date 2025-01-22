@@ -107,6 +107,11 @@
   "item.magialucis.tooltip.lux_transfer_rate.r": "R: %s",
   "item.magialucis.topaz": "Topaz",
   "item.magialucis.wand_belt": "Wand Belt",
+  "item.magialucis.wand_belt.tooltip.0": "§7Holds wands without clogging up inventory space",
+  "item.magialucis.wand_belt.tooltip.1": "§7Hold %s§7 to open up overlay while equipped, §eScroll§7 to select",
+  "item.magialucis.wand_belt.tooltip.2": "§eRClick§7 to switch held item with selected wand",
+  "item.magialucis.wand_belt.tooltip.3": "§7(Doesn't work if held item is not a wand!)",
+  "item.magialucis.wand_belt.tooltip.stored": "§6Holding %s§6 wands",
 
   "itemGroup.magialucis.building_blocks": "Magia Lucis: Building Blocks",
   "itemGroup.magialucis.main": "Magia Lucis",
