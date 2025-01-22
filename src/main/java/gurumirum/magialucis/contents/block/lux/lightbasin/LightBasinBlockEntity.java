@@ -11,7 +11,6 @@ import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.recipe.TransfusionRecipeEvaluation;
 import gurumirum.magialucis.contents.recipe.TransfusionRecipeInput;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
-import gurumirum.magialucis.impl.luxnet.LuxConsumerNodeInterface;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import net.minecraft.core.BlockPos;
@@ -32,7 +31,7 @@ import org.joml.Vector3d;
 
 import java.util.Objects;
 
-public class LightBasinBlockEntity extends LuxNodeBlockEntity implements Ticker.Server, LuxConsumerNodeInterface {
+public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior> implements Ticker.Server {
 	public static final LuxStat STAT = GemStats.BRIGHTSTONE;
 
 	private static final int SYNC_INTERVAL = 3;
@@ -58,23 +57,17 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity implements Ticker.
 	}
 
 	@Override
-	public @Nullable LuxStat calculateNodeStat(LuxNet luxNet) {
-		return STAT;
-	}
+	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {}
 
 	@Override
-	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {}
+	protected @NotNull LightBasinBehavior createNodeBehavior() {
+		return new LightBasinBehavior();
+	}
 
 	@Override
 	public @NotNull LuxNetLinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
 		return context.hitResult() != null && context.hitResult().getDirection() != Direction.UP ?
 				LinkTestResult.reject() : super.linkWithSource(context);
-	}
-
-	@Override
-	public void consumeLux(Vector3d lux) {
-		this.luxInput.set(lux);
-		lux.zero();
 	}
 
 	@Override

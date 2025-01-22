@@ -1,7 +1,14 @@
 package gurumirum.magialucis.impl.luxnet;
 
+import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
+import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
@@ -12,92 +19,106 @@ public final class LuxNode {
 	public final int id;
 
 	private @Nullable LuxNodeInterface iface;
+	private LuxNodeBehavior behavior = LuxNodeBehavior.none();
 
-	final Vector3d storedColorCharge = new Vector3d();
-	final Vector3d incomingColorChargeCache = new Vector3d();
-
-	private final Vector3d maxColorCharge = new Vector3d();
-
-	private byte color;
-	double minLuxThreshold;
+	final Vector3d charge = new Vector3d();
+	final Vector3d incomingChargeCache = new Vector3d();
 
 	public LuxNode(int id) {
 		this.id = id;
 	}
 
 	public @Nullable LuxNodeInterface iface() {
-		return iface;
+		return this.iface;
 	}
 
-	public void setStats(@NotNull LuxStat stat) {
-		setStats(stat.color(), stat.minLuxThreshold(), stat.rMaxTransfer(), stat.gMaxTransfer(), stat.bMaxTransfer());
+	public @NotNull LuxNodeBehavior behavior() {
+		return this.behavior;
 	}
 
-	private void setStats(byte color, double minLuxThreshold, double rMaxTransfer, double gMaxTransfer, double bMaxTransfer) {
-		this.color = color;
-		this.minLuxThreshold = Double.isNaN(minLuxThreshold) ? 0 : Math.max(minLuxThreshold, 0);
-		this.maxColorCharge.x = Double.isNaN(rMaxTransfer) ? 0 : Math.max(rMaxTransfer, 0);
-		this.maxColorCharge.y = Double.isNaN(gMaxTransfer) ? 0 : Math.max(gMaxTransfer, 0);
-		this.maxColorCharge.z = Double.isNaN(bMaxTransfer) ? 0 : Math.max(bMaxTransfer, 0);
+	public boolean isLoaded() {
+		return this.iface != null;
+	}
 
-		trimColorCharge();
+	public boolean isUnloaded() {
+		return this.iface == null;
 	}
 
 	BindInterfaceResult bindInterface(@Nullable LuxNodeInterface iface) {
 		if (this.iface == iface) return BindInterfaceResult.NO_CHANGE;
 		else if (iface != null && this.iface != null) return BindInterfaceResult.FAIL;
 		this.iface = iface;
+		this.behavior = iface != null ?
+				Objects.requireNonNullElse(iface.updateNodeBehavior(this.behavior, true), LuxNodeBehavior.none()) :
+				LuxNodeBehavior.none();
 		return BindInterfaceResult.SUCCESS;
 	}
 
+	boolean updateBehavior() {
+		if (this.iface == null) return false;
+		LuxNodeBehavior behavior = this.iface.updateNodeBehavior(this.behavior, false);
+		if (behavior == this.behavior) return false;
+		this.behavior = behavior;
+		return true;
+	}
+
 	void trimColorCharge() {
-		if (Double.isNaN(this.storedColorCharge.x) || this.storedColorCharge.x > this.maxColorCharge.x)
-			this.storedColorCharge.x = this.maxColorCharge.x;
-		if (Double.isNaN(this.storedColorCharge.y) || this.storedColorCharge.y > this.maxColorCharge.y)
-			this.storedColorCharge.y = this.maxColorCharge.y;
-		if (Double.isNaN(this.storedColorCharge.z) || this.storedColorCharge.z > this.maxColorCharge.z)
-			this.storedColorCharge.z = this.maxColorCharge.z;
+		LuxStat stat = behavior().stat();
+		double rMax = stat.rMaxTransfer();
+		double gMax = stat.gMaxTransfer();
+		double bMax = stat.bMaxTransfer();
+
+		if (Double.isNaN(this.charge.x) || this.charge.x > rMax) this.charge.x = rMax;
+		if (Double.isNaN(this.charge.y) || this.charge.y > gMax) this.charge.y = gMax;
+		if (Double.isNaN(this.charge.z) || this.charge.z > bMax) this.charge.z = bMax;
 	}
 
-	void invokeSyncNodeStats() {
-		LuxNodeInterface iface = this.iface;
-		if (iface != null) {
-			iface.syncNodeStats(this.color, this.minLuxThreshold,
-					this.maxColorCharge.x, this.maxColorCharge.y, this.maxColorCharge.z);
-		}
-	}
-
-	CompoundTag save() {
+	CompoundTag save(HolderLookup.Provider lookupProvider) {
 		CompoundTag tag = new CompoundTag();
 
-		if (this.storedColorCharge.x > 0) tag.putDouble("chargeR", this.storedColorCharge.x);
-		if (this.storedColorCharge.y > 0) tag.putDouble("chargeG", this.storedColorCharge.y);
-		if (this.storedColorCharge.z > 0) tag.putDouble("chargeB", this.storedColorCharge.z);
+		if (this.charge.x > 0) tag.putDouble("chargeR", this.charge.x);
+		if (this.charge.y > 0) tag.putDouble("chargeG", this.charge.y);
+		if (this.charge.z > 0) tag.putDouble("chargeB", this.charge.z);
 
-		tag.putByte("color", this.color);
-		if (this.minLuxThreshold > 0) tag.putDouble("minLuxThreshold", this.minLuxThreshold);
-		if (this.maxColorCharge.x > 0) tag.putDouble("maxColorChargeR", this.maxColorCharge.x);
-		if (this.maxColorCharge.y > 0) tag.putDouble("maxColorChargeG", this.maxColorCharge.y);
-		if (this.maxColorCharge.z > 0) tag.putDouble("maxColorChargeB", this.maxColorCharge.z);
+		tag.putString("behaviorType", behavior().type().id().toString());
+		CompoundTag tag2 = behavior().type().writeCast(behavior(), lookupProvider);
+		if (tag2 != null) tag.put("behavior", tag2);
 
 		return tag;
 	}
 
-	LuxNode(int id, CompoundTag tag) {
+	LuxNode(int id, CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		this(id);
 
-		this.storedColorCharge.x = tag.getDouble("chargeR");
-		this.storedColorCharge.y = tag.getDouble("chargeG");
-		this.storedColorCharge.z = tag.getDouble("chargeB");
+		this.charge.x = tag.getDouble("chargeR");
+		this.charge.y = tag.getDouble("chargeG");
+		this.charge.z = tag.getDouble("chargeB");
 
-		setStats(
-				tag.getByte("color"),
-				tag.getDouble("minLuxThreshold"),
-				tag.getDouble("maxColorChargeR"),
-				tag.getDouble("maxColorChargeG"),
-				tag.getDouble("maxColorChargeB"));
+		ResourceLocation behaviorTypeId = ResourceLocation.tryParse(tag.getString("behaviorType"));
+		if (behaviorTypeId != null) {
+			LuxNodeType<?> type = Contents.luxNodeTypeRegistry().get(behaviorTypeId);
+			if (type != null) {
+				try {
+					CompoundTag tag2 = tag.contains("behavior", Tag.TAG_COMPOUND) ? tag.getCompound("behavior") : null;
+					this.behavior = type.read(tag2, lookupProvider);
+					//noinspection ConstantValue
+					if (this.behavior == null) {
+						MagiaLucisMod.LOGGER.error("Behavior type {} on node #{} failed to construct a behavior",
+								type, id);
+						this.behavior = LuxNodeBehavior.none();
+					}
+				} catch (Exception ex) {
+					MagiaLucisMod.LOGGER.error("Behavior type {} on node #{} threw an exception",
+							type, id);
+					this.behavior = LuxNodeBehavior.none();
+				}
+				return;
+			}
+		}
 
-		trimColorCharge();
+		MagiaLucisMod.LOGGER.error("Unknown behavior type for lux node #{}, behavior type: {}",
+				id, tag.getString("behaviorType"));
+		this.behavior = LuxNodeBehavior.none();
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.lux.remotecharger;
+package gurumirum.magialucis.contents.block.lux.charger;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;

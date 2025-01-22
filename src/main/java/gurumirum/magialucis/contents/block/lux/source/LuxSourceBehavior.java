@@ -1,0 +1,47 @@
+package gurumirum.magialucis.contents.block.lux.source;
+
+import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.contents.LuxNodeTypes;
+import gurumirum.magialucis.impl.luxnet.LuxNet;
+import gurumirum.magialucis.impl.luxnet.LuxNode;
+import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
+import gurumirum.magialucis.impl.luxnet.behavior.LuxGeneratorNodeBehavior;
+import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3d;
+
+public class LuxSourceBehavior extends DynamicLuxNodeBehavior implements LuxGeneratorNodeBehavior {
+	private double luxGeneration;
+
+	public LuxSourceBehavior() {}
+
+	public LuxSourceBehavior(@Nullable LuxStat copyFrom, double luxGeneration) {
+		super(copyFrom);
+		this.luxGeneration = luxGeneration;
+	}
+
+	@Override
+	public @NotNull LuxNodeType<?> type() {
+		return LuxNodeTypes.SOURCE;
+	}
+
+	@Override
+	public void generateLux(Level level, LuxNet luxNet, LuxNode node, Vector3d generatedLux) {
+		generatedLux.set(this.luxGeneration);
+	}
+
+	@Override
+	public void save(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.save(tag, lookupProvider);
+		tag.putDouble("luxGeneration", this.luxGeneration);
+	}
+
+	public LuxSourceBehavior(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super(tag, lookupProvider);
+		this.luxGeneration = tag.getDouble("luxGeneration");
+	}
+}

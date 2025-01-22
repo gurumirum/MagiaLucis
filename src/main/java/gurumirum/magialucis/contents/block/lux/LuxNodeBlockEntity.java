@@ -1,9 +1,10 @@
 package gurumirum.magialucis.contents.block.lux;
 
 import gurumirum.magialucis.capability.LuxNetLinkDestination;
-import gurumirum.magialucis.contents.block.DebugTextProvider;
 import gurumirum.magialucis.contents.block.BlockEntityBase;
+import gurumirum.magialucis.contents.block.DebugTextProvider;
 import gurumirum.magialucis.impl.luxnet.*;
+import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
 import gurumirum.magialucis.utils.NumberFormats;
 import gurumirum.magialucis.utils.TagUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -24,7 +25,7 @@ import org.joml.Vector3d;
 
 import java.util.*;
 
-public abstract class LuxNodeBlockEntity extends BlockEntityBase
+public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends BlockEntityBase
 		implements LuxNodeInterface, LuxNetLinkDestination, LuxNodeSyncPropertyAccess, DebugTextProvider {
 	private final Vector3d luxFlow = new Vector3d();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks = new Int2ObjectOpenHashMap<>();
@@ -32,12 +33,7 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 	private final Int2ObjectMap<InWorldLinkState> linkIndexToState = new Int2ObjectOpenHashMap<>();
 
 	private int nodeId;
-
-	private byte color;
-	private double minLuxThreshold;
-	private double rMaxTransfer;
-	private double gMaxTransfer;
-	private double bMaxTransfer;
+	private @Nullable B nodeBehavior;
 
 	public LuxNodeBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
@@ -64,27 +60,6 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 	}
 
 	@Override
-	public byte color() {
-		return color;
-	}
-	@Override
-	public double minLuxThreshold() {
-		return minLuxThreshold;
-	}
-	@Override
-	public double rMaxTransfer() {
-		return rMaxTransfer;
-	}
-	@Override
-	public double gMaxTransfer() {
-		return gMaxTransfer;
-	}
-	@Override
-	public double bMaxTransfer() {
-		return bMaxTransfer;
-	}
-
-	@Override
 	public @NotNull @UnmodifiableView Collection<InWorldLinkState> linkStates() {
 		return Collections.unmodifiableCollection(this.linkIndexToState.values());
 	}
@@ -97,6 +72,12 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 		return this.linkIndexToState.get(index);
 	}
 
+	protected abstract @NotNull B createNodeBehavior();
+
+	protected @Nullable B getUpdatedNodeBehavior(@NotNull LuxNodeBehavior previous) {
+		return null;
+	}
+
 	@Override
 	protected void register() {
 		LuxNet luxNet = LuxNet.tryGet(this.level);
@@ -106,8 +87,25 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 	@Override
 	protected void unregister(boolean destroyed) {
 		LuxNet luxNet = LuxNet.tryGet(this.level);
-		if (luxNet != null) luxNet.unregister(this.nodeId, destroyed);
+		if (luxNet != null) {
+			if (destroyed) luxNet.unregister(this.nodeId);
+			else luxNet.unbindInterface(this.nodeId);
+		}
 		this.nodeId = NO_ID;
+	}
+
+	public final @NotNull B nodeBehavior() {
+		if (this.nodeBehavior == null) this.nodeBehavior = createNodeBehavior();
+		return this.nodeBehavior;
+	}
+
+	@Override
+	public @NotNull LuxNodeBehavior updateNodeBehavior(@NotNull LuxNodeBehavior previous, boolean initial) {
+		if (initial) {
+			B updated = getUpdatedNodeBehavior(previous);
+			if (updated != null) this.nodeBehavior = updated;
+		}
+		return nodeBehavior();
 	}
 
 	@Override
@@ -119,22 +117,6 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 	public void syncLuxFlow(Vector3d amount) {
 		if (this.luxFlow.equals(amount)) return;
 		this.luxFlow.set(amount);
-		syncToClient();
-	}
-
-	@Override
-	public void syncNodeStats(byte color, double minLuxThreshold,
-	                          double rMaxTransfer, double gMaxTransfer, double bMaxTransfer) {
-		if (this.color == color &&
-				this.minLuxThreshold == minLuxThreshold &&
-				this.rMaxTransfer == rMaxTransfer &&
-				this.gMaxTransfer == gMaxTransfer &&
-				this.bMaxTransfer == bMaxTransfer) return;
-		this.color = color;
-		this.minLuxThreshold = minLuxThreshold;
-		this.rMaxTransfer = rMaxTransfer;
-		this.gMaxTransfer = gMaxTransfer;
-		this.bMaxTransfer = bMaxTransfer;
 		syncToClient();
 	}
 
@@ -179,11 +161,6 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 
 		list.add("");
 		list.add("LUX Flow: " + this.luxFlow.toString(NumberFormats.DECIMAL));
-		list.add("color = " + color());
-		list.add("minLuxThreshold = " + NumberFormats.DECIMAL.format(minLuxThreshold()));
-		list.add("rMaxTransfer = " + NumberFormats.DECIMAL.format(rMaxTransfer()));
-		list.add("gMaxTransfer = " + NumberFormats.DECIMAL.format(gMaxTransfer()));
-		list.add("bMaxTransfer = " + NumberFormats.DECIMAL.format(bMaxTransfer()));
 	}
 
 	private void addLinkDebugText(List<String> list, Int2ObjectMap<@Nullable InWorldLinkInfo> links, boolean inbound) {
@@ -220,12 +197,6 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 			loadLinkMap(tag.getList("outboundLinks", Tag.TAG_COMPOUND), this.outboundLinks);
 			loadLinkMap(tag.getList("inboundLinks", Tag.TAG_COMPOUND), this.inboundLinks);
 
-			this.color = tag.getByte("color");
-			this.minLuxThreshold = tag.getDouble("minLuxThreshold");
-			this.rMaxTransfer = tag.getDouble("rMaxTransfer");
-			this.gMaxTransfer = tag.getDouble("gMaxTransfer");
-			this.bMaxTransfer = tag.getDouble("bMaxTransfer");
-
 			ListTag list = tag.getList("linkIndexToState", Tag.TAG_COMPOUND);
 			this.linkIndexToState.clear();
 			for (int i = 0; i < list.size(); i++) {
@@ -245,12 +216,6 @@ public abstract class LuxNodeBlockEntity extends BlockEntityBase
 
 			tag.put("outboundLinks", saveLinkMap(this.outboundLinks));
 			tag.put("inboundLinks", saveLinkMap(this.inboundLinks));
-
-			tag.putByte("color", this.color);
-			tag.putDouble("minLuxThreshold", this.minLuxThreshold);
-			tag.putDouble("rMaxTransfer", this.rMaxTransfer);
-			tag.putDouble("gMaxTransfer", this.gMaxTransfer);
-			tag.putDouble("bMaxTransfer", this.bMaxTransfer);
 
 			ListTag list = new ListTag();
 			for (var e : this.linkIndexToState.int2ObjectEntrySet()) {

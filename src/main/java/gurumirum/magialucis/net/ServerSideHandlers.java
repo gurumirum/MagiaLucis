@@ -3,7 +3,6 @@ package gurumirum.magialucis.net;
 import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.Accessories;
-import gurumirum.magialucis.contents.ModItems;
 import gurumirum.magialucis.contents.item.wand.ConfigurationWandItem;
 import gurumirum.magialucis.contents.item.wandbelt.WandBelt;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;

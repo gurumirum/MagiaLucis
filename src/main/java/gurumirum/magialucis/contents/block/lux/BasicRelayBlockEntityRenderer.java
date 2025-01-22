@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-public class BasicRelayBlockEntityRenderer<T extends BasicRelayBlockEntity> implements BlockEntityRenderer<T> {
+public class BasicRelayBlockEntityRenderer<T extends BasicRelayBlockEntity<?>> implements BlockEntityRenderer<T> {
 	private final Vector3f directionCache = new Vector3f();
 
 	public BasicRelayBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}

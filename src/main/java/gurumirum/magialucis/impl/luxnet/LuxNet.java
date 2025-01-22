@@ -1,10 +1,11 @@
 package gurumirum.magialucis.impl.luxnet;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.impl.luxnet.behavior.LuxConsumerNodeBehavior;
+import gurumirum.magialucis.impl.luxnet.behavior.LuxGeneratorNodeBehavior;
+import gurumirum.magialucis.impl.luxnet.behavior.LuxSpecialNodeBehavior;
 import it.unimi.dsi.fastutil.ints.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -43,15 +44,17 @@ public final class LuxNet extends SavedData {
 	}
 
 	private final Int2ObjectMap<LuxNode> nodes = new Int2ObjectOpenHashMap<>();
-	private final Map<LuxNode, NodeFlowRecord> loadedNodes = new Object2ObjectOpenHashMap<>();
-	private final Set<LuxNode> sourceNodes = new ObjectOpenHashSet<>();
-	private final Map<LuxNode, NodeFlowRecord> consumerNodes = new Object2ObjectOpenHashMap<>();
 
 	private final Map<LuxNode, Map<LuxNode, @Nullable InWorldLinkInfo>> srcToDst = new Object2ObjectOpenHashMap<>();
 	private final Map<LuxNode, Map<LuxNode, @Nullable InWorldLinkInfo>> dstToSrc = new Object2ObjectOpenHashMap<>();
 
+	private final Map<LuxNode, NodeFlowRecord> loadedNodes = new Object2ObjectOpenHashMap<>();
+
+	private final Map<LuxNode, LuxGeneratorNodeBehavior> generatorBehaviors = new Object2ObjectOpenHashMap<>();
+	private final Map<LuxNode, LuxConsumerNodeBehavior> consumerBehaviors = new Object2ObjectOpenHashMap<>();
+
 	private final IntSet queuedLinkUpdates = new IntOpenHashSet();
-	private final IntSet queuedStatUpdates = new IntOpenHashSet();
+	private final IntSet queuedLuxFlowSyncs = new IntOpenHashSet();
 	private final IntSet queuedConnectionSyncs = new IntOpenHashSet();
 
 	private final IntSet updateCacheSet = new IntOpenHashSet();
@@ -98,17 +101,13 @@ public final class LuxNet extends SavedData {
 
 		return switch (node.bindInterface(iface)) {
 			case SUCCESS -> {
-				queueStatUpdate(id);
 				queueConnectionSync(id);
 
 				NodeFlowRecord record = this.loadedNodes.computeIfAbsent(node, n -> new NodeFlowRecord());
 				record.reset();
 				record.syncNow = true;
 
-				if (iface instanceof LuxSourceNodeInterface) this.sourceNodes.add(node);
-				else this.sourceNodes.remove(node);
-				if (iface instanceof LuxConsumerNodeInterface) this.consumerNodes.put(node, record);
-				else this.consumerNodes.remove(node);
+				updateBehaviorCache(node);
 
 				setDirty();
 
@@ -119,21 +118,38 @@ public final class LuxNet extends SavedData {
 		};
 	}
 
-	public void unregister(int id, boolean destroyed) {
-		// TODO maybe retaining connections is possible? maybe?
-		LuxNode node = get(id);
-		if (node == null) return;
-		if (destroyed) {
-			node.bindInterface(null);
-			this.nodes.remove(id);
-			unlinkAll(node);
+	private void updateBehaviorCache(LuxNode node) {
+		if (node.behavior() instanceof LuxGeneratorNodeBehavior generatorBehavior) {
+			this.generatorBehaviors.put(node, generatorBehavior);
 		} else {
-			if (node.bindInterface(null) != LuxNode.BindInterfaceResult.SUCCESS) return;
+			this.generatorBehaviors.remove(node);
 		}
 
+		if (node.behavior() instanceof LuxConsumerNodeBehavior consumerBehavior) {
+			this.consumerBehaviors.put(node, consumerBehavior);
+		} else {
+			this.consumerBehaviors.remove(node);
+		}
+	}
+
+	public void unregister(int id) {
+		LuxNode node = get(id);
+		if (node == null) return;
+		node.bindInterface(null);
+		this.nodes.remove(id);
+		unlinkAll(node);
+
 		this.loadedNodes.remove(node);
-		this.sourceNodes.remove(node);
-		this.consumerNodes.remove(node);
+		this.generatorBehaviors.remove(node);
+		this.consumerBehaviors.remove(node);
+	}
+
+	public void unbindInterface(int id) {
+		LuxNode node = get(id);
+		if (node == null) return;
+		if (node.bindInterface(null) != LuxNode.BindInterfaceResult.SUCCESS) return;
+
+		this.loadedNodes.remove(node);
 	}
 
 	public @NotNull @UnmodifiableView Int2ObjectMap<LuxNode> nodes() {
@@ -215,9 +231,9 @@ public final class LuxNet extends SavedData {
 		this.queuedLinkUpdates.add(nodeId);
 	}
 
-	public void queueStatUpdate(int nodeId) {
+	public void queueLuxFlowSync(int nodeId) {
 		if (nodeId == NO_ID) return;
-		this.queuedStatUpdates.add(nodeId);
+		this.queuedLuxFlowSyncs.add(nodeId);
 	}
 
 	public void queueConnectionSync(int nodeId) {
@@ -244,20 +260,14 @@ public final class LuxNet extends SavedData {
 			}
 		}
 
-		if (!this.queuedStatUpdates.isEmpty()) {
-			updateWithQueue(this.queuedStatUpdates, id -> {
+		if (!this.queuedLuxFlowSyncs.isEmpty()) {
+			updateWithQueue(this.queuedLuxFlowSyncs, id -> {
 				LuxNode node = get(id);
 				if (node == null) return;
-				LuxNodeInterface iface = node.iface();
-				if (iface != null) {
-					LuxStat stat = iface.calculateNodeStat(this);
-					node.setStats(stat != null ? stat : LuxStat.NULL);
-					node.invokeSyncNodeStats();
-					NodeFlowRecord record = this.loadedNodes.get(node);
-					if (record != null) {
-						record.reset();
-						record.syncNow = true;
-					}
+				NodeFlowRecord record = this.loadedNodes.get(node);
+				if (record != null) {
+					record.reset();
+					record.syncNow = true;
 				}
 			});
 		}
@@ -273,9 +283,17 @@ public final class LuxNet extends SavedData {
 			});
 		}
 
-		generateLuxSource();
-		transferLux();
-		consumeLuxSource();
+		for (var e : this.loadedNodes.entrySet()) {
+			if (e.getKey().updateBehavior()) {
+				updateBehaviorCache(e.getKey());
+				e.getValue().reset();
+				e.getValue().syncNow = true;
+			}
+		}
+
+		generateLux(level);
+		transferLux(level);
+		consumeLux(level);
 		checkForSync();
 
 		setDirty();
@@ -323,64 +341,72 @@ public final class LuxNet extends SavedData {
 
 	private final Vector3d luxTransferCache = new Vector3d();
 
-	private void generateLuxSource() {
-		for (LuxNode node : this.sourceNodes) {
-			if (node == null) continue;
-			LuxNodeInterface iface = node.iface();
-			if (iface instanceof LuxSourceNodeInterface src) {
-				src.generateLux(this.luxTransferCache);
-				if (this.luxTransferCache.isFinite()) {
-					LuxUtils.snapComponents(this.luxTransferCache, 0);
-					node.storedColorCharge.add(this.luxTransferCache);
-					node.trimColorCharge();
-				} else {
-					MagiaLucisMod.LOGGER.warn("Lux source node {} (iface: {}) returned an invalid value!", node.id, iface);
-				}
-				this.luxTransferCache.zero();
+	private void generateLux(Level level) {
+		for (var e : this.generatorBehaviors.entrySet()) {
+			LuxNode node = e.getKey();
+			LuxGeneratorNodeBehavior generatorBehavior = e.getValue();
+
+			generatorBehavior.generateLux(level, this, node, this.luxTransferCache);
+			if (this.luxTransferCache.isFinite()) {
+				LuxUtils.snapComponents(this.luxTransferCache, 0);
+				node.charge.add(this.luxTransferCache);
+				node.trimColorCharge();
+			} else {
+				MagiaLucisMod.LOGGER.warn("Lux generator node {} (behavior type: {}) returned an invalid value!",
+						node.id, node.behavior().type());
 			}
+			this.luxTransferCache.zero();
 		}
 	}
 
-	private void transferLux() {
+	private void transferLux(Level level) {
 		for (LuxNode node : this.nodes.values()) {
 			var map = this.srcToDst.get(node);
 			if (map != null) {
 				NodeFlowRecord record = this.loadedNodes.get(node);
-				if (record != null) record.luxFlowSum.add(node.storedColorCharge);
-				node.storedColorCharge.div(map.size());
+				if (record != null) record.luxFlowSum.add(node.charge);
+				node.charge.div(map.size());
 				for (var e : map.entrySet()) {
-					e.getKey().incomingColorChargeCache.add(node.storedColorCharge);
+					e.getKey().incomingChargeCache.add(node.charge);
 				}
-				node.storedColorCharge.zero();
+				node.charge.zero();
 			}
 		}
 
 		for (LuxNode node : this.nodes.values()) {
-			LuxUtils.snapComponents(node.incomingColorChargeCache, node.minLuxThreshold);
-			node.storedColorCharge.add(node.incomingColorChargeCache);
-			node.incomingColorChargeCache.zero();
+			if (node.behavior() instanceof LuxSpecialNodeBehavior specialNodeBehavior) {
+				specialNodeBehavior.alterLux(level, this, node, node.incomingChargeCache);
+			}
+
+			LuxUtils.snapComponents(node.incomingChargeCache, node.behavior().stat().minLuxThreshold());
+			node.charge.add(node.incomingChargeCache);
+			node.incomingChargeCache.zero();
 			node.trimColorCharge();
 		}
 	}
 
-	private void consumeLuxSource() {
-		for (var e : this.consumerNodes.entrySet()) {
-			var node = e.getKey();
-			NodeFlowRecord record = e.getValue();
-			LuxNodeInterface iface = node.iface();
-			if (iface instanceof LuxConsumerNodeInterface consumer) {
-				consumer.consumeLux(this.luxTransferCache.set(node.storedColorCharge));
-				if (this.luxTransferCache.isFinite()) {
-					LuxUtils.snapComponents(this.luxTransferCache.max(node.storedColorCharge), 0);
+	private void consumeLux(Level level) {
+		for (var e : this.consumerBehaviors.entrySet()) {
+			LuxNode node = e.getKey();
+			LuxConsumerNodeBehavior consumerBehavior = e.getValue();
+
+			consumerBehavior.consumeLux(level, this, node, this.luxTransferCache.set(node.charge));
+
+			if (this.luxTransferCache.isFinite()) {
+				LuxUtils.snapComponents(this.luxTransferCache.max(node.charge), 0);
+
+				NodeFlowRecord record = this.loadedNodes.get(node);
+				if (record != null) {
 					record.luxFlowSum.add(
-							node.storedColorCharge.x - this.luxTransferCache.x,
-							node.storedColorCharge.y - this.luxTransferCache.y,
-							node.storedColorCharge.z - this.luxTransferCache.z);
-					node.storedColorCharge.set(this.luxTransferCache);
-					node.trimColorCharge();
-				} else {
-					MagiaLucisMod.LOGGER.warn("Lux consumer node {} (iface: {}) returned an invalid value!", node.id, iface);
+							node.charge.x - this.luxTransferCache.x,
+							node.charge.y - this.luxTransferCache.y,
+							node.charge.z - this.luxTransferCache.z);
 				}
+				node.charge.set(this.luxTransferCache);
+				node.trimColorCharge();
+			} else {
+				MagiaLucisMod.LOGGER.warn("Lux consumer node {} (behavior type: {}) returned an invalid value!",
+						node.id, node.behavior().type());
 			}
 		}
 	}
@@ -412,7 +438,7 @@ public final class LuxNet extends SavedData {
 		if (!this.nodes.isEmpty()) {
 			ListTag list = new ListTag();
 			for (var e : this.nodes.int2ObjectEntrySet()) {
-				CompoundTag tag2 = e.getValue().save();
+				CompoundTag tag2 = e.getValue().save(lookupProvider);
 				tag2.putInt("id", e.getIntKey());
 				list.add(tag2);
 			}
@@ -446,7 +472,8 @@ public final class LuxNet extends SavedData {
 			for (int i = 0; i < list.size(); i++) {
 				CompoundTag tag2 = list.getCompound(i);
 				int id = tag2.getInt("id");
-				if (id != NO_ID && !this.nodes.containsKey(id)) this.nodes.put(id, new LuxNode(id, tag2));
+				if (id != NO_ID && !this.nodes.containsKey(id))
+					this.nodes.put(id, new LuxNode(id, tag2, lookupProvider));
 			}
 		}
 
@@ -472,14 +499,13 @@ public final class LuxNet extends SavedData {
 			case ALL -> {
 				this.nodes.clear();
 				this.loadedNodes.clear();
-				this.sourceNodes.clear();
-				this.consumerNodes.clear();
+				this.generatorBehaviors.clear();
+				this.consumerBehaviors.clear();
 
 				this.srcToDst.clear();
 				this.dstToSrc.clear();
 
 				this.queuedLinkUpdates.clear();
-				this.queuedStatUpdates.clear();
 				this.queuedConnectionSyncs.clear();
 
 				this.updateCacheSet.clear();
@@ -493,8 +519,8 @@ public final class LuxNet extends SavedData {
 				if (node.iface() != null) return false;
 				unlinkAll(node);
 				this.loadedNodes.remove(node);
-				this.sourceNodes.remove(node);
-				this.consumerNodes.remove(node);
+				this.generatorBehaviors.remove(node);
+				this.consumerBehaviors.remove(node);
 				return true;
 			});
 		}

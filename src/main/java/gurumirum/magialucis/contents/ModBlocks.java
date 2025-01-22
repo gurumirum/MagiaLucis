@@ -8,7 +8,7 @@ import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
-import gurumirum.magialucis.contents.block.lux.remotecharger.RemoteChargerBlock;
+import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlock;
 import gurumirum.magialucis.contents.block.sunlight.core.MoonlightCoreBlock;
 import gurumirum.magialucis.contents.block.sunlight.core.SunlightCoreBlock;

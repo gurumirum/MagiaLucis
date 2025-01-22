@@ -16,10 +16,4 @@ public interface LuxNodeSyncPropertyAccess {
 	@NotNull @UnmodifiableView Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks();
 	@NotNull @UnmodifiableView Int2ObjectMap<@Nullable InWorldLinkInfo> inboundLinks();
 	@NotNull @UnmodifiableView Collection<InWorldLinkState> linkStates();
-
-	byte color();
-	double minLuxThreshold();
-	double rMaxTransfer();
-	double gMaxTransfer();
-	double bMaxTransfer();
 }

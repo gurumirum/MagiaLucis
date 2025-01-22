@@ -1,43 +1,30 @@
 package gurumirum.magialucis.contents.block.sunlight.focus;
 
 import gurumirum.magialucis.capability.LuxNetLinkDestination;
-import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
 import gurumirum.magialucis.contents.block.sunlight.SunlightLogic;
 import gurumirum.magialucis.contents.block.sunlight.core.BaseSunlightCoreBlockEntity;
-import gurumirum.magialucis.impl.RGB332;
-import gurumirum.magialucis.impl.luxnet.*;
+import gurumirum.magialucis.impl.luxnet.LinkContext;
+import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
+import gurumirum.magialucis.impl.luxnet.ServerSideLinkContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3d;
 
 import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKY_VISIBILITY;
 
-public class SunlightFocusBlockEntity extends BasicRelayBlockEntity implements LuxSourceNodeInterface, LinkDestinationSelector, Ticker.Server {
-	public static final LuxStat STAT = LuxStat.simple(RGB332.WHITE,
-			0,
-			// use max throughput of foci for the stat
-			SunlightLogic.DEFAULT_BASE_INTENSITY,
-			SunlightLogic.DEFAULT_BASE_INTENSITY,
-			SunlightLogic.DEFAULT_BASE_INTENSITY);
-
+public class SunlightFocusBlockEntity extends BasicRelayBlockEntity<SunlightFocusBehavior> implements LinkDestinationSelector, Ticker.Server {
 	public static final double LINK_DISTANCE = 10;
 
 	private static final int CYCLE = 50;
 
 	public SunlightFocusBlockEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.SUNLIGHT_FOCUS.get(), pos, blockState);
-	}
-
-	@Override
-	public @Nullable LuxStat calculateNodeStat(LuxNet luxNet) {
-		return STAT;
 	}
 
 	@Override
@@ -54,19 +41,20 @@ public class SunlightFocusBlockEntity extends BasicRelayBlockEntity implements L
 	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
 		if (level.getGameTime() % CYCLE != 0) return;
 
-		updateProperty(SKY_VISIBILITY, SunlightLogic.calculateSkyVisibility(level, pos, state));
-	}
-
-	@Override
-	public void generateLux(Vector3d dest) {
-		int skyVisibility = getBlockState().getValue(SKY_VISIBILITY);
-		SunlightLogic.getColor(this.level, getBlockPos(),
-				SunlightLogic.DEFAULT_BASE_INTENSITY * (skyVisibility / 16.0), dest);
+		int skyVisibility = SunlightLogic.calculateSkyVisibility(level, pos, state);
+		if (updateProperty(SKY_VISIBILITY, skyVisibility)) {
+			nodeBehavior().setSkyVisibility(skyVisibility);
+		}
 	}
 
 	@Override
 	public @Nullable LinkDestinationSelector linkDestinationSelector() {
 		return this;
+	}
+
+	@Override
+	protected @NotNull SunlightFocusBehavior createNodeBehavior() {
+		return new SunlightFocusBehavior(getBlockPos(), getBlockState().getValue(SKY_VISIBILITY));
 	}
 
 	@Override
@@ -79,7 +67,7 @@ public class SunlightFocusBlockEntity extends BasicRelayBlockEntity implements L
 	                                                             @Nullable ServerSideLinkContext context,
 	                                                             @NotNull BlockHitResult hitResult) {
 		if (hitResult.getBlockPos().getY() < this.getBlockPos().getY()) return null;
-		return level.getBlockEntity(hitResult.getBlockPos()) instanceof BaseSunlightCoreBlockEntity sunlightCore ?
+		return level.getBlockEntity(hitResult.getBlockPos()) instanceof BaseSunlightCoreBlockEntity<?> sunlightCore ?
 				sunlightCore : null;
 	}
 }

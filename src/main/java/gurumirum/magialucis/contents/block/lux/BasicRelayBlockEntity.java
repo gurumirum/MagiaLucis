@@ -5,6 +5,7 @@ import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
 import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
+import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class BasicRelayBlockEntity extends LuxNodeBlockEntity implements LinkSource {
+public abstract class BasicRelayBlockEntity<B extends LuxNodeBehavior> extends LuxNodeBlockEntity<B> implements LinkSource {
 	public static final int DEFAULT_MAX_LINKS = 3;
 
 	private final List<@Nullable Orientation> links = new ArrayList<>();

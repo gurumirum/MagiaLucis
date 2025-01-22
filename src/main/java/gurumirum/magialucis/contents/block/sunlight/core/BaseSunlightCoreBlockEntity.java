@@ -27,7 +27,8 @@ import java.util.List;
 
 import static gurumirum.magialucis.contents.block.ModBlockStateProps.OVERSATURATED;
 
-public abstract class BaseSunlightCoreBlockEntity extends LuxNodeBlockEntity implements Ticker.Client {
+public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNodeBehavior> extends LuxNodeBlockEntity<B>
+		implements Ticker.Client {
 	public static final double LINK_DISTANCE = 7;
 
 	private double power;
@@ -72,6 +73,7 @@ public abstract class BaseSunlightCoreBlockEntity extends LuxNodeBlockEntity imp
 		if (field == field()) {
 			this.power = power;
 			ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);
+			nodeBehavior().setPower(power);
 		}
 	}
 
@@ -96,11 +98,13 @@ public abstract class BaseSunlightCoreBlockEntity extends LuxNodeBlockEntity imp
 	}
 
 	protected float luxInputPercentage() {
-		var max = rMaxTransfer() + gMaxTransfer() + bMaxTransfer();
+		double max = maxLuxInput();
 		if (!(max > 0)) return 0;
 		var lux = LuxUtils.sum(luxFlow(new Vector3d()));
 		return Math.min(1, (float)(lux / max));
 	}
+
+	protected abstract double maxLuxInput();
 
 	@Override
 	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {

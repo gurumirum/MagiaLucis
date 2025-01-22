@@ -8,7 +8,7 @@ import gurumirum.magialucis.client.render.light.LightEffectRender;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
+import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
@@ -17,11 +17,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class RelayBlockEntity extends BasicRelayBlockEntity {
+public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavior> {
 	private ItemStack stack = ItemStack.EMPTY;
 
 	public RelayBlockEntity(BlockPos pos, BlockState blockState) {
@@ -34,8 +33,10 @@ public class RelayBlockEntity extends BasicRelayBlockEntity {
 
 	public void setStack(ItemStack stack) {
 		this.stack = stack;
-		LuxNet luxNet = getLuxNet();
-		if (luxNet != null) luxNet.queueStatUpdate(luxNodeId());
+		if (luxNodeId() != NO_ID) {
+			nodeBehavior().setStats(Objects.requireNonNullElse(
+					stack.getCapability(ModCapabilities.GEM_STAT), LuxStat.NULL));
+		}
 		setChanged();
 		syncToClient();
 	}
@@ -49,17 +50,17 @@ public class RelayBlockEntity extends BasicRelayBlockEntity {
 	}
 
 	@Override
-	public @Nullable LuxStat calculateNodeStat(@NotNull LuxNet luxNet) {
-		return this.stack.getCapability(ModCapabilities.GEM_STAT);
-	}
-
-	@Override
 	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
 		super.save(tag, lookupProvider, context);
 
 		if (!this.stack.isEmpty()) {
 			tag.put("item", this.stack.save(lookupProvider));
 		}
+	}
+
+	@Override
+	protected @NotNull DynamicLuxNodeBehavior createNodeBehavior() {
+		return new DynamicLuxNodeBehavior(this.stack.getCapability(ModCapabilities.GEM_STAT));
 	}
 
 	@Override
@@ -86,7 +87,8 @@ public class RelayBlockEntity extends BasicRelayBlockEntity {
 	@Override
 	protected void collectImplicitComponents(DataComponentMap.@NotNull Builder components) {
 		super.collectImplicitComponents(components);
-		if (!this.stack.isEmpty()) components.set(ModDataComponents.RELAY_ITEM.get(), new RelayItemData(this.stack.copy()));
+		if (!this.stack.isEmpty())
+			components.set(ModDataComponents.RELAY_ITEM.get(), new RelayItemData(this.stack.copy()));
 	}
 
 	@Override

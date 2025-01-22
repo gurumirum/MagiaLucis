@@ -4,7 +4,7 @@ import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlockEntity;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntity;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntity;
-import gurumirum.magialucis.contents.block.lux.remotecharger.RemoteChargerBlockEntity;
+import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlockEntity;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlockEntity;
 import gurumirum.magialucis.contents.block.sunlight.core.MoonlightCoreBlockEntity;
 import gurumirum.magialucis.contents.block.sunlight.core.SunlightCoreBlockEntity;
