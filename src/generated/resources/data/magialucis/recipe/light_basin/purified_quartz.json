@@ -1,0 +1,25 @@
+{
+  "type": "magialucis:light_basin",
+  "ingredients": [
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "minecraft:blaze_powder"
+      }
+    },
+    {
+      "count": 8,
+      "ingredient": {
+        "tag": "c:gems/quartz"
+      }
+    }
+  ],
+  "minLuxInputB": 100.0,
+  "minLuxInputG": 100.0,
+  "minLuxInputR": 100.0,
+  "processTicks": 100,
+  "result": {
+    "count": 6,
+    "id": "magialucis:purified_quartz"
+  }
+}

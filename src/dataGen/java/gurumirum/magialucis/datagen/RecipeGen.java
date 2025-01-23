@@ -448,6 +448,16 @@ public class RecipeGen extends RecipeProvider {
 				.minLuxInputR(80)
 				.minLuxInputG(80)
 				.save(out);
+
+		lightBasin()
+				.ingredient(Items.BLAZE_POWDER)
+				.ingredient(Tags.Items.GEMS_QUARTZ, 8)
+				.result(GemItems.PURIFIED_QUARTZ, 6)
+				.processTicks(100)
+				.minLuxInputR(100)
+				.minLuxInputG(100)
+				.minLuxInputB(100)
+				.save(out);
 	}
 
 	private ShapedRecipeBuilder wandRecipe(boolean tool, ItemLike result, WandTier tier) {
