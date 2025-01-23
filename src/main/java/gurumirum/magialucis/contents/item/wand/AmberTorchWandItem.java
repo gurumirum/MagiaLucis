@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AmberTorchWandItem extends LuxContainerItem {
-	public static final int COST_PER_LIGHT_SOURCE = 2;
+	public static final int COST_PER_LIGHT_SOURCE = 5;
 
 	private static final int HIT_DISTANCE = 15;
 	private static final int PARTICLE_COUNT = 8;

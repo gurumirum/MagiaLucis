@@ -20,15 +20,25 @@ public enum Wands implements ItemLike {
 	ICY_CONFIGURATION_WAND(ItemProfile.customItem(ConfigurationWandItem::new, StandardWandShape.WAND), null),
 
 	AMBER_TORCH(ItemProfile.customItem(AmberTorchWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 250, GemStats.AMBER)),
+			LuxContainerStat.withBaseStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 300, GemStats.AMBER)),
+
 	LESSER_ICE_STAFF(ItemProfile.customItem(LesserIceStaffItem::new, StandardWandShape.STAFF),
 			LuxContainerStat.withBaseStat(LesserIceStaffItem.COST_PER_ATTACK * 250, GemStats.BRIGHTSTONE)),
-	// citrine wand
+
+	// TODO citrine, iolite wand
+
 	RECALL_STAFF(ItemProfile.customItem(RecallStaffWandItem::new, StandardWandShape.STAFF),
 			LuxContainerStat.withBaseStat(RecallStaffWandItem.COST_PER_RECALL * 3, GemStats.AQUAMARINE)),
 
 	HEAL_WAND(ItemProfile.customItem(HealWandItem::new, StandardWandShape.WAND),
 			LuxContainerStat.withBaseStat(HealWandItem.COST_PER_CAST * 5, GemStats.PEARL)),
+
+	// TODO prismarine wand
+
+	ENDER_WAND(ItemProfile.customItem(EnderChestPortalWandItem::new, StandardWandShape.WAND),
+			LuxContainerStat.withBaseStat(EnderChestPortalWandItem.COST_PER_PORTAL_TICK * 20 * 300, GemStats.ENDER_PEARL)),
+
+	// TODO redstone wand
 
 	LAPIS_SHIELD(ItemProfile.customItem(LapisShieldItem::new, StandardWandShape.WAND),
 			LuxContainerStat.withBaseStat(LapisShieldItem.COST_PER_SHIELDING_TICK * 20 * 120, GemStats.POLISHED_LAPIS_LAZULI)),
@@ -36,8 +46,9 @@ public enum Wands implements ItemLike {
 	DIAMOND_MACE(ItemProfile.customItem(DiamondMaceItem::new),
 			LuxContainerStat.withBaseStat(DiamondMaceItem.COST_PER_ATTACK * 150, GemStats.DIAMOND)),
 
-	ENDER_WAND(ItemProfile.customItem(EnderChestPortalWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(EnderChestPortalWandItem.COST_PER_PORTAL_TICK * 20 * 300, GemStats.ENDER_PEARL));
+	// TODO ruby, emerald, sapphire
+	//      also the rest of the gems lol
+	;
 
 	private final DeferredItem<Item> item;
 	@Nullable

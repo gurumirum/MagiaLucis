@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RecallStaffWandItem extends LuxContainerItem implements WandEffectSource {
-	public static final int COST_PER_RECALL = 100;
+	public static final int COST_PER_RECALL = 8000;
 	public static final int RECALL_FATIGUE_DURATION = 20 * 75;
 
 	public RecallStaffWandItem(Properties properties) {

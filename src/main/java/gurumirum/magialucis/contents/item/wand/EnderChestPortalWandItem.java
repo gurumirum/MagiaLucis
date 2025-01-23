@@ -17,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class EnderChestPortalWandItem extends LuxContainerItem {
-	public static final int COST_PER_PORTAL_SPAWN = 10;
-	public static final int COST_PER_PORTAL_TICK = 1;
+	public static final int COST_PER_PORTAL_SPAWN = 50;
+	public static final int COST_PER_PORTAL_TICK = 10;
 
 	public EnderChestPortalWandItem(Properties properties) {
 		super(properties);

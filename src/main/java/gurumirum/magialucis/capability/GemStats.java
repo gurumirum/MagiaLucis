@@ -21,25 +21,25 @@ public enum GemStats implements LuxStat {
 	CITRINE(1, RGB332.of(6, 6, 1), 25, 250),
 	IOLITE(1, RGB332.of(0, 0,1), 10, 600),
 	AQUAMARINE(1, RGB332.of(0, 5, 3), 20, 500),
-	PEARL(1, RGB332.of(7, 6, 3), 100, 700, false),
+	PEARL(1, RGB332.of(7, 6, 3), 80, 700, false),
 
 	PRISMARINE(1, RGB332.of(0, 5, 2), 30, 400, true, true),
 	ENDER_PEARL(1, RGB332.of(0, 2, 1), 40, 500, false, true),
 
-	PURIFIED_QUARTZ(2, RGB332.WHITE, 10, 1000, false),
+	PURIFIED_QUARTZ(2, RGB332.WHITE, 100, 1000, false),
 	CRYSTALLIZED_REDSTONE(2, RGB332.of(5, 0, 0), 400, 1500, false),
 	POLISHED_LAPIS_LAZULI(2, RGB332.of(1, 1, 2), 300, 2500, false),
 	OBSIDIAN(2, RGB332.of(1, 0, 1), 600, 2500, false),
 
 	DIAMOND(2, RGB332.of(4, 7, 3), 800, 4000, true, true),
-	RUBY(2, RGB332.of(7, 0, 0), 50, 5000),
-	EMERALD(2, RGB332.of(0, 7, 0), 50, 5000, true, true),
-	SAPPHIRE(2, RGB332.of(0, 0, 3), 50, 5000),
+	RUBY(2, RGB332.of(7, 0, 0), 500, 5000),
+	EMERALD(2, RGB332.of(0, 7, 0), 500, 5000, true, true),
+	SAPPHIRE(2, RGB332.of(0, 0, 3), 500, 5000),
 
-	AMETHYST(3, RGB332.of(7, 2, 3), 500, 4000, true, true),
+	AMETHYST(3, RGB332.of(7, 2, 3), 650, 3000, true, true),
 	TOPAZ(3, RGB332.of(6, 6, 0), 5000, 10000),
 	MOONSTONE(3, RGB332.of(4, 6, 3), 1500, 20000, false),
-	JET(3, RGB332.of(0, 0, 0), 100, 20000, false)
+	JET(3, RGB332.of(0, 0, 0), 950, 20000, false)
 
 	// artificial gems onwards?
 	;

@@ -17,9 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class LapisShieldItem extends LuxContainerItem implements WandEffectSource {
-	public static final int COST_PER_SHIELDING_TICK = 1;
-	public static final int COST_PER_BLOCK = 5;
-	public static final int COST_PER_SHIELD_DISABLE = 50;
+	public static final int COST_PER_SHIELDING_TICK = 25;
+	public static final int COST_PER_BLOCK = 250;
+	public static final int COST_PER_SHIELD_DISABLE = 5000;
 
 	public LapisShieldItem(Properties properties) {
 		super(properties);

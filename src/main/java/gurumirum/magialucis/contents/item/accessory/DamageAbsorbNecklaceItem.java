@@ -1,6 +1,7 @@
 package gurumirum.magialucis.contents.item.accessory;
 
 import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.utils.NumberFormats;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -52,8 +53,12 @@ public class DamageAbsorbNecklaceItem extends LuxContainerCurioItem implements I
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
 		super.appendHoverText(stack, context, tooltip, flag);
-		tooltip.add(Component.translatable("item.magialucis.shield_necklace.tooltip.shield_charge",
-				stack.getOrDefault(ModDataComponents.SHIELD_CHARGE, 0.0),
-				MAX_SHIELD));
+
+		float shieldCharge = stack.getOrDefault(ModDataComponents.SHIELD_CHARGE, 0f);
+		if (shieldCharge > 0) {
+			tooltip.add(Component.translatable("item.magialucis.shield_necklace.tooltip.shield_charge",
+					NumberFormats.DECIMAL.format(shieldCharge),
+					NumberFormats.DECIMAL.format(MAX_SHIELD)));
+		}
 	}
 }

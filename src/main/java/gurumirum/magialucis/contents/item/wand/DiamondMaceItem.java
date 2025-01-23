@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DiamondMaceItem extends LuxContainerItem implements WandEffectSource {
-	public static final int COST_PER_ATTACK = 10;
+	public static final int COST_PER_ATTACK = 300;
 	public static final int DEBUFF_DURATION = 300;
 
 	public DiamondMaceItem(Properties properties) {

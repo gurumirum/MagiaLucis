@@ -6,6 +6,7 @@ import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.impl.RGB332;
+import gurumirum.magialucis.utils.NumberFormats;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor.ARGB32;
 import net.minecraft.world.item.Item;
@@ -27,7 +28,9 @@ public class LuxContainerItem extends Item {
 		if (luxContainerStat == null) return;
 
 		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
-		tooltip.add(Component.translatable("item.magialucis.tooltip.lux_charge", charge, luxContainerStat.maxCharge()));
+		tooltip.add(Component.translatable("item.magialucis.tooltip.lux_charge",
+				NumberFormats.INTEGER.format(charge),
+				NumberFormats.INTEGER.format(luxContainerStat.maxCharge())));
 		LuxStatTooltip.formatStat(luxContainerStat, tooltip, LuxStatTooltip.Type.CONTAINER);
 		LuxStatTooltip.skipAutoTooltipFor(stack);
 	}

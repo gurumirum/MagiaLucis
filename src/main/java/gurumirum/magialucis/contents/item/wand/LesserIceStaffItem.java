@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class LesserIceStaffItem extends LuxContainerItem implements WandEffectSource {
-	public static final int COST_PER_ATTACK = 2;
+	public static final int COST_PER_ATTACK = 10;
 	public static final int CHARGE_DURATION = 40;
 
 	public LesserIceStaffItem(Properties properties) {
