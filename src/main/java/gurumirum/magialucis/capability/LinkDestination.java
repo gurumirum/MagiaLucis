@@ -4,7 +4,7 @@ import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import org.jetbrains.annotations.NotNull;
 
-public interface LuxNetLinkDestination {
+public interface LinkDestination {
 	int NO_ID = LuxNet.NO_ID;
 
 	@NotNull LinkTestResult linkWithSource(@NotNull LinkContext context);

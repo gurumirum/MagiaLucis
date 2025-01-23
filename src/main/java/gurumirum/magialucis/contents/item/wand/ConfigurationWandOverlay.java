@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import gurumirum.magialucis.capability.LinkSource;
-import gurumirum.magialucis.capability.LuxNetLinkDestination;
+import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
@@ -195,7 +195,7 @@ public final class ConfigurationWandOverlay {
 
 							LinkDestinationSelector dstSelector = linkSource.linkDestinationSelector();
 							if (dstSelector == null) dstSelector = LinkDestinationSelector.DEFAULT;
-							LuxNetLinkDestination dst = dstSelector.chooseLinkDestination(level, null, blockHit);
+							LinkDestination dst = dstSelector.chooseLinkDestination(level, null, blockHit);
 
 							boolean linkable = dst != null && dst.linkWithSource(new LinkContext(level, linkSource.clientSideInterface(), blockHit)).isLinkable();
 							visualData.lines.add(new Line(linkSourcePos.pos(),

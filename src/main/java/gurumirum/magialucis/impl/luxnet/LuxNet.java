@@ -560,7 +560,9 @@ public final class LuxNet extends SavedData {
 			this.links.put(nodeId, -1);
 		}
 
-		public boolean inWorldLink(int linkIndex, int nodeId, @NotNull BlockPos origin, @NotNull BlockPos linkPos, @NotNull Vec3 linkLocation) {
+		public boolean inWorldLink(int linkIndex, int nodeId, @NotNull BlockPos origin,
+		                           @NotNull BlockPos linkPos, @NotNull Vec3 linkLocation,
+		                           boolean registerLinkFail) {
 			if (this.node == null) throw new IllegalStateException();
 			if (linkIndex < 0) throw new IllegalArgumentException("linkIndex < 0");
 
@@ -568,10 +570,12 @@ public final class LuxNet extends SavedData {
 			boolean connected = nodeId != NO_ID && this.node.id != nodeId && LuxNet.this.nodes.containsKey(nodeId);
 
 			if (connected) this.links.put(nodeId, linkIndex);
-			this.inWorldLinks.put(linkIndex, new InWorldLinkState(connected,
-					Objects.requireNonNull(origin),
-					Objects.requireNonNull(linkPos),
-					Objects.requireNonNull(linkLocation)));
+			if (connected || registerLinkFail) {
+				this.inWorldLinks.put(linkIndex, new InWorldLinkState(connected,
+						origin.immutable(),
+						linkPos.immutable(),
+						Objects.requireNonNull(linkLocation)));
+			}
 
 			return connected;
 		}
@@ -581,8 +585,8 @@ public final class LuxNet extends SavedData {
 			if (linkIndex < 0) throw new IllegalArgumentException("linkIndex < 0");
 
 			this.inWorldLinks.put(linkIndex, new InWorldLinkState(false,
-					Objects.requireNonNull(origin),
-					Objects.requireNonNull(linkPos),
+					origin.immutable(),
+					linkPos.immutable(),
 					Objects.requireNonNull(linkLocation)));
 		}
 

@@ -1,15 +1,12 @@
 package gurumirum.magialucis.contents.block.lux.ambercore;
 
-import gurumirum.magialucis.capability.LuxNetLinkDestination;
-import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModBlockEntities;
-import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.Fields;
-import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.ServerTickQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,8 +15,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -103,14 +98,9 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> 
 
 		for (Direction dir : Direction.values()) {
 			this.mpos.set(pos).move(dir);
-			BlockState state = this.level.getBlockState(this.mpos);
-			if (state.is(ModBlocks.RELAY.block()) && state.getValue(BlockStateProperties.FACING) == dir) {
-				LuxNetLinkDestination dest = this.level.getCapability(ModCapabilities.LUX_NET_LINK_DESTINATION, this.mpos, null);
-				if (dest != null) {
-					linkCollector.inWorldLink(i++,
-							dest.linkWithSource(new LinkContext(this.level, luxNet, luxNodeId(), null)).nodeId(),
-							pos, this.mpos.immutable(), Vec3.atCenterOf(this.mpos));
-				}
+			if (LuxUtils.directLinkToInWorldNode(this, linkCollector, this.mpos, dir.getOpposite(),
+					i, null, false)) {
+				i++;
 			}
 		}
 	}

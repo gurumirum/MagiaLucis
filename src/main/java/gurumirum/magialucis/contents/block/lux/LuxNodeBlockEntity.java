@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.lux;
 
-import gurumirum.magialucis.capability.LuxNetLinkDestination;
+import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.contents.block.BlockEntityBase;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
 import gurumirum.magialucis.impl.luxnet.*;
@@ -26,7 +26,7 @@ import org.joml.Vector3d;
 import java.util.*;
 
 public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends BlockEntityBase
-		implements LuxNodeInterface, LuxNetLinkDestination, LuxNodeSyncPropertyAccess, DebugTextProvider {
+		implements LuxNodeInterface, LinkDestination, LuxNodeSyncPropertyAccess, DebugTextProvider {
 	private final Vector3d luxFlow = new Vector3d();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks = new Int2ObjectOpenHashMap<>();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> inboundLinks = new Int2ObjectOpenHashMap<>();
@@ -109,7 +109,7 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Bloc
 	}
 
 	@Override
-	public @NotNull LuxNetLinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
+	public @NotNull LinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
 		return LinkTestResult.linkable(this.nodeId);
 	}
 

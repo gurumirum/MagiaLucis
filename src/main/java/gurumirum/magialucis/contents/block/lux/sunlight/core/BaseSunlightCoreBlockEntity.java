@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
-import gurumirum.magialucis.capability.LuxNetLinkDestination;
+import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.client.render.light.LightEffectRender;
 import gurumirum.magialucis.contents.block.Ticker;
@@ -120,12 +120,17 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 		}
 
 		LuxUtils.linkToInWorldNode(this, linkCollector, xRot, yRot, LINK_DISTANCE,
-				0, null);
+				0, null, true);
 	}
 
 	@Override
-	public @NotNull LuxNetLinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
+	public @NotNull LinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
 		if (!(context.sourceInterface() instanceof SunlightFocusBlockEntity)) return LinkTestResult.reject();
+		if (context.side() != null && context.side() == getBlockState()
+				.getValue(BlockStateProperties.FACING)
+				.getOpposite()) {
+			return LinkTestResult.reject();
+		}
 		return LinkTestResult.linkable(luxNodeId());
 	}
 

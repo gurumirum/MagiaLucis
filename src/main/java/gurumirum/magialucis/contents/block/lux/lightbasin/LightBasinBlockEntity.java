@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.block.lux.lightbasin;
 
 import com.mojang.datafixers.util.Pair;
 import gurumirum.magialucis.capability.GemStats;
-import gurumirum.magialucis.capability.LuxNetLinkDestination;
+import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModRecipes;
@@ -65,8 +65,8 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 	}
 
 	@Override
-	public @NotNull LuxNetLinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
-		return context.hitResult() != null && context.hitResult().getDirection() != Direction.UP ?
+	public @NotNull LinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
+		return context.side() != null && context.side() != Direction.UP ?
 				LinkTestResult.reject() : super.linkWithSource(context);
 	}
 

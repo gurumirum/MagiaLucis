@@ -1,13 +1,15 @@
 package gurumirum.magialucis.capability;
 
-import gurumirum.magialucis.contents.*;
+import gurumirum.magialucis.contents.Accessories;
+import gurumirum.magialucis.contents.GemItems;
+import gurumirum.magialucis.contents.ModBlockEntities;
+import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.BlockCapability;
@@ -27,7 +29,8 @@ public final class ModCapabilities {
 	public static final ItemCapability<LuxStat, Void> GEM_STAT = ItemCapability.createVoid(id("gem_stat"), LuxStat.class);
 
 	public static final BlockCapability<LinkSource, Void> LINK_SOURCE = BlockCapability.createVoid(id("linkable"), LinkSource.class);
-	public static final BlockCapability<LuxNetLinkDestination, Direction> LUX_NET_LINK_DESTINATION = BlockCapability.createSided(id("lux_net_link_destination"), LuxNetLinkDestination.class);
+	public static final BlockCapability<LinkDestination, Direction> LINK_DESTINATION = BlockCapability.createSided(id("link_destination"), LinkDestination.class);
+	public static final BlockCapability<DirectLinkDestination, Direction> DIRECT_LINK_DESTINATION = BlockCapability.createSided(id("direct_link_destination"), DirectLinkDestination.class);
 
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -43,45 +46,51 @@ public final class ModCapabilities {
 
 		for (Wands w : Wands.values()) {
 			if (w.luxContainerStat() != null) {
-				registerLuxContainer(event, w.luxContainerStat(), w);
+				luxContainer(event, w.luxContainerStat(), w);
 			}
 		}
 
 		for (Accessories a : Accessories.values()) {
 			if (a.luxContainerStat() != null) {
-				registerLuxContainer(event, a.luxContainerStat(), a);
+				luxContainer(event, a.luxContainerStat(), a);
 			}
 		}
 
 		event.registerItem(ItemHandler.ITEM, (s, v) -> new WandBeltItem.ItemHandler(s), Accessories.WAND_BELT);
 
-		registerRelayLinkSource(event, ModBlockEntities.RELAY.get());
-		event.registerBlockEntity(LUX_NET_LINK_DESTINATION, ModBlockEntities.RELAY.get(), (be, dir) ->
-				be.getBlockState().getValue(BlockStateProperties.FACING).getOpposite() != dir ? be : null);
+		linkSource(event, ModBlockEntities.RELAY.get());
+		linkDestination(event, ModBlockEntities.RELAY.get());
+		directLinkDestination(event, ModBlockEntities.RELAY.get());
 
-		registerLuxNetLinkDestination(event, ModBlockEntities.AMBER_CHARGER.get());
-		registerLuxNetLinkDestination(event, ModBlockEntities.LUMINOUS_CHARGER.get());
+		linkDestination(event, ModBlockEntities.AMBER_CHARGER.get());
+		directLinkDestination(event, ModBlockEntities.AMBER_CHARGER.get());
+		linkDestination(event, ModBlockEntities.LUMINOUS_CHARGER.get());
+		directLinkDestination(event, ModBlockEntities.LUMINOUS_CHARGER.get());
 
-		registerRelayLinkSource(event, ModBlockEntities.LUX_SOURCE.get());
-		registerLuxNetLinkDestination(event, ModBlockEntities.LIGHT_BASIN.get());
-		registerLuxNetLinkDestination(event, ModBlockEntities.LUX_SOURCE.get());
-		registerLuxNetLinkDestination(event, ModBlockEntities.LUMINOUS_REMOTE_CHARGER.get());
-		registerLuxNetLinkDestination(event, ModBlockEntities.LUSTROUS_REMOTE_CHARGER.get());
-		registerLuxNetLinkDestination(event, ModBlockEntities.SUNLIGHT_FOCUS.get());
-		registerRelayLinkSource(event, ModBlockEntities.SUNLIGHT_FOCUS.get());
-		registerLuxNetLinkDestination(event, ModBlockEntities.SUNLIGHT_CORE.get());
+		linkSource(event, ModBlockEntities.LUX_SOURCE.get());
+		linkDestination(event, ModBlockEntities.LIGHT_BASIN.get());
+		linkDestination(event, ModBlockEntities.LUX_SOURCE.get());
+		linkDestination(event, ModBlockEntities.LUMINOUS_REMOTE_CHARGER.get());
+		linkDestination(event, ModBlockEntities.LUSTROUS_REMOTE_CHARGER.get());
+		linkDestination(event, ModBlockEntities.SUNLIGHT_FOCUS.get());
+		linkSource(event, ModBlockEntities.SUNLIGHT_FOCUS.get());
+		linkDestination(event, ModBlockEntities.SUNLIGHT_CORE.get());
 	}
 
-	private static void registerLuxContainer(RegisterCapabilitiesEvent event, LuxContainerStat stat, ItemLike... items) {
+	private static void luxContainer(RegisterCapabilitiesEvent event, LuxContainerStat stat, ItemLike... items) {
 		event.registerItem(LUX_CONTAINER_STAT, (s, v) -> stat, items);
 		event.registerItem(LUX_ACCEPTOR, (s, v) -> new ItemStackLuxAcceptor(s, stat), items);
 	}
 
-	private static <T extends BlockEntity & LinkSource> void registerRelayLinkSource(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
+	private static <T extends BlockEntity & LinkSource> void linkSource(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
 		event.registerBlockEntity(LINK_SOURCE, type, (be, context) -> be);
 	}
 
-	private static <T extends BlockEntity & LuxNetLinkDestination> void registerLuxNetLinkDestination(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
-		event.registerBlockEntity(LUX_NET_LINK_DESTINATION, type, (be, context) -> be);
+	private static <T extends BlockEntity & LinkDestination> void linkDestination(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
+		event.registerBlockEntity(LINK_DESTINATION, type, (be, context) -> be);
+	}
+
+	private static <T extends BlockEntity & DirectLinkDestination> void directLinkDestination(RegisterCapabilitiesEvent event, BlockEntityType<T> type) {
+		event.registerBlockEntity(DIRECT_LINK_DESTINATION, type, (be, context) -> be);
 	}
 }

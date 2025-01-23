@@ -1,6 +1,8 @@
 package gurumirum.magialucis.contents.block.lux.relay;
 
 import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.capability.DirectLinkDestination;
+import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
@@ -8,19 +10,30 @@ import gurumirum.magialucis.client.render.light.LightEffectRender;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
+import gurumirum.magialucis.impl.luxnet.LinkContext;
+import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
+import gurumirum.magialucis.impl.luxnet.ServerSideLinkContext;
 import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import java.util.Objects;
 
-public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavior> {
+public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavior> implements DirectLinkDestination, LinkDestinationSelector {
 	private ItemStack stack = ItemStack.EMPTY;
 
 	public RelayBlockEntity(BlockPos pos, BlockState blockState) {
@@ -50,17 +63,69 @@ public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavi
 	}
 
 	@Override
+	protected @NotNull DynamicLuxNodeBehavior createNodeBehavior() {
+		return new DynamicLuxNodeBehavior(this.stack.getCapability(ModCapabilities.GEM_STAT));
+	}
+
+	@Override
+	public @Nullable LinkDestinationSelector linkDestinationSelector() {
+		return this;
+	}
+
+	@Override
+	public @Nullable LinkDestination chooseLinkDestination(@NotNull Level level,
+	                                                       @Nullable ServerSideLinkContext context,
+	                                                       @NotNull BlockHitResult hitResult) {
+		Direction baseDirection = getBlockState().getValue(BlockStateProperties.FACING).getOpposite();
+
+		BlockPos pos = getBlockPos();
+		Vec3 loc = hitResult.getLocation();
+		Vector3f v = new Vector3f().set(
+						loc.x - pos.getX() - 0.5,
+						loc.y - pos.getY() - 0.5,
+						loc.z - pos.getZ() - 0.5)
+				.rotate(baseDirection.getRotation().invert());
+
+		final double angle = Math.cos(Math.PI / 4) + 0.01;
+
+		Vector2f v2 = new Vector2f(v.x, v.y).normalize();
+		if (v2.dot(new Vector2f(0, 1)) >= angle) {
+			v2.set(v.z, v.y).normalize();
+			if (v2.dot(new Vector2f(0, 1)) >= angle) {
+				return null;
+			}
+		}
+
+		return level.getCapability(ModCapabilities.LINK_DESTINATION, hitResult.getBlockPos(), hitResult.getDirection());
+	}
+
+	@Override
+	public @NotNull LinkTestResult linkWithSource(@NotNull LinkContext context) {
+		if (context.side() != null && context.side() == getBlockState()
+				.getValue(BlockStateProperties.FACING)
+				.getOpposite()) {
+			return LinkTestResult.reject();
+		}
+		return LinkTestResult.linkable(luxNodeId());
+	}
+
+	@Override
+	public @NotNull LinkTestResult directLinkWithSource(@NotNull LinkContext context) {
+		if (context.side() != null && context.side() != getBlockState()
+				.getValue(BlockStateProperties.FACING)
+				.getOpposite()) {
+			return LinkTestResult.reject();
+		}
+		return LinkTestResult.linkable(luxNodeId());
+	}
+
+	@Override
 	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
 		super.save(tag, lookupProvider, context);
 
 		if (!this.stack.isEmpty()) {
 			tag.put("item", this.stack.save(lookupProvider));
 		}
-	}
-
-	@Override
-	protected @NotNull DynamicLuxNodeBehavior createNodeBehavior() {
-		return new DynamicLuxNodeBehavior(this.stack.getCapability(ModCapabilities.GEM_STAT));
 	}
 
 	@Override

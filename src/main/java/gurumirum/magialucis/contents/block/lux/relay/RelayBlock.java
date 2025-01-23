@@ -48,7 +48,7 @@ public class RelayBlock extends Block implements EntityBlock {
 		SHAPE.put(Direction.DOWN, box(2, 4, 2, 14, 16, 14));
 		SHAPE.put(Direction.EAST, box(0, 2, 2, 12, 14, 14));
 		SHAPE.put(Direction.WEST, box(4, 2, 2, 16, 14, 14));
-		SHAPE.put(Direction.SOUTH, box(2, 2, 4, 14, 14, 16));
+		SHAPE.put(Direction.SOUTH, box(2, 2, 0, 14, 14, 12));
 		SHAPE.put(Direction.NORTH, box(2, 2, 4, 14, 14, 16));
 	}
 

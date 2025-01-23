@@ -44,7 +44,7 @@ public abstract class BasicRelayBlockEntity<B extends LuxNodeBehavior> extends L
 			Orientation o = this.links.get(i);
 			if (o != null) {
 				LuxUtils.linkToInWorldNode(this, linkCollector, o.xRot(), o.yRot(), linkDistance(),
-						i, linkDestinationSelector());
+						i, linkDestinationSelector(), true);
 			}
 		}
 	}

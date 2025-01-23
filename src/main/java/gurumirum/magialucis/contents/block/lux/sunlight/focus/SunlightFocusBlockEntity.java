@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 
-import gurumirum.magialucis.capability.LuxNetLinkDestination;
+import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
@@ -58,14 +58,14 @@ public class SunlightFocusBlockEntity extends BasicRelayBlockEntity<SunlightFocu
 	}
 
 	@Override
-	public @NotNull LuxNetLinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
+	public @NotNull LinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
 		return LinkTestResult.reject(); // cannot connect
 	}
 
 	@Override
-	public @Nullable LuxNetLinkDestination chooseLinkDestination(@NotNull Level level,
-	                                                             @Nullable ServerSideLinkContext context,
-	                                                             @NotNull BlockHitResult hitResult) {
+	public @Nullable LinkDestination chooseLinkDestination(@NotNull Level level,
+	                                                       @Nullable ServerSideLinkContext context,
+	                                                       @NotNull BlockHitResult hitResult) {
 		if (hitResult.getBlockPos().getY() < this.getBlockPos().getY()) return null;
 		return level.getBlockEntity(hitResult.getBlockPos()) instanceof BaseSunlightCoreBlockEntity<?> sunlightCore ?
 				sunlightCore : null;

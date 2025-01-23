@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
+import gurumirum.magialucis.capability.DirectLinkDestination;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.client.render.light.LightEffectRender;
@@ -7,9 +8,11 @@ import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ChargerTier;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
+import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.utils.TagUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -22,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
-public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> implements Ticker.Server {
+public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> implements Ticker.Server, DirectLinkDestination {
 	private final ChargerTier chargerTier;
 	private final ChargerInventory inventory = new ChargerInventory();
 
@@ -87,6 +90,22 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 
 	@Override
 	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {}
+
+	@Override
+	public @NotNull LinkTestResult linkWithSource(@NotNull LinkContext context) {
+		if (context.side() != null && context.side() == Direction.DOWN) {
+			return LinkTestResult.reject();
+		}
+		return LinkTestResult.linkable(luxNodeId());
+	}
+
+	@Override
+	public @NotNull LinkTestResult directLinkWithSource(@NotNull LinkContext context) {
+		if (context.side() != null && context.side() != Direction.DOWN) {
+			return LinkTestResult.reject();
+		}
+		return LinkTestResult.linkable(luxNodeId());
+	}
 
 	@Override
 	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
