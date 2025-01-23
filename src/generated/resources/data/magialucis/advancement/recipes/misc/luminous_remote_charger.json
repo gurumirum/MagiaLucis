@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_luminous_alloy": {
+    "has_luminous_resonator": {
       "conditions": {
         "items": [
           {
-            "items": "#c:ingots/luminous_alloy"
+            "items": "magialucis:luminous_resonator"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magialucis:luminous_lux_drive"
+        "recipe": "magialucis:luminous_remote_charger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_luminous_alloy"
+      "has_luminous_resonator"
     ]
   ],
   "rewards": {
     "recipes": [
-      "magialucis:luminous_lux_drive"
+      "magialucis:luminous_remote_charger"
     ]
   }
 }

@@ -117,6 +117,7 @@ public class RemoteChargerBlock extends Block implements EntityBlock {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+		tooltip.add(Component.translatable("item.magialucis.tooltip.remote_charger"));
 		LuxStatTooltip.formatStat(this.chargerTier.stat(), tooltip, LuxStatTooltip.Type.CONTAINER);
 	}
 }

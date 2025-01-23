@@ -173,7 +173,8 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(Accessories.WAND_BELT.asItem());
 
 		basicItem(ModItems.ANCIENT_CORE.asItem());
-		basicItem(ModItems.LUMINOUS_LUX_DRIVE.asItem());
+		basicItem(ModItems.LUMINOUS_RESONATOR.asItem());
+		basicItem(ModItems.LUMINOUS_RESONANCE_CORE.asItem());
 		basicItem(ModItems.MECHANICAL_COMPONENT.asItem());
 		basicItem(ModItems.LUMINOUS_MECHANICAL_COMPONENT.asItem());
 

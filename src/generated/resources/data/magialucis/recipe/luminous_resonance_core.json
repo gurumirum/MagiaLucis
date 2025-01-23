@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "magialucis:basic_alloy_ingots"
+    },
+    "2": {
+      "item": "magialucis:luminous_resonator"
+    },
+    "3": {
+      "item": "magialucis:luminous_mechanical_component"
+    },
+    "4": {
+      "tag": "magialucis:brightstones"
+    }
+  },
+  "pattern": [
+    "132",
+    "343",
+    "231"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:luminous_resonance_core"
+  }
+}
