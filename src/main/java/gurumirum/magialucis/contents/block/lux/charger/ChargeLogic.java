@@ -2,7 +2,6 @@ package gurumirum.magialucis.contents.block.lux.charger;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.capability.LuxAcceptor;
-import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
@@ -14,7 +13,7 @@ import org.joml.Vector3d;
 public final class ChargeLogic {
 	private ChargeLogic() {}
 
-	public static boolean chargeItem(Vector3d charge, ItemStack stack, LuxStat maxChargePerItem) {
+	public static boolean chargeItem(Vector3d charge, ItemStack stack, Vector3d maxChargePerItem) {
 		boolean success = false;
 
 		if (stack.is(Accessories.WAND_BELT.asItem())) {
@@ -37,14 +36,21 @@ public final class ChargeLogic {
 		if (luxAcceptor != null) {
 			Vector3d accepted = new Vector3d();
 			luxAcceptor.accept(
-					Math.min(maxChargePerItem.rMaxTransfer(), charge.x),
-					Math.min(maxChargePerItem.gMaxTransfer(), charge.y),
-					Math.min(maxChargePerItem.bMaxTransfer(), charge.z),
+					Math.min(maxChargePerItem.x, charge.x),
+					Math.min(maxChargePerItem.y, charge.y),
+					Math.min(maxChargePerItem.z, charge.z),
 					false, accepted);
 			if (LuxUtils.isValid(accepted)) {
-				if (!(accepted.x <= 0) || !(accepted.y <= 0) || !(accepted.z <= 0)) {
-					LuxUtils.snapComponents(accepted, 0);
-					charge.sub(accepted);
+				if (accepted.x > 0) {
+					charge.x = Math.max(0, charge.x - accepted.x);
+					success = true;
+				}
+				if (accepted.y > 0) {
+					charge.y = Math.max(0, charge.y - accepted.y);
+					success = true;
+				}
+				if (accepted.z > 0) {
+					charge.z = Math.max(0, charge.z - accepted.z);
 					success = true;
 				}
 			} else {

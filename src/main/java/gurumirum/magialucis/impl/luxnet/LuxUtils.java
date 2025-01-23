@@ -24,27 +24,27 @@ public final class LuxUtils {
 		transfer(src, dst, dstMaxCharge.x, dstMaxCharge.y, dstMaxCharge.z);
 	}
 
-	public static void transfer(Vector3d src, Vector3d dst, double dstMaxChargeR, double dstMaxChargeG, double dstMaxChargeB) {
-		dst.x = transfer(src, dst.x, ColorComponent.R, dstMaxChargeR);
-		dst.y = transfer(src, dst.y, ColorComponent.G, dstMaxChargeG);
-		dst.z = transfer(src, dst.z, ColorComponent.B, dstMaxChargeB);
+	public static void transfer(Vector3d src, Vector3d dst,
+	                            double dstMaxChargeR, double dstMaxChargeG, double dstMaxChargeB) {
+		transfer(src, dst, ColorComponent.R, dstMaxChargeR, Double.MAX_VALUE);
+		transfer(src, dst, ColorComponent.G, dstMaxChargeG, Double.MAX_VALUE);
+		transfer(src, dst, ColorComponent.B, dstMaxChargeB, Double.MAX_VALUE);
 	}
 
-	public static double transfer(Vector3d src, double dst, ColorComponent component, double dstMaxCharge) {
-		return transfer(src, dst, component, dstMaxCharge, Double.MAX_VALUE);
-	}
+	public static void transfer(Vector3d src, Vector3d dst, ColorComponent component, double dstMaxCharge, double maxTransfer) {
+		if (!(getComponent(dst, component) >= 0)) setComponent(dst, component, 0);
 
-	public static double transfer(Vector3d src, double dst, ColorComponent component, double dstMaxCharge, double maxTransfer) {
 		double srcValue = getComponent(src, component);
 
 		double transferLimit = Math.min(maxTransfer, srcValue);
-		double receiveLimit = dstMaxCharge - dst;
+		double receiveLimit = dstMaxCharge - getComponent(dst, component);
 		double transferAmount = Math.min(receiveLimit, transferLimit);
-		if (transferAmount == 0) return dst;
+		if (transferAmount <= 0) return;
 
 		setComponent(src, component, srcValue - transferAmount);
 		// to prevent floating point shenanigans
-		return receiveLimit <= transferLimit ? dstMaxCharge : dst + transferAmount;
+		setComponent(dst, component, receiveLimit <= transferLimit ?
+				dstMaxCharge : getComponent(src, component) + transferAmount);
 	}
 
 	public static boolean isValid(Vector3d vec) {

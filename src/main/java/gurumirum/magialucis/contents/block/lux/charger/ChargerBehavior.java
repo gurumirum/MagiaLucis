@@ -12,9 +12,10 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
 public class ChargerBehavior implements LuxConsumerNodeBehavior {
-	public static final double REMOTE_CHARGER_STORAGE_MULTIPLIER = 100;
+	public static final double REMOTE_CHARGER_STORAGE_MULTIPLIER = 10;
 
 	public final Vector3d charge = new Vector3d();
+	public final Vector3d maxInput = new Vector3d();
 
 	private final Vector3d maxChargeStorage = new Vector3d();
 	private final ChargerTier chargerTier;
@@ -40,6 +41,14 @@ public class ChargerBehavior implements LuxConsumerNodeBehavior {
 
 	@Override
 	public void consumeLux(Level level, LuxNet luxNet, LuxNode node, Vector3d receivedLux) {
-		if (node.isLoaded()) LuxUtils.transfer(receivedLux, this.charge, this.maxChargeStorage);
+		if (node.isLoaded()) {
+			this.maxInput.max(receivedLux);
+			LuxUtils.transfer(receivedLux, this.charge, this.maxChargeStorage);
+		}
+	}
+
+	public void reset() {
+		this.charge.zero();
+		this.maxInput.zero();
 	}
 }

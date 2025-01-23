@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class HealWandItem extends LuxContainerItem implements WandEffectSource {
-	public static final int COST_PER_CAST = 15000;
+	public static final int COST_PER_CAST = 1000;
 
 	private static final int HEAL_AMOUNT = 10;
 	private static final int REGENERATION_EFFECT_DURATION = 100;

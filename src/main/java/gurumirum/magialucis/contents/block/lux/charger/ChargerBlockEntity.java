@@ -10,7 +10,6 @@ import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.utils.TagUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -22,14 +21,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3d;
 
 public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> implements Ticker.Server, DirectLinkDestination {
 	private final ChargerTier chargerTier;
 	private final ChargerInventory inventory = new ChargerInventory();
-
-	private @Nullable Vector3d lastCharge;
 
 	public ChargerBlockEntity(ChargerTier chargerTier, BlockPos pos, BlockState blockState) {
 		super(chargerTier.chargerBlockEntityType(), pos, blockState);
@@ -66,21 +61,12 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 
 	@Override
 	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
-		Vector3d charge = nodeBehavior().charge;
-
 		ItemStack stack = this.inventory.getStackInSlot(0);
 		if (!stack.isEmpty()) {
-			if (ChargeLogic.chargeItem(charge, stack, this.chargerTier.stat())) {
-				setChanged();
-			}
+			ChargeLogic.chargeItem(nodeBehavior().charge, stack, nodeBehavior().maxInput);
 		}
 
-		if (this.lastCharge == null) {
-			this.lastCharge = new Vector3d(charge);
-		} else if (!this.lastCharge.equals(charge)) {
-			this.lastCharge.set(charge);
-			setChanged();
-		}
+		nodeBehavior().reset();
 	}
 
 	@Override
@@ -111,10 +97,6 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
 		super.save(tag, lookupProvider, context);
 		tag.put("inventory", this.inventory.serializeNBT(lookupProvider));
-
-		if (context.isSaveLoad()) {
-			TagUtils.writeVector3d(tag, "charge", nodeBehavior().charge);
-		}
 	}
 
 	@Override
@@ -125,11 +107,6 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 			this.inventory.setStackInSlot(i, ItemStack.EMPTY);
 		}
 		this.inventory.deserializeNBT(lookupProvider, tag.getCompound("inventory"));
-
-		if (context.isSaveLoad()) {
-			TagUtils.readVector3d(tag, "charge", nodeBehavior().charge);
-			if (this.lastCharge != null) this.lastCharge.set(nodeBehavior().charge);
-		}
 	}
 
 	private static void drop(Level level, BlockPos pos, ItemStack stack) {
