@@ -26,6 +26,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
@@ -52,10 +53,12 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 
 	LUMINOUS_REMOTE_CHARGER(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUMINOUS), Properties.of()
 			.requiresCorrectToolForDrops()
-			.strength(2.5f))),
+			.strength(2.5f)
+			.lightLevel(state -> state.getValue(BlockStateProperties.ENABLED) ? 15 : 0))),
 	LUSTROUS_REMOTE_CHARGER(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUSTROUS), Properties.of()
 			.requiresCorrectToolForDrops()
-			.strength(2.5f))),
+			.strength(2.5f)
+			.lightLevel(state -> state.getValue(BlockStateProperties.ENABLED) ? 15 : 0))),
 
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of()
 			.strength(2.5f)

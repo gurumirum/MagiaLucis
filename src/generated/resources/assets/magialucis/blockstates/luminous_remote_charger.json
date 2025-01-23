@@ -1,0 +1,46 @@
+{
+  "variants": {
+    "enabled=false,facing=down": {
+      "model": "magialucis:block/luminous_remote_charger_up_disabled"
+    },
+    "enabled=false,facing=east": {
+      "model": "magialucis:block/luminous_remote_charger_side_disabled",
+      "y": 270
+    },
+    "enabled=false,facing=north": {
+      "model": "magialucis:block/luminous_remote_charger_side_disabled",
+      "y": 180
+    },
+    "enabled=false,facing=south": {
+      "model": "magialucis:block/luminous_remote_charger_side_disabled"
+    },
+    "enabled=false,facing=up": {
+      "model": "magialucis:block/luminous_remote_charger_down_disabled"
+    },
+    "enabled=false,facing=west": {
+      "model": "magialucis:block/luminous_remote_charger_side_disabled",
+      "y": 90
+    },
+    "enabled=true,facing=down": {
+      "model": "magialucis:block/luminous_remote_charger_up"
+    },
+    "enabled=true,facing=east": {
+      "model": "magialucis:block/luminous_remote_charger_side",
+      "y": 270
+    },
+    "enabled=true,facing=north": {
+      "model": "magialucis:block/luminous_remote_charger_side",
+      "y": 180
+    },
+    "enabled=true,facing=south": {
+      "model": "magialucis:block/luminous_remote_charger_side"
+    },
+    "enabled=true,facing=up": {
+      "model": "magialucis:block/luminous_remote_charger_down"
+    },
+    "enabled=true,facing=west": {
+      "model": "magialucis:block/luminous_remote_charger_side",
+      "y": 90
+    }
+  }
+}

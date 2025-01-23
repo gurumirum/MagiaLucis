@@ -4,6 +4,8 @@ import gurumirum.magialucis.contents.BlockProvider;
 import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.Ore;
 import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -16,6 +18,8 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+
+import java.util.Map;
 
 import static gurumirum.magialucis.MagiaLucisMod.MODID;
 import static gurumirum.magialucis.MagiaLucisMod.id;
@@ -76,6 +80,8 @@ public class BlockStateGen extends BlockStateProvider {
 				.texture("side", LUMINOUS_CHARGER.id().withPath(p -> "block/" + p + "_side"))
 				.texture("bottom", LUMINOUS_CHARGER.id().withPath(p -> "block/" + p + "_bottom")));
 
+		remoteCharger(LUMINOUS_REMOTE_CHARGER.block(), "luminous_remote_charger");
+
 		BlockModelBuilder amberCore = models().cubeColumnHorizontal(AMBER_CORE.id().getPath(),
 				id("block/amber_core_side"), mcLoc("block/oak_log_top"));
 		BlockModelBuilder amberCoreDisabled = models().cubeColumnHorizontal(AMBER_CORE.id().getPath() + "_disabled",
@@ -131,6 +137,49 @@ public class BlockStateGen extends BlockStateProvider {
 		});
 
 		itemModels().simpleBlockItem(block.block());
+	}
+
+	private final Map<String, ModelFile> remoteChargerModelFiles = new Object2ObjectOpenHashMap<>();
+
+	private void remoteCharger(Block block, String baseName) {
+		getVariantBuilder(block).forAllStates(state -> {
+			Direction dir = state.getValue(BlockStateProperties.FACING);
+			ConfiguredModel.Builder<?> b = ConfiguredModel.builder();
+
+			b.modelFile(remoteCharger(dir, state.getValue(BlockStateProperties.ENABLED), baseName));
+
+			if (dir.getAxis() != Direction.Axis.Y) {
+				b.rotationY((int)(dir.toYRot()) % 360);
+			}
+
+			return b.build();
+		});
+		simpleBlockItem(block, remoteCharger(Direction.DOWN, true, baseName));
+	}
+
+	private ModelFile remoteCharger(Direction facing, boolean enabled, String baseName) {
+		String s = switch (facing) {
+			case DOWN -> "up";
+			case UP -> "down";
+			default -> "side";
+		};
+		String modelName = baseName + "_" + s + (enabled ? "" : "_disabled");
+
+		return this.remoteChargerModelFiles.computeIfAbsent(modelName, n -> {
+			BlockModelBuilder b = models().withExistingParent(n, id("block/remote_charger_" + s));
+			b.texture("top", id("block/" + baseName + "_top"));
+			b.texture("bottom", id("block/" + baseName + "_bottom"));
+			b.texture("side", id("block/" + baseName + "_side"));
+			b.texture("side_overlay", id(enabled ? "block/" + baseName + "_side_overlay" : "block/empty"));
+			if (facing == Direction.UP) {
+				b.texture("base_top", id("block/" + baseName + "_base_top"));
+				b.texture("base_bottom", id("block/" + baseName + "_base_bottom"));
+			} else if (facing != Direction.DOWN) {
+				b.texture("back", id("block/" + baseName + "_back"));
+				b.texture("base_back", id("block/" + baseName + "_base_back"));
+			}
+			return b;
+		});
 	}
 
 	private void s(BlockProvider blockProvider) {

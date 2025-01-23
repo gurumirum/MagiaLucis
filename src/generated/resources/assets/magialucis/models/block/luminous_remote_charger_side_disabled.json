@@ -1,0 +1,11 @@
+{
+  "parent": "magialucis:block/remote_charger_side",
+  "textures": {
+    "back": "magialucis:block/luminous_remote_charger_back",
+    "base_back": "magialucis:block/luminous_remote_charger_base_back",
+    "bottom": "magialucis:block/luminous_remote_charger_bottom",
+    "side": "magialucis:block/luminous_remote_charger_side",
+    "side_overlay": "magialucis:block/empty",
+    "top": "magialucis:block/luminous_remote_charger_top"
+  }
+}

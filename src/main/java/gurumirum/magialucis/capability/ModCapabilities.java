@@ -67,11 +67,14 @@ public final class ModCapabilities {
 		linkDestination(event, ModBlockEntities.LUMINOUS_CHARGER.get());
 		directLinkDestination(event, ModBlockEntities.LUMINOUS_CHARGER.get());
 
+		linkDestination(event, ModBlockEntities.LUMINOUS_REMOTE_CHARGER.get());
+		directLinkDestination(event, ModBlockEntities.LUMINOUS_REMOTE_CHARGER.get());
+		linkDestination(event, ModBlockEntities.LUSTROUS_REMOTE_CHARGER.get());
+		directLinkDestination(event, ModBlockEntities.LUSTROUS_REMOTE_CHARGER.get());
+
 		linkSource(event, ModBlockEntities.LUX_SOURCE.get());
 		linkDestination(event, ModBlockEntities.LIGHT_BASIN.get());
 		linkDestination(event, ModBlockEntities.LUX_SOURCE.get());
-		linkDestination(event, ModBlockEntities.LUMINOUS_REMOTE_CHARGER.get());
-		linkDestination(event, ModBlockEntities.LUSTROUS_REMOTE_CHARGER.get());
 		linkDestination(event, ModBlockEntities.SUNLIGHT_FOCUS.get());
 		linkSource(event, ModBlockEntities.SUNLIGHT_FOCUS.get());
 		linkDestination(event, ModBlockEntities.SUNLIGHT_CORE.get());
