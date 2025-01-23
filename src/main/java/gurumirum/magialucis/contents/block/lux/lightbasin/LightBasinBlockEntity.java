@@ -27,7 +27,6 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3d;
 
 import java.util.Objects;
 
@@ -38,7 +37,6 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 	private static final int NO_LUX_INPUT_TICKS_MAX = 30;
 
 	private final LightBasinInventory inventory = new LightBasinInventory();
-	private final Vector3d luxInput = new Vector3d();
 
 	private boolean contentsDirty;
 	private boolean syncContents;
@@ -96,7 +94,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		}
 
 		if (this.currentRecipe != null) {
-			if (this.currentRecipe.testLuxInput(this.luxInput)) {
+			if (this.currentRecipe.testLuxInput(nodeBehavior().luxInput)) {
 				this.progress++;
 				this.noLuxInputTicks = 0;
 
@@ -117,6 +115,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 					this.noLuxInputTicks++;
 				}
 			}
+			setChanged();
 		} else {
 			this.progress = 0;
 		}
@@ -231,6 +230,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		@Override
 		protected void onContentsChanged(int slot) {
 			LightBasinBlockEntity.this.contentsDirty = true;
+			LightBasinBlockEntity.this.setChanged();
 		}
 
 		@Override
