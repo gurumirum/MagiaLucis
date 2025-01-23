@@ -216,6 +216,20 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_brightstones", has(ModItemTags.BRIGHTSTONES))
 				.save(out);
 
+		shaped(MISC, ModBlocks.AMBER_CHARGER)
+				.pattern("121")
+				.define('1', ItemTags.LOGS)
+				.define('2', GemStats.AMBER.tag())
+				.unlockedBy("has_amber", has(GemStats.AMBER.tag()))
+				.save(out);
+
+		shaped(MISC, ModBlocks.LUMINOUS_CHARGER)
+				.pattern("121")
+				.define('1', ModItemTags.LAPIDES_MANALIS)
+				.define('2', LUMINOUS_LUX_DRIVE)
+				.unlockedBy("has_luminous_lux_drive", has(LUMINOUS_LUX_DRIVE))
+				.save(out);
+
 		shaped(MISC, ModBlocks.AMBER_CORE)
 				.pattern("121")
 				.pattern("232")

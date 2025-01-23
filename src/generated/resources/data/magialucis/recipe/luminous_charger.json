@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "magialucis:lapides_manalis"
+    },
+    "2": {
+      "item": "magialucis:luminous_lux_drive"
+    }
+  },
+  "pattern": [
+    "121"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:luminous_charger"
+  }
+}
