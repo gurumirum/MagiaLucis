@@ -2,7 +2,6 @@ package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.entity.EnderChestPortal;
-import gurumirum.magialucis.contents.entity.GemGolemEntity;
 import gurumirum.magialucis.contents.entity.LesserIceProjectile;
 import gurumirum.magialucis.contents.entity.TempleGuardian;
 import net.minecraft.world.entity.EntityType;
@@ -23,12 +22,6 @@ public final class ModEntities {
 					.updateInterval(10)
 					.build("ender_chest_portal"));
 
-	public static final DeferredHolder<EntityType<?>, EntityType<GemGolemEntity>> GEM_GOLEM = Contents.ENTITY_TYPES.register("gem_golem",
-			() -> EntityType.Builder.of(GemGolemEntity::new, MobCategory.MONSTER)
-					.sized(1.4F, 2.7F)
-					.clientTrackingRange(10)
-					.build("gem_golem"));
-
 	public static final DeferredHolder<EntityType<?>, EntityType<LesserIceProjectile>> LESSER_ICE_PROJECTILE = Contents.ENTITY_TYPES.register("lesser_ice_projectile",
 			() -> EntityType.Builder.<LesserIceProjectile>of(LesserIceProjectile::new, MobCategory.MISC)
 					.sized(0.25f, 0.25f)
@@ -44,7 +37,6 @@ public final class ModEntities {
 
 	@SubscribeEvent
 	public static void onAttributeCreation(EntityAttributeCreationEvent event) {
-		event.put(ModEntities.GEM_GOLEM.get(), GemGolemEntity.createAttributes().build());
 		event.put(ModEntities.TEMPLE_GUARDIAN.get(), TempleGuardian.createAttributes().build());
 	}
 

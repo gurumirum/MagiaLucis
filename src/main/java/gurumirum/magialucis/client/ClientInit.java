@@ -13,7 +13,10 @@ import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlockEn
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreItemExtension;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusItemExtension;
-import gurumirum.magialucis.contents.entity.*;
+import gurumirum.magialucis.contents.entity.EnderChestPortalRenderer;
+import gurumirum.magialucis.contents.entity.LesserIceProjectileRenderer;
+import gurumirum.magialucis.contents.entity.TempleGuardianModel;
+import gurumirum.magialucis.contents.entity.TempleGuardianRenderer;
 import gurumirum.magialucis.contents.item.accessory.ObsidianBraceletItem;
 import gurumirum.magialucis.contents.item.accessory.ShieldCurioItem;
 import gurumirum.magialucis.contents.item.wand.*;
@@ -125,7 +128,6 @@ public final class ClientInit {
 
 	@SubscribeEvent
 	public static void registerEntityRegister(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(ModEntities.GEM_GOLEM.get(), GemGolemRenderer::new);
 		event.registerEntityRenderer(ModEntities.ENDER_CHEST_PORTAL.get(), EnderChestPortalRenderer::new);
 		event.registerEntityRenderer(ModEntities.LESSER_ICE_PROJECTILE.get(), LesserIceProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntities.TEMPLE_GUARDIAN.get(), TempleGuardianRenderer::new);

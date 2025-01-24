@@ -167,6 +167,7 @@ public class ItemModelGen extends ItemModelProvider {
 				.model(handheld(id(Wands.ENDER_WAND.id().getPath() + "_no_charge")));
 
 		basicItem(Accessories.WAND_BELT.asItem());
+		basicItem(Accessories.SOUL_CROWN.asItem());
 		basicItem(Accessories.SPEED_RING.asItem())
 				.override()
 				.predicate(ClientInit.NO_CHARGE, 1)

@@ -108,7 +108,6 @@
   "item.magialucis.sterling_silver_nugget": "스털링 실버 조각",
   "item.magialucis.temple_guardian_spawn_egg": "신전 수호자 생성 알",
   "item.magialucis.tooltip.charger": "§7배치된 아이템 충전",
-  "item.magialucis.tooltip.damage_absorbed": "흡수된 데미지: %s / %s",
   "item.magialucis.tooltip.lux_charge": "§fLUX§7: §f%s§7 / §f%s",
   "item.magialucis.tooltip.lux_charge_rate": "§fLUX§7 최대 충전량:",
   "item.magialucis.tooltip.lux_container_stat_expanded": "§7+ §fLUX§7 저장소 능력치 [Ctrl]",
