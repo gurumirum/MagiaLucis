@@ -313,6 +313,31 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_wands", has(ModItemTags.WANDS))
 				.save(out);
 
+		shaped(TOOLS, DRUID_WREATH)
+				.pattern("212")
+				.pattern("2 2")
+				.define('1', GemStats.AMBER.tag())
+				.define('2', ItemTags.LEAVES)
+				.unlockedBy("has_amber", has(GemStats.AMBER.tag()))
+				.save(out);
+
+		shaped(TOOLS, DRYAD_WREATH)
+				.pattern("212")
+				.pattern("2 2")
+				.define('1', GemStats.AMBER.tag())
+				.define('2', ItemTags.SMALL_FLOWERS)
+				.unlockedBy("has_amber", has(GemStats.AMBER.tag()))
+				.save(out);
+
+		shaped(TOOLS, FIRE_ARROW_RING)
+				.pattern("12 ")
+				.pattern("2 2")
+				.pattern(" 2 ")
+				.define('1', GemItems.RED_BRIGHTSTONE)
+				.define('2', ModItemTags.STERLING_SILVER_NUGGETS)
+				.unlockedBy("has_citrine", has(GemStats.CITRINE.tag()))
+				.save(out);
+
 		shaped(TOOLS, SOUL_CROWN)
 				.pattern("111")
 				.pattern("1 1")
