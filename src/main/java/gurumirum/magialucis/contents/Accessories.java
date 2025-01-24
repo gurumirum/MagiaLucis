@@ -2,10 +2,7 @@ package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxContainerStat;
-import gurumirum.magialucis.contents.item.accessory.AccessoryEventListener;
-import gurumirum.magialucis.contents.item.accessory.ShieldCurioItem;
-import gurumirum.magialucis.contents.item.accessory.LuxContainerCurioItem;
-import gurumirum.magialucis.contents.item.accessory.SpeedBoostCurioItem;
+import gurumirum.magialucis.contents.item.accessory.*;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -19,6 +16,8 @@ import java.util.Locale;
 public enum Accessories implements ItemLike {
 	WAND_BELT(ItemProfile.customItem(WandBeltItem::new), ModCurioSlots.WAND_BELT),
 
+	SOUL_CROWN(ItemProfile.customItem(SoulCrownItem::new), ModCurioSlots.HEADWEAR),
+
 	SPEED_RING(ItemProfile.customItem(p -> new SpeedBoostCurioItem(p,
 			"speed_ring",
 			0.1,
@@ -26,8 +25,8 @@ public enum Accessories implements ItemLike {
 			1)), ModCurioSlots.RING,
 			LuxContainerStat.withBaseStat(1000, GemStats.CITRINE)),
 
-	OBSIDIAN_BRACELET(ItemProfile.customItem(LuxContainerCurioItem::new), ModCurioSlots.BRACELET,
-			LuxContainerStat.withBaseStat(AccessoryEventListener.COST_PER_FIRE_RESISTANCE * 20 * 8, GemStats.OBSIDIAN)),
+	OBSIDIAN_BRACELET(ItemProfile.customItem(ObsidianBraceletItem::new), ModCurioSlots.BRACELET,
+			LuxContainerStat.withBaseStat(ObsidianBraceletItem.COST_PER_FIRE_RESISTANCE * 20 * 30, GemStats.OBSIDIAN)),
 
 	SHIELD_NECKLACE(ItemProfile.customItem(ShieldCurioItem::new), ModCurioSlots.NECKLACE,
 			LuxContainerStat.withBaseStat(ShieldCurioItem.COST_PER_IMPACT * 10, GemStats.POLISHED_LAPIS_LAZULI)),

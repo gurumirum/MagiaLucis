@@ -27,7 +27,6 @@ import static gurumirum.magialucis.contents.ModDataComponents.*;
 
 @EventBusSubscriber(modid = MagiaLucisMod.MODID)
 public final class AccessoryEventListener {
-	public static final int COST_PER_FIRE_RESISTANCE = 5;
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onEntityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
@@ -38,7 +37,7 @@ public final class AccessoryEventListener {
 				!player.hasEffect(MobEffects.FIRE_RESISTANCE)) {
 			findCurioItemAndDo(Accessories.OBSIDIAN_BRACELET, player, stack -> {
 				long charge = stack.getOrDefault(LUX_CHARGE, 0L);
-				if (charge < COST_PER_FIRE_RESISTANCE) return false;
+				if (charge < ObsidianBraceletItem.COST_PER_FIRE_RESISTANCE) return false;
 
 				event.setInvulnerable(true);
 				return true;

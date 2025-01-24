@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents.item.accessory;
 
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.utils.NumberFormats;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -52,7 +53,9 @@ public class ShieldCurioItem extends LuxContainerCurioItem implements ICurioItem
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		super.appendHoverText(stack, context, tooltip, flag);
+		tooltip.add(Component.translatable("item.magialucis.shield_necklace.tooltip.0",
+				NumberFormats.dec(MAX_SHIELD, ChatFormatting.YELLOW)));
+		tooltip.add(Component.translatable("item.magialucis.shield_necklace.tooltip.1"));
 
 		float shieldCharge = stack.getOrDefault(ModDataComponents.SHIELD_CHARGE, 0f);
 		if (shieldCharge > 0) {
@@ -60,5 +63,7 @@ public class ShieldCurioItem extends LuxContainerCurioItem implements ICurioItem
 					NumberFormats.DECIMAL.format(shieldCharge),
 					NumberFormats.DECIMAL.format(MAX_SHIELD)));
 		}
+
+		super.appendHoverText(stack, context, tooltip, flag);
 	}
 }

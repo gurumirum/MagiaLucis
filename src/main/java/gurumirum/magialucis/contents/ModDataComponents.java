@@ -48,6 +48,9 @@ public final class ModDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> SPEED_BOOST_CHARGE = register(
 			"speed_boost_charge", Codec.INT);
 
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> POWER = register(
+			"power", Codec.INT);
+
 	public static void init() {}
 
 	private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(
