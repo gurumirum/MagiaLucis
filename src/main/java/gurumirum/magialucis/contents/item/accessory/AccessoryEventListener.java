@@ -3,7 +3,6 @@ package gurumirum.magialucis.contents.item.accessory;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ModDataComponents;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.SpectralArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.entity.EntityTypeTest;
@@ -91,17 +89,16 @@ public final class AccessoryEventListener {
 	}
 
 	@SubscribeEvent
-	public static void onEntitySpawn(EntityJoinLevelEvent event) {
-		if (event.getLevel() instanceof ServerLevel
-				&& event.getEntity() instanceof Projectile projectile
-				&& projectile.getOwner() instanceof Player player
-				&& (projectile instanceof Arrow || projectile instanceof SpectralArrow)) {
-			findCurioItemAndDo(Accessories.FIRE_ARROW_RING, player,
-					stack -> {
-						projectile.igniteForSeconds(100);
-						((AbstractArrow)projectile).pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-						return true;
-					});
+	public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+		if (!event.getLevel().isClientSide
+				&& event.getEntity() instanceof AbstractArrow arrow
+				&& arrow.getOwner() instanceof Player player
+				&& (arrow instanceof Arrow || arrow instanceof SpectralArrow)) {
+			findCurioItemAndDo(Accessories.FIRE_ARROW_RING, player, stack -> {
+				arrow.igniteForSeconds(100);
+				arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+				return true;
+			});
 		}
 	}
 

@@ -21,7 +21,7 @@ public enum Accessories implements ItemLike {
 	DRYAD_WREATH(ItemProfile.customItem(p -> new AmberWreathItem(p, false)), ModCurioSlots.HEADWEAR,
 			LuxContainerStat.withBaseStat(AmberWreathItem.COST_PER_UPDATE * 1500, GemStats.AMBER)),
 
-	FIRE_ARROW_RING(ItemProfile.customItem(LuxContainerCurioItem::new), ModCurioSlots.RING),
+	FIRE_ARROW_RING(ItemProfile.customItem(BaseCurioItem::new), ModCurioSlots.RING),
 
 	SOUL_CROWN(ItemProfile.customItem(SoulCrownItem::new), ModCurioSlots.HEADWEAR),
 
