@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "1": {
+      "item": "magialucis:soul_brightstone"
+    }
+  },
+  "pattern": [
+    "111",
+    "1 1"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:soul_crown"
+  }
+}

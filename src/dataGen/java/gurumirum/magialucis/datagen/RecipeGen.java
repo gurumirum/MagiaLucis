@@ -313,6 +313,13 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_wands", has(ModItemTags.WANDS))
 				.save(out);
 
+		shaped(TOOLS, SOUL_CROWN)
+				.pattern("111")
+				.pattern("1 1")
+				.define('1', GemItems.SOUL_BRIGHTSTONE)
+				.unlockedBy("has_soul_brightstone", has(GemItems.SOUL_BRIGHTSTONE))
+				.save(out);
+
 		shaped(TOOLS, SPEED_RING)
 				.pattern("12 ")
 				.pattern("2 2")
