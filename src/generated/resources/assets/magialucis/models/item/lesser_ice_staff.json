@@ -6,12 +6,6 @@
       "predicate": {
         "minecraft:using": 1.0
       }
-    },
-    {
-      "model": "magialucis:item/lesser_ice_staff_no_charge",
-      "predicate": {
-        "minecraft:no_charge": 1.0
-      }
     }
   ],
   "textures": {

@@ -22,8 +22,7 @@ public enum Wands implements ItemLike {
 	AMBER_TORCH(ItemProfile.customItem(AmberTorchWandItem::new, StandardWandShape.WAND),
 			LuxContainerStat.withBaseStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 300, GemStats.AMBER)),
 
-	LESSER_ICE_STAFF(ItemProfile.customItem(LesserIceStaffItem::new, StandardWandShape.STAFF),
-			LuxContainerStat.withBaseStat(LesserIceStaffItem.COST_PER_ATTACK * 250, GemStats.BRIGHTSTONE)),
+	LESSER_ICE_STAFF(ItemProfile.customItem(LesserIceStaffItem::new, StandardWandShape.STAFF), null),
 
 	// TODO citrine, iolite wand
 

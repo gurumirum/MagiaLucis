@@ -86,11 +86,7 @@ public class ItemModelGen extends ItemModelProvider {
 				.predicate(ClientInit.USING, 1)
 				.model(getBuilder(Wands.LESSER_ICE_STAFF.id().getPath() + "_using")
 						.parent(beamChannelWand) // TODO new transform?
-						.texture("layer0", Wands.LESSER_ICE_STAFF.id().withPrefix("item/")))
-				.end()
-				.override()
-				.predicate(ClientInit.NO_CHARGE, 1)
-				.model(handheld(id(Wands.LESSER_ICE_STAFF.id().getPath() + "_no_charge")));
+						.texture("layer0", Wands.LESSER_ICE_STAFF.id().withPrefix("item/")));
 
 		handheld(Wands.RECALL_STAFF.asItem())
 				.override()

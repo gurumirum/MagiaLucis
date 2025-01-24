@@ -57,7 +57,6 @@ public final class ClientInit {
 			ItemProperties.register(Wands.AMBER_TORCH.asItem(), NO_CHARGE, noCharge(AmberTorchWandItem.COST_PER_LIGHT_SOURCE));
 
 			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), USING, wandUsing);
-			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), NO_CHARGE, noCharge(LesserIceStaffItem.COST_PER_ATTACK));
 
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), USING, wandUsing);
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
