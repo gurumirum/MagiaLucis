@@ -2,15 +2,18 @@ package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.contents.ModDamageTypes;
 import gurumirum.magialucis.contents.Ore;
+import gurumirum.magialucis.contents.structure.TempleStructure;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.level.biome.Biome;
@@ -21,6 +24,10 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration.TargetBlockState;
 import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifier;
@@ -41,8 +48,8 @@ import static net.neoforged.neoforge.registries.NeoForgeRegistries.Keys.BIOME_MO
 public final class DatapackEntryGen {
 	private DatapackEntryGen() {}
 
-	private static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_ORE = ResourceKey.create(CONFIGURED_FEATURE, id("silver_ore"));
-	private static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_ORE_BURIED = ResourceKey.create(CONFIGURED_FEATURE, id("silver_ore_buried"));
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_ORE = ResourceKey.create(CONFIGURED_FEATURE, id("silver_ore"));
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_ORE_BURIED = ResourceKey.create(CONFIGURED_FEATURE, id("silver_ore_buried"));
 
 	public static final ResourceKey<ConfiguredFeature<?, ?>> AMBER_ORE = ResourceKey.create(CONFIGURED_FEATURE, id("amber_ore"));
 	public static final ResourceKey<ConfiguredFeature<?, ?>> AMBER_ORE_BURIED = ResourceKey.create(CONFIGURED_FEATURE, id("amber_ore_buried"));
@@ -71,9 +78,9 @@ public final class DatapackEntryGen {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_ORE_LARGE = ResourceKey.create(CONFIGURED_FEATURE, id("topaz_ore_large"));
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_ORE_BURIED = ResourceKey.create(CONFIGURED_FEATURE, id("topaz_ore_buried"));
 
-	private static final ResourceKey<PlacedFeature> ORE_SILVER_EXTRA = ResourceKey.create(PLACED_FEATURE, id("ore_silver_extra"));
-	private static final ResourceKey<PlacedFeature> ORE_SILVER = ResourceKey.create(PLACED_FEATURE, id("ore_silver"));
-	private static final ResourceKey<PlacedFeature> ORE_SILVER_LOWER = ResourceKey.create(PLACED_FEATURE, id("ore_silver_lower"));
+	public static final ResourceKey<PlacedFeature> ORE_SILVER_EXTRA = ResourceKey.create(PLACED_FEATURE, id("ore_silver_extra"));
+	public static final ResourceKey<PlacedFeature> ORE_SILVER = ResourceKey.create(PLACED_FEATURE, id("ore_silver"));
+	public static final ResourceKey<PlacedFeature> ORE_SILVER_LOWER = ResourceKey.create(PLACED_FEATURE, id("ore_silver_lower"));
 
 	public static final ResourceKey<PlacedFeature> ORE_AMBER = ResourceKey.create(PLACED_FEATURE, id("ore_amber"));
 	public static final ResourceKey<PlacedFeature> ORE_AMBER_BURIED = ResourceKey.create(PLACED_FEATURE, id("ore_amber_buried"));
@@ -102,6 +109,11 @@ public final class DatapackEntryGen {
 	public static final ResourceKey<PlacedFeature> ORE_TOPAZ_MEDIUM = ResourceKey.create(PLACED_FEATURE, id("ore_topaz_medium"));
 	public static final ResourceKey<PlacedFeature> ORE_TOPAZ_LARGE = ResourceKey.create(PLACED_FEATURE, id("ore_topaz_large"));
 	public static final ResourceKey<PlacedFeature> ORE_TOPAZ_BURIED = ResourceKey.create(PLACED_FEATURE, id("ore_topaz_buried"));
+
+	public static final ResourceKey<Structure> TEMPLE_STRUCTURE = ResourceKey.create(STRUCTURE, id("temple"));
+	public static final ResourceKey<StructureSet> TEMPLE_STRUCTURE_SET = ResourceKey.create(STRUCTURE_SET, id("temple"));
+
+	public static final TagKey<Biome> HAS_TEMPLE = TagKey.create(Registries.BIOME, id("has_temple"));
 
 	public static RegistrySetBuilder getEntries() {
 		return new RegistrySetBuilder()
@@ -255,6 +267,22 @@ public final class DatapackEntryGen {
 				})
 				.add(DAMAGE_TYPE, ctx -> {
 					damageType(ctx, ModDamageTypes.LESSER_ICE_PROJECTILE);
+				})
+				.add(STRUCTURE, ctx -> {
+					HolderGetter<Biome> biomes = ctx.lookup(BIOME);
+
+					ctx.register(TEMPLE_STRUCTURE, new TempleStructure(new Structure.StructureSettings(biomes.getOrThrow(HAS_TEMPLE))));
+				})
+				.add(STRUCTURE_SET, ctx -> {
+					HolderGetter<Structure> structures = ctx.lookup(STRUCTURE);
+
+					ctx.register(TEMPLE_STRUCTURE_SET, new StructureSet(
+							structures.getOrThrow(TEMPLE_STRUCTURE),
+							new RandomSpreadStructurePlacement(
+									24,
+									8,
+									RandomSpreadType.LINEAR,
+									68245825)));
 				});
 	}
 

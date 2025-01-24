@@ -1,6 +1,5 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.MagiaLucisMod;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -33,8 +32,8 @@ public class Datagen {
 				new DatapackBuiltinEntriesProvider(output, l, DatapackEntryGen.getEntries(),
 						Set.of(MODID))).getRegistryProvider();
 
+		event.getGenerator().addProvider(s, new BiomeTagGen(o, l2, exf));
 		var blockTags = event.getGenerator().addProvider(s, new BlockTagGen(o, l2, exf));
-		MagiaLucisMod.LOGGER.error(blockTags.getName());
 		event.getGenerator().addProvider(s, new ItemTagGen(o, l2, blockTags.contentsGetter(), exf));
 		event.getGenerator().addProvider(s, new DamageTypeTagGen(o, l2, exf));
 		event.getGenerator().addProvider(s, new RecipeGen(o, l2));

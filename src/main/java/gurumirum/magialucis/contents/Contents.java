@@ -12,6 +12,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
@@ -40,6 +42,8 @@ public final class Contents {
 	static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MODID);
 	static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, MODID);
 	static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, MODID);
+	static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registries.STRUCTURE_PIECE, MODID);
+	static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, MODID);
 
 	static final DeferredRegister<LuxNodeType<?>> LUX_NODE_TYPES = DeferredRegister.create(LUX_NODE_TYPE_REGISTRY_KEY, MODID);
 
@@ -65,6 +69,8 @@ public final class Contents {
 		MOB_EFFECTS.register(eventBus);
 		RECIPE_SERIALIZERS.register(eventBus);
 		RECIPE_TYPES.register(eventBus);
+		STRUCTURE_PIECE_TYPES.register(eventBus);
+		STRUCTURE_TYPES.register(eventBus);
 
 		LUX_NODE_TYPES.register(eventBus);
 
@@ -80,6 +86,7 @@ public final class Contents {
 		ModMenus.init();
 		ModMobEffects.init();
 		ModRecipes.init();
+		ModStructures.init();
 		Ore.init();
 		Wands.init();
 

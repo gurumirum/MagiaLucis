@@ -1,0 +1,6 @@
+{
+  "type": "magialucis:temple",
+  "biomes": "#magialucis:has_temple",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}
