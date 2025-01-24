@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents;
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxContainerStat;
 import gurumirum.magialucis.contents.item.accessory.AccessoryEventListener;
-import gurumirum.magialucis.contents.item.accessory.DamageAbsorbNecklaceItem;
+import gurumirum.magialucis.contents.item.accessory.ShieldCurioItem;
 import gurumirum.magialucis.contents.item.accessory.LuxContainerCurioItem;
 import gurumirum.magialucis.contents.item.accessory.SpeedBoostCurioItem;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
@@ -19,18 +19,19 @@ import java.util.Locale;
 public enum Accessories implements ItemLike {
 	WAND_BELT(ItemProfile.customItem(WandBeltItem::new), ModCurioSlots.WAND_BELT),
 
-	FIRE_IMMUNE_BRACELET(ItemProfile.customItem(LuxContainerCurioItem::new), ModCurioSlots.BRACELET,
-			LuxContainerStat.withBaseStat(AccessoryEventListener.COST_PER_FIRE_RESISTANCE * 20 * 8, GemStats.OBSIDIAN)),
-
-	SHIELD_NECKLACE(ItemProfile.customItem(DamageAbsorbNecklaceItem::new), ModCurioSlots.NECKLACE,
-			LuxContainerStat.withBaseStat(DamageAbsorbNecklaceItem.COST_PER_IMPACT * 10, GemStats.POLISHED_LAPIS_LAZULI)),
-
-	MOVEMENT_SPEED_RING(ItemProfile.customItem(p -> new SpeedBoostCurioItem(p,
-			"movement_speed_ring",
+	SPEED_RING(ItemProfile.customItem(p -> new SpeedBoostCurioItem(p,
+			"speed_ring",
 			0.1,
 			60,
 			1)), ModCurioSlots.RING,
-			LuxContainerStat.withBaseStat(1000, GemStats.CITRINE));
+			LuxContainerStat.withBaseStat(1000, GemStats.CITRINE)),
+
+	OBSIDIAN_BRACELET(ItemProfile.customItem(LuxContainerCurioItem::new), ModCurioSlots.BRACELET,
+			LuxContainerStat.withBaseStat(AccessoryEventListener.COST_PER_FIRE_RESISTANCE * 20 * 8, GemStats.OBSIDIAN)),
+
+	SHIELD_NECKLACE(ItemProfile.customItem(ShieldCurioItem::new), ModCurioSlots.NECKLACE,
+			LuxContainerStat.withBaseStat(ShieldCurioItem.COST_PER_IMPACT * 10, GemStats.POLISHED_LAPIS_LAZULI)),
+	;
 
 	private final DeferredItem<Item> item;
 	private final String curioSlot;

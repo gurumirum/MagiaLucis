@@ -1,0 +1,6 @@
+{
+  "parent": "magialucis:item/speed_ring",
+  "textures": {
+    "layer0": "magialucis:item/speed_ring_no_charge"
+  }
+}

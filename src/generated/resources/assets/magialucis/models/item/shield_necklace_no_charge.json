@@ -1,0 +1,6 @@
+{
+  "parent": "magialucis:item/shield_necklace",
+  "textures": {
+    "layer0": "magialucis:item/shield_necklace_no_charge"
+  }
+}

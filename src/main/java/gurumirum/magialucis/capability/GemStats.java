@@ -23,13 +23,13 @@ public enum GemStats implements LuxStat {
 	AQUAMARINE(1, RGB332.of(0, 5, 3), 20, 500),
 	PEARL(1, RGB332.of(7, 6, 3), 80, 700, false),
 
+	OBSIDIAN(1, RGB332.of(1, 0, 1), 30, 750, false),
 	PRISMARINE(1, RGB332.of(0, 5, 2), 30, 400, true, true),
 	ENDER_PEARL(1, RGB332.of(0, 2, 1), 40, 500, false, true),
 
 	PURIFIED_QUARTZ(2, RGB332.WHITE, 100, 1000, false),
 	CRYSTALLIZED_REDSTONE(2, RGB332.of(5, 0, 0), 400, 1500, false),
 	POLISHED_LAPIS_LAZULI(2, RGB332.of(1, 1, 2), 300, 2500, false),
-	OBSIDIAN(2, RGB332.of(1, 0, 1), 600, 2500, false),
 
 	DIAMOND(2, RGB332.of(4, 7, 3), 800, 4000, true, true),
 	RUBY(2, RGB332.of(7, 0, 0), 500, 5000),

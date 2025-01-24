@@ -13,7 +13,7 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
 
-public class DamageAbsorbNecklaceItem extends LuxContainerCurioItem implements ICurioItem {
+public class ShieldCurioItem extends LuxContainerCurioItem implements ICurioItem {
 	public static final int COST_PER_IMPACT = 250;
 	public static final int IMPACT_DAMAGE = 1;
 
@@ -24,7 +24,7 @@ public class DamageAbsorbNecklaceItem extends LuxContainerCurioItem implements I
 
 	public static final long COST_PER_SHIELD_RECHARGE = 15;
 
-	public DamageAbsorbNecklaceItem(Properties properties) {
+	public ShieldCurioItem(Properties properties) {
 		super(properties);
 	}
 

@@ -171,6 +171,18 @@ public class ItemModelGen extends ItemModelProvider {
 				.model(handheld(id(Wands.ENDER_WAND.id().getPath() + "_no_charge")));
 
 		basicItem(Accessories.WAND_BELT.asItem());
+		basicItem(Accessories.SPEED_RING.asItem())
+				.override()
+				.predicate(ClientInit.NO_CHARGE, 1)
+				.model(noChargeItem(Accessories.SPEED_RING.asItem()));
+		basicItem(Accessories.OBSIDIAN_BRACELET.asItem())
+				.override()
+				.predicate(ClientInit.NO_CHARGE, 1)
+				.model(noChargeItem(Accessories.OBSIDIAN_BRACELET.asItem()));
+		basicItem(Accessories.SHIELD_NECKLACE.asItem())
+				.override()
+				.predicate(ClientInit.NO_CHARGE, 1)
+				.model(noChargeItem(Accessories.SHIELD_NECKLACE.asItem()));
 
 		basicItem(ModItems.ANCIENT_CORE.asItem());
 		basicItem(ModItems.LUMINOUS_RESONATOR.asItem());
@@ -214,6 +226,12 @@ public class ItemModelGen extends ItemModelProvider {
 		return getBuilder(item.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
 				.texture("layer0", texture);
+	}
+
+	private ItemModelBuilder noChargeItem(Item item) {
+		ResourceLocation key = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item));
+		return withExistingParent(key.getPath() + "_no_charge", key)
+				.texture("layer0", key.withPath(s -> "item/" + s + "_no_charge"));
 	}
 
 	private void registerOreModels(Ore ore) {

@@ -7,10 +7,10 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class WandSubtypeInterpreter implements ISubtypeInterpreter<ItemStack> {
-	public static final WandSubtypeInterpreter INSTANCE = new WandSubtypeInterpreter();
+public class LuxContainerSubtypeInterpreter implements ISubtypeInterpreter<ItemStack> {
+	public static final LuxContainerSubtypeInterpreter INSTANCE = new LuxContainerSubtypeInterpreter();
 
-	private WandSubtypeInterpreter() {}
+	private LuxContainerSubtypeInterpreter() {}
 
 	@Override
 	public @Nullable Object getSubtypeData(@NotNull ItemStack ingredient, @NotNull UidContext context) {

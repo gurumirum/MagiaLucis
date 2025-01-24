@@ -1,6 +1,7 @@
 package gurumirum.magialucis.jei;
 
 import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.Wands;
@@ -71,7 +72,12 @@ public class MagiaLucisJeiPlugin implements IModPlugin {
 	public void registerItemSubtypes(@NotNull ISubtypeRegistration registration) {
 		for (var i : Wands.values()) {
 			if (i.luxContainerStat() != null) {
-				registration.registerSubtypeInterpreter(i.asItem(), WandSubtypeInterpreter.INSTANCE);
+				registration.registerSubtypeInterpreter(i.asItem(), LuxContainerSubtypeInterpreter.INSTANCE);
+			}
+		}
+		for (Accessories i : Accessories.values()) {
+			if (i.luxContainerStat() != null) {
+				registration.registerSubtypeInterpreter(i.asItem(), LuxContainerSubtypeInterpreter.INSTANCE);
 			}
 		}
 	}

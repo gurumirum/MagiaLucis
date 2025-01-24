@@ -1,0 +1,6 @@
+{
+  "parent": "magialucis:item/obsidian_bracelet",
+  "textures": {
+    "layer0": "magialucis:item/obsidian_bracelet_no_charge"
+  }
+}

@@ -14,6 +14,8 @@ import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreItemExt
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusItemExtension;
 import gurumirum.magialucis.contents.entity.*;
+import gurumirum.magialucis.contents.item.accessory.AccessoryEventListener;
+import gurumirum.magialucis.contents.item.accessory.ShieldCurioItem;
 import gurumirum.magialucis.contents.item.wand.*;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltGuiLayer;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltScreen;
@@ -72,6 +74,16 @@ public final class ClientInit {
 			ItemProperties.register(Wands.DIAMOND_MACE.asItem(), NO_CHARGE, noCharge(DiamondMaceItem.COST_PER_ATTACK));
 
 			ItemProperties.register(Wands.ENDER_WAND.asItem(), NO_CHARGE, noCharge(EnderChestPortalWandItem.COST_PER_PORTAL_SPAWN));
+
+			ItemProperties.register(Accessories.SPEED_RING.asItem(), NO_CHARGE, noCharge(1));
+			ItemProperties.register(Accessories.OBSIDIAN_BRACELET.asItem(), NO_CHARGE, noCharge(AccessoryEventListener.COST_PER_FIRE_RESISTANCE));
+			ItemProperties.register(Accessories.SHIELD_NECKLACE.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
+				if (stack.getOrDefault(ModDataComponents.DEPLETED, false)) return 1;
+				if (stack.getOrDefault(ModDataComponents.SHIELD_CHARGE, 0f) > 0f) return 0;
+
+				long luxCharge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
+				return luxCharge >= ShieldCurioItem.COST_PER_SHIELD_RECHARGE ? 0 : 1;
+			});
 		});
 	}
 

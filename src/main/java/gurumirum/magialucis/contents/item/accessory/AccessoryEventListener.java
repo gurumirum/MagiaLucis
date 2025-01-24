@@ -36,7 +36,7 @@ public final class AccessoryEventListener {
 
 		if ((event.getSource().is(DamageTypes.ON_FIRE) || event.getSource().is(DamageTypes.IN_FIRE)) &&
 				!player.hasEffect(MobEffects.FIRE_RESISTANCE)) {
-			findCurioItemAndDo(Accessories.FIRE_IMMUNE_BRACELET, player, stack -> {
+			findCurioItemAndDo(Accessories.OBSIDIAN_BRACELET, player, stack -> {
 				long charge = stack.getOrDefault(LUX_CHARGE, 0L);
 				if (charge < COST_PER_FIRE_RESISTANCE) return false;
 
@@ -55,7 +55,7 @@ public final class AccessoryEventListener {
 			if (stack.getOrDefault(ModDataComponents.DEPLETED, false)) return false;
 
 			float shieldCharge = stack.getOrDefault(SHIELD_CHARGE, 0f);
-			float damageReduction = Math.max(event.getNewDamage(), DamageAbsorbNecklaceItem.DAMAGE_ABSORPTION_LIMIT);
+			float damageReduction = Math.max(event.getNewDamage(), ShieldCurioItem.DAMAGE_ABSORPTION_LIMIT);
 
 			if (shieldCharge < damageReduction) {
 				damageReduction = shieldCharge;
@@ -64,7 +64,7 @@ public final class AccessoryEventListener {
 				stack.set(DEPLETED, true);
 
 				long luxCharge = stack.getOrDefault(LUX_CHARGE, 0L);
-				if (luxCharge >= DamageAbsorbNecklaceItem.COST_PER_IMPACT) {
+				if (luxCharge >= ShieldCurioItem.COST_PER_IMPACT) {
 					// TODO Do visual? sth? idk
 					for (Monster entity : player.level().getEntities(
 							EntityTypeTest.forClass(Monster.class),
@@ -72,7 +72,7 @@ public final class AccessoryEventListener {
 							LivingEntity::isAlive)) {
 						entity.knockback(1.5f, player.getX() - entity.getX(), player.getZ() - entity.getZ());
 						entity.hurt(player.damageSources().source(DamageTypes.INDIRECT_MAGIC, player),
-								DamageAbsorbNecklaceItem.IMPACT_DAMAGE);
+								ShieldCurioItem.IMPACT_DAMAGE);
 					}
 				}
 			} else {
