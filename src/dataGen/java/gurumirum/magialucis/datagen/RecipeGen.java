@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static gurumirum.magialucis.MagiaLucisMod.MODID;
 import static gurumirum.magialucis.MagiaLucisMod.id;
-import static gurumirum.magialucis.contents.Accessories.WAND_BELT;
+import static gurumirum.magialucis.contents.Accessories.*;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.*;
 import static gurumirum.magialucis.contents.ModItems.*;
 import static gurumirum.magialucis.contents.Wands.*;
@@ -313,6 +313,35 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_wands", has(ModItemTags.WANDS))
 				.save(out);
 
+		shaped(TOOLS, SPEED_RING)
+				.pattern("12 ")
+				.pattern("2 2")
+				.pattern(" 2 ")
+				.define('1', GemStats.CITRINE.tag())
+				.define('2', ModItemTags.ROSE_GOLD_NUGGETS)
+				.unlockedBy("has_citrine", has(GemStats.CITRINE.tag()))
+				.save(out);
+
+		shaped(TOOLS, OBSIDIAN_BRACELET)
+				.pattern("121")
+				.pattern("232")
+				.pattern("121")
+				.define('1', GemStats.OBSIDIAN.item())
+				.define('2', Tags.Items.STRINGS)
+				.define('3', LUMINOUS_RESONATOR)
+				.unlockedBy("has_obsidian", has(GemStats.OBSIDIAN.item()))
+				.save(out);
+
+		shaped(TOOLS, SHIELD_NECKLACE)
+				.pattern("2 2")
+				.pattern("232")
+				.pattern(" 1 ")
+				.define('1', GemStats.POLISHED_LAPIS_LAZULI.item())
+				.define('2', ModItemTags.ROSE_GOLD_NUGGETS)
+				.define('3', LUMINOUS_RESONATOR)
+				.unlockedBy("has_polished_lapis_lazuli", has(GemStats.POLISHED_LAPIS_LAZULI.item()))
+				.save(out);
+
 		slab(out, BUILDING_BLOCKS, LAPIS_MANALIS_SLAB, LAPIS_MANALIS);
 		slab(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_SLAB, LAPIS_MANALIS_BRICKS);
 
@@ -469,6 +498,13 @@ public class RecipeGen extends RecipeProvider {
 				.processTicks(30)
 				.minLuxInputR(80)
 				.minLuxInputG(80)
+				.save(out);
+
+		lightBasin()
+				.ingredient(Items.OBSIDIAN)
+				.result(GemItems.OBSIDIAN)
+				.processTicks(80)
+				.minLuxInputB(60)
 				.save(out);
 
 		lightBasin()
