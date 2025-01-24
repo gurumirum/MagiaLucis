@@ -18,7 +18,7 @@ public final class AprilFoolsUtils {
 	}
 
 	public static boolean isDank(@NotNull BlockPos pos) {
-		return isDank(pos.getX()) && isDank(pos.getY());
+		return isDank(pos.getX()) && isDank(pos.getZ());
 	}
 
 	public static boolean isDank(int number) {
