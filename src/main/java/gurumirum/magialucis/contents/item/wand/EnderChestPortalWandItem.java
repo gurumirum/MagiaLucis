@@ -19,6 +19,7 @@ import java.util.UUID;
 public class EnderChestPortalWandItem extends LuxContainerItem {
 	public static final int COST_PER_PORTAL_SPAWN = 30;
 	public static final int COST_PER_PORTAL_TICK = 5;
+	public static final double PORTAL_DISTANCE_LIMIT = 10;
 
 	public EnderChestPortalWandItem(Properties properties) {
 		super(properties);
@@ -77,7 +78,8 @@ public class EnderChestPortalWandItem extends LuxContainerItem {
 			if (lux < COST_PER_PORTAL_TICK) return;
 
 			if (serverLevel.getEntity(portalId) instanceof EnderChestPortal portal &&
-					portal.isAlive()) {
+					portal.isAlive() &&
+					portal.distanceToSqr(entity) <= PORTAL_DISTANCE_LIMIT * PORTAL_DISTANCE_LIMIT) {
 				portal.setLife(60);
 				stack.set(ModDataComponents.LUX_CHARGE, lux - COST_PER_PORTAL_TICK);
 			} else {
