@@ -16,6 +16,13 @@ import java.util.Locale;
 public enum Accessories implements ItemLike {
 	WAND_BELT(ItemProfile.customItem(WandBeltItem::new), ModCurioSlots.WAND_BELT),
 
+	DRUID_WREATH(ItemProfile.customItem(p -> new AmberWreathItem(p, true)), ModCurioSlots.HEADWEAR,
+			LuxContainerStat.withBaseStat(AmberWreathItem.COST_PER_UPDATE * 1500, GemStats.AMBER)),
+	DRYAD_WREATH(ItemProfile.customItem(p -> new AmberWreathItem(p, false)), ModCurioSlots.HEADWEAR,
+			LuxContainerStat.withBaseStat(AmberWreathItem.COST_PER_UPDATE * 1500, GemStats.AMBER)),
+
+	FIRE_ARROW_RING(ItemProfile.customItem(LuxContainerCurioItem::new), ModCurioSlots.RING),
+
 	SOUL_CROWN(ItemProfile.customItem(SoulCrownItem::new), ModCurioSlots.HEADWEAR),
 
 	SPEED_RING(ItemProfile.customItem(p -> new SpeedBoostCurioItem(p,
@@ -30,8 +37,7 @@ public enum Accessories implements ItemLike {
 
 	SHIELD_NECKLACE(ItemProfile.customItem(ShieldCurioItem::new), ModCurioSlots.NECKLACE,
 			LuxContainerStat.withBaseStat(ShieldCurioItem.COST_PER_IMPACT * 10, GemStats.POLISHED_LAPIS_LAZULI)),
-
-	FIRE_ARROW_RING(ItemProfile.customItem(LuxContainerCurioItem::new), ModCurioSlots.RING);
+	;
 
 	private final DeferredItem<Item> item;
 	private final String curioSlot;
