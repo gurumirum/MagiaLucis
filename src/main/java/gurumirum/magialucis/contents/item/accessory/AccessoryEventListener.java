@@ -3,17 +3,23 @@ package gurumirum.magialucis.contents.item.accessory;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ModDataComponents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.SpectralArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -82,6 +88,21 @@ public final class AccessoryEventListener {
 			event.setNewDamage(event.getNewDamage() - damageReduction);
 			return true;
 		});
+	}
+
+	@SubscribeEvent
+	public static void onEntitySpawn(EntityJoinLevelEvent event) {
+		if (event.getLevel() instanceof ServerLevel
+				&& event.getEntity() instanceof Projectile projectile
+				&& projectile.getOwner() instanceof Player player
+				&& (projectile instanceof Arrow || projectile instanceof SpectralArrow)) {
+			findCurioItemAndDo(Accessories.FIRE_ARROW_RING, player,
+					stack -> {
+						projectile.igniteForSeconds(100);
+						((AbstractArrow)projectile).pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+						return true;
+					});
+		}
 	}
 
 	private static boolean findCurioItemAndDo(@NotNull Accessories item, @NotNull Player player,

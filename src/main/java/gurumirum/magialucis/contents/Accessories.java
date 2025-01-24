@@ -30,7 +30,8 @@ public enum Accessories implements ItemLike {
 
 	SHIELD_NECKLACE(ItemProfile.customItem(ShieldCurioItem::new), ModCurioSlots.NECKLACE,
 			LuxContainerStat.withBaseStat(ShieldCurioItem.COST_PER_IMPACT * 10, GemStats.POLISHED_LAPIS_LAZULI)),
-	;
+
+	FIRE_ARROW_RING(ItemProfile.customItem(LuxContainerCurioItem::new), ModCurioSlots.RING);
 
 	private final DeferredItem<Item> item;
 	private final String curioSlot;
