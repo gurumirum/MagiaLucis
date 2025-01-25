@@ -46,6 +46,8 @@
   "curios.identifier.magialucis_ring": "Magia Lucis: 반지",
   "curios.identifier.magialucis_wand_belt": "Magia Lucis: 마법봉 벨트",
 
+  "effect.magialucis.recall_fatigue": "회귀 후유증",
+
   "entity.magialucis.ender_chest_portal": "공허 차원문",
   "entity.magialucis.lesser_ice_projectile": "얼음 조각",
   "entity.magialucis.temple_guardian": "신전 수호자",
