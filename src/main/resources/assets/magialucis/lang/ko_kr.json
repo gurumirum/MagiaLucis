@@ -1,7 +1,7 @@
 {
   "block.magialucis.amber_charger": "원시적 충전 패드",
   "block.magialucis.amber_core": "호박석 코어",
-  "block.magialucis.amber_light": "호박석 광원",
+  "block.magialucis.amber_light": "호박석 불빛",
   "block.magialucis.amber_ore": "호박석 광석",
   "block.magialucis.aquamarine_ore": "아쿠아마린 광석",
   "block.magialucis.citrine_ore": "황수정 광석",
@@ -47,7 +47,7 @@
   "curios.identifier.magialucis_wand_belt": "Magia Lucis: 마법봉 벨트",
 
   "entity.magialucis.ender_chest_portal": "공허 차원문",
-  "entity.magialucis.lesser_ice_projectile": "미약한 얼음",
+  "entity.magialucis.lesser_ice_projectile": "얼음 조각",
   "entity.magialucis.temple_guardian": "신전 수호자",
 
   "gui.magialucis.configuration_wand.missing_link": "§c[%s§c]에 연결 시작 지점이 존재하지 않음",

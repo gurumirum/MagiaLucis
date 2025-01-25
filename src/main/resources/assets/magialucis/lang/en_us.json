@@ -47,7 +47,7 @@
   "curios.identifier.magialucis_wand_belt": "Magia Lucis: Wand Belt",
 
   "entity.magialucis.ender_chest_portal": "Ender Chest Portal",
-  "entity.magialucis.lesser_ice_projectile": "Lesser Ice Projectile",
+  "entity.magialucis.lesser_ice_projectile": "Ice Shard",
   "entity.magialucis.temple_guardian": "Temple Guardian",
 
   "gui.magialucis.configuration_wand.missing_link": "§cMissing link origin at §c[%s§c]",
