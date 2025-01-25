@@ -22,19 +22,23 @@ public class CuriosGen extends CuriosDataProvider {
 	public void generate(HolderLookup.Provider registries, ExistingFileHelper fileHelper) {
 		createSlot(HEADWEAR)
 				.size(1)
-				.order(BASE_ORDER);
+				.order(BASE_ORDER)
+				.icon(id("slot/empty_slot_headwear"));
 
 		createSlot(NECKLACE)
 				.size(1)
-				.order(BASE_ORDER + 1);
+				.order(BASE_ORDER + 1)
+				.icon(id("slot/empty_slot_necklace"));
 
 		createSlot(BRACELET)
 				.size(2)
-				.order(BASE_ORDER + 2);
+				.order(BASE_ORDER + 2)
+				.icon(id("slot/empty_slot_bracelet"));
 
 		createSlot(RING)
 				.size(4)
-				.order(BASE_ORDER + 3);
+				.order(BASE_ORDER + 3)
+				.icon(id("slot/empty_slot_ring"));
 
 		createSlot(WAND_BELT)
 				.size(1)
