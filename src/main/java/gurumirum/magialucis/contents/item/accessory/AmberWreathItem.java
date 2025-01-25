@@ -20,11 +20,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
 
-public class AmberWreathItem extends LuxContainerCurioItem implements ICurioItem {
+public class AmberWreathItem extends LuxContainerCurioItem {
 	public static final int COST_PER_UPDATE = 1;
 
 	private static final double MOVEMENT_SPEED_INCREASE_AMOUNT = 0.15;

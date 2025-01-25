@@ -17,12 +17,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
 import java.util.Map;
 
-public class SpeedBoostCurioItem extends LuxContainerCurioItem implements ICurioItem {
+public class SpeedBoostCurioItem extends LuxContainerCurioItem {
 	public final String speedBoostKey;
 	public final double speedBoostAmount;
 

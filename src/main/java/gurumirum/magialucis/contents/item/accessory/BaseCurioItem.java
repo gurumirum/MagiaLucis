@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents.item.accessory;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -9,11 +10,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
-public class BaseCurioItem extends Item {
+import java.util.List;
+
+public class BaseCurioItem extends Item implements ICurioItem {
 	public BaseCurioItem(Properties properties) {
 		super(properties.stacksTo(1));
 	}
@@ -30,6 +34,10 @@ public class BaseCurioItem extends Item {
 		return InteractionResultHolder.consume(stack);
 	}
 
+	@Override
+	public List<Component> getAttributesTooltip(List<Component> tooltips, TooltipContext context, ItemStack stack) {
+		return List.of();
+	}
 	public static boolean tryEquipCurio(@NotNull Player player, @NotNull ItemStack stack) {
 		ICuriosItemHandler curiosItemHandler = CuriosApi.getCuriosInventory(player).orElse(null);
 		if (curiosItemHandler == null) return false;

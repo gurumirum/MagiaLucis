@@ -1,14 +1,18 @@
 package gurumirum.magialucis.contents.item.accessory;
 
 import gurumirum.magialucis.contents.item.LuxContainerItem;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-public class LuxContainerCurioItem extends LuxContainerItem {
+import java.util.List;
+
+public class LuxContainerCurioItem extends LuxContainerItem implements ICurioItem {
 	public LuxContainerCurioItem(Properties properties) {
 		super(properties);
 	}
@@ -23,5 +27,10 @@ public class LuxContainerCurioItem extends LuxContainerItem {
 			}
 		}
 		return InteractionResultHolder.consume(stack);
+	}
+
+	@Override
+	public List<Component> getAttributesTooltip(List<Component> tooltips, TooltipContext context, ItemStack stack) {
+		return List.of();
 	}
 }

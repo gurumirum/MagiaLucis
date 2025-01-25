@@ -10,11 +10,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
 
-public class ShieldCurioItem extends LuxContainerCurioItem implements ICurioItem {
+public class ShieldCurioItem extends LuxContainerCurioItem {
 	public static final int COST_PER_IMPACT = 250;
 	public static final int IMPACT_DAMAGE = 1;
 

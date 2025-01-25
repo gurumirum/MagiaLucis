@@ -17,11 +17,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
 
-public class SoulCrownItem extends BaseCurioItem implements ICurioItem {
+public class SoulCrownItem extends BaseCurioItem {
 	private static final double ATTACK_INCREASE_PER_DEBUFF = 0.25;
 	private static final ResourceLocation ATTACK_INCREASE_ID = MagiaLucisMod.id("soul_crown");
 
