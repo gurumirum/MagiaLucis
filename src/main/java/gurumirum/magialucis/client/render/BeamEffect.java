@@ -6,7 +6,7 @@ import org.joml.Vector3f;
 
 public interface BeamEffect {
 	@NotNull BeamEffect.CoordinateSystem beamStart(@NotNull Vector3f dest, float partialTicks);
-	@Nullable BeamEffect.CoordinateSystem beamEnd(@NotNull Vector3f dest, float partialTicks);
+	@Nullable BeamEffect.CoordinateSystem beamEnd(@NotNull Vector3f beamStart, @NotNull Vector3f dest, float partialTicks);
 
 	float diameter(float partialTicks);
 	float rotation(float partialTicks);

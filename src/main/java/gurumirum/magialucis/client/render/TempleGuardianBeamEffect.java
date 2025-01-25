@@ -27,7 +27,7 @@ public class TempleGuardianBeamEffect implements BeamEffect {
 	}
 
 	@Override
-	public @Nullable CoordinateSystem beamEnd(@NotNull Vector3f dest, float partialTicks) {
+	public @Nullable CoordinateSystem beamEnd(@NotNull Vector3f beamStart, @NotNull Vector3f dest, float partialTicks) {
 		Vec3 start = this.entity.getEyePosition(partialTicks);
 		Vec3 end = start.add(this.entity.getViewVector(partialTicks).scale(TempleGuardian.RANGE));
 		BlockHitResult hitResult = BeamSource.trace(this.entity, start, end);

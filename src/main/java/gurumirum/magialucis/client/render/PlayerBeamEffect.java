@@ -44,21 +44,27 @@ public class PlayerBeamEffect implements BeamEffect {
 
 	@Override
 	public @NotNull CoordinateSystem beamStart(@NotNull Vector3f dest, float partialTicks) {
-		getBeamStart(this.player, dest);
-		if (!dest.isFinite()) {
-			Vec3 pos = this.player.getPosition(partialTicks);
-			dest.set(pos.x, pos.y + this.player.getBbHeight() / 2, pos.z);
+		if (getBeamStart(this.player, dest).isFinite()) {
+			return isFirstPersonPerspective() ? CoordinateSystem.VIEW : CoordinateSystem.MODEL;
 		}
-		return isFirstPersonPerspective() ? CoordinateSystem.VIEW : CoordinateSystem.MODEL;
+		// approximate origin
+		Vec3 pos = this.player.getPosition(partialTicks);
+		dest.set(pos.x, pos.y + this.player.getBbHeight() / 2 + 0.25, pos.z);
+		return CoordinateSystem.WORLD;
 	}
 
 	@Override
-	public @Nullable CoordinateSystem beamEnd(@NotNull Vector3f dest, float partialTicks) {
+	public @Nullable CoordinateSystem beamEnd(@NotNull Vector3f beamStart, @NotNull Vector3f dest, float partialTicks) {
 		Vec3 start = this.player.getEyePosition(partialTicks);
-		Vec3 end = start.add(this.player.getViewVector(partialTicks).scale(AncientLightWandItem.DISTANCE));
+		Vec3 viewVector = this.player.getViewVector(partialTicks);
+		Vec3 end = start.add(viewVector.scale(AncientLightWandItem.DISTANCE));
 		BlockHitResult hitResult = BeamSource.trace(this.player, start, end);
 
-		if (hitResult.getType() == HitResult.Type.BLOCK) end = hitResult.getLocation();
+		if (hitResult.getType() == HitResult.Type.BLOCK) {
+			end = hitResult.getLocation();
+			double angle = end.toVector3f().sub(beamStart).angle(end.subtract(start).toVector3f());
+			if (angle > Math.PI / 3) return null;
+		}
 
 		dest.set(end.x, end.y, end.z);
 		return CoordinateSystem.WORLD;

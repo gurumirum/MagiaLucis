@@ -79,18 +79,19 @@ public final class BeamRender {
 	}
 
 	private static final Vector3f _beamStart = new Vector3f();
+	private static final Vector3f _beamStartCopy = new Vector3f();
 	private static final Vector3f _beamEnd = new Vector3f();
 
 	private static void drawBeam(PoseStack poseStack, BeamEffect beamEffect, Vec3 cameraPos, float partialTicks) {
-		var beamEnd = beamEffect.beamEnd(_beamEnd, partialTicks);
+		var beamStart = beamEffect.beamStart(_beamStart, partialTicks);
+		transformCoordinates(poseStack, cameraPos, _beamStart, beamStart);
+
+		var beamEnd = beamEffect.beamEnd(_beamStartCopy.set(_beamStart), _beamEnd, partialTicks);
 		if (beamEnd == null) return;
 		transformCoordinates(poseStack, cameraPos, _beamEnd, beamEnd);
 
 		Minecraft mc = Minecraft.getInstance();
 		MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-
-		var beamStart = beamEffect.beamStart(_beamStart, partialTicks);
-		transformCoordinates(poseStack, cameraPos, _beamStart, beamStart);
 
 		drawBeam(poseStack, bufferSource, beamEffect, _beamStart, _beamEnd, partialTicks);
 	}
