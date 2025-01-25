@@ -523,10 +523,11 @@ public class RecipeGen extends RecipeProvider {
 				.save(out);
 
 		lightBasin()
-				.ingredient(Tags.Items.NUGGETS_GOLD)
-				.ingredient(ModItemTags.SILVER_NUGGETS)
+				.ingredient(ModItemTags.ELECTRUM_NUGGETS)
+				.ingredient(ModItemTags.ROSE_GOLD_NUGGETS)
+				.ingredient(ModItemTags.STERLING_SILVER_NUGGETS)
 				.ingredient(Tags.Items.NUGGETS_IRON)
-				.result(LUMINOUS_ALLOY_NUGGET, 3)
+				.result(LUMINOUS_ALLOY_NUGGET, 4)
 				.processTicks(30)
 				.minLuxInputR(80)
 				.minLuxInputG(80)

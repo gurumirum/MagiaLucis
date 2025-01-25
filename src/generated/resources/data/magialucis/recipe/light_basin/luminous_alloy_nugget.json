@@ -4,13 +4,19 @@
     {
       "count": 1,
       "ingredient": {
-        "tag": "c:nuggets/gold"
+        "tag": "c:nuggets/electrum"
       }
     },
     {
       "count": 1,
       "ingredient": {
-        "tag": "c:nuggets/silver"
+        "tag": "c:nuggets/rose_gold"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:nuggets/sterling_silver"
       }
     },
     {
@@ -24,7 +30,7 @@
   "minLuxInputR": 80.0,
   "processTicks": 30,
   "result": {
-    "count": 3,
+    "count": 4,
     "id": "magialucis:luminous_alloy_nugget"
   }
 }
