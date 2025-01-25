@@ -527,7 +527,7 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(ModItemTags.ROSE_GOLD_NUGGETS)
 				.ingredient(ModItemTags.STERLING_SILVER_NUGGETS)
 				.ingredient(Tags.Items.NUGGETS_IRON)
-				.result(LUMINOUS_ALLOY_NUGGET, 4)
+				.result(LUMINOUS_ALLOY_NUGGET, 3)
 				.processTicks(30)
 				.minLuxInputR(80)
 				.minLuxInputG(80)
