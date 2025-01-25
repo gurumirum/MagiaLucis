@@ -1,8 +1,8 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -123,12 +124,12 @@ public final class ConfigurationWandOverlay {
 			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos.pos());
 			if (linkSource == null) {
 				boxTint = TINT_MISSING;
-				visualData.overlayText.add(ChatFormatting.RED + "Missing link origin at [" + linkSourcePos.pos().toShortString() + "]");
+				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.missing_link", ChatFormatting.RED + linkSourcePos.pos().toShortString()));
 			}
 
 			if (cursorHitPos != null && cursorHitPos.equals(linkSourcePos.pos())) {
-				visualData.overlayText.add(ChatFormatting.YELLOW + "RClick" + ChatFormatting.RESET + " to unselect");
-				visualData.overlayText.add(ChatFormatting.YELLOW + "SHIFT+RClick" + ChatFormatting.RESET + " to remove all links");
+				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.on_block.1"));
+				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.on_block.2"));
 
 				if (player.isSecondaryUseActive()) {
 					boxTint = TINT_REMOVE;
@@ -206,11 +207,11 @@ public final class ConfigurationWandOverlay {
 				}
 
 				if (removeLink) {
-					visualData.overlayText.add(ChatFormatting.YELLOW + "RClick" + ChatFormatting.RESET + " to remove link");
+					visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.remove_link"));
 				} else {
-					visualData.overlayText.add(ChatFormatting.YELLOW + "RClick" + ChatFormatting.RESET + " to set link");
-					visualData.overlayText.add(ChatFormatting.YELLOW + "SHIFT+RClick" + ChatFormatting.RESET + " to remove link");
-					visualData.overlayText.add(ChatFormatting.YELLOW + "Ctrl" + ChatFormatting.RESET + " to enter free aim mode");
+					visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.set_link.1"));
+					visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.set_link.2"));
+					visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.set_link.3"));
 				}
 
 				visualData.boxes.add(new Box(linkSourcePos.pos(), boxTint));
@@ -225,8 +226,8 @@ public final class ConfigurationWandOverlay {
 			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, cursorHitPos);
 			addAllConnections(level, cursorHitPos, linkSource, player.isSecondaryUseActive());
 			if (linkSource != null) {
-				visualData.overlayText.add(ChatFormatting.YELLOW + "RClick" + ChatFormatting.RESET + " to start link");
-				visualData.overlayText.add(ChatFormatting.YELLOW + "SHIFT+RClick" + ChatFormatting.RESET + " to remove all links");
+				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.start_link.1"));
+				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.start_link.2"));
 			}
 		}
 	}
@@ -292,7 +293,7 @@ public final class ConfigurationWandOverlay {
 		public boolean active;
 		public final List<Box> boxes = new ArrayList<>();
 		public final List<Line> lines = new ArrayList<>();
-		public final List<String> overlayText = new ArrayList<>();
+		public final List<Component> overlayText = new ArrayList<>();
 	}
 
 	public record Box(BlockPos pos, int tint) {}

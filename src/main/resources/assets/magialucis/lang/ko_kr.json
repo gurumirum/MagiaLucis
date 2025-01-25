@@ -45,6 +45,16 @@
   "curios.identifier.magialucis_ring": "Magia Lucis: 반지",
   "curios.identifier.magialucis_wand_belt": "Magia Lucis: 마법봉 벨트",
 
+  "gui.magialucis.configuration_wand.missing_link": "§c[%s§c]에 연결 시작 지점이 존재하지 않음",
+  "gui.magialucis.configuration_wand.on_block.1": "§e우클릭§r으로 선택 해제",
+  "gui.magialucis.configuration_wand.on_block.2": "§eSHIFT+우클릭§r으로 모든 연결 삭제",
+  "gui.magialucis.configuration_wand.remove_link": "§e우클릭§r으로 연결 삭제",
+  "gui.magialucis.configuration_wand.set_link.1": "§e우클릭§r으로 연결",
+  "gui.magialucis.configuration_wand.set_link.2": "§eSHIFT+우클릭§r으로 연결 삭제",
+  "gui.magialucis.configuration_wand.set_link.3": "§eCtrl§r으로 자유 연결 모드",
+  "gui.magialucis.configuration_wand.start_link.1": "§e우클릭§r으로 연결 시작",
+  "gui.magialucis.configuration_wand.start_link.2": "§eSHIFT+우클릭§r으로 모든 연결 삭제",
+
   "item.magialucis.amber": "호박석",
   "item.magialucis.amber_torch": "호박석 횃불",
   "item.magialucis.ancient_core": "고대의 코어",

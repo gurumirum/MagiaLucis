@@ -8,6 +8,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -40,7 +41,7 @@ public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
 			}
 		}
 
-		List<String> overlayText = ConfigurationWandOverlay.visualData.overlayText;
+		List<Component> overlayText = ConfigurationWandOverlay.visualData.overlayText;
 		if (overlayText.isEmpty()) return;
 
 		drawOverlayBox(guiGraphics, overlayText);
@@ -72,14 +73,14 @@ public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
 		}
 	}
 
-	private static void drawOverlayBox(@NotNull GuiGraphics guiGraphics, List<String> text) {
+	private static void drawOverlayBox(@NotNull GuiGraphics guiGraphics, List<Component> text) {
 		Minecraft mc = Minecraft.getInstance();
 
 		int left = mc.getWindow().getGuiScaledWidth() / 2 + 20;
 		int top = mc.getWindow().getGuiScaledHeight() / 2 + 5;
 
 		int width = 0;
-		for (String t : text) width = Math.max(width, mc.font.width(t));
+		for (Component t : text) width = Math.max(width, mc.font.width(t));
 		width += 10;
 		int height = 10 + (mc.font.lineHeight) * text.size() + 2 * (text.size() - 1);
 
