@@ -5,7 +5,6 @@ import gurumirum.magialucis.client.render.BeamRender;
 import gurumirum.magialucis.contents.item.BeamSource;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import gurumirum.magialucis.impl.ancientlight.AncientLightCrafting;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,7 +36,7 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 	@Override
 	public void onUseTick(@NotNull Level level, @NotNull LivingEntity entity, @NotNull ItemStack stack, int remainingUseDuration) {
 		if (!level.isClientSide ||
-				!(entity instanceof LocalPlayer player) ||
+				!(entity instanceof Player player) ||
 				!canProduceBeam(player, stack, player.getUsedItemHand())) return;
 
 		Vec3 start = player.getEyePosition();
