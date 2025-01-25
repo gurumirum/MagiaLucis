@@ -541,12 +541,51 @@ public class RecipeGen extends RecipeProvider {
 
 		lightBasin()
 				.ingredient(Items.BLAZE_POWDER)
-				.ingredient(Tags.Items.GEMS_QUARTZ, 8)
-				.result(GemItems.PURIFIED_QUARTZ, 6)
+				.ingredient(GemStats.CITRINE.tag())
+				.result(SOLAR_CATALYST, 3)
 				.processTicks(100)
 				.minLuxInputR(100)
 				.minLuxInputG(100)
+				.save(out);
+
+		lightBasin()
+				.ingredient(Items.BLAZE_POWDER)
+				.ingredient(GemStats.IOLITE.tag())
+				.result(LUNAR_CATALYST, 3)
+				.processTicks(100)
 				.minLuxInputB(100)
+				.save(out);
+
+		lightBasin()
+				.ingredient(SOLAR_CATALYST)
+				.ingredient(LUNAR_CATALYST)
+				.result(WHITE_CATALYST)
+				.processTicks(500)
+				.minLuxInputSum(100)
+				.save(out);
+
+		lightBasin()
+				.ingredient(WHITE_CATALYST)
+				.ingredient(Tags.Items.GEMS_QUARTZ, 8)
+				.result(GemItems.PURIFIED_QUARTZ, 6)
+				.processTicks(100)
+				.minLuxInputSum(150)
+				.save(out);
+
+		lightBasin()
+				.ingredient(WHITE_CATALYST)
+				.ingredient(Items.REDSTONE_BLOCK)
+				.result(GemItems.CRYSTALLIZED_REDSTONE)
+				.processTicks(200)
+				.minLuxInputSum(150)
+				.save(out);
+
+		lightBasin()
+				.ingredient(WHITE_CATALYST)
+				.ingredient(Items.LAPIS_BLOCK)
+				.result(GemItems.POLISHED_LAPIS_LAZULI)
+				.processTicks(200)
+				.minLuxInputSum(150)
 				.save(out);
 	}
 

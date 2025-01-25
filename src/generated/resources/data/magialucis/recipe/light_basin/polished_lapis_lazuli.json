@@ -8,16 +8,16 @@
       }
     },
     {
-      "count": 8,
+      "count": 1,
       "ingredient": {
-        "tag": "c:gems/quartz"
+        "item": "minecraft:lapis_block"
       }
     }
   ],
   "minLuxInputSum": 150.0,
-  "processTicks": 100,
+  "processTicks": 200,
   "result": {
-    "count": 6,
-    "id": "magialucis:purified_quartz"
+    "count": 1,
+    "id": "magialucis:polished_lapis_lazuli"
   }
 }

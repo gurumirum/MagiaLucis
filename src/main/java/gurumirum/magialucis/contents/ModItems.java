@@ -18,6 +18,10 @@ public enum ModItems implements ItemLike {
 	CITRINE_MATRIX,
 	IOLITE_MATRIX,
 
+	SOLAR_CATALYST,
+	LUNAR_CATALYST,
+	WHITE_CATALYST,
+
 	COPPER_NUGGET(CreativeTabType.RESOURCES),
 
 	SILVER_INGOT(CreativeTabType.RESOURCES),

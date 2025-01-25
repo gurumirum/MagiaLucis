@@ -4,20 +4,21 @@
     {
       "count": 1,
       "ingredient": {
-        "item": "magialucis:white_catalyst"
+        "item": "minecraft:blaze_powder"
       }
     },
     {
-      "count": 8,
+      "count": 1,
       "ingredient": {
-        "tag": "c:gems/quartz"
+        "tag": "c:gems/citrine"
       }
     }
   ],
-  "minLuxInputSum": 150.0,
+  "minLuxInputG": 100.0,
+  "minLuxInputR": 100.0,
   "processTicks": 100,
   "result": {
-    "count": 6,
-    "id": "magialucis:purified_quartz"
+    "count": 3,
+    "id": "magialucis:solar_catalyst"
   }
 }

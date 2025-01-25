@@ -1,0 +1,23 @@
+{
+  "type": "magialucis:light_basin",
+  "ingredients": [
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "magialucis:solar_catalyst"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "magialucis:lunar_catalyst"
+      }
+    }
+  ],
+  "minLuxInputSum": 100.0,
+  "processTicks": 500,
+  "result": {
+    "count": 1,
+    "id": "magialucis:white_catalyst"
+  }
+}
