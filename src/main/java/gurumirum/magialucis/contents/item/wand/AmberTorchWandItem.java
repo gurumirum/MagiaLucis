@@ -5,6 +5,8 @@ import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -97,6 +99,7 @@ public class AmberTorchWandItem extends LuxContainerItem {
 		if (placeState == null) return InteractionResult.FAIL;
 
 		magicalFlameCircle(level, pos);
+		level.playSound(null, player.blockPosition(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.5F, 1.0F);
 		level.setBlockAndUpdate(pos, placeState);
 		return InteractionResult.SUCCESS;
 	}
