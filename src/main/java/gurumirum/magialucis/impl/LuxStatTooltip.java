@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.ClientTooltipFlag;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,13 +43,13 @@ public final class LuxStatTooltip {
 
 		LuxContainerStat containerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
 		if (containerStat != null) {
-			formatInternal(containerStat, event.getToolTip(), 1, expandedMode(event.getFlags()), Type.CONTAINER);
+			formatInternal(containerStat, event.getToolTip(), 1, expandedMode(ClientTooltipFlag.of(event.getFlags())), Type.CONTAINER);
 			return;
 		}
 
 		LuxStat sourceStat = stack.getCapability(ModCapabilities.GEM_STAT);
 		if (sourceStat != null) {
-			formatInternal(sourceStat, event.getToolTip(), 1, expandedMode(event.getFlags()), Type.GEM);
+			formatInternal(sourceStat, event.getToolTip(), 1, expandedMode(ClientTooltipFlag.of(event.getFlags())), Type.GEM);
 		}
 	}
 
