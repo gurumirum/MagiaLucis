@@ -1,6 +1,7 @@
 {
   "block.magialucis.amber_charger": "Primitive Charging Pad",
   "block.magialucis.amber_core": "Amber Core",
+  "block.magialucis.amber_light": "Amber Light",
   "block.magialucis.amber_ore": "Amber Ore",
   "block.magialucis.aquamarine_ore": "Aquamarine Ore",
   "block.magialucis.citrine_ore": "Citrine Ore",
@@ -44,6 +45,10 @@
   "curios.identifier.magialucis_necklace": "Magia Lucis: Necklace",
   "curios.identifier.magialucis_ring": "Magia Lucis: Ring",
   "curios.identifier.magialucis_wand_belt": "Magia Lucis: Wand Belt",
+
+  "entity.magialucis.ender_chest_portal": "Ender Chest Portal",
+  "entity.magialucis.lesser_ice_projectile": "Lesser Ice Projectile",
+  "entity.magialucis.temple_guardian": "Temple Guardian",
 
   "gui.magialucis.configuration_wand.missing_link": "§cMissing link origin at §c[%s§c]",
   "gui.magialucis.configuration_wand.on_block.1": "§eRClick§r to unselect",
