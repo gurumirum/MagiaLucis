@@ -78,7 +78,6 @@ public final class DatapackEntryGen {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_ORE_LARGE = ResourceKey.create(CONFIGURED_FEATURE, id("topaz_ore_large"));
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_ORE_BURIED = ResourceKey.create(CONFIGURED_FEATURE, id("topaz_ore_buried"));
 
-	public static final ResourceKey<PlacedFeature> ORE_SILVER_EXTRA = ResourceKey.create(PLACED_FEATURE, id("ore_silver_extra"));
 	public static final ResourceKey<PlacedFeature> ORE_SILVER = ResourceKey.create(PLACED_FEATURE, id("ore_silver"));
 	public static final ResourceKey<PlacedFeature> ORE_SILVER_LOWER = ResourceKey.create(PLACED_FEATURE, id("ore_silver_lower"));
 
@@ -167,12 +166,10 @@ public final class DatapackEntryGen {
 				.add(PLACED_FEATURE, ctx -> {
 					HolderGetter<ConfiguredFeature<?, ?>> cf = ctx.lookup(CONFIGURED_FEATURE);
 
-					PlacementUtils.register(ctx, ORE_SILVER_EXTRA, cf.getOrThrow(SILVER_ORE),
-							commonOrePlacement(75, uniform(absolute(32), absolute(256))));
 					PlacementUtils.register(ctx, ORE_SILVER, cf.getOrThrow(SILVER_ORE_BURIED),
-							commonOrePlacement(6, triangle(absolute(-64), absolute(32))));
+							commonOrePlacement(6, triangle(absolute(-64), absolute(48))));
 					PlacementUtils.register(ctx, ORE_SILVER_LOWER, cf.getOrThrow(SILVER_ORE_BURIED),
-							orePlacement(CountPlacement.of(UniformInt.of(0, 2)), uniform(absolute(-64), absolute(-48))));
+							orePlacement(CountPlacement.of(UniformInt.of(0, 3)), uniform(absolute(-64), absolute(-32))));
 
 					PlacementUtils.register(ctx, ORE_AMBER, cf.getOrThrow(AMBER_ORE),
 							commonOrePlacement(6, triangle(absolute(0), absolute(100))));
@@ -231,7 +228,6 @@ public final class DatapackEntryGen {
 							new AddFeaturesBiomeModifier(
 									biomes.get(BiomeTags.IS_OVERWORLD).orElseThrow(),
 									HolderSet.direct(
-											placedFeatures.getOrThrow(ORE_SILVER_EXTRA),
 											placedFeatures.getOrThrow(ORE_SILVER),
 											placedFeatures.getOrThrow(ORE_SILVER_LOWER),
 											placedFeatures.getOrThrow(ORE_AMBER),
