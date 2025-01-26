@@ -44,6 +44,7 @@ public final class AccessoryEventListener {
 				if (charge < ObsidianBraceletItem.COST_PER_FIRE_RESISTANCE) return false;
 
 				event.setInvulnerable(true);
+				stack.set(LUX_CHARGE, charge - ObsidianBraceletItem.COST_PER_FIRE_RESISTANCE);
 				return true;
 			});
 		}
