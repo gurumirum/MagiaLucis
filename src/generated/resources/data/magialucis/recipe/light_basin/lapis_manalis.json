@@ -3,9 +3,14 @@
   "ingredients": [
     {
       "count": 1,
-      "ingredient": {
-        "item": "minecraft:stone"
-      }
+      "ingredient": [
+        {
+          "item": "minecraft:stone"
+        },
+        {
+          "item": "minecraft:deepslate"
+        }
+      ]
     }
   ],
   "minLuxInputSum": 50.0,

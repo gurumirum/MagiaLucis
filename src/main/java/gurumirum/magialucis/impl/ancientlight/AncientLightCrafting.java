@@ -50,6 +50,7 @@ public final class AncientLightCrafting {
 		addRecipe(Blocks.SOUL_SAND, new AncientLightRecipe(50, GemItems.SOUL_BRIGHTSTONE));
 
 		addRecipe(Blocks.STONE, new AncientLightRecipe(50, ModBuildingBlocks.LAPIS_MANALIS));
+		addRecipe(Blocks.DEEPSLATE, new AncientLightRecipe(50, ModBuildingBlocks.LAPIS_MANALIS));
 	}
 
 	public static @NotNull @Unmodifiable Map<BlockState, AncientLightRecipe> getRecipes() {

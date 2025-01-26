@@ -492,7 +492,7 @@ public class RecipeGen extends RecipeProvider {
 				.save(out);
 
 		lightBasin()
-				.ingredient(Blocks.STONE)
+				.ingredient(Ingredient.of(Blocks.STONE, Blocks.DEEPSLATE))
 				.result(LAPIS_MANALIS)
 				.processTicks(60)
 				.minLuxInputSum(50)
