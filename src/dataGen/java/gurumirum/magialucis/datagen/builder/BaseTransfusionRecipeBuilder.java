@@ -1,22 +1,20 @@
 package gurumirum.magialucis.datagen.builder;
 
-import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.recipe.IngredientStack;
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipe;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseTransfusionRecipeBuilder<B extends BaseTransfusionRecipeBuilder<B>> {
+public abstract class BaseTransfusionRecipeBuilder<B extends BaseTransfusionRecipeBuilder<B>>
+		extends ModRecipeBuilder<TransfusionRecipe> {
 	protected final List<IngredientStack> ingredients = new ArrayList<>();
 
 	protected ItemStack result = ItemStack.EMPTY;
@@ -137,21 +135,12 @@ public abstract class BaseTransfusionRecipeBuilder<B extends BaseTransfusionReci
 		return self();
 	}
 
-	public void save(@NotNull RecipeOutput recipeOutput) {
-		save(recipeOutput, getDefaultRecipeId(this.result.getItem()));
+	@Override
+	protected @Nullable ResourceLocation defaultRecipeId() {
+		return getId(this.result.getItem()).withPrefix(defaultRecipePrefix());
 	}
 
-	public void save(@NotNull RecipeOutput recipeOutput, @NotNull String id) {
-		save(recipeOutput, MagiaLucisMod.id(defaultRecipePrefix() + id));
-	}
-
-	public void save(@NotNull RecipeOutput recipeOutput, @NotNull ResourceLocation id) {
-		ensureValid(id);
-		recipeOutput.accept(id, createInstance(), null);
-	}
-
-	protected abstract TransfusionRecipe createInstance();
-
+	@Override
 	protected void ensureValid(ResourceLocation id) {
 		if (this.result.isEmpty()) throw new IllegalStateException("Transfusion recipe " + id + " has no result");
 		if (this.ingredients.isEmpty())
@@ -176,12 +165,6 @@ public abstract class BaseTransfusionRecipeBuilder<B extends BaseTransfusionReci
 		if (max != Double.POSITIVE_INFINITY && max > absMax)
 			throw new IllegalStateException("Transfusion recipe " + id + " has maxLuxInput" + componentName + " value greater than absolute max value of " + absMax);
 	}
-
-	private ResourceLocation getDefaultRecipeId(ItemLike item) {
-		return BuiltInRegistries.ITEM.getKey(item.asItem()).withPrefix(defaultRecipePrefix());
-	}
-
-	protected abstract String defaultRecipePrefix();
 
 	protected abstract double absoluteMaxLuxInputR();
 	protected abstract double absoluteMaxLuxInputG();

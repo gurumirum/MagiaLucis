@@ -1,0 +1,16 @@
+{
+  "type": "magialucis:ancient_light",
+  "blocks": [
+    "minecraft:ice",
+    "minecraft:frosted_ice",
+    "minecraft:packed_ice",
+    "minecraft:blue_ice"
+  ],
+  "processTicks": 25,
+  "results": [
+    {
+      "count": 1,
+      "id": "magialucis:icy_brightstone"
+    }
+  ]
+}

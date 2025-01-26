@@ -1,10 +1,12 @@
 package gurumirum.magialucis.impl.ancientlight;
 
+import gurumirum.magialucis.contents.recipe.ancientlight.AncientLightRecipe;
 import gurumirum.magialucis.net.msgs.SetBeamCraftingInfoMsg;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,15 +33,15 @@ public class LocalAncientLightManager extends AncientLightManager {
 	}
 
 	@Override
-	protected void updateProgressAt(@NotNull Level level, Player p, BlockPos focusPos,
-	                                AncientLightRecipe recipe, boolean decayTick) {
+	protected void updateProgressAt(@NotNull Level level, @NotNull Player p, @NotNull BlockPos focusPos,
+	                                @NotNull BlockState focusBlockState, @NotNull AncientLightRecipe recipe) {
 		if (this.record == null) this.record = new AncientLightRecord();
 
-		int progress = this.record.getProgress(focusPos) + UPDATE_INTERVAL;
-		// sus logic to counteract decay (im lazy)
 		// keep counting on, it should be corrected by sync anyway
-		this.record.setProgress(focusPos,
-				decayTick ? progress + DECAY_AMOUNT_PER_SEC : progress,
-				recipe.processTicks());
+		int progress = this.record.getProgress(focusPos) + UPDATE_INTERVAL;
+		int totalProgress = this.record.getTotalProgress(focusPos);
+
+		this.record.setProgress(focusPos, progress, totalProgress <= 0 ?
+				recipe.getProcessTicks(level, focusPos, focusBlockState) : totalProgress);
 	}
 }

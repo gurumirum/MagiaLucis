@@ -3,10 +3,11 @@ package gurumirum.magialucis.datagen.builder;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntity;
 import gurumirum.magialucis.contents.recipe.transfusion.LightBasinRecipe;
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipe;
+import org.jetbrains.annotations.NotNull;
 
 public class LightBasinRecipeBuilder extends BaseTransfusionRecipeBuilder<LightBasinRecipeBuilder> {
 	@Override
-	protected TransfusionRecipe createInstance() {
+	protected TransfusionRecipe createRecipeInstance() {
 		return new LightBasinRecipe(
 				this.result, this.ingredients, this.processTicks,
 				this.minLuxInputR, this.minLuxInputG, this.minLuxInputB, this.minLuxInputSum,
@@ -14,7 +15,7 @@ public class LightBasinRecipeBuilder extends BaseTransfusionRecipeBuilder<LightB
 	}
 
 	@Override
-	protected String defaultRecipePrefix() {
+	protected @NotNull String defaultRecipePrefix() {
 		return "light_basin/";
 	}
 

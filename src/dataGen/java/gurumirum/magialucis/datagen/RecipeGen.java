@@ -2,6 +2,7 @@ package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.contents.*;
+import gurumirum.magialucis.datagen.builder.AncientLightRecipeBuilder;
 import gurumirum.magialucis.datagen.builder.LightBasinRecipeBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -463,6 +464,40 @@ public class RecipeGen extends RecipeProvider {
 		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS);
 		stonecutterResultFromBase(out, BUILDING_BLOCKS, LAPIS_MANALIS_BRICK_STAIRS, LAPIS_MANALIS_BRICKS);
 
+		ancientLight()
+				.block(Blocks.SAND)
+				.processTicks(25)
+				.result(GemItems.BRIGHTSTONE)
+				.save(out);
+
+		ancientLight()
+				.block(Blocks.RED_SAND)
+				.processTicks(25)
+				.result(GemItems.RED_BRIGHTSTONE)
+				.save(out);
+
+		ancientLight()
+				.block(Blocks.ICE)
+				.block(Blocks.FROSTED_ICE)
+				.block(Blocks.PACKED_ICE)
+				.block(Blocks.BLUE_ICE)
+				.processTicks(25)
+				.result(GemItems.ICY_BRIGHTSTONE)
+				.save(out);
+
+		ancientLight()
+				.block(Blocks.SOUL_SAND)
+				.processTicks(50)
+				.result(GemItems.SOUL_BRIGHTSTONE)
+				.save(out);
+
+		ancientLight()
+				.block(Blocks.STONE)
+				.block(Blocks.DEEPSLATE)
+				.processTicks(50)
+				.result(LAPIS_MANALIS)
+				.save(out);
+
 		lightBasin()
 				.ingredient(Blocks.SAND)
 				.result(GemItems.BRIGHTSTONE)
@@ -673,6 +708,10 @@ public class RecipeGen extends RecipeProvider {
 		SingleItemRecipeBuilder.stonecutting(Ingredient.of(material), category, result, resultCount)
 				.unlockedBy(getHasName(material), has(material))
 				.save(recipeOutput, MODID + ":" + getConversionRecipeName(result, material) + "_stonecutting");
+	}
+
+	private static AncientLightRecipeBuilder ancientLight() {
+		return new AncientLightRecipeBuilder();
 	}
 
 	private static LightBasinRecipeBuilder lightBasin() {

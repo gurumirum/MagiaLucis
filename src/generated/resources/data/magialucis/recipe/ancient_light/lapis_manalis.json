@@ -1,0 +1,14 @@
+{
+  "type": "magialucis:ancient_light",
+  "blocks": [
+    "minecraft:stone",
+    "minecraft:deepslate"
+  ],
+  "processTicks": 50,
+  "results": [
+    {
+      "count": 1,
+      "id": "magialucis:lapis_manalis"
+    }
+  ]
+}

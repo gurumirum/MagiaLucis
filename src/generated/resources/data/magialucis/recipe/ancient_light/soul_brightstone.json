@@ -1,0 +1,13 @@
+{
+  "type": "magialucis:ancient_light",
+  "blocks": [
+    "minecraft:soul_sand"
+  ],
+  "processTicks": 50,
+  "results": [
+    {
+      "count": 1,
+      "id": "magialucis:soul_brightstone"
+    }
+  ]
+}
