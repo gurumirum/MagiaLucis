@@ -20,7 +20,7 @@ public class WandBeltGuiLayer implements LayeredDraw.Layer {
 	@Override
 	public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.player == null || mc.player.isDeadOrDying() || mc.screen != null) {
+		if (mc.options.hideGui || mc.player == null || mc.player.isDeadOrDying() || mc.screen != null) {
 			this.alpha = 0;
 			return;
 		}

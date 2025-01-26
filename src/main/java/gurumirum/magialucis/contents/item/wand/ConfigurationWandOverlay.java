@@ -60,7 +60,7 @@ public final class ConfigurationWandOverlay {
 		visualData.active = false;
 
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.level == null) return;
+		if (mc.level == null || mc.options.hideGui) return;
 		LocalPlayer player = mc.player;
 		if (player == null) return;
 
