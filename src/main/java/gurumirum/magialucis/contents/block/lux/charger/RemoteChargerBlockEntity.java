@@ -66,6 +66,10 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior
 					}
 				}
 
+				if (ChargeLogic.chargeItem(charge, inv.getItem(Inventory.SLOT_OFFHAND), nodeBehavior().maxInput)) {
+					if (charge.x <= 0 && charge.y <= 0 && charge.z <= 0) return;
+				}
+
 				ICuriosItemHandler h = CuriosApi.getCuriosInventory(p).orElse(null);
 				if (h == null) return;
 
