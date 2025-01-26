@@ -190,6 +190,10 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(ModItems.MECHANICAL_COMPONENT.asItem());
 		basicItem(ModItems.LUMINOUS_MECHANICAL_COMPONENT.asItem());
 
+		basicItem(ModItems.SUNLIGHT_INFUSED_POWDER.asItem());
+		basicItem(ModItems.MOONLIGHT_INFUSED_POWDER.asItem());
+		basicItem(ModItems.STONE_OF_PURIFICATION.asItem());
+
 		basicItem(ModItems.COPPER_NUGGET.asItem());
 
 		basicItem(ModItems.SILVER_INGOT.asItem());

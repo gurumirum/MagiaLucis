@@ -4,20 +4,20 @@
     {
       "count": 1,
       "ingredient": {
-        "item": "magialucis:solar_catalyst"
+        "item": "minecraft:blaze_powder"
       }
     },
     {
       "count": 1,
       "ingredient": {
-        "item": "magialucis:lunar_catalyst"
+        "tag": "c:gems/iolite"
       }
     }
   ],
-  "minLuxInputSum": 100.0,
-  "processTicks": 500,
+  "minLuxInputB": 100.0,
+  "processTicks": 100,
   "result": {
-    "count": 1,
-    "id": "magialucis:white_catalyst"
+    "count": 3,
+    "id": "magialucis:moonlight_infused_powder"
   }
 }

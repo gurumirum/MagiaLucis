@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -17,10 +18,10 @@ public enum ModItems implements ItemLike {
 	LUMINOUS_RESONANCE_CORE,
 	CITRINE_MATRIX,
 	IOLITE_MATRIX,
+	SUNLIGHT_INFUSED_POWDER,
+	MOONLIGHT_INFUSED_POWDER,
 
-	SOLAR_CATALYST,
-	LUNAR_CATALYST,
-	WHITE_CATALYST,
+	STONE_OF_PURIFICATION(ItemProfile.item(p -> p.rarity(Rarity.RARE))),
 
 	COPPER_NUGGET(CreativeTabType.RESOURCES),
 

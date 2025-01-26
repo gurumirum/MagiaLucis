@@ -46,8 +46,8 @@
   "curios.identifier.magialucis_ring": "Magia Lucis: 반지",
   "curios.identifier.magialucis_wand_belt": "Magia Lucis: 마법봉 벨트",
 
-  "effect.magialucis.recall_fatigue": "회귀 후유증",
   "effect.magialucis.natures_blessing": "자연의 은총",
+  "effect.magialucis.recall_fatigue": "회귀 후유증",
 
   "entity.magialucis.ender_chest_portal": "공허 차원문",
   "entity.magialucis.lesser_ice_projectile": "얼음 조각",
@@ -106,6 +106,7 @@
   "item.magialucis.luminous_resonance_core": "빛나는 공명 코어",
   "item.magialucis.luminous_resonator": "빛나는 공명기",
   "item.magialucis.mechanical_component": "기계부픔",
+  "item.magialucis.moonlight_infused_powder": "달빛이 주입된 가루",
   "item.magialucis.moonstone": "월장석",
   "item.magialucis.obsidian": "흑요석 파편",
   "item.magialucis.obsidian_bracelet": "흑요석 팔찌",
@@ -135,6 +136,8 @@
   "item.magialucis.speed_ring.tooltip.0": "§7이동 속도 %s§7 증가",
   "item.magialucis.sterling_silver_ingot": "스털링 실버 주괴",
   "item.magialucis.sterling_silver_nugget": "스털링 실버 조각",
+  "item.magialucis.stone_of_purification": "정화의 돌",
+  "item.magialucis.sunlight_infused_powder": "햇빛이 주입된 가루",
   "item.magialucis.temple_guardian_spawn_egg": "신전 수호자 생성 알",
   "item.magialucis.tooltip.charger": "§7배치된 아이템 충전",
   "item.magialucis.tooltip.lux_charge": "§fLUX§7: §f%s§7 / §f%s",

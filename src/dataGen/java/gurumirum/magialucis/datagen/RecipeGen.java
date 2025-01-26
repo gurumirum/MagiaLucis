@@ -578,7 +578,7 @@ public class RecipeGen extends RecipeProvider {
 		lightBasin()
 				.ingredient(Items.BLAZE_POWDER)
 				.ingredient(GemStats.CITRINE.tag())
-				.result(SOLAR_CATALYST, 3)
+				.result(SUNLIGHT_INFUSED_POWDER, 3)
 				.processTicks(100)
 				.minLuxInputR(100)
 				.minLuxInputG(100)
@@ -587,21 +587,21 @@ public class RecipeGen extends RecipeProvider {
 		lightBasin()
 				.ingredient(Items.BLAZE_POWDER)
 				.ingredient(GemStats.IOLITE.tag())
-				.result(LUNAR_CATALYST, 3)
+				.result(MOONLIGHT_INFUSED_POWDER, 3)
 				.processTicks(100)
 				.minLuxInputB(100)
 				.save(out);
 
 		lightBasin()
-				.ingredient(SOLAR_CATALYST)
-				.ingredient(LUNAR_CATALYST)
-				.result(WHITE_CATALYST)
+				.ingredient(SUNLIGHT_INFUSED_POWDER)
+				.ingredient(MOONLIGHT_INFUSED_POWDER)
+				.result(STONE_OF_PURIFICATION)
 				.processTicks(500)
 				.minLuxInputSum(100)
 				.save(out);
 
 		lightBasin()
-				.ingredient(WHITE_CATALYST)
+				.ingredient(STONE_OF_PURIFICATION)
 				.ingredient(Tags.Items.GEMS_QUARTZ, 8)
 				.result(GemItems.PURIFIED_QUARTZ, 6)
 				.processTicks(100)
@@ -609,7 +609,7 @@ public class RecipeGen extends RecipeProvider {
 				.save(out);
 
 		lightBasin()
-				.ingredient(WHITE_CATALYST)
+				.ingredient(STONE_OF_PURIFICATION)
 				.ingredient(Items.REDSTONE_BLOCK)
 				.result(GemItems.CRYSTALLIZED_REDSTONE)
 				.processTicks(200)
@@ -617,7 +617,7 @@ public class RecipeGen extends RecipeProvider {
 				.save(out);
 
 		lightBasin()
-				.ingredient(WHITE_CATALYST)
+				.ingredient(STONE_OF_PURIFICATION)
 				.ingredient(Items.LAPIS_BLOCK)
 				.result(GemItems.POLISHED_LAPIS_LAZULI)
 				.processTicks(200)

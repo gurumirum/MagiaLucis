@@ -46,8 +46,8 @@
   "curios.identifier.magialucis_ring": "Magia Lucis: Ring",
   "curios.identifier.magialucis_wand_belt": "Magia Lucis: Wand Belt",
 
-  "effect.magialucis.recall_fatigue": "Recall Fatigue",
   "effect.magialucis.natures_blessing": "Nature's Blessing",
+  "effect.magialucis.recall_fatigue": "Recall Fatigue",
 
   "entity.magialucis.ender_chest_portal": "Ender Chest Portal",
   "entity.magialucis.lesser_ice_projectile": "Ice Shard",
@@ -106,6 +106,7 @@
   "item.magialucis.luminous_resonance_core": "Luminous Resonance Core",
   "item.magialucis.luminous_resonator": "Luminous Resonator",
   "item.magialucis.mechanical_component": "Mechanical Component",
+  "item.magialucis.moonlight_infused_powder": "Moonlight Infused Powder",
   "item.magialucis.moonstone": "Moonstone",
   "item.magialucis.obsidian": "Obsidian Shard",
   "item.magialucis.obsidian_bracelet": "Obsidian Bracelet",
@@ -135,6 +136,8 @@
   "item.magialucis.speed_ring.tooltip.0": "%s§7 increase to movement speed",
   "item.magialucis.sterling_silver_ingot": "Sterling Silver Ingot",
   "item.magialucis.sterling_silver_nugget": "Sterling Silver Nugget",
+  "item.magialucis.stone_of_purification": "Stone of Purification",
+  "item.magialucis.sunlight_infused_powder": "Sunlight Infused Powder",
   "item.magialucis.temple_guardian_spawn_egg": "Temple Guardian Spawn Egg",
   "item.magialucis.tooltip.charger": "§7Charges placed item",
   "item.magialucis.tooltip.lux_charge": "§fLUX§7: §f%s§7 / §f%s",
