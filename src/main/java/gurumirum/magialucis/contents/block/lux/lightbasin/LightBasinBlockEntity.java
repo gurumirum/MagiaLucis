@@ -10,6 +10,7 @@ import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipeEvaluat
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipeInput;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
+import gurumirum.magialucis.utils.ModUtils;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,11 +18,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -97,7 +97,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 
 				if (this.progress >= this.currentRecipe.processTicks()) {
 					if (consume(this.currentRecipe.consumption())) {
-						drop(level, pos, this.currentRecipe.result());
+						ModUtils.drop(level, pos, this.currentRecipe.result());
 					}
 
 					this.currentRecipeId = null;
@@ -139,7 +139,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		return true;
 	}
 
-	public boolean dropLastContent() {
+	public boolean dropLastContent(@Nullable Player player) {
 		Level level = this.level;
 		if (level == null) return false;
 
@@ -150,7 +150,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 			if (stack.isEmpty()) continue;
 
 			if (!level.isClientSide) {
-				drop(level, pos, stack);
+				ModUtils.giveOrDrop(player, level, pos, stack);
 			}
 
 			return true;
@@ -159,7 +159,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		return false;
 	}
 
-	public void dropAllContents() {
+	public void dropAllContents(@Nullable Player player) {
 		Level level = this.level;
 		if (level == null) return;
 
@@ -167,7 +167,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 
 		for (int i = 0; i < this.inventory.getSlots(); i++) {
 			if (!level.isClientSide) {
-				drop(level, pos, this.inventory.getStackInSlot(i));
+				ModUtils.giveOrDrop(player, level, pos, this.inventory.getStackInSlot(i));
 				this.inventory.setStackInSlot(i, ItemStack.EMPTY);
 			}
 		}
@@ -207,14 +207,6 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		}
 
 		this.contentsDirty = true;
-	}
-
-	private static void drop(Level level, BlockPos pos, ItemStack stack) {
-		ItemEntity itemEntity = new ItemEntity(level,
-				pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5,
-				stack);
-		itemEntity.setDeltaMovement(Vec3.ZERO);
-		level.addFreshEntity(itemEntity);
 	}
 
 	private final class LightBasinInventory extends ItemStackHandler implements TransfusionRecipeInput {

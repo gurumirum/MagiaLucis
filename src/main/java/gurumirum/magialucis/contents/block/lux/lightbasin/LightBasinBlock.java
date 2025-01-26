@@ -63,10 +63,10 @@ public class LightBasinBlock extends Block implements EntityBlock {
 	                                                    @NotNull BlockHitResult hitResult) {
 		if (level.getBlockEntity(pos) instanceof LightBasinBlockEntity lightBasin) {
 			if (player.isSecondaryUseActive()) {
-				lightBasin.dropAllContents();
+				lightBasin.dropAllContents(player);
 				return InteractionResult.SUCCESS;
 			} else {
-				return lightBasin.dropLastContent() ? InteractionResult.SUCCESS : InteractionResult.PASS;
+				return lightBasin.dropLastContent(player) ? InteractionResult.SUCCESS : InteractionResult.PASS;
 			}
 		}
 		return InteractionResult.FAIL;
@@ -100,7 +100,7 @@ public class LightBasinBlock extends Block implements EntityBlock {
 	                        @NotNull BlockState newState, boolean movedByPiston) {
 		if (!state.is(newState.getBlock())) {
 			if (level.getBlockEntity(pos) instanceof LightBasinBlockEntity lightBasin) {
-				lightBasin.dropAllContents();
+				lightBasin.dropAllContents(null);
 			}
 		}
 
