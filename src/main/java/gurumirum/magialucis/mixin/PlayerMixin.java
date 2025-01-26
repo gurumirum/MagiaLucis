@@ -4,12 +4,12 @@ import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ModCurioSlots;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.Wands;
+import gurumirum.magialucis.contents.item.accessory.AmberWreathItem;
 import gurumirum.magialucis.contents.item.wand.LapisShieldItem;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -61,7 +61,7 @@ public abstract class PlayerMixin extends LivingEntity {
 						if (stack.is(Accessories.DRUID_WREATH.asItem()) || stack.is(Accessories.DRYAD_WREATH.asItem())) {
 							this.magialucis$eatReentrantFlag = true;
 							try {
-								ItemStack result = this.eat(level, food, Foods.GOLDEN_APPLE);
+								ItemStack result = this.eat(level, food, AmberWreathItem.APPLE_FOOD_PROPERTIES);
 								info.setReturnValue(result);
 							} finally {
 								this.magialucis$eatReentrantFlag = false;

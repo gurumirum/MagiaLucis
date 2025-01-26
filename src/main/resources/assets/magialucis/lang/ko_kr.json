@@ -47,6 +47,7 @@
   "curios.identifier.magialucis_wand_belt": "Magia Lucis: 마법봉 벨트",
 
   "effect.magialucis.recall_fatigue": "회귀 후유증",
+  "effect.magialucis.natures_blessing": "자연의 은총",
 
   "entity.magialucis.ender_chest_portal": "공허 차원문",
   "entity.magialucis.lesser_ice_projectile": "얼음 조각",
@@ -77,11 +78,11 @@
   "item.magialucis.druid_wreath": "드루이드의 화환",
   "item.magialucis.druid_wreath.tooltip.0": "§7숲에서 가장 예쁜 남자아이에게!",
   "item.magialucis.druid_wreath.tooltip.1": "§7햇빛 아래에서 이동 속도 %s§7, 공격 피해량 §e+%s",
-  "item.magialucis.druid_wreath.tooltip.2": "§7사과에 황금의 효과 부여",
+  "item.magialucis.druid_wreath.tooltip.2": "§7사과가 더 맛있어지고 능력치 상승을 항시 부여",
   "item.magialucis.dryad_wreath": "드라이어드의 화환",
   "item.magialucis.dryad_wreath.tooltip.0": "§7숲에서 가장 예쁜 여자아이에게!",
   "item.magialucis.dryad_wreath.tooltip.1": "§7달빛 아래에서 이동 속도 %s§7, 공격 피해량 §e+%s",
-  "item.magialucis.dryad_wreath.tooltip.2": "§7사과에 황금의 효과 부여",
+  "item.magialucis.dryad_wreath.tooltip.2": "§7사과가 더 맛있어지고 능력치 상승을 항시 부여",
   "item.magialucis.electrum_ingot": "엘렉트럼 주괴",
   "item.magialucis.electrum_nugget": "엘렉트럼 조각",
   "item.magialucis.ender_wand": "휴대용 공허 차원문",

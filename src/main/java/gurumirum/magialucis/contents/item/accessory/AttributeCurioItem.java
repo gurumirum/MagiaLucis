@@ -33,20 +33,13 @@ public abstract class AttributeCurioItem extends LuxContainerCurioItem {
 		LivingEntity entity = slotContext.entity();
 		if (entity.level().isClientSide) return;
 
-		if (entity.walkDist > entity.walkDistO) {
-			int charge = stack.getOrDefault(ModDataComponents.CHARGE, 0);
-			if (charge > 0) charge--;
+		AccessoryLogic.updateCharge(slotContext, stack,
+				this.chargeTicks, this.luxCostPerCharge,
+				shouldConsumeCharge(slotContext, stack));
+	}
 
-			if (charge <= 0) {
-				long luxCharge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
-				if (luxCharge >= this.luxCostPerCharge) {
-					stack.set(ModDataComponents.LUX_CHARGE, luxCharge - this.luxCostPerCharge);
-					charge = this.chargeTicks;
-				}
-			}
-
-			stack.set(ModDataComponents.CHARGE, charge);
-		}
+	protected boolean shouldConsumeCharge(SlotContext slotContext, ItemStack stack) {
+		return true;
 	}
 
 	@Override
@@ -74,6 +67,6 @@ public abstract class AttributeCurioItem extends LuxContainerCurioItem {
 			return this.attribute;
 		}
 
-		protected abstract@NotNull Multimap<Holder<Attribute>, AttributeModifier> createActiveAttributeModifier();
+		protected abstract @NotNull Multimap<Holder<Attribute>, AttributeModifier> createActiveAttributeModifier();
 	}
 }

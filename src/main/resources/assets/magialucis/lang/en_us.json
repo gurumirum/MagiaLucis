@@ -47,6 +47,7 @@
   "curios.identifier.magialucis_wand_belt": "Magia Lucis: Wand Belt",
 
   "effect.magialucis.recall_fatigue": "Recall Fatigue",
+  "effect.magialucis.natures_blessing": "Nature's Blessing",
 
   "entity.magialucis.ender_chest_portal": "Ender Chest Portal",
   "entity.magialucis.lesser_ice_projectile": "Ice Shard",
@@ -77,11 +78,11 @@
   "item.magialucis.druid_wreath": "Druid's Wreath",
   "item.magialucis.druid_wreath.tooltip.0": "§7For the prettiest boy in the forest!",
   "item.magialucis.druid_wreath.tooltip.1": "%s§7 speed boost and §e+%s§7 flat attack damage in sunlight",
-  "item.magialucis.druid_wreath.tooltip.2": "§7All apples are golden",
+  "item.magialucis.druid_wreath.tooltip.2": "§7Apples are more powerful and grant the stat increase",
   "item.magialucis.dryad_wreath": "Dryad's Wreath",
   "item.magialucis.dryad_wreath.tooltip.0": "§7For the prettiest girl in the forest!",
   "item.magialucis.dryad_wreath.tooltip.1": "%s§7 speed boost and §e+%s§7 flat attack damage in moonlight",
-  "item.magialucis.dryad_wreath.tooltip.2": "§7All apples are golden",
+  "item.magialucis.dryad_wreath.tooltip.2": "§7Apples are more powerful and grant the stat increase",
   "item.magialucis.electrum_ingot": "Electrum Ingot",
   "item.magialucis.electrum_nugget": "Electrum Nugget",
   "item.magialucis.ender_wand": "Pocket Void",

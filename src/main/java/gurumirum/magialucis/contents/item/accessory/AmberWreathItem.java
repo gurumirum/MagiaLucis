@@ -4,16 +4,18 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.ModMobEffects;
 import gurumirum.magialucis.utils.NumberFormats;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -25,6 +27,12 @@ import java.util.List;
 
 public class AmberWreathItem extends LuxContainerCurioItem {
 	public static final int COST_PER_UPDATE = 1;
+
+	public static final FoodProperties APPLE_FOOD_PROPERTIES = new FoodProperties.Builder()
+			.nutrition(4)
+			.saturationModifier(1.2f)
+			.effect(() -> new MobEffectInstance(ModMobEffects.NATURES_BLESSING, 20 * 60 * 8, 10), 1)
+			.build();
 
 	private static final double MOVEMENT_SPEED_INCREASE_AMOUNT = 0.15;
 	private static final double ATTACK_DAMAGE_INCREASE_AMOUNT = 1;
@@ -45,21 +53,14 @@ public class AmberWreathItem extends LuxContainerCurioItem {
 
 		if (level.isClientSide || level.getGameTime() % 10 != 0) return;
 
-		BlockPos pos = entity.blockPosition();
-		long luxCharge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
-		boolean healTick = level.getGameTime() % 60 == 0;
-		boolean active = (!healTick || luxCharge >= COST_PER_UPDATE) &&
-				level.isDay() == this.day &&
-				level.getBrightness(LightLayer.SKY, pos) > 12;
+		boolean active = AccessoryLogic.updateCharge(slotContext, stack,
+				6, COST_PER_UPDATE,
+				(entity.hasEffect(ModMobEffects.NATURES_BLESSING) ||
+						level.isDay() == this.day && level.getBrightness(LightLayer.SKY, entity.blockPosition()) > 12));
 
 		boolean stackActive = stack.getOrDefault(ModDataComponents.ACTIVE, false);
 		if (stackActive != active) {
 			stack.set(ModDataComponents.ACTIVE, active);
-		}
-
-		if (healTick && active) {
-			entity.heal(1);
-			stack.set(ModDataComponents.LUX_CHARGE, luxCharge - COST_PER_UPDATE);
 		}
 	}
 
