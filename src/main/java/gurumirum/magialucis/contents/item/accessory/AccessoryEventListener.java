@@ -3,6 +3,7 @@ package gurumirum.magialucis.contents.item.accessory;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ModDataComponents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,7 +38,9 @@ public final class AccessoryEventListener {
 		if (event.isInvulnerable()) return;
 		if (!(event.getEntity() instanceof Player player)) return;
 
-		if ((event.getSource().is(DamageTypes.ON_FIRE) || event.getSource().is(DamageTypes.IN_FIRE)) &&
+		DamageSource source = event.getSource();
+		if ((source.is(DamageTypes.ON_FIRE) || source.is(DamageTypes.IN_FIRE) ||
+				source.is(DamageTypes.CAMPFIRE) || source.is(DamageTypes.HOT_FLOOR)) &&
 				!player.hasEffect(MobEffects.FIRE_RESISTANCE)) {
 			findCurioItemAndDo(Accessories.OBSIDIAN_BRACELET, player, stack -> {
 				long charge = stack.getOrDefault(LUX_CHARGE, 0L);
