@@ -23,6 +23,7 @@ public enum GemStats implements LuxStat {
 	AQUAMARINE(1, RGB332.of(0, 5, 3), 20, 500),
 	PEARL(1, RGB332.of(7, 6, 3), 80, 700, false),
 
+	AMETHYST(1, RGB332.of(7, 2, 3), 50, 120, true, true),
 	OBSIDIAN(1, RGB332.of(1, 0, 1), 30, 750, false),
 	PRISMARINE(1, RGB332.of(0, 5, 2), 30, 400, true, true),
 	ENDER_PEARL(1, RGB332.of(0, 2, 1), 40, 500, false, true),
@@ -36,7 +37,6 @@ public enum GemStats implements LuxStat {
 	EMERALD(2, RGB332.of(0, 7, 0), 500, 5000, true, true),
 	SAPPHIRE(2, RGB332.of(0, 0, 3), 500, 5000),
 
-	AMETHYST(3, RGB332.of(7, 2, 3), 650, 3000, true, true),
 	TOPAZ(3, RGB332.of(6, 6, 0), 5000, 10000),
 	MOONSTONE(3, RGB332.of(4, 6, 3), 1500, 20000, false),
 	JET(3, RGB332.of(0, 0, 0), 950, 20000, false)
