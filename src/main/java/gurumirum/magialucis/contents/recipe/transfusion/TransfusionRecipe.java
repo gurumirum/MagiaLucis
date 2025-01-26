@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.recipe;
+package gurumirum.magialucis.contents.recipe.transfusion;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;

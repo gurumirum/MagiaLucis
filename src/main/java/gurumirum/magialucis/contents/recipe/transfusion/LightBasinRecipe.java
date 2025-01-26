@@ -1,8 +1,9 @@
-package gurumirum.magialucis.contents.recipe;
+package gurumirum.magialucis.contents.recipe.transfusion;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import gurumirum.magialucis.contents.ModRecipes;
+import gurumirum.magialucis.contents.recipe.IngredientStack;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;

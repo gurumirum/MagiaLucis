@@ -1,8 +1,10 @@
-package gurumirum.magialucis.contents.recipe;
+package gurumirum.magialucis.contents.recipe.transfusion;
 
 import com.mojang.datafixers.Products;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import gurumirum.magialucis.contents.recipe.ConsumptionRecord;
+import gurumirum.magialucis.contents.recipe.IngredientStack;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamDecoder;

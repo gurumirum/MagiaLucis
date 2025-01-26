@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.recipe;
+package gurumirum.magialucis.contents.recipe.transfusion;
 
 import net.minecraft.world.item.crafting.RecipeInput;
 

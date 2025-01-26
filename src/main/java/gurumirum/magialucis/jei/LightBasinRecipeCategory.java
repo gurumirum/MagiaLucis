@@ -2,7 +2,7 @@ package gurumirum.magialucis.jei;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.contents.recipe.LightBasinRecipe;
+import gurumirum.magialucis.contents.recipe.transfusion.LightBasinRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;

@@ -2,7 +2,7 @@ package gurumirum.magialucis.datagen.builder;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.recipe.IngredientStack;
-import gurumirum.magialucis.contents.recipe.TransfusionRecipe;
+import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;

@@ -1,5 +1,6 @@
-package gurumirum.magialucis.contents.recipe;
+package gurumirum.magialucis.contents.recipe.transfusion;
 
+import gurumirum.magialucis.contents.recipe.ConsumptionRecord;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntMaps;
 import net.minecraft.world.item.ItemStack;

@@ -1,8 +1,8 @@
 package gurumirum.magialucis.datagen.builder;
 
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntity;
-import gurumirum.magialucis.contents.recipe.LightBasinRecipe;
-import gurumirum.magialucis.contents.recipe.TransfusionRecipe;
+import gurumirum.magialucis.contents.recipe.transfusion.LightBasinRecipe;
+import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipe;
 
 public class LightBasinRecipeBuilder extends BaseTransfusionRecipeBuilder<LightBasinRecipeBuilder> {
 	@Override
