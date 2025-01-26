@@ -45,8 +45,8 @@ public final class ModDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> DEPLETED = register(
 			"depleted", Codec.BOOL, ByteBufCodecs.BOOL);
 
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> SPEED_BOOST_CHARGE = register(
-			"speed_boost_charge", Codec.INT);
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CHARGE = register(
+			"charge", Codec.INT);
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> POWER = register(
 			"power", Codec.INT);

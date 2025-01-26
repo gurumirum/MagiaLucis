@@ -38,6 +38,7 @@ public class BaseCurioItem extends Item implements ICurioItem {
 	public List<Component> getAttributesTooltip(List<Component> tooltips, TooltipContext context, ItemStack stack) {
 		return List.of();
 	}
+
 	public static boolean tryEquipCurio(@NotNull Player player, @NotNull ItemStack stack) {
 		ICuriosItemHandler curiosItemHandler = CuriosApi.getCuriosInventory(player).orElse(null);
 		if (curiosItemHandler == null) return false;

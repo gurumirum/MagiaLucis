@@ -27,7 +27,6 @@ public enum Accessories implements ItemLike {
 	SOUL_CROWN(ItemProfile.customItem(SoulCrownItem::new), ModCurioSlots.HEADWEAR),
 
 	SPEED_RING(ItemProfile.customItem(p -> new SpeedBoostCurioItem(p,
-			"speed_ring",
 			0.1,
 			60,
 			1)), ModCurioSlots.RING,

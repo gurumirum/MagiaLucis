@@ -2,76 +2,43 @@ package gurumirum.magialucis.contents.item.accessory;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.utils.NumberFormats;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
-import top.theillusivec4.curios.api.SlotContext;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 
-public class SpeedBoostCurioItem extends LuxContainerCurioItem {
-	public final String speedBoostKey;
+public class SpeedBoostCurioItem extends AttributeCurioItem.Unique {
+	private static final ResourceLocation SPEED_BOOST_ID = MagiaLucisMod.id("speed_boost");
+
 	public final double speedBoostAmount;
 
-	public final int speedBoostChargeTicks;
-	public final long luxCostPerCharge;
+	private @Nullable Multimap<Holder<Attribute>, AttributeModifier> attribute;
 
-	private final Map<ResourceLocation, Multimap<Holder<Attribute>, AttributeModifier>> attributes = new Object2ObjectOpenHashMap<>();
-
-	public SpeedBoostCurioItem(Properties properties, String speedBoostKey, double speedBoostAmount,
-	                           int speedBoostChargeTicks, long luxCostPerCharge) {
-		super(properties);
-		this.speedBoostKey = speedBoostKey;
+	public SpeedBoostCurioItem(Properties properties, double speedBoostAmount,
+	                           int chargeTicks, long luxCostPerCharge) {
+		super(properties, chargeTicks, luxCostPerCharge);
 		this.speedBoostAmount = speedBoostAmount;
-
-		this.speedBoostChargeTicks = speedBoostChargeTicks;
-		this.luxCostPerCharge = luxCostPerCharge;
 	}
 
 	@Override
-	public void curioTick(SlotContext slotContext, ItemStack stack) {
-		LivingEntity entity = slotContext.entity();
-		if (entity.level().isClientSide) return;
-
-		if (entity.walkDist > entity.walkDistO) {
-			int speedBoostCharge = stack.getOrDefault(ModDataComponents.SPEED_BOOST_CHARGE, 0);
-			if (speedBoostCharge > 0) speedBoostCharge--;
-
-			if (speedBoostCharge <= 0) {
-				long luxCharge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
-				if (luxCharge >= this.luxCostPerCharge) {
-					stack.set(ModDataComponents.LUX_CHARGE, luxCharge - this.luxCostPerCharge);
-					speedBoostCharge = this.speedBoostChargeTicks;
-				}
-			}
-
-			stack.set(ModDataComponents.SPEED_BOOST_CHARGE, speedBoostCharge);
+	protected @NotNull Multimap<Holder<Attribute>, AttributeModifier> createActiveAttributeModifier() {
+		if (this.attribute == null) {
+			this.attribute = ImmutableMultimap.of(
+					Attributes.MOVEMENT_SPEED, new AttributeModifier(SPEED_BOOST_ID, this.speedBoostAmount,
+							AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 		}
-	}
-
-	@Override
-	public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
-		int speedBoostCharge = stack.getOrDefault(ModDataComponents.SPEED_BOOST_CHARGE, 0);
-		if (speedBoostCharge <= 0) return ImmutableMultimap.of();
-
-		return this.attributes.computeIfAbsent(id, _id -> ImmutableMultimap.of(
-				Attributes.MOVEMENT_SPEED,
-				new AttributeModifier(
-						_id.withSuffix("." + this.speedBoostKey),
-						this.speedBoostAmount,
-						AttributeModifier.Operation.ADD_MULTIPLIED_BASE)));
+		return this.attribute;
 	}
 
 	@Override
