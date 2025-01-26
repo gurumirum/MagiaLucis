@@ -17,7 +17,7 @@ import java.util.Arrays;
 public final class SunlightLogic {
 	private SunlightLogic() {}
 
-	public static final double DEFAULT_BASE_INTENSITY = 12.5;
+	public static final double DEFAULT_BASE_INTENSITY = 25;
 
 	public static final Long2ObjectSortedMap<SkyColor> SKY_TICKS_TO_COLOR;
 
