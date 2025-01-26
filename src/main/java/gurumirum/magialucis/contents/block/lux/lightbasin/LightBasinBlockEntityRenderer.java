@@ -8,13 +8,15 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
 public class LightBasinBlockEntityRenderer implements BlockEntityRenderer<LightBasinBlockEntity> {
-	private static final int ROTATION_PERIOD = 50;
+	private static final int ROTATION_PERIOD = 120;
 
 	public LightBasinBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}
 
@@ -22,36 +24,38 @@ public class LightBasinBlockEntityRenderer implements BlockEntityRenderer<LightB
 	public void render(@NotNull LightBasinBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack,
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-		boolean setup = false;
+		IItemHandlerModifiable inv = blockEntity.inventory();
 
-		for (int i = 0; i < blockEntity.inventory().getSlots(); i++) {
-			ItemStack stack = blockEntity.inventory().getStackInSlot(i);
+		int itemCount = 0;
+
+		for (int i = 0; i < inv.getSlots(); i++) {
+			if (!inv.getStackInSlot(i).isEmpty()) itemCount++;
+		}
+
+		if (itemCount == 0) return;
+
+		int itemIndex = 0;
+
+		for (int i = 0; i < inv.getSlots(); i++) {
+			ItemStack stack = inv.getStackInSlot(i);
 			if (stack.isEmpty()) continue;
 
-			if (!setup) {
-				setup = true;
-				poseStack.pushPose();
-				poseStack.translate(0.5, 1, 0.5);
-			}
-
-			// TODO do it right
-
 			poseStack.pushPose();
-			poseStack.translate(0.01 * i, 0, 0.01 * i);
+			poseStack.translate(0.5, 1, 0.5);
 
 			Level level = blockEntity.getLevel();
 			if (level != null) {
-				poseStack.mulPose(Axis.YP.rotation(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTick)));
+				int cycleOffset = (itemCount - 1) * ROTATION_PERIOD / itemCount * itemIndex;
+				poseStack.mulPose(Axis.YP.rotation(RotationLogic.rotation(level.getGameTime() + cycleOffset, ROTATION_PERIOD, partialTick)));
+				float offset = Mth.sin(RotationLogic.rotation(level.getGameTime() + cycleOffset, ROTATION_PERIOD * 2, partialTick)) * 0.1f + 0.05f;
+				poseStack.translate(0, offset, 0.1 * (itemCount == 1 ? 0 : itemCount));
 			}
 
 			itemRenderer.renderStatic(stack, ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack,
 					bufferSource, level, 906296);
 
 			poseStack.popPose();
-		}
-
-		if (setup) {
-			poseStack.popPose();
+			itemIndex++;
 		}
 	}
 }
