@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents.block.lux.lightbasin;
 
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.LuxNodeTypes;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
@@ -21,7 +20,7 @@ public class LightBasinBehavior implements LuxConsumerNodeBehavior {
 
 	@Override
 	public @NotNull LuxStat stat() {
-		return GemStats.BRIGHTSTONE;
+		return LightBasinBlock.STAT;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.lightbasin;
 
 import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.core.BlockPos;
@@ -30,6 +31,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class LightBasinBlock extends Block implements EntityBlock {
+	public static final LuxStat STAT = GemStats.BRIGHTSTONE;
+
 	private static final VoxelShape SHAPE = box(0, 0, 0, 16, 12, 16);
 
 	public LightBasinBlock(Properties properties) {
@@ -107,6 +110,6 @@ public class LightBasinBlock extends Block implements EntityBlock {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-		LuxStatTooltip.formatStat(GemStats.BRIGHTSTONE, tooltipComponents, LuxStatTooltip.Type.CONTAINER);
+		LuxStatTooltip.formatStat(STAT, tooltipComponents, LuxStatTooltip.Type.CONTAINER);
 	}
 }

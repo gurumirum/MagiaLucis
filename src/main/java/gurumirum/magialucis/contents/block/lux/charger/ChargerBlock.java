@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +45,7 @@ public class ChargerBlock extends Block implements EntityBlock {
 	                                                    @NotNull BlockPos pos, @NotNull Player player,
 	                                                    @NotNull BlockHitResult hitResult) {
 		if (level.getBlockEntity(pos) instanceof ChargerBlockEntity charger) {
-			return charger.dropItem() ? InteractionResult.SUCCESS : InteractionResult.PASS;
+			return charger.dropItem(player) ? InteractionResult.SUCCESS : InteractionResult.PASS;
 		}
 		return InteractionResult.FAIL;
 	}
@@ -61,14 +60,7 @@ public class ChargerBlock extends Block implements EntityBlock {
 		}
 
 		if (level.getBlockEntity(pos) instanceof ChargerBlockEntity charger) {
-			IItemHandlerModifiable inventory = charger.inventory();
-			for (int i = 0; i < inventory.getSlots(); i++) {
-				ItemStack remaining = inventory.insertItem(i, stack, level.isClientSide);
-				if (remaining != stack) {
-					if (!level.isClientSide) player.setItemInHand(hand, remaining);
-					return ItemInteractionResult.SUCCESS;
-				}
-			}
+			if (charger.swapItem(player, stack)) return ItemInteractionResult.SUCCESS;
 		}
 
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -79,7 +71,7 @@ public class ChargerBlock extends Block implements EntityBlock {
 	                        @NotNull BlockState newState, boolean movedByPiston) {
 		if (!state.is(newState.getBlock())) {
 			if (level.getBlockEntity(pos) instanceof ChargerBlockEntity charger) {
-				charger.dropItem();
+				charger.dropItem(null);
 			}
 		}
 

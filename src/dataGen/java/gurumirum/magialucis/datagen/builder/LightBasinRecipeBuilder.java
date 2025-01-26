@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.builder;
 
-import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntity;
+import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
 import gurumirum.magialucis.contents.recipe.transfusion.LightBasinRecipe;
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipe;
 import org.jetbrains.annotations.NotNull;
@@ -21,16 +21,16 @@ public class LightBasinRecipeBuilder extends BaseTransfusionRecipeBuilder<LightB
 
 	@Override
 	protected double absoluteMaxLuxInputR() {
-		return LightBasinBlockEntity.STAT.rMaxTransfer();
+		return LightBasinBlock.STAT.rMaxTransfer();
 	}
 
 	@Override
 	protected double absoluteMaxLuxInputG() {
-		return LightBasinBlockEntity.STAT.gMaxTransfer();
+		return LightBasinBlock.STAT.gMaxTransfer();
 	}
 
 	@Override
 	protected double absoluteMaxLuxInputB() {
-		return LightBasinBlockEntity.STAT.bMaxTransfer();
+		return LightBasinBlock.STAT.bMaxTransfer();
 	}
 }

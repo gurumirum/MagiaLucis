@@ -1,9 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.lightbasin;
 
 import com.mojang.datafixers.util.Pair;
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LinkDestination;
-import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.block.Ticker;
@@ -23,6 +21,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -31,8 +30,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior> implements Ticker.Server {
-	public static final LuxStat STAT = GemStats.BRIGHTSTONE;
-
 	private static final int SYNC_INTERVAL = 3;
 	private static final int NO_LUX_INPUT_TICKS_MAX = 30;
 
@@ -216,6 +213,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		ItemEntity itemEntity = new ItemEntity(level,
 				pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5,
 				stack);
+		itemEntity.setDeltaMovement(Vec3.ZERO);
 		level.addFreshEntity(itemEntity);
 	}
 

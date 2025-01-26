@@ -14,17 +14,26 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> implements Ticker.Server, DirectLinkDestination {
+	private static final int SYNC_INTERVAL = 3;
+
 	private final ChargerTier chargerTier;
 	private final ChargerInventory inventory = new ChargerInventory();
+
+	private boolean syncContents;
 
 	public ChargerBlockEntity(ChargerTier chargerTier, BlockPos pos, BlockState blockState) {
 		super(chargerTier.chargerBlockEntityType(), pos, blockState);
@@ -35,7 +44,7 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 		return this.inventory;
 	}
 
-	public boolean dropItem() {
+	public boolean dropItem(@Nullable Player player) {
 		Level level = this.level;
 		if (level == null) return false;
 
@@ -43,12 +52,27 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 
 		if (!stack.isEmpty()) {
 			if (!level.isClientSide) {
-				drop(level, getBlockPos(), stack);
+				giveOrDrop(player, level, getBlockPos(), stack);
 			}
 			return true;
 		}
 
 		return false;
+	}
+
+	public boolean swapItem(@Nullable Player player, @NotNull ItemStack stack) {
+		Level level = this.level;
+		if (level == null) return false;
+
+		if (!this.inventory.isItemValid(0, stack)) return false;
+
+		if (!level.isClientSide) {
+			ItemStack stack2 = this.inventory.getStackInSlot(0);
+			this.inventory.setStackInSlot(0, stack.split(stack.getCount()));
+			giveOrDrop(player, level, getBlockPos(), stack2);
+		}
+
+		return true;
 	}
 
 	@Override
@@ -63,10 +87,18 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
 		ItemStack stack = this.inventory.getStackInSlot(0);
 		if (!stack.isEmpty()) {
-			ChargeLogic.chargeItem(nodeBehavior().charge, stack, nodeBehavior().maxInput);
+			if (ChargeLogic.chargeItem(nodeBehavior().charge, stack, nodeBehavior().maxInput)) {
+				this.syncContents = true;
+				setChanged();
+			}
 		}
 
 		nodeBehavior().reset();
+
+		if (this.syncContents && level.getGameTime() % SYNC_INTERVAL == 0) {
+			this.syncContents = false;
+			syncToClient();
+		}
 	}
 
 	@Override
@@ -109,10 +141,20 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 		this.inventory.deserializeNBT(lookupProvider, tag.getCompound("inventory"));
 	}
 
-	private static void drop(Level level, BlockPos pos, ItemStack stack) {
+	private static void giveOrDrop(@Nullable Player player, Level level, BlockPos pos, ItemStack stack) {
+		if (player != null) {
+			if (player.addItem(stack)) {
+				level.playSound(null, player.getX(), player.getY(), player.getZ(),
+						SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2f,
+						((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7f + 1) * 2);
+				return;
+			}
+		}
+
 		ItemEntity itemEntity = new ItemEntity(level,
 				pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
 				stack);
+		itemEntity.setDeltaMovement(Vec3.ZERO);
 		level.addFreshEntity(itemEntity);
 	}
 
@@ -139,7 +181,7 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 		@Override
 		protected void onContentsChanged(int slot) {
 			setChanged();
-			ChargerBlockEntity.this.syncToClient();
+			ChargerBlockEntity.this.syncContents = true;
 		}
 	}
 }
