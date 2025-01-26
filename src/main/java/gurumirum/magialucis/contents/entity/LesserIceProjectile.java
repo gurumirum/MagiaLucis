@@ -48,7 +48,7 @@ public class LesserIceProjectile extends ThrowableProjectile {
 	@Override
 	protected void onHitEntity(@NotNull EntityHitResult result) {
 		Entity entity = result.getEntity();
-		if (entity.hurt(damageSources().thrown(this, getOwner()), entity instanceof Blaze ? 5 : 1) &&
+		if (entity.hurt(damageSources().thrown(this, getOwner()), entity instanceof Blaze ? 10 : 1) &&
 				entity instanceof LivingEntity livingEntity) {
 			livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60));
 		}
