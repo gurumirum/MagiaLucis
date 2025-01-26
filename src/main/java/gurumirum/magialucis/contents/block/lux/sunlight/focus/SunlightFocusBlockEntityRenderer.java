@@ -2,10 +2,10 @@ package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import gurumirum.magialucis.capability.LinkSource;
-import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
@@ -16,18 +16,14 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
-public class SunlightFocusBlockEntityRenderer extends BasicRelayBlockEntityRenderer<SunlightFocusBlockEntity> {
+public class SunlightFocusBlockEntityRenderer implements BlockEntityRenderer<SunlightFocusBlockEntity> {
 	private final Quaternionf q = new Quaternionf();
 
-	public SunlightFocusBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-		super(context);
-	}
+	public SunlightFocusBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}
 
 	@Override
 	public void render(@NotNull SunlightFocusBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack,
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		super.render(blockEntity, partialTick, poseStack, bufferSource, packedLight, packedOverlay);
-
 		Minecraft mc = Minecraft.getInstance();
 		BakedModel model1 = mc.getModelManager().getModel(SunlightFocusModels.MODEL_1);
 		BakedModel model2 = mc.getModelManager().getModel(SunlightFocusModels.MODEL_2);
@@ -56,6 +52,8 @@ public class SunlightFocusBlockEntityRenderer extends BasicRelayBlockEntityRende
 			poseStack.popPose();
 		}
 		poseStack.popPose();
+
+		// TODO light effect maybe
 	}
 
 	private void draw(SunlightFocusBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, int packedOverlay, BakedModel model) {
