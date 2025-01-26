@@ -14,32 +14,40 @@ import java.util.Locale;
 import java.util.function.Consumer;
 
 public enum GemStats implements LuxStat {
-	BRIGHTSTONE(0, RGB332.WHITE, 0, 100, false),
-	SOUL_BRIGHTSTONE(0, RGB332.of(1, 0, 0), 0, 100, false),
+	// TIER 0
 
-	AMBER(1, RGB332.of(6, 3, 0), 5, 150),
-	CITRINE(1, RGB332.of(6, 6, 1), 25, 250),
-	IOLITE(1, RGB332.of(0, 0,1), 10, 600),
-	AQUAMARINE(1, RGB332.of(0, 5, 3), 20, 500),
-	PEARL(1, RGB332.of(7, 6, 3), 80, 700, false),
+	BRIGHTSTONE(RGB332.WHITE, 0, 100, false),
+	SOUL_BRIGHTSTONE(RGB332.of(1, 0, 0), 0, 100, false),
 
-	AMETHYST(1, RGB332.of(7, 2, 3), 50, 120, true, true),
-	OBSIDIAN(1, RGB332.of(1, 0, 1), 30, 750, false),
-	PRISMARINE(1, RGB332.of(0, 5, 2), 30, 400, true, true),
-	ENDER_PEARL(1, RGB332.of(0, 2, 1), 40, 500, false, true),
+	// TIER 1
 
-	PURIFIED_QUARTZ(2, RGB332.WHITE, 100, 1000, false),
-	CRYSTALLIZED_REDSTONE(2, RGB332.of(5, 0, 0), 400, 1500, false),
-	POLISHED_LAPIS_LAZULI(2, RGB332.of(1, 1, 2), 300, 2500, false),
+	AMBER(RGB332.of(6, 3, 0), 5, 150),
+	CITRINE(RGB332.of(6, 6, 1), 25, 250),
+	IOLITE(RGB332.of(0, 0,1), 10, 600),
+	AQUAMARINE(RGB332.of(0, 5, 3), 20, 500),
+	PEARL(RGB332.of(7, 6, 3), 80, 700, false),
 
-	DIAMOND(2, RGB332.of(4, 7, 3), 800, 4000, true, true),
-	RUBY(2, RGB332.of(7, 0, 0), 500, 5000),
-	EMERALD(2, RGB332.of(0, 7, 0), 500, 5000, true, true),
-	SAPPHIRE(2, RGB332.of(0, 0, 3), 500, 5000),
+	AMETHYST(RGB332.of(7, 2, 3), 50, 120, true, true),
+	OBSIDIAN(RGB332.of(1, 0, 1), 30, 750, false),
+	PRISMARINE(RGB332.of(0, 5, 2), 30, 400, true, true),
+	ENDER_PEARL(RGB332.of(0, 2, 1), 40, 500, false, true),
 
-	TOPAZ(3, RGB332.of(6, 6, 0), 5000, 10000),
-	MOONSTONE(3, RGB332.of(4, 6, 3), 1500, 20000, false),
-	JET(3, RGB332.of(0, 0, 0), 950, 20000, false)
+	// TIER 2
+
+	PURIFIED_QUARTZ(RGB332.WHITE, 100, 1000, false),
+	CRYSTALLIZED_REDSTONE(RGB332.of(5, 0, 0), 400, 1500, false),
+	POLISHED_LAPIS_LAZULI(RGB332.of(1, 1, 2), 300, 2500, false),
+
+	DIAMOND(RGB332.of(4, 7, 3), 800, 4000, true, true),
+	RUBY(RGB332.of(7, 0, 0), 500, 5000),
+	EMERALD(RGB332.of(0, 7, 0), 500, 5000, true, true),
+	SAPPHIRE(RGB332.of(0, 0, 3), 500, 5000),
+
+	// TIER 3
+
+	TOPAZ(RGB332.of(6, 6, 0), 5000, 10000),
+	MOONSTONE(RGB332.of(4, 6, 3), 1500, 20000, false),
+	JET(RGB332.of(0, 0, 0), 950, 20000, false)
 
 	// artificial gems onwards?
 	;
@@ -54,17 +62,16 @@ public enum GemStats implements LuxStat {
 
 	private @Nullable TagKey<Item> tag;
 
-	GemStats(int tier, byte color, double minLuxThreshold, double maxLuxThreshold) {
-		this(tier, color, minLuxThreshold, maxLuxThreshold, true, false);
+	GemStats(byte color, double minLuxThreshold, double maxLuxThreshold) {
+		this(color, minLuxThreshold, maxLuxThreshold, true, false);
 	}
 
-	GemStats(int tier, byte color, double minLuxThreshold, double maxLuxThreshold, boolean hasTag) {
-		this(tier, color, minLuxThreshold, maxLuxThreshold, hasTag, false);
+	GemStats(byte color, double minLuxThreshold, double maxLuxThreshold, boolean hasTag) {
+		this(color, minLuxThreshold, maxLuxThreshold, hasTag, false);
 	}
 
-	GemStats(int tier, byte color, double minLuxThreshold, double maxLuxThreshold, boolean hasTag, boolean vanilla) {
+	GemStats(byte color, double minLuxThreshold, double maxLuxThreshold, boolean hasTag, boolean vanilla) {
 		this.vanilla = vanilla;
-		if (tier < 0) throw new IllegalArgumentException("tier < 0");
 		if (minLuxThreshold < 0) throw new IllegalArgumentException("minLuxThreshold < 0");
 		if (maxLuxThreshold < 0) throw new IllegalArgumentException("maxLuxThreshold < 0");
 		if (minLuxThreshold > maxLuxThreshold) throw new IllegalArgumentException("minLuxThreshold > maxLuxThreshold");
