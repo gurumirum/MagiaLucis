@@ -72,7 +72,7 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 
 			poseStack.popPose();
 		} else {
-			VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.RELAY);
+			VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.PRISM);
 			RenderShapes.drawOctahedron(poseStack, vc, 0xffd2ecf6, false);
 			RenderShapes.drawOctahedron(poseStack, vc, -1, true);
 		}

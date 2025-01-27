@@ -1,6 +1,6 @@
 {
-  "vertex": "magialucis:relay",
-  "fragment": "magialucis:relay",
+  "vertex": "magialucis:prism",
+  "fragment": "magialucis:prism",
   "attributes": [
     "Position",
     "Color",

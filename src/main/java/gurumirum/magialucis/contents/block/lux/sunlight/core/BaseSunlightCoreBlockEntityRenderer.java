@@ -54,7 +54,7 @@ public abstract class BaseSunlightCoreBlockEntityRenderer<BE extends BaseSunligh
 		poseStack.scale(14 / 16f, 14 / 16f, 14 / 16f);
 		poseStack.translate(-.5f, -.5f, -.5f);
 
-		VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.RELAY);
+		VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.PRISM);
 		RenderShapes.drawTruncatedCube(poseStack, vc, 0xffd2ecf6, false);
 		RenderShapes.drawTruncatedCube(poseStack, vc, -1, true);
 

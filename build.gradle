@@ -65,6 +65,14 @@ runs {
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
     }
 
+    clientRenderDoc {
+        run 'client'
+
+        renderDoc {
+            enabled true
+        }
+    }
+
     server {
         modSource project.sourceSets.main
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id

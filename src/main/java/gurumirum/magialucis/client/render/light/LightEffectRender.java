@@ -55,7 +55,7 @@ public final class LightEffectRender {
 
 	@SubscribeEvent
 	public static void onRender(RenderLevelStageEvent event) {
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) {
 			renderLightEffects(event);
 		}
 	}

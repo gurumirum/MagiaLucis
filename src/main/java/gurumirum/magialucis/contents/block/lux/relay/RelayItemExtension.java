@@ -79,7 +79,7 @@ public class RelayItemExtension implements IClientItemExtensions {
 
 				poseStack.popPose();
 			} else {
-				VertexConsumer vc = buffer.getBuffer(ModRenderTypes.RELAY_ITEM_ENTITY);
+				VertexConsumer vc = buffer.getBuffer(ModRenderTypes.PRISM_ITEM_ENTITY);
 				RenderShapes.drawOctahedron(poseStack, vc, 0xffd2ecf6, false);
 				RenderShapes.drawOctahedron(poseStack, vc, -1, true);
 			}

@@ -42,35 +42,35 @@ public final class ModRenderTypes {
 					.setWriteMaskState(RenderType.COLOR_DEPTH_WRITE)
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setOutputState(RenderType.PARTICLES_TARGET)
-					.createCompositeState(true));
+					.createCompositeState(false));
 
-	public static final RenderType RELAY = RenderType.create(
-			MODID + "_relay",
+	public static final RenderType PRISM = RenderType.create(
+			MODID + "_prism",
 			DefaultVertexFormat.POSITION_COLOR_NORMAL,
 			VertexFormat.Mode.TRIANGLES,
 			RenderType.TRANSIENT_BUFFER_SIZE,
 			false,
-			true,
+			false,
 			RenderType.CompositeState.builder()
-					.setShaderState(new RenderStateShard.ShaderStateShard(ModRenderTypes::relayShader))
+					.setShaderState(new RenderStateShard.ShaderStateShard(ModRenderTypes::prismShader))
 					.setWriteMaskState(RenderType.COLOR_WRITE)
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setOutputState(RenderType.TRANSLUCENT_TARGET)
-					.createCompositeState(true));
+					.createCompositeState(false));
 
-	public static final RenderType RELAY_ITEM_ENTITY = RenderType.create(
-			MODID + "_relay_item_entity",
+	public static final RenderType PRISM_ITEM_ENTITY = RenderType.create(
+			MODID + "_prism_item_entity",
 			DefaultVertexFormat.POSITION_COLOR_NORMAL,
 			VertexFormat.Mode.TRIANGLES,
 			RenderType.TRANSIENT_BUFFER_SIZE,
 			false,
 			false,
 			RenderType.CompositeState.builder()
-					.setShaderState(new RenderStateShard.ShaderStateShard(ModRenderTypes::relayShader))
+					.setShaderState(new RenderStateShard.ShaderStateShard(ModRenderTypes::prismShader))
 					.setWriteMaskState(RenderType.COLOR_WRITE)
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setOutputState(RenderType.ITEM_ENTITY_TARGET)
-					.createCompositeState(true));
+					.createCompositeState(false));
 
 	private static final Function<ResourceLocation, RenderType> POS_TEX_C = Util.memoize(texture -> RenderType.create(
 			MODID + "_ptc",
@@ -100,7 +100,7 @@ public final class ModRenderTypes {
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setDepthTestState(RenderType.NO_DEPTH_TEST)
 					.setOutputState(RenderType.PARTICLES_TARGET)
-					.createCompositeState(true)));
+					.createCompositeState(false)));
 
 	public static final Function<ResourceLocation, RenderType> WHITE_CRUMBLING = Util.memoize(tex -> RenderType.create(
 			MODID + "_white_crumbling",
@@ -117,7 +117,7 @@ public final class ModRenderTypes {
 					.setLayeringState(RenderType.POLYGON_OFFSET_LAYERING)
 					.createCompositeState(false)));
 
-	private static ShaderInstance relayShader;
+	private static ShaderInstance prismShader;
 	private static ShaderInstance lightCylinderShader;
 	private static ShaderInstance lightSphereShader;
 
@@ -131,8 +131,8 @@ public final class ModRenderTypes {
 		return BLOCK_HIGHLIGHT.apply(texture);
 	}
 
-	public static ShaderInstance relayShader() {
-		return Objects.requireNonNull(relayShader);
+	public static ShaderInstance prismShader() {
+		return Objects.requireNonNull(prismShader);
 	}
 
 	public static ShaderInstance lightCylinderShader() {
@@ -158,8 +158,8 @@ public final class ModRenderTypes {
 
 	@SubscribeEvent
 	public static void registerShaders(RegisterShadersEvent event) throws IOException {
-		event.registerShader(new ShaderInstance(event.getResourceProvider(), id("relay"),
-				DefaultVertexFormat.POSITION_COLOR_NORMAL), s -> relayShader = s);
+		event.registerShader(new ShaderInstance(event.getResourceProvider(), id("prism"),
+				DefaultVertexFormat.POSITION_COLOR_NORMAL), s -> prismShader = s);
 		event.registerShader(new LightCylinderShaderInstance(event.getResourceProvider(), id("light_cylinder"),
 				DefaultVertexFormat.POSITION_COLOR), s -> lightCylinderShader = s);
 		event.registerShader(new LightSphereShaderInstance(event.getResourceProvider(), id("light_sphere"),
@@ -168,8 +168,8 @@ public final class ModRenderTypes {
 
 	@SubscribeEvent
 	public static void registerRenderBuffers(RegisterRenderBuffersEvent event) {
-		event.registerRenderBuffer(RELAY);
-		event.registerRenderBuffer(RELAY_ITEM_ENTITY);
+		event.registerRenderBuffer(PRISM);
+		event.registerRenderBuffer(PRISM_ITEM_ENTITY);
 
 		for (RenderType t : whiteDestroyStages()) event.registerRenderBuffer(t);
 	}
