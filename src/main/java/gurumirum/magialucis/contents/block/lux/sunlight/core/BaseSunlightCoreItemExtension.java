@@ -1,7 +1,10 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.client.RotationLogic;
+import gurumirum.magialucis.client.render.ModRenderTypes;
+import gurumirum.magialucis.client.render.RenderShapes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -61,6 +64,14 @@ public abstract class BaseSunlightCoreItemExtension implements IClientItemExtens
 							ROTATION_PERIOD,
 							partialTicks),
 					Direction.UP);
+
+			poseStack.translate(.5f, .5f, .5f);
+			poseStack.scale(14 / 16f, 14 / 16f, 14 / 16f);
+			poseStack.translate(-.5f, -.5f, -.5f);
+
+			VertexConsumer vc = buffer.getBuffer(ModRenderTypes.PRISM_ITEM_ENTITY);
+			RenderShapes.drawTruncatedCube(poseStack, vc, -1, true);
+			RenderShapes.drawTruncatedCube(poseStack, vc, 0xffd2ecf6, false);
 		}
 	}
 }
