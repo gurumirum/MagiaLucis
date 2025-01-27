@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import gurumirum.magialucis.client.render.light.LightCylinderShaderInstance;
 import gurumirum.magialucis.client.render.light.LightSphereShaderInstance;
+import gurumirum.magialucis.contents.item.wand.ConfigurationWandOverlay;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.*;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +28,8 @@ import static gurumirum.magialucis.MagiaLucisMod.id;
 @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ModRenderTypes {
 	private ModRenderTypes() {}
+
+	private static final ResourceLocation NO_TEXTURE = id("__no_texture");
 
 	public static final MultiBufferSource.BufferSource STUB_BUFFER = MultiBufferSource
 			.immediate(new ByteBufferBuilder(1536));
@@ -73,8 +76,8 @@ public final class ModRenderTypes {
 					.setCullState(RenderStateShard.NO_CULL)
 					.createCompositeState(true)));
 
-	private static final Function<ResourceLocation, RenderType> BLOCK_HIGHLIGHT = Util.memoize(texture -> RenderType.create(
-			MODID + "_block_highlight",
+	public static final RenderType BLOCK_HIGHLIGHT_BOX = RenderType.create(
+			MODID + "_block_highlight_box",
 			DefaultVertexFormat.POSITION_TEX_COLOR,
 			VertexFormat.Mode.QUADS,
 			RenderType.TRANSIENT_BUFFER_SIZE,
@@ -82,12 +85,24 @@ public final class ModRenderTypes {
 			false,
 			RenderType.CompositeState.builder()
 					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexColorShader))
-					.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
-					.setWriteMaskState(RenderType.COLOR_DEPTH_WRITE)
+					.setTextureState(new RenderStateShard.TextureStateShard(ConfigurationWandOverlay.BLOCK_HIGHLIGHT, false, false))
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setDepthTestState(RenderType.NO_DEPTH_TEST)
 					.setOutputState(RenderType.PARTICLES_TARGET)
-					.createCompositeState(false)));
+					.createCompositeState(false));
+
+	public static final RenderType BLOCK_HIGHLIGHT_LINE = RenderType.create(
+			MODID + "_block_highlight_line",
+			DefaultVertexFormat.POSITION_COLOR,
+			VertexFormat.Mode.QUADS,
+			RenderType.TRANSIENT_BUFFER_SIZE,
+			false,
+			false,
+			RenderType.CompositeState.builder()
+					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorShader))
+					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
+					.setOutputState(RenderType.PARTICLES_TARGET)
+					.createCompositeState(false));
 
 	public static final Function<ResourceLocation, RenderType> WHITE_CRUMBLING = Util.memoize(tex -> RenderType.create(
 			MODID + "_white_crumbling",
@@ -112,10 +127,6 @@ public final class ModRenderTypes {
 
 	public static RenderType positionTextureColor(ResourceLocation texture) {
 		return POS_TEX_C.apply(texture);
-	}
-
-	public static RenderType blockHighlight(ResourceLocation texture) {
-		return BLOCK_HIGHLIGHT.apply(texture);
 	}
 
 	public static ShaderInstance prismShader() {
@@ -156,6 +167,8 @@ public final class ModRenderTypes {
 	@SubscribeEvent
 	public static void registerRenderBuffers(RegisterRenderBuffersEvent event) {
 		event.registerRenderBuffer(PRISM_ITEM_ENTITY);
+		event.registerRenderBuffer(BLOCK_HIGHLIGHT_BOX);
+		event.registerRenderBuffer(BLOCK_HIGHLIGHT_LINE);
 
 		for (RenderType t : whiteDestroyStages()) event.registerRenderBuffer(t);
 	}

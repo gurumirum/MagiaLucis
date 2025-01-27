@@ -40,10 +40,9 @@ public final class RenderEffects {
 			AncientLightCrumblingRender.render(event);
 			LightEffectRender.render(event);
 			PrismEffectRender.render(event);
+			ConfigurationWandOverlay.render(event);
 		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRIPWIRE_BLOCKS) {
 			BeamRender.render(event);
-		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-			ConfigurationWandOverlay.render(event);
 		}
 	}
 

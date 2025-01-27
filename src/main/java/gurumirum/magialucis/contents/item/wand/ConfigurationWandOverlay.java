@@ -1,6 +1,8 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.capability.ModCapabilities;
@@ -11,9 +13,9 @@ import gurumirum.magialucis.contents.block.lux.LuxNodeSyncPropertyAccess;
 import gurumirum.magialucis.impl.luxnet.*;
 import gurumirum.magialucis.net.msgs.SetLinkMsg;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
@@ -36,7 +38,7 @@ import static gurumirum.magialucis.MagiaLucisMod.id;
 public final class ConfigurationWandOverlay {
 	private ConfigurationWandOverlay() {}
 
-	private static final ResourceLocation BLOCK_HIGHLIGHT = id("textures/effect/block_highlight.png");
+	public static final ResourceLocation BLOCK_HIGHLIGHT = id("textures/effect/block_highlight.png");
 
 	private static final int TINT_SELECT = 0xee00ff00;
 	private static final int TINT_MISSING = 0xeeffff00;
@@ -74,9 +76,50 @@ public final class ConfigurationWandOverlay {
 
 		PoseStack poseStack = event.getPoseStack();
 		poseStack.pushPose();
-		setupCamera(poseStack, event.getCamera());
-		for (Box box : visualData.boxes) drawSelectionCube(poseStack, box.pos, box.tint);
-		for (Line line : visualData.lines) drawLine(poseStack, line.start, line.end, line.tint);
+		Vec3 cameraPos = event.getCamera().getPosition();
+		poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
+
+		MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+
+		if (!visualData.boxes.isEmpty()) {
+			VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.BLOCK_HIGHLIGHT_BOX);
+
+			for (Box box : visualData.boxes) {
+				RenderShapes.texturedTintedBox(poseStack, vc,
+						box.pos.getX() + -1 / 16f, box.pos.getY() + -1 / 16f, box.pos.getZ() + -1 / 16f,
+						box.pos.getX() + 17 / 16f, box.pos.getY() + 17 / 16f, box.pos.getZ() + 17 / 16f,
+						box.tint);
+			}
+		}
+
+		if (!visualData.lines.isEmpty()) {
+			VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.BLOCK_HIGHLIGHT_LINE);
+
+			for (int i = 0; i < visualData.lines.size(); i++) {
+				Line line = visualData.lines.get(i);
+
+				Vector3f vec = new Vector3f(line.start.getX() + .5f - (float)line.end.x,
+						line.start.getY() + .5f - (float)line.end.y,
+						line.start.getZ() + .5f - (float)line.end.z);
+
+				poseStack.pushPose();
+				poseStack.translate(line.start.getX() + .5, line.start.getY() + .5, line.start.getZ() + .5);
+				poseStack.mulPose(new Vector3f(0, 0, -1).rotationTo(vec, new Quaternionf()));
+				poseStack.mulPose(Axis.ZP.rotation(i));
+
+				poseStack.scale(0.1f, 0.1f, 1);
+
+				RenderShapes.untexturedZGradientBox(
+						poseStack,
+						vc,
+						-.5f, -.5f, 0,
+						.5f, .5f, vec.length() + .1f,
+						line.tint, line.tint);
+
+				poseStack.popPose();
+			}
+		}
+
 		poseStack.popPose();
 
 		visualData.boxes.clear();
@@ -177,40 +220,6 @@ public final class ConfigurationWandOverlay {
 
 		visualData.boxes.add(new Box(linkSourcePos.pos(), TINT_SELECT));
 		return true;
-	}
-
-	private static void setupCamera(PoseStack poseStack, Camera camera) {
-		Vec3 cameraPos = camera.getPosition();
-		poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-	}
-
-	private static void drawSelectionCube(PoseStack poseStack, BlockPos pos, int tint) {
-		RenderShapes.texturedTintedBox(poseStack, Minecraft.getInstance().renderBuffers().bufferSource()
-						.getBuffer(ModRenderTypes.blockHighlight(BLOCK_HIGHLIGHT)),
-				pos.getX() + -1 / 16f, pos.getY() + -1 / 16f, pos.getZ() + -1 / 16f,
-				pos.getX() + 17 / 16f, pos.getY() + 17 / 16f, pos.getZ() + 17 / 16f,
-				tint);
-	}
-
-	private static void drawLine(PoseStack poseStack, BlockPos start, Vec3 end, int tint) {
-		Vector3f vec = new Vector3f(start.getX() + .5f - (float)end.x,
-				start.getY() + .5f - (float)end.y,
-				start.getZ() + .5f - (float)end.z);
-
-		poseStack.pushPose();
-		poseStack.translate(start.getX() + .5, start.getY() + .5, start.getZ() + .5);
-		poseStack.mulPose(new Vector3f(0, 0, -1).rotationTo(vec, new Quaternionf()));
-
-		poseStack.scale(0.1f, 0.1f, 1);
-
-		RenderShapes.untexturedZGradientBox(
-				poseStack,
-				Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(ModRenderTypes.BEAM),
-				-.5f, -.5f, 0,
-				.5f, .5f, vec.length() + .1f,
-				tint, tint);
-
-		poseStack.popPose();
 	}
 
 	private static void addAllConnections(Level level, BlockPos pos, @Nullable LinkSource linkSource, boolean remove) {
