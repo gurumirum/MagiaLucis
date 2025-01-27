@@ -3,7 +3,6 @@ package gurumirum.magialucis.contents.item.wand;
 import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.net.msgs.SetLinkMsg;
 import net.minecraft.ChatFormatting;
@@ -12,14 +11,14 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -27,7 +26,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
-import org.joml.Vector3d;
 
 import java.util.List;
 import java.util.Objects;
@@ -51,6 +49,30 @@ public class ConfigurationWandItem extends Item {
 	}
 
 	@Override
+	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand usedHand) {
+		ItemStack stack = player.getItemInHand(usedHand);
+		GlobalPos linkSourcePos = stack.get(ModDataComponents.LINK_SOURCE.get());
+
+		if (linkSourcePos != null &&
+				linkSourcePos.dimension().equals(level.dimension()) &&
+				level.isLoaded(linkSourcePos.pos())) {
+			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos.pos());
+			if (linkSource != null) {
+				if (level.isClientSide) {
+					SetLinkMsg msg = ClientLogic.calculateLink(level, player, linkSourcePos.pos(), linkSource,
+							null, player.getLookAngle().scale(5).add(player.getEyePosition()));
+					if (msg != null) PacketDistributor.sendToServer(msg);
+				}
+
+				stack.remove(ModDataComponents.LINK_SOURCE.get());
+				return InteractionResultHolder.success(stack);
+			}
+		}
+
+		return InteractionResultHolder.pass(stack);
+	}
+
+	@Override
 	public @NotNull InteractionResult onItemUseFirst(ItemStack stack, @NotNull UseOnContext context) {
 		GlobalPos linkSourcePos = stack.get(ModDataComponents.LINK_SOURCE.get());
 		Level level = context.getLevel();
@@ -70,8 +92,9 @@ public class ConfigurationWandItem extends Item {
 			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos.pos());
 			if (linkSource != null) {
 				if (level.isClientSide) {
-					ClientFunction.calculateLink(level, context.getPlayer(), linkSourcePos.pos(),
+					SetLinkMsg msg = ClientLogic.calculateLink(level, context.getPlayer(), linkSourcePos.pos(),
 							linkSource, context.getClickedPos(), context.getClickLocation());
+					if (msg != null) PacketDistributor.sendToServer(msg);
 				}
 
 				stack.remove(ModDataComponents.LINK_SOURCE.get());
@@ -94,26 +117,27 @@ public class ConfigurationWandItem extends Item {
 		}
 	}
 
-	public static final class ClientFunction {
-		private static final Vector3d vecCache = new Vector3d();
+	public static final class ClientLogic {
 		private static final Quaternionf q1 = new Quaternionf();
 		private static final Quaternionf q2 = new Quaternionf();
 
-		public static void calculateLink(Level level, Player player, BlockPos linkSourcePos, LinkSource linkSource,
-		                                 BlockPos cursorPos, Vec3 cursorLocation) {
-			if (!(player instanceof LocalPlayer)) return; // skip for non-local players
-			if (linkSource.maxLinks() <= 0) return;
+		public static @Nullable SetLinkMsg calculateLink(
+				Level level, Player player, BlockPos linkSourcePos, LinkSource linkSource,
+				@Nullable BlockPos cursorPos, Vec3 cursorLocation) {
+			if (!(player instanceof LocalPlayer)) return null; // skip for non-local players
+			if (linkSource.maxLinks() <= 0) return null;
 
 			// abort if too far away
 			double linkDistance = linkSource.linkDistance();
-			if ((linkDistance + 1) * (linkDistance + 1) < linkSourcePos.distToCenterSqr(cursorLocation)) return;
+			double maxDistance = linkDistance + 3;
+			if (maxDistance * maxDistance < linkSourcePos.distToCenterSqr(cursorLocation)) return null;
+
+			LinkSource.Orientation orientation = cursorPos == null || Screen.hasControlDown() ?
+					LinkSource.Orientation.fromPosition(linkSourcePos, cursorLocation) :
+					LinkSource.Orientation.fromPosition(linkSourcePos, cursorPos);
 
 			if (player.isSecondaryUseActive()) {
 				// remove the closest link with tangent less than 90 degrees
-				LinkSource.Orientation orientation = isCtrlPressed() ?
-						LinkSource.Orientation.fromPosition(linkSourcePos, cursorLocation) :
-						LinkSource.Orientation.fromPosition(linkSourcePos, cursorPos);
-
 				orientation.toQuat(q1);
 
 				int closestIndex = -1;
@@ -123,70 +147,44 @@ public class ConfigurationWandItem extends Item {
 					LinkSource.Orientation o = linkSource.getLink(i);
 					if (o == null) continue;
 
-					float angle = Mth.wrapDegrees(o.toQuat(q2).difference(q1).angle());
-					if (angle < 90 && angle < closestAngle) {
+					float angle = Math.abs(o.toQuat(q2).difference(q1).angle());
+					if (angle < (float)(Math.PI / 2) && angle < closestAngle) {
 						closestIndex = i;
 						closestAngle = angle;
 					}
 				}
 
-				if (closestIndex != -1) {
-					PacketDistributor.sendToServer(new SetLinkMsg(linkSourcePos, closestIndex, null));
-				}
-			} else {
-				// add or replace
-				@Nullable BlockHitResult[] connections = getConnections(level, linkSource, linkSourcePos);
-				int firstNull = -1;
-
-				for (int i = 0; i < connections.length; i++) {
-					BlockHitResult h = connections[i];
-					if (h == null) {
-						if (firstNull == -1) firstNull = i;
-					} else if (h.getBlockPos().equals(cursorPos)) {
-						// duplicate detected; remove preexisting connection instead
-						PacketDistributor.sendToServer(new SetLinkMsg(linkSourcePos, i, null));
-						return;
-					}
-				}
-
-				LinkSource.Orientation orientation = isCtrlPressed() ?
-						LinkSource.Orientation.fromPosition(linkSourcePos, cursorLocation) :
-						LinkSource.Orientation.fromPosition(linkSourcePos, cursorPos);
-
-				PacketDistributor.sendToServer(new SetLinkMsg(linkSourcePos,
-						firstNull == -1 ? connections.length - 1 : firstNull,
-						orientation));
+				return closestIndex != -1 ? new SetLinkMsg(linkSourcePos, closestIndex, null) : null;
 			}
+
+			if (cursorPos == null) return null;
+
+			// add or replace
+			@Nullable BlockHitResult[] connections = getConnections(level, linkSource, linkSourcePos);
+			int firstNull = -1;
+
+			for (int i = 0; i < connections.length; i++) {
+				BlockHitResult h = connections[i];
+				if (h == null) {
+					if (firstNull == -1) firstNull = i;
+				} else if (h.getBlockPos().equals(cursorPos)) {
+					// duplicate detected; remove preexisting connection instead
+					return new SetLinkMsg(linkSourcePos, i, null);
+				}
+			}
+
+			return new SetLinkMsg(linkSourcePos, firstNull == -1 ? connections.length - 1 : firstNull, orientation);
 		}
 
 		public static @Nullable BlockHitResult @NotNull [] getConnections(Level level, LinkSource linkSource, BlockPos originPos) {
-			Vec3 origin = Vec3.atCenterOf(originPos);
 			BlockHitResult[] arr = new BlockHitResult[linkSource.maxLinks()];
-			for (int i = 0; i < arr.length; i++) arr[i] = getConnection(level, linkSource, origin, i);
+			double linkDistance = linkSource.linkDistance();
+			for (int i = 0; i < arr.length; i++) {
+				LinkSource.Orientation o = linkSource.getLink(i);
+				arr[i] = o == null ? null : LuxUtils.traceConnection(level, originPos, o.xRot(), o.yRot(), linkDistance);
+			}
 			return arr;
 		}
 
-		public static @Nullable BlockHitResult getConnection(Level level, LinkSource linkSource, Vec3 origin, int index) {
-			double linkDistance = linkSource.linkDistance();
-			LinkSource.Orientation o = linkSource.getLink(index);
-			Vector3d vec = vecCache;
-
-			if (o != null) {
-				o.toVector(vec);
-				return LuxUtils.safeClip(level, new ClipContext(
-						origin.add(vec.x, vec.y, vec.z),
-						new Vec3(
-								origin.x + vec.x * linkDistance,
-								origin.y + vec.y * linkDistance,
-								origin.z + vec.z * linkDistance),
-						ClipContext.Block.VISUAL, ClipContext.Fluid.NONE,
-						LuxNetCollisionContext.EMPTY));
-			}
-			return null;
-		}
-
-		public static boolean isCtrlPressed() {
-			return Screen.hasControlDown();
-		}
 	}
 }

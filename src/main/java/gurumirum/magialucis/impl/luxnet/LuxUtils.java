@@ -14,6 +14,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
@@ -73,17 +74,12 @@ public final class LuxUtils {
 		}
 	}
 
-	public static boolean linkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
-	                                        float xRot, float yRot, double linkDistance,
-	                                        int linkIndex, @Nullable LinkDestinationSelector selector,
-	                                        boolean registerLinkFail) {
-		Level level = blockEntity.getLevel();
-		if (level == null) return false;
+	public static @NotNull BlockHitResult traceConnection(Level level, BlockPos pos,
+	                                                      float xRot, float yRot,
+	                                                      double linkDistance) {
+		Vector3d vec = LinkSource.Orientation.toVector(xRot, yRot, new Vector3d());
 
-		Vector3d vec = LinkSource.Orientation.toVector(xRot, yRot, linkCollector.mutableVec3d);
-
-		BlockPos pos = blockEntity.getBlockPos();
-		BlockHitResult hitResult = safeClip(level, new ClipContext(
+		return safeClip(level, new ClipContext(
 				Vec3.atCenterOf(pos).add(vec.x, vec.y, vec.z),
 				new Vec3(
 						pos.getX() + .5f + vec.x * linkDistance,
@@ -91,6 +87,17 @@ public final class LuxUtils {
 						pos.getZ() + .5f + vec.z * linkDistance),
 				ClipContext.Block.VISUAL, ClipContext.Fluid.NONE,
 				LuxNetCollisionContext.EMPTY));
+	}
+
+	public static boolean linkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
+	                                        float xRot, float yRot, double linkDistance,
+	                                        int linkIndex, @Nullable LinkDestinationSelector selector,
+	                                        boolean registerLinkFail) {
+		Level level = blockEntity.getLevel();
+		if (level == null) return false;
+
+		BlockPos pos = blockEntity.getBlockPos();
+		BlockHitResult hitResult = traceConnection(level, pos, xRot, yRot, linkDistance);
 
 		if (hitResult.getType() == HitResult.Type.BLOCK && !hitResult.getBlockPos().equals(pos)) {
 			if (selector == null) selector = LinkDestinationSelector.DEFAULT;

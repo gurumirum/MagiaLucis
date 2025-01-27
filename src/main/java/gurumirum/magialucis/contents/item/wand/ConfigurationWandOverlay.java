@@ -8,10 +8,8 @@ import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.lux.LuxNodeSyncPropertyAccess;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
-import gurumirum.magialucis.impl.luxnet.LinkContext;
-import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
+import gurumirum.magialucis.impl.luxnet.*;
+import gurumirum.magialucis.net.msgs.SetLinkMsg;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -20,13 +18,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -36,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static gurumirum.magialucis.MagiaLucisMod.id;
-import static gurumirum.magialucis.contents.item.wand.ConfigurationWandItem.ClientFunction.isCtrlPressed;
 
 public final class ConfigurationWandOverlay {
 	private ConfigurationWandOverlay() {}
@@ -72,9 +67,6 @@ public final class ConfigurationWandOverlay {
 
 	static final OverlayVisualData visualData = new OverlayVisualData();
 
-	private static final Quaternionf q1 = new Quaternionf();
-	private static final Quaternionf q2 = new Quaternionf();
-
 	private static void updateAndDraw(RenderLevelStageEvent event, LocalPlayer player, Level level, ItemStack stack) {
 		update(player, level, stack);
 
@@ -94,135 +86,97 @@ public final class ConfigurationWandOverlay {
 	private static void update(LocalPlayer player, Level level, ItemStack stack) {
 		Minecraft mc = Minecraft.getInstance();
 		GlobalPos linkSourcePos = stack.get(ModDataComponents.LINK_SOURCE);
-		@Nullable BlockHitResult blockHit;
-		@Nullable BlockPos cursorHitPos;
-		@Nullable Vec3 cursorHitLocation;
+		@Nullable BlockHitResult cursor;
 
 		if (mc.hitResult != null && mc.hitResult.getType() == HitResult.Type.BLOCK &&
 				mc.hitResult instanceof BlockHitResult _blockHit) {
-			blockHit = _blockHit;
-			cursorHitPos = blockHit.getBlockPos();
-			cursorHitLocation = blockHit.getLocation();
+			cursor = _blockHit;
 		} else {
-			blockHit = null;
-			cursorHitPos = null;
-			cursorHitLocation = null;
+			cursor = null;
 		}
 
 		if (linkSourcePos != null &&
 				linkSourcePos.dimension().equals(level.dimension()) &&
 				level.isLoaded(linkSourcePos.pos())) {
-			int boxTint = TINT_SELECT;
 
 			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos.pos());
 			if (linkSource == null) {
-				boxTint = TINT_MISSING;
-				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.missing_link", ChatFormatting.RED + linkSourcePos.pos().toShortString()));
+				visualData.boxes.add(new Box(linkSourcePos.pos(), TINT_MISSING));
+				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.missing_link",
+						ChatFormatting.RED + linkSourcePos.pos().toShortString()));
+				return;
 			}
 
-			if (cursorHitPos != null && cursorHitPos.equals(linkSourcePos.pos())) {
+			if (cursor != null && cursor.getBlockPos().equals(linkSourcePos.pos())) {
 				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.on_block.1"));
 				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.on_block.2"));
 
 				if (player.isSecondaryUseActive()) {
-					boxTint = TINT_REMOVE;
+					visualData.boxes.add(new Box(linkSourcePos.pos(), TINT_REMOVE));
 					addAllConnections(level, linkSourcePos.pos(), linkSource, true);
-				}
-				visualData.boxes.add(new Box(linkSourcePos.pos(), boxTint));
-				return;
-			} else if (linkSource != null) {
-				boolean removeLink = false;
-
-				if (cursorHitPos != null) {
-					if (player.isSecondaryUseActive()) {
-						LinkSource.Orientation orientation = isCtrlPressed() ?
-								LinkSource.Orientation.fromPosition(linkSourcePos.pos(), cursorHitLocation) :
-								LinkSource.Orientation.fromPosition(linkSourcePos.pos(), cursorHitPos);
-
-						orientation.toQuat(q1);
-
-						int closestIndex = -1;
-						float closestAngle = Float.POSITIVE_INFINITY;
-
-						for (int i = 0, maxLinks = linkSource.maxLinks(); i < maxLinks; i++) {
-							LinkSource.Orientation o = linkSource.getLink(i);
-							if (o == null) continue;
-
-							float angle = Mth.wrapDegrees(o.toQuat(q2).difference(q1).angle());
-							if (angle < 90 && angle < closestAngle) {
-								closestIndex = i;
-								closestAngle = angle;
-							}
-						}
-
-						if (closestIndex != -1) {
-							InWorldLinkState linkState = linkSource.getLinkState(closestIndex);
-							if (linkState != null)
-								visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
-						}
-					} else {
-						int firstNull = -1;
-						boolean skipNewLink = false;
-
-						for (int i = 0, maxLinks = linkSource.maxLinks(); i < maxLinks; i++) {
-							if (linkSource.getLink(i) == null) {
-								if (firstNull == -1) firstNull = i;
-								continue;
-							}
-							InWorldLinkState linkState = linkSource.getLinkState(i);
-							if (linkState != null && linkState.linkPos().equals(cursorHitPos)) {
-								// duplicate detected; remove preexisting connection instead
-								visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
-								removeLink = true;
-								skipNewLink = true;
-								break;
-							}
-						}
-
-						if (!skipNewLink) {
-							if (firstNull == -1) {
-								InWorldLinkState linkState = linkSource.getLinkState(linkSource.maxLinks() - 1);
-								if (linkState != null) {
-									visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
-								}
-							}
-
-							LinkDestinationSelector dstSelector = linkSource.linkDestinationSelector();
-							if (dstSelector == null) dstSelector = LinkDestinationSelector.DEFAULT;
-							LinkDestination dst = dstSelector.chooseLinkDestination(level, null, blockHit);
-
-							boolean linkable = dst != null && dst.linkWithSource(new LinkContext(level, linkSource.clientSideInterface(), blockHit)).isLinkable();
-							visualData.lines.add(new Line(linkSourcePos.pos(),
-									isCtrlPressed() ? cursorHitLocation : Vec3.atCenterOf(cursorHitPos),
-									linkable ? TINT_SELECT : TINT_MISSING));
-						}
-					}
-				}
-
-				if (removeLink) {
-					visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.remove_link"));
 				} else {
-					visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.set_link.1"));
-					visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.set_link.2"));
-					visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.set_link.3"));
+					visualData.boxes.add(new Box(linkSourcePos.pos(), TINT_SELECT));
 				}
-
-				visualData.boxes.add(new Box(linkSourcePos.pos(), boxTint));
 				return;
-			} else {
-				visualData.boxes.add(new Box(linkSourcePos.pos(), boxTint));
-				// missing src, check for cursor
+			} else if (appendLinkPreview(player, level, linkSourcePos, linkSource, cursor)) {
+				return;
 			}
 		}
 
-		if (cursorHitPos != null) {
-			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, cursorHitPos);
-			addAllConnections(level, cursorHitPos, linkSource, player.isSecondaryUseActive());
+		if (cursor != null) {
+			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, cursor.getBlockPos());
+			addAllConnections(level, cursor.getBlockPos(), linkSource, player.isSecondaryUseActive());
 			if (linkSource != null) {
 				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.start_link.1"));
 				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.start_link.2"));
 			}
 		}
+	}
+
+	private static boolean appendLinkPreview(LocalPlayer player, Level level, GlobalPos linkSourcePos,
+	                                         LinkSource linkSource, @Nullable BlockHitResult cursor) {
+		SetLinkMsg msg = ConfigurationWandItem.ClientLogic.calculateLink(level, player, linkSourcePos.pos(), linkSource,
+				cursor != null ? cursor.getBlockPos() : null,
+				cursor != null ? cursor.getLocation() : player.getLookAngle().scale(5).add(player.getEyePosition()));
+
+		if (msg != null) {
+			@Nullable InWorldLinkState linkState = linkSource.getLinkState(msg.index());
+
+			if (msg.orientation() == null) {
+				if (linkState != null) {
+					visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
+				}
+			} else {
+				if (linkState != null) {
+					visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
+				}
+
+				BlockHitResult connection = LuxUtils.traceConnection(level, linkSourcePos.pos(),
+						msg.orientation().xRot(), msg.orientation().yRot(),
+						linkSource.linkDistance());
+
+				LinkDestinationSelector dstSelector = linkSource.linkDestinationSelector();
+				if (dstSelector == null) dstSelector = LinkDestinationSelector.DEFAULT;
+				LinkDestination dst = dstSelector.chooseLinkDestination(level, null, connection);
+
+				boolean linkable = dst != null && dst.linkWithSource(
+								new LinkContext(level, linkSource.clientSideInterface(), connection))
+						.isLinkable();
+				visualData.lines.add(new Line(linkSourcePos.pos(), connection.getLocation(),
+						linkable ? TINT_SELECT : TINT_MISSING));
+			}
+		}
+
+		if (player.isSecondaryUseActive()) {
+			visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.remove_link"));
+		} else {
+			visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.set_link.1"));
+			visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.set_link.2"));
+			visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.set_link.3"));
+		}
+
+		visualData.boxes.add(new Box(linkSourcePos.pos(), TINT_SELECT));
+		return true;
 	}
 
 	private static void setupCamera(PoseStack poseStack, Camera camera) {
