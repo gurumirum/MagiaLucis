@@ -4,8 +4,8 @@ import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
-import gurumirum.magialucis.net.msgs.SetLinkMsg;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
+import gurumirum.magialucis.net.msgs.SetLinkMsg;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
@@ -23,7 +23,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -180,7 +179,7 @@ public class ConfigurationWandItem extends Item {
 								origin.x + vec.x * linkDistance,
 								origin.y + vec.y * linkDistance,
 								origin.z + vec.z * linkDistance),
-						ClipContext.Block.VISUAL, ClipContext.Fluid.ANY,
+						ClipContext.Block.VISUAL, ClipContext.Fluid.NONE,
 						LuxNetCollisionContext.EMPTY));
 			}
 			return null;

@@ -89,7 +89,7 @@ public final class LuxUtils {
 						pos.getX() + .5f + vec.x * linkDistance,
 						pos.getY() + .5f + vec.y * linkDistance,
 						pos.getZ() + .5f + vec.z * linkDistance),
-				ClipContext.Block.VISUAL, ClipContext.Fluid.ANY,
+				ClipContext.Block.VISUAL, ClipContext.Fluid.NONE,
 				LuxNetCollisionContext.EMPTY));
 
 		if (hitResult.getType() == HitResult.Type.BLOCK && !hitResult.getBlockPos().equals(pos)) {

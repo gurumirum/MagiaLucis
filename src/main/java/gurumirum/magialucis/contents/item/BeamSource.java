@@ -36,7 +36,7 @@ public interface BeamSource {
 
 	static BlockHitResult trace(Entity entity, Vec3 start, Vec3 end) {
 		return entity.level().clip(new ClipContext(start, end,
-				ClipContext.Block.VISUAL, ClipContext.Fluid.ANY,
+				ClipContext.Block.VISUAL, ClipContext.Fluid.NONE,
 				entity));
 	}
 }
