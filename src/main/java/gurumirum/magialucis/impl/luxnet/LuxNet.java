@@ -243,6 +243,13 @@ public final class LuxNet extends SavedData {
 
 	void update(@NotNull ServerLevel level) {
 		if (level.getGameTime() % UPDATE_CONNECTION_CYCLE == 0) {
+			this.queuedLinkUpdates.clear();
+			for (var e : this.nodes.int2ObjectEntrySet()) {
+				LuxNode node = e.getValue();
+				LuxNodeInterface iface = node.iface();
+				if (iface != null) updateLink(node, iface);
+			}
+		} else {
 			if (!this.queuedLinkUpdates.isEmpty()) {
 				updateWithQueue(this.queuedLinkUpdates, id -> {
 					LuxNode node = get(id);
@@ -250,13 +257,6 @@ public final class LuxNet extends SavedData {
 					LuxNodeInterface iface = node.iface();
 					if (iface != null) updateLink(node, iface);
 				});
-			}
-		} else {
-			this.queuedLinkUpdates.clear();
-			for (var e : this.nodes.int2ObjectEntrySet()) {
-				LuxNode node = e.getValue();
-				LuxNodeInterface iface = node.iface();
-				if (iface != null) updateLink(node, iface);
 			}
 		}
 
