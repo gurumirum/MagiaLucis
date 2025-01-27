@@ -529,8 +529,6 @@ public final class LuxNet extends SavedData {
 	}
 
 	public final class LinkCollector implements ServerSideLinkContext {
-		public final Vector3d mutableVec3d = new Vector3d();
-
 		private final Int2IntMap links = new Int2IntOpenHashMap();
 		private final Int2ObjectMap<InWorldLinkState> inWorldLinks = new Int2ObjectOpenHashMap<>();
 		private @Nullable LuxNode node;
