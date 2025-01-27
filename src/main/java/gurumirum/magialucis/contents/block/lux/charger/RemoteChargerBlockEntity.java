@@ -2,8 +2,8 @@ package gurumirum.magialucis.contents.block.lux.charger;
 
 import gurumirum.magialucis.capability.DirectLinkDestination;
 import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
-import gurumirum.magialucis.client.render.light.LightEffectRender;
 import gurumirum.magialucis.contents.ChargerTier;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
@@ -40,7 +40,7 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior
 	public void onLoad() {
 		super.onLoad();
 		if (this.level != null && this.level.isClientSide) {
-			LightEffectRender.register(new BlockLightEffectProvider<>(this, 1));
+			RenderEffects.light.register(new BlockLightEffectProvider<>(this, 1));
 		}
 	}
 

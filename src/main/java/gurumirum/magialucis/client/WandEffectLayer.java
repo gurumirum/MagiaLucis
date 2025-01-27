@@ -2,8 +2,8 @@ package gurumirum.magialucis.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import gurumirum.magialucis.client.render.BeamRender;
-import gurumirum.magialucis.client.render.PlayerBeamEffect;
+import gurumirum.magialucis.client.render.beam.BeamRender;
+import gurumirum.magialucis.client.render.beam.PlayerBeamEffect;
 import gurumirum.magialucis.contents.item.BeamSource;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;

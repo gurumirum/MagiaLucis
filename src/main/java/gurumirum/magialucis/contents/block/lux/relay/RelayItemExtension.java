@@ -59,7 +59,7 @@ public class RelayItemExtension implements IClientItemExtensions {
 			ItemStack relayItem = RelayItemData.getItem(stack);
 			if (!relayItem.isEmpty()) {
 				RelayBlockEntityRenderer.drawItem(mc.level, partialTicks, poseStack, buffer, relayItem,
-						packedLight, packedOverlay, null);
+						packedLight, packedOverlay);
 			}
 
 			if (mc.options.graphicsMode().get() == GraphicsStatus.FABULOUS) {

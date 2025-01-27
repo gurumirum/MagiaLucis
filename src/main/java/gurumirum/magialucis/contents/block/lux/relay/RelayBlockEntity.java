@@ -5,8 +5,9 @@ import gurumirum.magialucis.capability.DirectLinkDestination;
 import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
-import gurumirum.magialucis.client.render.light.LightEffectRender;
+import gurumirum.magialucis.client.render.prism.RelayBlockPrismEffect;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
@@ -58,7 +59,8 @@ public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavi
 	public void onLoad() {
 		super.onLoad();
 		if (this.level != null && this.level.isClientSide) {
-			LightEffectRender.register(new BlockLightEffectProvider<>(this));
+			RenderEffects.light.register(new BlockLightEffectProvider<>(this));
+			RenderEffects.prism.register(new RelayBlockPrismEffect(this));
 		}
 	}
 

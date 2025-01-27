@@ -1,14 +1,12 @@
 package gurumirum.magialucis.client.render;
 
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import gurumirum.magialucis.client.render.light.LightCylinderShaderInstance;
 import gurumirum.magialucis.client.render.light.LightSphereShaderInstance;
 import net.minecraft.Util;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.*;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -30,6 +28,9 @@ import static gurumirum.magialucis.MagiaLucisMod.id;
 public final class ModRenderTypes {
 	private ModRenderTypes() {}
 
+	public static final MultiBufferSource.BufferSource STUB_BUFFER = MultiBufferSource
+			.immediate(new ByteBufferBuilder(1536));
+
 	public static final RenderType BEAM = RenderType.create(
 			MODID + "_beam",
 			DefaultVertexFormat.POSITION_COLOR,
@@ -42,20 +43,6 @@ public final class ModRenderTypes {
 					.setWriteMaskState(RenderType.COLOR_DEPTH_WRITE)
 					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 					.setOutputState(RenderType.PARTICLES_TARGET)
-					.createCompositeState(false));
-
-	public static final RenderType PRISM = RenderType.create(
-			MODID + "_prism",
-			DefaultVertexFormat.POSITION_COLOR_NORMAL,
-			VertexFormat.Mode.TRIANGLES,
-			RenderType.TRANSIENT_BUFFER_SIZE,
-			false,
-			false,
-			RenderType.CompositeState.builder()
-					.setShaderState(new RenderStateShard.ShaderStateShard(ModRenderTypes::prismShader))
-					.setWriteMaskState(RenderType.COLOR_WRITE)
-					.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
-					.setOutputState(RenderType.TRANSLUCENT_TARGET)
 					.createCompositeState(false));
 
 	public static final RenderType PRISM_ITEM_ENTITY = RenderType.create(
@@ -168,7 +155,6 @@ public final class ModRenderTypes {
 
 	@SubscribeEvent
 	public static void registerRenderBuffers(RegisterRenderBuffersEvent event) {
-		event.registerRenderBuffer(PRISM);
 		event.registerRenderBuffer(PRISM_ITEM_ENTITY);
 
 		for (RenderType t : whiteDestroyStages()) event.registerRenderBuffer(t);

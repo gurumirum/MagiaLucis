@@ -3,9 +3,10 @@ package gurumirum.magialucis.contents.block.lux.relay;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
-import gurumirum.magialucis.client.RotationLogic;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.AprilFoolsUtils;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
@@ -49,8 +50,12 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 
 		ItemStack stack = blockEntity.stack();
 		if (!stack.isEmpty()) {
-			drawItem(blockEntity.getLevel(), partialTick, poseStack, bufferSource, stack, packedLight, packedOverlay,
-					blockEntity.luxFlow(this.luxFlow));
+			blockEntity.luxFlow(this.luxFlow);
+			double sum = LuxUtils.sum(this.luxFlow);
+
+			drawItem(blockEntity.getLevel(), partialTick, poseStack, ModRenderTypes.STUB_BUFFER, stack,
+					sum >= 1 ? LightTexture.FULL_BRIGHT : packedLight, packedOverlay);
+			ModRenderTypes.STUB_BUFFER.endBatch();
 		}
 
 		Minecraft mc = Minecraft.getInstance();
@@ -71,19 +76,13 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 			RenderShapes.noFabulousWarning(poseStack, vc, joke);
 
 			poseStack.popPose();
-		} else {
-			VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.PRISM);
-			RenderShapes.drawOctahedron(poseStack, vc, 0xffd2ecf6, false);
-			RenderShapes.drawOctahedron(poseStack, vc, -1, true);
 		}
 
 		if (transformed) poseStack.popPose();
-
 	}
 
 	public static void drawItem(@Nullable Level level, float partialTick, PoseStack poseStack,
-	                            MultiBufferSource bufferSource, ItemStack stack, int packedLight, int packedOverlay,
-	                            @Nullable Vector3d luxFlow) {
+	                            MultiBufferSource bufferSource, ItemStack stack, int packedLight, int packedOverlay) {
 		poseStack.pushPose();
 		poseStack.translate(.5f, .5f - 2 / 16f, .5f);
 
@@ -93,12 +92,10 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 			poseStack.mulPose(Axis.YP.rotation(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTick)));
 		}
 
-		double max = luxFlow == null ? 0 : Math.max(Math.max(luxFlow.x, luxFlow.y), luxFlow.z);
-
 		mc.getItemRenderer().renderStatic(
 				stack,
 				ItemDisplayContext.GROUND,
-				max > 0 ? LightTexture.FULL_BRIGHT : packedLight, // emissive
+				packedLight,
 				packedOverlay,
 				poseStack,
 				bufferSource,

@@ -1,4 +1,4 @@
-package gurumirum.magialucis.client.render;
+package gurumirum.magialucis.client.render.beam;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -1,9 +1,11 @@
-package gurumirum.magialucis.client.render;
+package gurumirum.magialucis.client.render.beam;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import gurumirum.magialucis.client.render.BeamEffect.CoordinateSystem;
+import gurumirum.magialucis.client.render.ModRenderTypes;
+import gurumirum.magialucis.client.render.RenderShapes;
+import gurumirum.magialucis.client.render.beam.BeamEffect.CoordinateSystem;
 import gurumirum.magialucis.contents.item.BeamSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -48,14 +50,7 @@ public final class BeamRender {
 		beamEffects.removeIf(e -> e.lifetime() == BeamEffect.Lifetime.TICK);
 	}
 
-	@SubscribeEvent
-	public static void onRender(RenderLevelStageEvent event) {
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-			renderBeam(event);
-		}
-	}
-
-	private static void renderBeam(RenderLevelStageEvent event) {
+	public static void render(RenderLevelStageEvent event) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null) return;
 

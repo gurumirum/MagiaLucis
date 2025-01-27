@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.WandEffect;
-import gurumirum.magialucis.client.render.BeamRender;
+import gurumirum.magialucis.client.render.beam.BeamRender;
 import gurumirum.magialucis.contents.item.BeamSource;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import gurumirum.magialucis.impl.ancientlight.AncientLightCrafting;

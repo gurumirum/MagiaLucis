@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 
-public abstract class BaseSunlightCoreBlockEntityRenderer<BE extends BaseSunlightCoreBlockEntity> implements BlockEntityRenderer<BE> {
+public abstract class BaseSunlightCoreBlockEntityRenderer<BE extends BaseSunlightCoreBlockEntity<?>> implements BlockEntityRenderer<BE> {
 	public BaseSunlightCoreBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}
 
 	@Override
@@ -32,31 +32,21 @@ public abstract class BaseSunlightCoreBlockEntityRenderer<BE extends BaseSunligh
 
 	public static void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource,
 	                          @Nullable ResourceLocation coreTexture, float coreRotation, Direction direction) {
+		if (coreTexture == null) return;
+
 		poseStack.pushPose();
 		poseStack.translate(.5f, .5f, .5f);
 
-		if (coreTexture != null) {
-			poseStack.pushPose();
-			if (direction != Direction.UP) poseStack.mulPose(direction.getRotation());
-			poseStack.mulPose(new Quaternionf().rotateYXZ(-coreRotation, (float)(Math.PI / 4), (float)(Math.PI / 4)));
-			poseStack.scale(14 / 16f, 14 / 16f, 14 / 16f);
-			poseStack.translate(-.5f, -.5f, -.5f);
-
-			VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.positionTextureColor(coreTexture));
-			RenderShapes.texturedTintedBox(poseStack, vc,
-					4 / 16f, 4 / 16f, 4 / 16f,
-					12 / 16f, 12 / 16f, 12 / 16f,
-					-1);
-
-			poseStack.popPose();
-		}
-
+		if (direction != Direction.UP) poseStack.mulPose(direction.getRotation());
+		poseStack.mulPose(new Quaternionf().rotateYXZ(-coreRotation, (float)(Math.PI / 4), (float)(Math.PI / 4)));
 		poseStack.scale(14 / 16f, 14 / 16f, 14 / 16f);
 		poseStack.translate(-.5f, -.5f, -.5f);
 
-		VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.PRISM);
-		RenderShapes.drawTruncatedCube(poseStack, vc, 0xffd2ecf6, false);
-		RenderShapes.drawTruncatedCube(poseStack, vc, -1, true);
+		VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.positionTextureColor(coreTexture));
+		RenderShapes.texturedTintedBox(poseStack, vc,
+				4 / 16f, 4 / 16f, 4 / 16f,
+				12 / 16f, 12 / 16f, 12 / 16f,
+				-1);
 
 		poseStack.popPose();
 	}

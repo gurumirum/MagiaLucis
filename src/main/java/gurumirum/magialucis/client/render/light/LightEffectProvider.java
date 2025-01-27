@@ -1,20 +1,11 @@
 package gurumirum.magialucis.client.render.light;
 
-import net.minecraft.world.level.LevelAccessor;
+import gurumirum.magialucis.client.render.RenderEffect;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-public interface LightEffectProvider {
-	@OnlyIn(Dist.CLIENT)
+public interface LightEffectProvider extends RenderEffect {
 	void getLightEffects(float partialTicks, @NotNull Collector collector);
-
-	@OnlyIn(Dist.CLIENT)
-	boolean isLightEffectProviderValid();
-
-	@OnlyIn(Dist.CLIENT)
-	void onLevelUnload(LevelAccessor level);
 
 	@FunctionalInterface
 	interface Collector {

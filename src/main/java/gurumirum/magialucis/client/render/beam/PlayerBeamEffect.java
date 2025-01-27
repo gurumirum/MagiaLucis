@@ -1,4 +1,4 @@
-package gurumirum.magialucis.client.render;
+package gurumirum.magialucis.client.render.beam;
 
 import gurumirum.magialucis.contents.item.BeamSource;
 import gurumirum.magialucis.contents.item.wand.AncientLightWandItem;

@@ -26,9 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -37,11 +35,9 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
 import static gurumirum.magialucis.MagiaLucisMod.id;
 import static gurumirum.magialucis.contents.item.wand.ConfigurationWandItem.ClientFunction.isCtrlPressed;
 
-@EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
 public final class ConfigurationWandOverlay {
 	private ConfigurationWandOverlay() {}
 
@@ -52,10 +48,7 @@ public final class ConfigurationWandOverlay {
 	private static final int TINT_REMOVE = 0xee800000;
 	private static final int TINT_INPUT = 0xee284ea4;
 
-	@SubscribeEvent
-	public static void onRender(RenderLevelStageEvent event) {
-		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
-
+	public static void render(RenderLevelStageEvent event) {
 		visualData.overlayText.clear();
 		visualData.active = false;
 

@@ -3,18 +3,11 @@ package gurumirum.magialucis.client.render.light;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.client.render.ModRenderTypes;
+import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.RenderShapes;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.event.level.LevelEvent;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -24,16 +17,10 @@ import java.util.List;
 import static gurumirum.magialucis.client.render.light.LightEffect.LineEffect;
 import static gurumirum.magialucis.client.render.light.LightEffect.SpotEffect;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID, value = Dist.CLIENT)
 public final class LightEffectRender {
 	private LightEffectRender() {}
 
-	private static final List<LightEffectProvider> lightEffectProviders = new ArrayList<>();
 	private static final List<LightEffect> effects = new ArrayList<>();
-
-	public static void register(LightEffectProvider provider) {
-		lightEffectProviders.add(provider);
-	}
 
 	private static final Vector3f currentLightStart = new Vector3f();
 	private static final Vector3f currentLightEnd = new Vector3f();
@@ -53,31 +40,13 @@ public final class LightEffectRender {
 
 	private static boolean _setup;
 
-	@SubscribeEvent
-	public static void onRender(RenderLevelStageEvent event) {
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) {
-			renderLightEffects(event);
-		}
-	}
-
-	private static void renderLightEffects(RenderLevelStageEvent event) {
-		if (lightEffectProviders.isEmpty()) return;
-
-		Minecraft mc = Minecraft.getInstance();
-		if (mc.level == null) return;
-
+	public static void render(RenderLevelStageEvent event) {
 		_setup = false;
 
 		float partialTicks = event.getPartialTick().getGameTimeDeltaPartialTick(false);
 
-		for (int i = 0; i < lightEffectProviders.size(); i++) {
-			LightEffectProvider p = lightEffectProviders.get(i);
-			if (!p.isLightEffectProviderValid()) {
-				lightEffectProviders.remove(i--);
-				continue;
-			}
-
-			p.getLightEffects(partialTicks, effects::add);
+		for (LightEffectProvider lightEffectProvider : RenderEffects.light) {
+			lightEffectProvider.getLightEffects(partialTicks, effects::add);
 			for (LightEffect e : effects) draw(event, e);
 			effects.clear();
 		}
@@ -154,21 +123,6 @@ public final class LightEffectRender {
 
 			poseStack.pushPose();
 			poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-		}
-	}
-
-	@SubscribeEvent
-	public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
-		lightEffectProviders.clear();
-	}
-
-	@SubscribeEvent
-	public static void onLevelUnload(LevelEvent.Unload event) {
-		LevelAccessor level = event.getLevel();
-		if (!level.isClientSide()) return;
-
-		for (LightEffectProvider p : lightEffectProviders) {
-			p.onLevelUnload(level);
 		}
 	}
 }

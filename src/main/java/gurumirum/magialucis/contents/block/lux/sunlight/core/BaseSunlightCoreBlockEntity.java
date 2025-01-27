@@ -1,8 +1,9 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
-import gurumirum.magialucis.client.render.light.LightEffectRender;
+import gurumirum.magialucis.client.render.prism.SunlightCoreBlockPrismEffect;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntity;
@@ -50,7 +51,8 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 	public void onLoad() {
 		super.onLoad();
 		if (this.level != null && this.level.isClientSide) {
-			LightEffectRender.register(new BlockLightEffectProvider<>(this, 1.5f));
+			RenderEffects.light.register(new BlockLightEffectProvider<>(this, 1.5f));
+			RenderEffects.prism.register(new SunlightCoreBlockPrismEffect(this));
 		}
 	}
 
