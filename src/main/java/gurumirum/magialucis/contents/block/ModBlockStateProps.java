@@ -8,5 +8,7 @@ public final class ModBlockStateProps {
 
 	public static final BooleanProperty OVERSATURATED = BooleanProperty.create("oversaturated");
 	public static final BooleanProperty SKYLIGHT_INTERFERENCE = BooleanProperty.create("skylight_interference");
+	public static final BooleanProperty WORKING = BooleanProperty.create("working");
+
 	public static final IntegerProperty SKY_VISIBILITY = IntegerProperty.create("sky_visibility", 0, 15);
 }

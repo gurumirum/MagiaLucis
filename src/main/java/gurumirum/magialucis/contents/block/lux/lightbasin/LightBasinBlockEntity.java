@@ -2,14 +2,18 @@ package gurumirum.magialucis.contents.block.lux.lightbasin;
 
 import com.mojang.datafixers.util.Pair;
 import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.client.render.RenderEffects;
+import gurumirum.magialucis.client.render.light.LightBasinBlockLightEffectProvider;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModRecipes;
+import gurumirum.magialucis.contents.block.ModBlockStateProps;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipeEvaluation;
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipeInput;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.ModUtils;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import net.minecraft.core.BlockPos;
@@ -30,7 +34,7 @@ import org.joml.Vector3d;
 
 import java.util.Objects;
 
-public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior> implements Ticker.Server {
+public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior> implements Ticker.Both {
 	private static final int SYNC_INTERVAL = 3;
 	private static final int NO_LUX_INPUT_TICKS_MAX = 30;
 
@@ -53,6 +57,14 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 	}
 
 	@Override
+	public void onLoad() {
+		super.onLoad();
+		if (this.level != null && this.level.isClientSide) {
+			RenderEffects.light.register(new LightBasinBlockLightEffectProvider(this));
+		}
+	}
+
+	@Override
 	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {}
 
 	@Override
@@ -64,6 +76,17 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 	public @NotNull LinkDestination.LinkTestResult linkWithSource(@NotNull LinkContext context) {
 		return context.side() != null && context.side() != Direction.UP ?
 				LinkTestResult.reject() : super.linkWithSource(context);
+	}
+
+	@Override
+	public void updateClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+		if (level.getGameTime() % 2 == 0 && getBlockState().getValue(ModBlockStateProps.WORKING)) {
+			LuxUtils.addSpreadingLightParticle(level, pos.getX() + 0.5,
+					pos.getY() + 1.25,
+					pos.getZ() + 0.5,
+					0.2f,
+					0.025f);
+		}
 	}
 
 	@Override
@@ -91,8 +114,12 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 			}
 		}
 
+		boolean working = false;
+
 		if (this.currentRecipe != null) {
 			if (this.currentRecipe.testLuxInput(nodeBehavior().luxInput.min(new Vector3d()))) {
+				working = true;
+
 				this.progress++;
 				this.noLuxInputTicks = 0;
 
@@ -117,6 +144,8 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		} else {
 			this.progress = 0;
 		}
+
+		updateProperty(ModBlockStateProps.WORKING, working);
 
 		if (this.syncContents && level.getGameTime() % SYNC_INTERVAL == 0) {
 			this.syncContents = false;

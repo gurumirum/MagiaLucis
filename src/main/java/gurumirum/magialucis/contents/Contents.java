@@ -3,6 +3,7 @@ package gurumirum.magialucis.contents;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffect;
@@ -40,6 +41,7 @@ public final class Contents {
 	static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
 	static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
 	static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MODID);
+	static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(Registries.PARTICLE_TYPE, MODID);
 	static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, MODID);
 	static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, MODID);
 	static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registries.STRUCTURE_PIECE, MODID);
@@ -67,6 +69,7 @@ public final class Contents {
 		ENTITY_TYPES.register(eventBus);
 		MENUS.register(eventBus);
 		MOB_EFFECTS.register(eventBus);
+		PARTICLES.register(eventBus);
 		RECIPE_SERIALIZERS.register(eventBus);
 		RECIPE_TYPES.register(eventBus);
 		STRUCTURE_PIECE_TYPES.register(eventBus);
@@ -85,6 +88,7 @@ public final class Contents {
 		ModItems.init();
 		ModMenus.init();
 		ModMobEffects.init();
+		ModParticles.init();
 		ModRecipes.init();
 		ModStructures.init();
 		Ore.init();

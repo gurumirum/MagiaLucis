@@ -3,6 +3,7 @@ package gurumirum.magialucis.impl.luxnet;
 import gurumirum.magialucis.capability.DirectLinkDestination;
 import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.capability.LinkSource;
+import gurumirum.magialucis.contents.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -179,6 +180,23 @@ public final class LuxUtils {
 
 	public static double sum(Vector3d vec) {
 		return Math.max(0, vec.x) + Math.max(0, vec.y) + Math.max(0, vec.z);
+	}
+
+	public static void addSpreadingLightParticle(@NotNull Level level,
+	                                             double x, double y, double z,
+	                                             double offset, double speed) {
+		Vector3d direction = LinkSource.Orientation.toVector(
+				(float)(level.random.nextFloat() * Math.PI * 2 - Math.PI),
+				(float)(level.random.nextFloat() * Math.PI * 2),
+				new Vector3d());
+
+		level.addParticle(ModParticles.LIGHT.get(),
+				x + direction.x * offset,
+				y + direction.y * offset,
+				z + direction.z * offset,
+				direction.x * speed,
+				direction.y * speed,
+				direction.z * speed);
 	}
 
 	public enum ColorComponent {

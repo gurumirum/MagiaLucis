@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents.block.lux.lightbasin;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.contents.block.ModBlockStateProps;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.core.BlockPos;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -37,6 +39,12 @@ public class LightBasinBlock extends Block implements EntityBlock {
 
 	public LightBasinBlock(Properties properties) {
 		super(properties);
+		registerDefaultState(defaultBlockState()
+				.setValue(ModBlockStateProps.WORKING, false));
+	}
+
+	@Override protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) {
+		builder.add(ModBlockStateProps.WORKING);
 	}
 
 	@Override
@@ -48,7 +56,7 @@ public class LightBasinBlock extends Block implements EntityBlock {
 	public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level,
 	                                                                        @NotNull BlockState state,
 	                                                                        @NotNull BlockEntityType<T> blockEntityType) {
-		return Ticker.server(level);
+		return Ticker.both(level);
 	}
 
 	@Override

@@ -45,4 +45,6 @@ public final class Ticker {
 	public interface Server {
 		void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state);
 	}
+
+	public interface Both extends Client, Server {}
 }
