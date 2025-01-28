@@ -125,7 +125,9 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 
 				if (this.progress >= this.currentRecipe.processTicks()) {
 					if (consume(this.currentRecipe.consumption())) {
-						ModUtils.drop(level, pos, this.currentRecipe.result());
+						ModUtils.drop(level, this.currentRecipe.result(),
+								pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5,
+								0, 0.15, 0);
 					}
 
 					this.currentRecipeId = null;
@@ -180,7 +182,9 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 			if (stack.isEmpty()) continue;
 
 			if (!level.isClientSide) {
-				ModUtils.giveOrDrop(player, level, pos, stack);
+				ModUtils.giveOrDrop(player, level, stack,
+						pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5,
+						0, 0, 0);
 			}
 
 			return true;
@@ -197,7 +201,9 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 
 		for (int i = 0; i < this.inventory.getSlots(); i++) {
 			if (!level.isClientSide) {
-				ModUtils.giveOrDrop(player, level, pos, this.inventory.getStackInSlot(i));
+				ModUtils.giveOrDrop(player, level, this.inventory.getStackInSlot(i),
+						pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5,
+						0, 0, 0);
 				this.inventory.setStackInSlot(i, ItemStack.EMPTY);
 			}
 		}

@@ -50,7 +50,7 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 
 		if (!stack.isEmpty()) {
 			if (!level.isClientSide) {
-				ModUtils.giveOrDrop(player, level, getBlockPos(), stack);
+				ModUtils.giveOrDrop(player, level, stack, getBlockPos());
 			}
 			return true;
 		}
@@ -67,7 +67,7 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 		if (!level.isClientSide) {
 			ItemStack stack2 = this.inventory.getStackInSlot(0);
 			this.inventory.setStackInSlot(0, stack.split(stack.getCount()));
-			ModUtils.giveOrDrop(player, level, getBlockPos(), stack2);
+			ModUtils.giveOrDrop(player, level, stack2, getBlockPos());
 		}
 
 		return true;
