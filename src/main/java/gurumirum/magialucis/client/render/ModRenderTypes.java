@@ -29,8 +29,6 @@ import static gurumirum.magialucis.MagiaLucisMod.id;
 public final class ModRenderTypes {
 	private ModRenderTypes() {}
 
-	private static final ResourceLocation NO_TEXTURE = id("__no_texture");
-
 	public static final MultiBufferSource.BufferSource STUB_BUFFER = MultiBufferSource
 			.immediate(new ByteBufferBuilder(1536));
 
