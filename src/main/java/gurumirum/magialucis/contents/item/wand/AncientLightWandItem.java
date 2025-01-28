@@ -5,6 +5,7 @@ import gurumirum.magialucis.client.render.beam.BeamRender;
 import gurumirum.magialucis.contents.item.BeamSource;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import gurumirum.magialucis.impl.ancientlight.AncientLightCrafting;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,6 +47,12 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 				.setFocus(player, hitResult.getType() == HitResult.Type.BLOCK ? hitResult.getBlockPos() : null);
 
 		BeamRender.addBeamEffect(player, stack, this);
+
+		if (hitResult.getType() == HitResult.Type.BLOCK) {
+			Vec3 l = hitResult.getLocation();
+			for (int i = 0; i < 2; i++)
+				LuxUtils.addSpreadingLightParticle(level, l.x, l.y, l.z, 0.1, 0.1f);
+		}
 	}
 
 	@Override
