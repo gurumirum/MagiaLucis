@@ -75,6 +75,7 @@ public final class LuxStatTooltip {
 					case GEM -> "item.magialucis.tooltip.lux_stat_hidden";
 					case CONTAINER -> "item.magialucis.tooltip.lux_container_stat_hidden";
 					case SOURCE -> "item.magialucis.tooltip.lux_source_stat_hidden";
+					case CONSUMER -> "item.magialucis.tooltip.lux_consumer_stat_hidden";
 				}));
 				return;
 			}
@@ -83,6 +84,7 @@ public final class LuxStatTooltip {
 					case GEM -> "item.magialucis.tooltip.lux_stat_expanded";
 					case CONTAINER -> "item.magialucis.tooltip.lux_container_stat_expanded";
 					case SOURCE -> "item.magialucis.tooltip.lux_source_stat_expanded";
+					case CONSUMER -> "item.magialucis.tooltip.lux_consumer_stat_expanded";
 				}));
 				indent = " ";
 			}
@@ -99,6 +101,7 @@ public final class LuxStatTooltip {
 			case GEM -> "item.magialucis.tooltip.lux_transfer_rate";
 			case CONTAINER -> "item.magialucis.tooltip.lux_charge_rate";
 			case SOURCE -> "item.magialucis.tooltip.lux_generation_rate";
+			case CONSUMER -> "item.magialucis.tooltip.lux_consumption_rate";
 		})));
 
 		tooltip.add(i++, Component.literal(indent + " ").append(Component.translatable(
@@ -153,6 +156,7 @@ public final class LuxStatTooltip {
 	public enum Type {
 		GEM,
 		CONTAINER,
-		SOURCE
+		SOURCE,
+		CONSUMER
 	}
 }

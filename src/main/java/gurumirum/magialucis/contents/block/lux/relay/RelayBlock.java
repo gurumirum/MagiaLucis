@@ -166,11 +166,18 @@ public class RelayBlock extends Block implements EntityBlock, SimpleWaterloggedB
 		ItemStack s = RelayItemData.getItem(stack);
 		if (!s.isEmpty()) {
 			tooltip.add(s.getHoverName().copy().withStyle(ChatFormatting.GOLD));
-			LuxStat gemStat = s.getCapability(ModCapabilities.GEM_STAT);
-			if (gemStat != null) {
-				LuxStatTooltip.formatStat(gemStat, tooltip, LuxStatTooltip.Type.GEM);
-				LuxStatTooltip.skipAutoTooltipFor(stack);
-			}
+		}
+
+		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.0"));
+		tooltip.add(Component.translatable("item.magialucis.tooltip.link_source"));
+		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.1"));
+		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.2"));
+		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.3"));
+
+		LuxStat gemStat = s.getCapability(ModCapabilities.GEM_STAT);
+		if (gemStat != null) {
+			LuxStatTooltip.formatStat(gemStat, tooltip, LuxStatTooltip.Type.GEM);
+			LuxStatTooltip.skipAutoTooltipFor(stack);
 		}
 	}
 }

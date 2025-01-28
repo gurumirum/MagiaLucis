@@ -4,6 +4,9 @@ import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
+import gurumirum.magialucis.impl.field.Fields;
+import gurumirum.magialucis.utils.NumberFormats;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -57,8 +60,14 @@ public class AmberCoreBlock extends Block implements EntityBlock {
 
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
-	                            @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-		LuxStatTooltip.formatStat(STAT, tooltipComponents, LuxStatTooltip.Type.SOURCE);
+	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
+		tooltip.add(Component.translatable("block.magialucis.amber_core.tooltip.0"));
+		tooltip.add(Component.translatable("block.magialucis.amber_core.tooltip.1"));
+		tooltip.add(Component.translatable("block.magialucis.amber_core.tooltip.2"));
+		tooltip.add(Component.translatable("item.magialucis.tooltip.interference_threshold",
+				NumberFormats.dec(Fields.AMBER_CORE.interferenceThreshold(), ChatFormatting.YELLOW)));
+
+		LuxStatTooltip.formatStat(STAT, tooltip, LuxStatTooltip.Type.SOURCE);
 	}
 
 	public static int getLightValue(@NotNull BlockState state) {

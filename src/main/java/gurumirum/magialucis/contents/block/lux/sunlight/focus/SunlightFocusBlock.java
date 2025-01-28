@@ -82,7 +82,12 @@ public class SunlightFocusBlock extends Block implements EntityBlock {
 
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
-	                            @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-		LuxStatTooltip.formatStat(STAT, tooltipComponents, LuxStatTooltip.Type.SOURCE);
+	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
+		tooltip.add(Component.translatable("block.magialucis.sunlight_focus.tooltip.0"));
+		tooltip.add(Component.translatable("item.magialucis.tooltip.link_source"));
+		tooltip.add(Component.translatable("block.magialucis.sunlight_focus.tooltip.1"));
+		tooltip.add(Component.translatable("block.magialucis.sunlight_focus.tooltip.2"));
+
+		LuxStatTooltip.formatStat(STAT, tooltip, LuxStatTooltip.Type.SOURCE);
 	}
 }

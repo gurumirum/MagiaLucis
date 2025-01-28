@@ -117,7 +117,9 @@ public class LightBasinBlock extends Block implements EntityBlock {
 
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
-	                            @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-		LuxStatTooltip.formatStat(STAT, tooltipComponents, LuxStatTooltip.Type.CONTAINER);
+	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
+		tooltip.add(Component.translatable("block.magialucis.light_basin.tooltip.0"));
+
+		LuxStatTooltip.formatStat(STAT, tooltip, LuxStatTooltip.Type.CONSUMER);
 	}
 }
