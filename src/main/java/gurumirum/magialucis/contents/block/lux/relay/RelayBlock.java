@@ -4,12 +4,13 @@ import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.LuxStatTooltip;
+import gurumirum.magialucis.utils.ModUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -101,6 +102,26 @@ public class RelayBlock extends Block implements EntityBlock, SimpleWaterloggedB
 	}
 
 	@Override
+	protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level,
+	                                                    @NotNull BlockPos pos, @NotNull Player player,
+	                                                    @NotNull BlockHitResult hitResult) {
+		if (hitResult.getDirection() == state.getValue(FACING).getOpposite())
+			return InteractionResult.PASS;
+		if (!player.isSecondaryUseActive())
+			return InteractionResult.PASS;
+
+		if (level.getBlockEntity(pos) instanceof RelayBlockEntity relay) {
+			if (relay.stack().isEmpty()) return InteractionResult.PASS;
+			if (!level.isClientSide) {
+				ModUtils.giveOrDrop(player, level, relay.stack(), pos);
+				relay.setStack(ItemStack.EMPTY);
+			}
+			return InteractionResult.SUCCESS;
+		}
+		return InteractionResult.FAIL;
+	}
+
+	@Override
 	protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state,
 	                                                   @NotNull Level level, @NotNull BlockPos pos,
 	                                                   @NotNull Player player, @NotNull InteractionHand hand,
@@ -109,25 +130,16 @@ public class RelayBlock extends Block implements EntityBlock, SimpleWaterloggedB
 			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
 		LuxStat gemStat = stack.getCapability(ModCapabilities.GEM_STAT);
+		if (gemStat == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
 		if (level.getBlockEntity(pos) instanceof RelayBlockEntity relay) {
-			if (gemStat == null) {
-				if (relay.stack().isEmpty()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-				if (!level.isClientSide) {
-					ItemStack relayItem = relay.stack();
-					Containers.dropItemStack(level, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, relayItem);
-					relay.setStack(ItemStack.EMPTY);
-				}
-			} else {
-				if (ItemStack.isSameItem(relay.stack(), stack)) {
-					return ItemInteractionResult.CONSUME;
-				}
-				if (!level.isClientSide) {
-					ItemStack split = stack.split(1);
-					ItemStack relayItem = relay.stack();
-					Containers.dropItemStack(level, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, relayItem);
-					relay.setStack(split);
-				}
+			if (ItemStack.isSameItem(relay.stack(), stack)) {
+				return ItemInteractionResult.CONSUME;
+			}
+			if (!level.isClientSide) {
+				ItemStack split = stack.split(1);
+				ModUtils.giveOrDrop(player, level, relay.stack(), pos);
+				relay.setStack(split);
 			}
 			return ItemInteractionResult.SUCCESS;
 		}
