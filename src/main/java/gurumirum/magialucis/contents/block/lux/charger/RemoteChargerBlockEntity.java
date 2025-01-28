@@ -56,17 +56,19 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior
 		updateProperty(BlockStateProperties.ENABLED, hasLuxInput);
 
 		if (hasLuxInput) {
+			Vector3d maxCharge = nodeBehavior().luxInput.min(new Vector3d());
+
 			for (Player p : level.getEntities(EntityTypeTest.forClass(Player.class),
 					new AABB(pos).inflate(10),
 					e -> true)) {
 				Inventory inv = p.getInventory();
 				for (int i = 0; i < 9; i++) {
-					if (ChargeLogic.chargeItem(charge, inv.getItem(i), nodeBehavior().maxInput)) {
+					if (ChargeLogic.chargeItem(charge, inv.getItem(i), maxCharge)) {
 						if (charge.x <= 0 && charge.y <= 0 && charge.z <= 0) return;
 					}
 				}
 
-				if (ChargeLogic.chargeItem(charge, inv.getItem(Inventory.SLOT_OFFHAND), nodeBehavior().maxInput)) {
+				if (ChargeLogic.chargeItem(charge, inv.getItem(Inventory.SLOT_OFFHAND), maxCharge)) {
 					if (charge.x <= 0 && charge.y <= 0 && charge.z <= 0) return;
 				}
 
@@ -77,7 +79,7 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior
 					IDynamicStackHandler stacks = e.getValue().getStacks();
 					for (int i = 0; i < stacks.getSlots(); i++) {
 						ItemStack stack = stacks.getStackInSlot(i);
-						if (ChargeLogic.chargeItem(charge, stack, nodeBehavior().maxInput)) {
+						if (ChargeLogic.chargeItem(charge, stack, maxCharge)) {
 							if (charge.x <= 0 && charge.y <= 0 && charge.z <= 0) return;
 						}
 					}

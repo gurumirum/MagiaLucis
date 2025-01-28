@@ -26,6 +26,7 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3d;
 
 import java.util.Objects;
 
@@ -91,7 +92,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		}
 
 		if (this.currentRecipe != null) {
-			if (this.currentRecipe.testLuxInput(nodeBehavior().luxInput)) {
+			if (this.currentRecipe.testLuxInput(nodeBehavior().luxInput.min(new Vector3d()))) {
 				this.progress++;
 				this.noLuxInputTicks = 0;
 

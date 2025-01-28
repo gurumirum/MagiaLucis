@@ -23,6 +23,7 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3d;
 
 public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> implements Ticker.Server, DirectLinkDestination {
 	private static final int SYNC_INTERVAL = 3;
@@ -84,7 +85,7 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
 		ItemStack stack = this.inventory.getStackInSlot(0);
 		if (!stack.isEmpty()) {
-			if (ChargeLogic.chargeItem(nodeBehavior().charge, stack, nodeBehavior().maxInput)) {
+			if (ChargeLogic.chargeItem(nodeBehavior().charge, stack, nodeBehavior().luxInput.min(new Vector3d()))) {
 				this.syncContents = true;
 				setChanged();
 			}

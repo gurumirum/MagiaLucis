@@ -7,6 +7,7 @@ import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxConsumerNodeBehavior;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
+import gurumirum.magialucis.utils.LuxSampler;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
@@ -15,7 +16,7 @@ public class ChargerBehavior implements LuxConsumerNodeBehavior {
 	public static final double REMOTE_CHARGER_STORAGE_MULTIPLIER = 10;
 
 	public final Vector3d charge = new Vector3d();
-	public final Vector3d maxInput = new Vector3d();
+	public final LuxSampler luxInput = new LuxSampler(5);
 
 	private final Vector3d maxChargeStorage = new Vector3d();
 	private final ChargerTier chargerTier;
@@ -42,13 +43,13 @@ public class ChargerBehavior implements LuxConsumerNodeBehavior {
 	@Override
 	public void consumeLux(Level level, LuxNet luxNet, LuxNode node, Vector3d receivedLux) {
 		if (node.isLoaded()) {
-			this.maxInput.max(receivedLux);
+			this.luxInput.nextSampler().set(receivedLux);
 			LuxUtils.transfer(receivedLux, this.charge, this.maxChargeStorage);
 		}
 	}
 
 	public void reset() {
 		this.charge.zero();
-		this.maxInput.zero();
+		this.luxInput.reset();
 	}
 }
