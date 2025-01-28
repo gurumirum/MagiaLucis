@@ -20,6 +20,7 @@ public class LightParticle extends TextureSheetParticle {
 		this.zd = zSpeed;
 		this.gravity = 0;
 		this.lifetime = 30;
+		this.hasPhysics = false;
 		setSpriteFromAge(this.spriteSet);
 		scale(0.25f);
 	}
@@ -29,12 +30,8 @@ public class LightParticle extends TextureSheetParticle {
 	}
 
 	@Override public void tick() {
-		setSpriteFromAge(this.spriteSet);
 		this.setSprite(this.spriteSet.get(this.age / 10 % 2, 1));
 		super.tick();
-		// this.xd *= 0.95f;
-		// this.yd *= 0.95f;
-		// this.zd *= 0.95f;
 	}
 
 	public static class Provider implements ParticleProvider<SimpleParticleType> {
