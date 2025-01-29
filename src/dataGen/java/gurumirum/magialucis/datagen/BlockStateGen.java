@@ -18,6 +18,7 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -80,7 +81,9 @@ public class BlockStateGen extends BlockStateProvider {
 				.texture("side", LUMINOUS_CHARGER.id().withPath(p -> "block/" + p + "_side"))
 				.texture("bottom", LUMINOUS_CHARGER.id().withPath(p -> "block/" + p + "_bottom")));
 
-		remoteCharger(LUMINOUS_REMOTE_CHARGER.block(), "luminous_remote_charger");
+		lamp(AMBER_LAMP.block(), "amber_lamp", "amber_lamp");
+		lamp(LUMINOUS_LAMP_BASE.block(), "luminous_lamp", null);
+		lamp(LUMINOUS_RESONANCE_LAMP.block(), "luminous_lamp", "luminous_resonance_lamp");
 
 		BlockModelBuilder amberCore = models().cubeColumnHorizontal(AMBER_CORE.id().getPath(),
 				id("block/amber_core_side"), mcLoc("block/oak_log_top"));
@@ -139,14 +142,17 @@ public class BlockStateGen extends BlockStateProvider {
 		itemModels().simpleBlockItem(block.block());
 	}
 
-	private final Map<String, ModelFile> remoteChargerModelFiles = new Object2ObjectOpenHashMap<>();
+	private final Map<String, ModelFile> lampModels = new Object2ObjectOpenHashMap<>();
 
-	private void remoteCharger(Block block, String baseName) {
+	private void lamp(Block block, String baseName, @Nullable String overlayName) {
 		getVariantBuilder(block).forAllStates(state -> {
 			Direction dir = state.getValue(BlockStateProperties.FACING);
 			ConfiguredModel.Builder<?> b = ConfiguredModel.builder();
 
-			b.modelFile(remoteCharger(dir, state.getValue(BlockStateProperties.ENABLED), baseName));
+			boolean _enabled = overlayName != null && (
+					state.hasProperty(BlockStateProperties.ENABLED) ?
+							state.getValue(BlockStateProperties.ENABLED) : true);
+			b.modelFile(lamp(dir, _enabled, baseName, overlayName));
 
 			if (dir.getAxis() != Direction.Axis.Y) {
 				b.rotationY((int)(dir.toYRot()) % 360);
@@ -154,10 +160,10 @@ public class BlockStateGen extends BlockStateProvider {
 
 			return b.build();
 		});
-		simpleBlockItem(block, remoteCharger(Direction.DOWN, true, baseName));
+		simpleBlockItem(block, lamp(Direction.DOWN, overlayName != null, baseName, overlayName));
 	}
 
-	private ModelFile remoteCharger(Direction facing, boolean enabled, String baseName) {
+	private ModelFile lamp(Direction facing, boolean enabled, String baseName, @Nullable String overlayName) {
 		String s = switch (facing) {
 			case DOWN -> "up";
 			case UP -> "down";
@@ -165,12 +171,12 @@ public class BlockStateGen extends BlockStateProvider {
 		};
 		String modelName = baseName + "_" + s + (enabled ? "" : "_disabled");
 
-		return this.remoteChargerModelFiles.computeIfAbsent(modelName, n -> {
-			BlockModelBuilder b = models().withExistingParent(n, id("block/remote_charger_" + s));
+		return this.lampModels.computeIfAbsent(modelName, n -> {
+			BlockModelBuilder b = models().withExistingParent(n, id("block/lamp_" + s));
 			b.texture("top", id("block/" + baseName + "_top"));
 			b.texture("bottom", id("block/" + baseName + "_bottom"));
 			b.texture("side", id("block/" + baseName + "_side"));
-			b.texture("side_overlay", id(enabled ? "block/" + baseName + "_side_overlay" : "block/empty"));
+			b.texture("side_overlay", id(enabled ? "block/" + overlayName + "_side_overlay" : "block/empty"));
 			if (facing == Direction.UP) {
 				b.texture("base_top", id("block/" + baseName + "_base_top"));
 				b.texture("base_bottom", id("block/" + baseName + "_base_bottom"));

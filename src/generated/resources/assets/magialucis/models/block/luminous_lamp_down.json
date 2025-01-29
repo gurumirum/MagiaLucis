@@ -1,0 +1,11 @@
+{
+  "parent": "magialucis:block/lamp_down",
+  "textures": {
+    "base_bottom": "magialucis:block/luminous_lamp_base_bottom",
+    "base_top": "magialucis:block/luminous_lamp_base_top",
+    "bottom": "magialucis:block/luminous_lamp_bottom",
+    "side": "magialucis:block/luminous_lamp_side",
+    "side_overlay": "magialucis:block/luminous_resonance_lamp_side_overlay",
+    "top": "magialucis:block/luminous_lamp_top"
+  }
+}

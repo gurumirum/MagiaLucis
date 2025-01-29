@@ -22,10 +22,10 @@
       "to": [12, 13, 12],
       "light_emission": 15,
       "faces": {
-        "north": {"uv": [4, 3, 12, 13], "texture": "#side_overlay"},
-        "east": {"uv": [4, 3, 12, 13], "texture": "#side_overlay"},
-        "south": {"uv": [4, 3, 12, 13], "texture": "#side_overlay"},
-        "west": {"uv": [4, 3, 12, 13], "texture": "#side_overlay"}
+        "north": {"uv": [4, 3, 12, 13], "texture": "#side_overlay", "tintindex": 0},
+        "east": {"uv": [4, 3, 12, 13], "texture": "#side_overlay", "tintindex": 0},
+        "south": {"uv": [4, 3, 12, 13], "texture": "#side_overlay", "tintindex": 0},
+        "west": {"uv": [4, 3, 12, 13], "texture": "#side_overlay", "tintindex": 0}
       }
     },
     {

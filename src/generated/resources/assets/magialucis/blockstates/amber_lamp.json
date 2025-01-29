@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "magialucis:block/amber_lamp_up"
+    },
+    "facing=east": {
+      "model": "magialucis:block/amber_lamp_side",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "magialucis:block/amber_lamp_side",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "magialucis:block/amber_lamp_side"
+    },
+    "facing=up": {
+      "model": "magialucis:block/amber_lamp_down"
+    },
+    "facing=west": {
+      "model": "magialucis:block/amber_lamp_side",
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "magialucis:block/luminous_lamp_up_disabled"
+    },
+    "facing=east": {
+      "model": "magialucis:block/luminous_lamp_side_disabled",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "magialucis:block/luminous_lamp_side_disabled",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "magialucis:block/luminous_lamp_side_disabled"
+    },
+    "facing=up": {
+      "model": "magialucis:block/luminous_lamp_down_disabled"
+    },
+    "facing=west": {
+      "model": "magialucis:block/luminous_lamp_side_disabled",
+      "y": 90
+    }
+  }
+}

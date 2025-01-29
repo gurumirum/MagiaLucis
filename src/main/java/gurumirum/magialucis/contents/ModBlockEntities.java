@@ -56,12 +56,12 @@ public final class ModBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> LUMINOUS_REMOTE_CHARGER =
 			blockEntity("remote_charger",
 					(pos, state) -> new RemoteChargerBlockEntity(ChargerTier.LUMINOUS, pos, state),
-					ModBlocks.LUMINOUS_REMOTE_CHARGER);
+					ModBlocks.LUMINOUS_RESONANCE_LAMP);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> LUSTROUS_REMOTE_CHARGER =
 			blockEntity("lustrous_remote_charger",
 					(pos, state) -> new RemoteChargerBlockEntity(ChargerTier.LUSTROUS, pos, state),
-					ModBlocks.LUSTROUS_REMOTE_CHARGER);
+					ModBlocks.LUSTROUS_RESONANCE_LAMP);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LuxSourceBlockEntity>> LUX_SOURCE =
 			blockEntity("lux_source", LuxSourceBlockEntity::new, ModBlocks.LUX_SOURCE, ModBlocks.LUX_SOURCE_2);

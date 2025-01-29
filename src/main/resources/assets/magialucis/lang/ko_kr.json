@@ -30,7 +30,7 @@
   "block.magialucis.light_basin": "빛받이 대야",
   "block.magialucis.light_basin.tooltip.0": "§7윗면에서 빛을 받아들임",
   "block.magialucis.luminous_charger": "빛나는 충전 패드",
-  "block.magialucis.luminous_remote_charger": "빛나는 공명 램프",
+  "block.magialucis.luminous_resonance_lamp": "빛나는 공명 램프",
   "block.magialucis.moonlight_core": "달빛 코어",
   "block.magialucis.moonlight_core.tooltip.0": "§7자연광을 푸른빛 광선으로 엮어냄",
   "block.magialucis.moonlight_core.tooltip.1": "§7빨간빛과 초록빛은 푸른빛을 상쇄",

@@ -74,8 +74,9 @@ public class BlockTagGen extends BlockTagsProvider {
 
 		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
 				LUMINOUS_CHARGER.block(),
-				LUMINOUS_REMOTE_CHARGER.block(),
-				LUSTROUS_REMOTE_CHARGER.block(),
+				LUMINOUS_LAMP_BASE.block(),
+				LUMINOUS_RESONANCE_LAMP.block(),
+				LUSTROUS_RESONANCE_LAMP.block(),
 				RELAY.block(),
 				LIGHT_BASIN.block(),
 				SUNLIGHT_CORE.block(),

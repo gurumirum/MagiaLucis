@@ -2,7 +2,9 @@ package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.contents.block.AmberLampBlock;
 import gurumirum.magialucis.contents.block.AmberLightBlock;
+import gurumirum.magialucis.contents.block.BaseLampBlock;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlock;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlock;
@@ -51,11 +53,21 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.requiresCorrectToolForDrops()
 			.strength(2.5f))),
 
-	LUMINOUS_REMOTE_CHARGER(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUMINOUS), Properties.of()
+	AMBER_LAMP(BlockProfile.customBlock(AmberLampBlock::new, Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f)
+			.lightLevel(state -> 15))),
+
+	LUMINOUS_LAMP_BASE(BlockProfile.customBlock(BaseLampBlock.Stateless::new, Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f))),
+
+	LUMINOUS_RESONANCE_LAMP(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUMINOUS), Properties.of()
 			.requiresCorrectToolForDrops()
 			.strength(2.5f)
 			.lightLevel(state -> state.getValue(BlockStateProperties.ENABLED) ? 15 : 0))),
-	LUSTROUS_REMOTE_CHARGER(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUSTROUS), Properties.of()
+
+	LUSTROUS_RESONANCE_LAMP(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUSTROUS), Properties.of()
 			.requiresCorrectToolForDrops()
 			.strength(2.5f)
 			.lightLevel(state -> state.getValue(BlockStateProperties.ENABLED) ? 15 : 0))),

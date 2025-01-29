@@ -242,7 +242,7 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
 
-		shaped(MISC, ModBlocks.LUMINOUS_REMOTE_CHARGER)
+		shaped(MISC, ModBlocks.LUMINOUS_RESONANCE_LAMP)
 				.pattern("121")
 				.pattern("343")
 				.pattern("121")
