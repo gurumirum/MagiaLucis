@@ -7,5 +7,5 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
 public interface LuxSpecialNodeBehavior extends LuxNodeBehavior {
-	void alterLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d incomingLux);
+	void alterIncomingLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d incomingLux);
 }

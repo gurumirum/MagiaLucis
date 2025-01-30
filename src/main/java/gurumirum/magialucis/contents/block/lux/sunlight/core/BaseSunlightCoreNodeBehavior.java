@@ -19,7 +19,7 @@ public abstract class BaseSunlightCoreNodeBehavior implements LuxSpecialNodeBeha
 	}
 
 	@Override
-	public void alterLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d incomingLux) {
+	public void alterIncomingLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d incomingLux) {
 		if (node.isLoaded()) incomingLux.mul(this.power);
 		else incomingLux.zero();
 	}

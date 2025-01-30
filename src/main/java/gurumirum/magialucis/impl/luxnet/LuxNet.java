@@ -395,7 +395,7 @@ public final class LuxNet extends SavedData {
 
 		for (LuxNode node : this.nodes.values()) {
 			if (node.behavior() instanceof LuxSpecialNodeBehavior specialNodeBehavior) {
-				specialNodeBehavior.alterLux(level, this, node, node.incomingChargeCache);
+				specialNodeBehavior.alterIncomingLux(level, this, node, node.incomingChargeCache);
 			}
 
 			LuxUtils.snapComponents(node.incomingChargeCache, node.behavior().stat().minLuxThreshold());

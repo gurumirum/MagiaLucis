@@ -22,8 +22,8 @@ public class MoonlightCoreBehavior extends BaseSunlightCoreNodeBehavior implemen
 	}
 
 	@Override
-	public void alterLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d incomingLux) {
-		super.alterLux(level, luxNet, node, incomingLux);
+	public void alterIncomingLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d incomingLux) {
+		super.alterIncomingLux(level, luxNet, node, incomingLux);
 		incomingLux.z -= incomingLux.x + incomingLux.y;
 		incomingLux.x = incomingLux.y = 0;
 	}
