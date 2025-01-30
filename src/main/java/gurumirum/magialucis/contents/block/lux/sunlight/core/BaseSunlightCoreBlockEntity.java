@@ -66,8 +66,10 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 	@Override
 	protected void unregister(boolean destroyed) {
 		super.unregister(destroyed);
-		Field f = field();
-		if (f != null) unregisterField(f);
+		if (destroyed) {
+			Field f = field();
+			if (f != null) unregisterField(f);
+		}
 	}
 
 	@Override

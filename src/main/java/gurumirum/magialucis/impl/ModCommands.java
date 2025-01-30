@@ -69,11 +69,19 @@ public final class ModCommands {
 								)
 						)
 				).then(literal("field")
-						.then(literal("print")
-								.requires(stack -> stack.hasPermission(Commands.LEVEL_GAMEMASTERS))
-								.then(argument("fieldId", ResourceLocationArgument.id())
+						.requires(stack -> stack.hasPermission(Commands.LEVEL_GAMEMASTERS))
+						.then(argument("fieldId", ResourceLocationArgument.id())
+								.then(literal("print")
 										.executes(context ->
-												printField(context.getSource(), context.getSource().getLevel(), ResourceLocationArgument.getId(context, "fieldId")))
+												printField(context.getSource(),
+														context.getSource().getLevel(),
+														ResourceLocationArgument.getId(context, "fieldId")))
+										.then(argument("dimension", DimensionArgument.dimension())
+												.executes(context ->
+														printField(context.getSource(),
+																DimensionArgument.getDimension(context, "dimension"),
+																ResourceLocationArgument.getId(context, "fieldId")))
+										)
 								)
 						)
 				)

@@ -1,5 +1,6 @@
 package gurumirum.magialucis.impl.field;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -86,6 +87,10 @@ public class Field {
 
 	public @NotNull FieldInstance createInstance() {
 		return new FieldInstance(this);
+	}
+
+	public @NotNull FieldInstance createInstance(@NotNull CompoundTag tag){
+		return new FieldInstance(this, tag);
 	}
 
 	@Override

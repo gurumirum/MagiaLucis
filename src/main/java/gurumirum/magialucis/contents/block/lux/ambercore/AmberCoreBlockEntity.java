@@ -47,7 +47,7 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> 
 	@Override
 	protected void unregister(boolean destroyed) {
 		super.unregister(destroyed);
-		unregisterField(Fields.AMBER_CORE);
+		if (destroyed) unregisterField(Fields.AMBER_CORE);
 	}
 
 	@Override

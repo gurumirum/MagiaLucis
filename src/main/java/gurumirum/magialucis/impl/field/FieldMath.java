@@ -7,13 +7,13 @@ public final class FieldMath {
 
 	private static final double EULER_MASCHERONI = 0.57721566490153286060651209008240243104215933593992359880576723488486772677;
 
-	public static double getInfluence(@NotNull Field field, @NotNull FieldElement element, int x, int y, int z) {
+	public static double getInfluence(@NotNull FieldElement element, int x, int y, int z) {
 		x -= element.pos().getX();
 		y -= element.pos().getY();
 		z -= element.pos().getZ();
 		double distSq = (double)x * x + (double)y * y + (double)z * z;
-		if (field.forceRangeSquared() < distSq) return 0;
-		else return Math.pow(1 - Math.sqrt(distSq) / field.forceRange(), field.forceDiminishPower());
+		if (element.rangeSq() < distSq) return 0;
+		else return Math.pow(1 - Math.sqrt(distSq) / element.range(), element.diminishPower());
 	}
 
 	public static double power(int interferenceThreshold, double influenceSum) {
