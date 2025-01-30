@@ -6,7 +6,7 @@ import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxSpecialNodeBehavior;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
@@ -22,7 +22,7 @@ public class MoonlightCoreBehavior extends BaseSunlightCoreNodeBehavior implemen
 	}
 
 	@Override
-	public void alterLux(Level level, LuxNet luxNet, LuxNode node, Vector3d incomingLux) {
+	public void alterLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d incomingLux) {
 		super.alterLux(level, luxNet, node, incomingLux);
 		incomingLux.z -= incomingLux.x + incomingLux.y;
 		incomingLux.x = incomingLux.y = 0;

@@ -7,7 +7,7 @@ import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxGeneratorNodeBehavior;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
@@ -27,7 +27,7 @@ public class AmberCoreBehavior implements LuxNodeBehavior, LuxGeneratorNodeBehav
 	}
 
 	@Override
-	public void generateLux(Level level, LuxNet luxNet, LuxNode node, Vector3d generatedLux) {
+	public void generateLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d generatedLux) {
 		if (node.isLoaded()) generatedLux.set(10, 5, 0).mul(this.power());
 	}
 

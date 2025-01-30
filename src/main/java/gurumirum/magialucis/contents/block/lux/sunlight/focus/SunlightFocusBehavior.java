@@ -11,8 +11,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
@@ -49,7 +49,7 @@ public class SunlightFocusBehavior implements LuxGeneratorNodeBehavior {
 	}
 
 	@Override
-	public void generateLux(Level level, LuxNet luxNet, LuxNode node, Vector3d generatedLux) {
+	public void generateLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d generatedLux) {
 		if (node.isLoaded()) {
 			SunlightLogic.getColor(level, pos(),
 					SunlightLogic.DEFAULT_BASE_INTENSITY * (skyVisibility() / 16.0),

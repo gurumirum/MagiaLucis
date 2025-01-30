@@ -9,7 +9,7 @@ import gurumirum.magialucis.impl.luxnet.behavior.LuxGeneratorNodeBehavior;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
@@ -30,7 +30,7 @@ public class LuxSourceBehavior extends DynamicLuxNodeBehavior implements LuxGene
 	}
 
 	@Override
-	public void generateLux(Level level, LuxNet luxNet, LuxNode node, Vector3d generatedLux) {
+	public void generateLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d generatedLux) {
 		generatedLux.set(this.luxGeneration);
 	}
 

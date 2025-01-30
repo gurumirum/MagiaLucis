@@ -9,6 +9,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
@@ -44,21 +45,31 @@ public final class LuxNode {
 		return this.iface == null;
 	}
 
-	BindInterfaceResult bindInterface(@Nullable LuxNodeInterface iface) {
+	BindInterfaceResult bindInterface(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @Nullable LuxNodeInterface iface) {
 		if (this.iface == iface) return BindInterfaceResult.NO_CHANGE;
 		else if (iface != null && this.iface != null) return BindInterfaceResult.FAIL;
 		this.iface = iface;
-		this.behavior = iface != null ?
+		setBehavior(level, luxNet, iface != null ?
 				Objects.requireNonNullElse(iface.updateNodeBehavior(this.behavior, true), LuxNodeBehavior.none()) :
-				LuxNodeBehavior.none();
+				LuxNodeBehavior.none());
 		return BindInterfaceResult.SUCCESS;
 	}
 
-	boolean updateBehavior() {
+	boolean updateBehavior(@NotNull ServerLevel level, @NotNull LuxNet luxNet) {
 		if (this.iface == null) return false;
-		LuxNodeBehavior behavior = this.iface.updateNodeBehavior(this.behavior, false);
+		return setBehavior(level, luxNet,
+				Objects.requireNonNullElse(this.iface.updateNodeBehavior(this.behavior, false), LuxNodeBehavior.none()));
+	}
+
+	private boolean setBehavior(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNodeBehavior behavior) {
 		if (behavior == this.behavior) return false;
+
+		LuxNodeBehavior prevBehavior = this.behavior;
 		this.behavior = behavior;
+
+		prevBehavior.onUnbind(level, luxNet, this);
+		behavior.onBind(level, luxNet, this);
+
 		return true;
 	}
 

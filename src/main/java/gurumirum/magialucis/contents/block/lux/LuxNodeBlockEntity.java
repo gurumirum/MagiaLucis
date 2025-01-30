@@ -80,17 +80,13 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Bloc
 
 	@Override
 	protected void register() {
-		LuxNet luxNet = LuxNet.tryGet(this.level);
-		if (luxNet != null) this.nodeId = luxNet.register(this, this.nodeId);
+		this.nodeId = LuxNet.tryRegister(this.level, this, this.nodeId);
 	}
 
 	@Override
 	protected void unregister(boolean destroyed) {
-		LuxNet luxNet = LuxNet.tryGet(this.level);
-		if (luxNet != null) {
-			if (destroyed) luxNet.unregister(this.nodeId);
-			else luxNet.unbindInterface(this.nodeId);
-		}
+		if (destroyed) LuxNet.tryUnregister(this.level, this.nodeId);
+		else LuxNet.tryUnbindInterface(this.level, this.nodeId);
 		this.nodeId = NO_ID;
 	}
 

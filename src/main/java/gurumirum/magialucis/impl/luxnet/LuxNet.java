@@ -29,11 +29,9 @@ public final class LuxNet extends SavedData {
 	public static final int NO_ID = 0;
 
 	private static final int SYNC_DELAY = 20;
-
-	private static final SavedData.Factory<LuxNet> FACTORY = new Factory<>(LuxNet::new, LuxNet::new);
-	private static final String NAME = MagiaLucisMod.MODID + "_lux_net";
-
 	private static final int UPDATE_CONNECTION_CYCLE = 20;
+	private static final String NAME = MagiaLucisMod.MODID + "_lux_net";
+	private static final SavedData.Factory<LuxNet> FACTORY = new Factory<>(LuxNet::new, LuxNet::new);
 
 	public static @Nullable LuxNet tryGet(@Nullable Level level) {
 		return level instanceof ServerLevel serverLevel ? get(serverLevel) : null;
@@ -41,6 +39,30 @@ public final class LuxNet extends SavedData {
 
 	public static @NotNull LuxNet get(@NotNull ServerLevel level) {
 		return level.getDataStorage().computeIfAbsent(FACTORY, NAME);
+	}
+
+	public static int tryRegister(@Nullable Level level, @NotNull LuxNodeInterface iface, int existingId) {
+		return level instanceof ServerLevel serverLevel ? register(serverLevel, iface, existingId) : NO_ID;
+	}
+
+	public static int register(@NotNull ServerLevel level, @NotNull LuxNodeInterface iface, int existingId) {
+		return get(level).register0(level, iface, existingId);
+	}
+
+	public static void tryUnregister(@Nullable Level level, int id) {
+		if (level instanceof ServerLevel serverLevel) unregister(serverLevel, id);
+	}
+
+	public static void unregister(@NotNull ServerLevel level, int id) {
+		get(level).unregister0(level, id);
+	}
+
+	public static void tryUnbindInterface(@Nullable Level level, int id) {
+		if (level instanceof ServerLevel serverLevel) unbindInterface(serverLevel, id);
+	}
+
+	public static void unbindInterface(@NotNull ServerLevel level, int id) {
+		get(level).unbindInterface0(level, id);
 	}
 
 	private final Int2ObjectMap<LuxNode> nodes = new Int2ObjectOpenHashMap<>();
@@ -65,9 +87,9 @@ public final class LuxNet extends SavedData {
 
 	private LuxNet() {}
 
-	public int register(@NotNull LuxNodeInterface iface, int existingId) {
+	private int register0(@NotNull ServerLevel level, @NotNull LuxNodeInterface iface, int existingId) {
 		if (existingId != NO_ID) {
-			if (registerInternal(iface, existingId, true)) return existingId;
+			if (doRegister(level, iface, existingId, true)) return existingId;
 		}
 
 		int id;
@@ -76,7 +98,7 @@ public final class LuxNet extends SavedData {
 			do {
 				id = ++this.idIncrement;
 			} while (id == NO_ID);
-		} while (!registerInternal(iface, id, false));
+		} while (!doRegister(level, iface, id, false));
 
 		if (existingId != NO_ID) {
 			MagiaLucisMod.LOGGER.warn("""
@@ -87,7 +109,7 @@ public final class LuxNet extends SavedData {
 		return id;
 	}
 
-	private boolean registerInternal(@NotNull LuxNodeInterface iface, int id, boolean existing) {
+	private boolean doRegister(@NotNull ServerLevel level, @NotNull LuxNodeInterface iface, int id, boolean existing) {
 		if (id == NO_ID) throw new IllegalArgumentException("Cannot register node of ID 0");
 
 		LuxNode node;
@@ -99,7 +121,7 @@ public final class LuxNet extends SavedData {
 			node = this.nodes.computeIfAbsent(id, LuxNode::new);
 		}
 
-		return switch (node.bindInterface(iface)) {
+		return switch (node.bindInterface(level, this, iface)) {
 			case SUCCESS -> {
 				queueConnectionSync(id);
 
@@ -108,9 +130,7 @@ public final class LuxNet extends SavedData {
 				record.syncNow = true;
 
 				updateBehaviorCache(node);
-
 				setDirty();
-
 				yield true;
 			}
 			case FAIL -> false;
@@ -132,10 +152,10 @@ public final class LuxNet extends SavedData {
 		}
 	}
 
-	public void unregister(int id) {
+	private void unregister0(@NotNull ServerLevel level, int id) {
 		LuxNode node = get(id);
 		if (node == null) return;
-		node.bindInterface(null);
+		node.bindInterface(level, this, null);
 		this.nodes.remove(id);
 		unlinkAll(node);
 
@@ -144,10 +164,10 @@ public final class LuxNet extends SavedData {
 		this.consumerBehaviors.remove(node);
 	}
 
-	public void unbindInterface(int id) {
+	private void unbindInterface0(@NotNull ServerLevel level, int id) {
 		LuxNode node = get(id);
 		if (node == null) return;
-		if (node.bindInterface(null) != LuxNode.BindInterfaceResult.SUCCESS) return;
+		if (node.bindInterface(level, this, null) != LuxNode.BindInterfaceResult.SUCCESS) return;
 
 		this.loadedNodes.remove(node);
 	}
@@ -284,7 +304,7 @@ public final class LuxNet extends SavedData {
 		}
 
 		for (var e : this.loadedNodes.entrySet()) {
-			if (e.getKey().updateBehavior()) {
+			if (e.getKey().updateBehavior(level, this)) {
 				updateBehaviorCache(e.getKey());
 				e.getValue().reset();
 				e.getValue().syncNow = true;
@@ -341,7 +361,7 @@ public final class LuxNet extends SavedData {
 
 	private final Vector3d luxTransferCache = new Vector3d();
 
-	private void generateLux(Level level) {
+	private void generateLux(ServerLevel level) {
 		for (var e : this.generatorBehaviors.entrySet()) {
 			LuxNode node = e.getKey();
 			LuxGeneratorNodeBehavior generatorBehavior = e.getValue();
@@ -359,7 +379,7 @@ public final class LuxNet extends SavedData {
 		}
 	}
 
-	private void transferLux(Level level) {
+	private void transferLux(ServerLevel level) {
 		for (LuxNode node : this.nodes.values()) {
 			var map = this.srcToDst.get(node);
 			if (map != null) {
@@ -385,7 +405,7 @@ public final class LuxNet extends SavedData {
 		}
 	}
 
-	private void consumeLux(Level level) {
+	private void consumeLux(ServerLevel level) {
 		for (var e : this.consumerBehaviors.entrySet()) {
 			LuxNode node = e.getKey();
 			LuxConsumerNodeBehavior consumerBehavior = e.getValue();

@@ -7,7 +7,7 @@ import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxConsumerNodeBehavior;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.utils.LuxSampler;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
@@ -25,7 +25,7 @@ public class LightBasinBehavior implements LuxConsumerNodeBehavior {
 	}
 
 	@Override
-	public void consumeLux(Level level, LuxNet luxNet, LuxNode node, Vector3d receivedLux) {
+	public void consumeLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d receivedLux) {
 		this.luxInput.nextSampler().set(receivedLux);
 		receivedLux.zero();
 	}
