@@ -27,8 +27,14 @@ public class FieldManager extends SavedData {
 		return level.getDataStorage().computeIfAbsent(FACTORY, NAME);
 	}
 
-	public static @Nullable FieldInstance tryGetField(@Nullable Level level, Field field) {
-		return level instanceof ServerLevel serverLevel ? get(serverLevel).getOrCreate(field) : null;
+	public static @Nullable FieldInstance tryGetField(@Nullable Level level, @NotNull Field field) {
+		return tryGetField(level, field, true);
+	}
+
+	public static @Nullable FieldInstance tryGetField(@Nullable Level level, @NotNull Field field, boolean create) {
+		FieldManager manager = tryGet(level);
+		if (manager == null) return null;
+		return create ? manager.getOrCreate(field) : manager.get(field);
 	}
 
 	private final Map<Field, FieldInstance> fields = new Object2ObjectOpenHashMap<>();

@@ -12,8 +12,11 @@ public final class FieldMath {
 		y -= element.pos().getY();
 		z -= element.pos().getZ();
 		double distSq = (double)x * x + (double)y * y + (double)z * z;
+
 		if (element.rangeSq() < distSq) return 0;
-		else return Math.pow(1 - Math.sqrt(distSq) / element.range(), element.diminishPower());
+
+		double diminishPower = element.diminishPower();
+		return diminishPower == 0 ? 1 : Math.pow(1 - Math.sqrt(distSq) / element.range(), diminishPower);
 	}
 
 	public static double power(int interferenceThreshold, double influenceSum) {

@@ -43,14 +43,13 @@ public class FieldInstance {
 	}
 
 	public @NotNull FieldElement add(@NotNull BlockPos pos) {
-		FieldElement element = this.elements.computeIfAbsent(pos.immutable(),
-				p -> {
-					MagiaLucisMod.LOGGER.info("Adding new field element at {}, field {}", p, this.field.id);
-					return new FieldElement(this, p);
-				});
-		setDirty();
-		dispatchFieldChanged(pos, element, false);
-		return element;
+		return this.elements.computeIfAbsent(pos.immutable(), p -> {
+			FieldElement element = new FieldElement(this, p);
+			MagiaLucisMod.LOGGER.info("Adding new field element at {}, field {}", p, this.field.id);
+			setDirty();
+			dispatchFieldChanged(p, element, false);
+			return element;
+		});
 	}
 
 	public void remove(@NotNull BlockPos pos) {
@@ -95,6 +94,20 @@ public class FieldInstance {
 			sum += FieldMath.getInfluence(e, x, y, z);
 		}
 		return sum;
+	}
+
+	public boolean hasInfluence(@NotNull BlockPos pos) {
+		return hasInfluence(pos.getX(), pos.getY(), pos.getZ());
+	}
+	public boolean hasInfluence(double x, double y, double z) {
+		return hasInfluence(Mth.floor(x), Mth.floor(y), Mth.floor(z));
+	}
+
+	public boolean hasInfluence(int x, int y, int z) {
+		for (FieldElement e : this.elements.values()) {
+			if (FieldMath.getInfluence(e, x, y, z) > 0) return true;
+		}
+		return false;
 	}
 
 	public boolean isEmpty() {

@@ -37,7 +37,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 
 public enum ModBlocks implements ItemLike, BlockProvider {
-	AMBER_LIGHT(BlockProfile.customBlockWithoutItem(AmberLightBlock::new, Properties.of().lightLevel(s -> 15)
+	AMBER_LIGHT(BlockProfile.customBlockWithoutItem(AmberLightBlock::new, Properties.of()
+			.lightLevel(s -> 15)
 			.sound(SoundType.WOOL)
 			.replaceable()
 			.noLootTable()

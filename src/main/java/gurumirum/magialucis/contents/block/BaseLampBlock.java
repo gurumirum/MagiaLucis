@@ -5,9 +5,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -16,8 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
 
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.ENABLED;
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 public abstract class BaseLampBlock extends Block {
 	private static final EnumMap<Direction, VoxelShape> SHAPE = new EnumMap<>(Direction.class);
@@ -61,7 +63,7 @@ public abstract class BaseLampBlock extends Block {
 	public BaseLampBlock(Properties properties) {
 		super(properties);
 
-		BlockState state = defaultBlockState().setValue(FACING, Direction.DOWN);
+		BlockState state = defaultBlockState().setValue(FACING, Direction.DOWN).setValue(WATERLOGGED, false);
 		if (hasEnabledProperty()) state = state.setValue(ENABLED, false);
 		registerDefaultState(state);
 	}
@@ -72,13 +74,15 @@ public abstract class BaseLampBlock extends Block {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
+		builder.add(FACING, WATERLOGGED);
 		if (hasEnabledProperty()) builder.add(ENABLED);
 	}
 
 	@Override
 	public @Nullable BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
-		return defaultBlockState().setValue(FACING, context.getClickedFace());
+		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+		return defaultBlockState().setValue(FACING, context.getClickedFace())
+				.setValue(WATERLOGGED, fluidState.is(Fluids.WATER));
 	}
 
 	@Override
@@ -91,6 +95,22 @@ public abstract class BaseLampBlock extends Block {
 	protected @NotNull VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level,
 	                                             @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return (context instanceof LuxNetCollisionContext ? LUX_NODE_SHAPE : SHAPE).get(state.getValue(FACING));
+	}
+
+	@Override
+	protected @NotNull FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
+	protected @NotNull BlockState updateShape(BlockState state, @NotNull Direction facing,
+	                                          @NotNull BlockState facingState, @NotNull LevelAccessor level,
+	                                          @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED)) {
+			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		}
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	public static class Stateless extends BaseLampBlock {

@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 public final class ModBlockStateProps {
 	private ModBlockStateProps() {}
 
+	public static final BooleanProperty LAMP = BooleanProperty.create("lamp");
 	public static final BooleanProperty OVERSATURATED = BooleanProperty.create("oversaturated");
 	public static final BooleanProperty SKYLIGHT_INTERFERENCE = BooleanProperty.create("skylight_interference");
 	public static final BooleanProperty WORKING = BooleanProperty.create("working");

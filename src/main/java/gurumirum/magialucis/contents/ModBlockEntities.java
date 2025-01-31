@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents;
 
+import gurumirum.magialucis.contents.block.AmberLampBlockEntity;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlockEntity;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntity;
@@ -24,6 +25,9 @@ public final class ModBlockEntities {
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmberCoreBlockEntity>> AMBER_CORE =
 			blockEntity("amber_core", AmberCoreBlockEntity::new, ModBlocks.AMBER_CORE);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmberLampBlockEntity>> AMBER_LAMP =
+			blockEntity("amber_lamp", AmberLampBlockEntity::new, ModBlocks.AMBER_LAMP);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LightBasinBlockEntity>> LIGHT_BASIN =
 			blockEntity("light_basin", LightBasinBlockEntity::new, ModBlocks.LIGHT_BASIN);
