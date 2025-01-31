@@ -3,24 +3,25 @@ package gurumirum.magialucis.contents.block.lux.sunlight.core;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxSpecialNodeBehavior;
+import gurumirum.magialucis.impl.luxnet.behavior.SingleFieldLuxNodeBehavior;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
-public abstract class BaseSunlightCoreNodeBehavior implements LuxSpecialNodeBehavior {
-	private double power;
-
-	public double power() {
-		return this.power;
-	}
-
-	public void setPower(double power) {
-		this.power = power;
+public abstract class BaseSunlightCoreNodeBehavior extends SingleFieldLuxNodeBehavior implements LuxSpecialNodeBehavior {
+	public BaseSunlightCoreNodeBehavior(@NotNull BlockPos pos) {
+		super(pos);
 	}
 
 	@Override
 	public void alterIncomingLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d incomingLux) {
-		if (node.isLoaded()) incomingLux.mul(this.power);
-		else incomingLux.zero();
+		incomingLux.mul(fieldPower());
+	}
+
+	public BaseSunlightCoreNodeBehavior(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super(tag, lookupProvider);
 	}
 }

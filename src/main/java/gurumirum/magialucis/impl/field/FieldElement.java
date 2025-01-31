@@ -4,12 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.function.DoubleConsumer;
 
 public final class FieldElement {
 	private final FieldInstance fieldInstance;
@@ -22,8 +18,6 @@ public final class FieldElement {
 	private double power = 1;
 
 	double influenceSumCache = 0;
-
-	private @Nullable List<DoubleConsumer> powerChangedEventListeners;
 
 	FieldElement(@NotNull FieldInstance fieldInstance, @NotNull BlockPos pos) {
 		this.fieldInstance = Objects.requireNonNull(fieldInstance);
@@ -72,32 +66,14 @@ public final class FieldElement {
 		return this;
 	}
 
-	public FieldElement listenPowerChange(@NotNull DoubleConsumer listener) {
-		if (this.powerChangedEventListeners == null) this.powerChangedEventListeners = new ArrayList<>();
-		this.powerChangedEventListeners.add(listener);
-		return this;
-	}
-
-	public FieldElement notifyPowerChangedOnNextUpdate() {
-		this.fieldInstance.notifyPowerChangedOnNextUpdate(this.pos);
-		return this;
-	}
-
 	void setPower(double power) {
 		this.power = power;
-		notifyPowerChangedOnNextUpdate();
-	}
-
-	void broadcastPowerChanged() {
-		if (this.powerChangedEventListeners != null) {
-			for (DoubleConsumer l : this.powerChangedEventListeners) l.accept(this.power);
-		}
 	}
 
 	public void save(@NotNull CompoundTag tag) {
 		Field f = fieldInstance.field();
-		if (f.forceRange() != this.range) tag.putDouble("range", this.range);
-		if (f.forceDiminishPower() != this.diminishPower) tag.putDouble("diminishPower", this.diminishPower);
+		if (this.range != f.forceRange()) tag.putDouble("range", this.range);
+		if (this.diminishPower != f.forceDiminishPower()) tag.putDouble("diminishPower", this.diminishPower);
 	}
 
 	public FieldElement(@NotNull FieldInstance fieldInstance, @NotNull BlockPos pos, @NotNull CompoundTag tag) {

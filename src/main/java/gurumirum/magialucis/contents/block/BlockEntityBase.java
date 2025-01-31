@@ -1,8 +1,5 @@
 package gurumirum.magialucis.contents.block;
 
-import gurumirum.magialucis.impl.field.Field;
-import gurumirum.magialucis.impl.field.FieldInstance;
-import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.utils.ServerTickQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -64,24 +61,6 @@ public abstract class BlockEntityBase extends BlockEntity {
 
 	protected void register() {}
 	protected void unregister(boolean destroyed) {}
-
-	protected void registerField(@NotNull Field field) {
-		FieldInstance fieldInstance = FieldManager.tryGetField(this.level, field);
-		if (fieldInstance != null) {
-			fieldInstance.add(getBlockPos()).listenPowerChange(power -> {
-				setFieldPower(field, power);
-				syncToClient();
-			}).notifyPowerChangedOnNextUpdate();
-		}
-	}
-
-	protected void unregisterField(@NotNull Field field) {
-		FieldInstance fieldInstance = FieldManager.tryGetField(this.level, field);
-		if (fieldInstance != null) fieldInstance.remove(getBlockPos());
-		setFieldPower(field, 0);
-	}
-
-	protected void setFieldPower(@NotNull Field field, double power) {}
 
 	public void syncToClient() {
 		Level level = getLevel();

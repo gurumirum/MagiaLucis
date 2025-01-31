@@ -30,13 +30,13 @@ public final class LuxNodeTypes {
 			DynamicLuxNodeBehavior.class, DynamicLuxNodeBehavior::save, DynamicLuxNodeBehavior::new);
 
 	public static final LuxNodeType<AmberCoreBehavior> AMBER_CORE = type("amber_core",
-			AmberCoreBehavior.class, AmberCoreBehavior::new);
+			AmberCoreBehavior.class, AmberCoreBehavior::save, AmberCoreBehavior::new);
 
 	public static final LuxNodeType<SunlightCoreBehavior> SUNLIGHT_CORE = type("sunlight_core",
-			SunlightCoreBehavior.class, SunlightCoreBehavior::new);
+			SunlightCoreBehavior.class, SunlightCoreBehavior::save, SunlightCoreBehavior::new);
 
 	public static final LuxNodeType<MoonlightCoreBehavior> MOONLIGHT_CORE = type("moonlight_core",
-			MoonlightCoreBehavior.class, MoonlightCoreBehavior::new);
+			MoonlightCoreBehavior.class, MoonlightCoreBehavior::save, MoonlightCoreBehavior::new);
 
 	public static final LuxNodeType<SunlightFocusBehavior> SUNLIGHT_FOCUS = type("sunlight_focus",
 			SunlightFocusBehavior.class, SunlightFocusBehavior::save, SunlightFocusBehavior::new);

@@ -2,49 +2,77 @@ package gurumirum.magialucis.contents.block.fieldmonitor;
 
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.contents.block.DebugTextProvider;
 import gurumirum.magialucis.contents.block.BlockEntityBase;
-import gurumirum.magialucis.contents.block.Ticker;
-import gurumirum.magialucis.impl.field.Field;
-import gurumirum.magialucis.impl.field.FieldInstance;
-import gurumirum.magialucis.impl.field.FieldManager;
-import gurumirum.magialucis.impl.field.FieldRegistry;
+import gurumirum.magialucis.contents.block.DebugTextProvider;
+import gurumirum.magialucis.impl.field.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
-public class FieldMonitorBlockEntity extends BlockEntityBase implements Ticker.Server, DebugTextProvider {
-	private static final double CYCLE = 5;
-
+public class FieldMonitorBlockEntity extends BlockEntityBase implements DebugTextProvider {
 	private @Nullable ResourceLocation fieldId;
 	private double influenceSum;
+
+	private FieldListener listener = FieldListener.invalid();
 
 	public FieldMonitorBlockEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.FIELD_MONITOR.get(), pos, blockState);
 	}
 
-	@Override
-	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
-		if (level.getGameTime() % CYCLE != 0) return;
+	public @Nullable ResourceLocation fieldId() {
+		return fieldId;
+	}
+
+	public void setFieldId(@Nullable ResourceLocation fieldId) {
+		if (Objects.equals(this.fieldId, fieldId)) return;
+		this.fieldId = fieldId;
+		registerField();
+		setChanged();
+	}
+
+	@Override protected void register() {
+		registerField();
+	}
+
+	@Override protected void unregister(boolean destroyed) {
+		unregisterField();
+	}
+
+	private void registerField() {
+		this.listener.invalidate();
+
 		Field f = FieldRegistry.fields().get(this.fieldId);
 		if (f == null) return;
-		FieldManager m = FieldManager.tryGet(level);
-		if (m == null) return;
-		FieldInstance fieldInstance = m.get(f);
-		if (fieldInstance == null) return;
-		double influenceSum = fieldInstance.influenceSum(pos);
-		if (this.influenceSum == influenceSum) return;
-		this.influenceSum = influenceSum;
-		syncToClient();
+
+		FieldInstance inst = FieldManager.tryGetField(this.level, f);
+		if (inst == null) return;
+
+		this.listener = inst.listener().fieldChanged((pos, element, removed) -> {
+			update(element.fieldInstance());
+		});
+
+		update(inst);
+	}
+
+	private void unregisterField() {
+		this.listener.invalidate();
+	}
+
+	private void update(FieldInstance fieldInstance) {
+		double newInfluenceSum = fieldInstance.influenceSum(getBlockPos());
+		if (this.influenceSum != newInfluenceSum) {
+			this.influenceSum = newInfluenceSum;
+			syncToClient();
+		}
 	}
 
 	@Override
@@ -69,13 +97,13 @@ public class FieldMonitorBlockEntity extends BlockEntityBase implements Ticker.S
 	@Override
 	protected void applyImplicitComponents(@NotNull DataComponentInput componentInput) {
 		super.applyImplicitComponents(componentInput);
-		this.fieldId = componentInput.get(ModDataComponents.FIELD_ID.get());
+		setFieldId(componentInput.get(ModDataComponents.FIELD_ID.get()));
 	}
 
 	@Override
 	protected void collectImplicitComponents(DataComponentMap.@NotNull Builder components) {
 		super.collectImplicitComponents(components);
-		if (this.fieldId != null) components.set(ModDataComponents.FIELD_ID.get(), fieldId);
+		if (this.fieldId != null) components.set(ModDataComponents.FIELD_ID.get(), this.fieldId);
 	}
 
 	@SuppressWarnings("deprecation")

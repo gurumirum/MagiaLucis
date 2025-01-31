@@ -11,10 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.function.DoubleConsumer;
 
 public class FieldInstance {
 	private final Field field;
@@ -22,7 +20,11 @@ public class FieldInstance {
 	private final Map<BlockPos, FieldElement> elements = new Object2ObjectOpenHashMap<>();
 	private final Map<BlockPos, FieldElement> elementsView = Collections.unmodifiableMap(this.elements);
 
-	private final Set<BlockPos> notifyPowerChangedOnNextUpdate = new ObjectOpenHashSet<>();
+	private final List<FieldChangedListener> fieldChanged = new ArrayList<>();
+	private final Map<BlockPos, List<DoubleTracker>> powerChanged = new Object2ObjectOpenHashMap<>();
+
+	private boolean fieldChangedInvalidated;
+	private final Set<BlockPos> powerChangedInvalidated = new ObjectOpenHashSet<>();
 
 	private boolean dirty;
 
@@ -41,19 +43,24 @@ public class FieldInstance {
 	}
 
 	public @NotNull FieldElement add(@NotNull BlockPos pos) {
-		FieldElement e = this.elements.computeIfAbsent(pos.immutable(),
+		FieldElement element = this.elements.computeIfAbsent(pos.immutable(),
 				p -> {
 					MagiaLucisMod.LOGGER.info("Adding new field element at {}, field {}", p, this.field.id);
 					return new FieldElement(this, p);
 				});
 		setDirty();
-		return e;
+		dispatchFieldChanged(pos, element, false);
+		return element;
 	}
 
 	public void remove(@NotNull BlockPos pos) {
-		MagiaLucisMod.LOGGER.info("Removing field element at {}, field {}", pos, this.field.id);
-		this.elements.remove(pos);
+		FieldElement element = this.elements.remove(pos);
+		if (element == null) return;
+
 		setDirty();
+		MagiaLucisMod.LOGGER.info("Removing field element at {}, field {}", pos, this.field.id);
+		dispatchFieldChanged(pos, element, true);
+		dispatchPowerChange(pos, 0);
 	}
 
 	public @Nullable FieldElement elementAt(@NotNull BlockPos pos) {
@@ -94,13 +101,57 @@ public class FieldInstance {
 		return this.elements.isEmpty();
 	}
 
-	void notifyPowerChangedOnNextUpdate(BlockPos pos) {
-		this.notifyPowerChangedOnNextUpdate.add(pos);
+	public FieldListener listener() {
+		return new FieldListener(this);
+	}
+
+	void listenFieldChanged(@NotNull FieldListener listener, @NotNull FieldChanged changed) {
+		this.fieldChanged.add(new FieldChangedListener(listener, changed));
+
+		MagiaLucisMod.LOGGER.info("New field changed event listener on field {}, total n. of listeners: {}",
+				this.field.id,
+				this.fieldChanged.size());
+	}
+
+	void listenPowerChanged(@NotNull FieldListener listener, @NotNull BlockPos pos, @NotNull DoubleConsumer changed) {
+		FieldElement element = this.elements.get(pos);
+
+		List<DoubleTracker> list = this.powerChanged.computeIfAbsent(pos, p -> new ArrayList<>());
+		list.add(new DoubleTracker(listener, changed, element != null ? element.power() : 0));
+
+		MagiaLucisMod.LOGGER.info("New power changed event listener on field {}, total n. of listeners: {}",
+				this.field.id,
+				this.powerChanged.values().stream()
+						.mapToInt(List::size)
+						.sum());
+	}
+
+	void fieldChangedInvalidated() {
+		this.fieldChangedInvalidated = true;
+		this.dirty = true;
+	}
+
+	void powerChangedInvalidated(@NotNull Collection<BlockPos> pos) {
+		this.powerChangedInvalidated.addAll(pos);
+		this.dirty = true;
 	}
 
 	void update() {
 		if (!this.dirty) return;
 		this.dirty = false;
+
+		if (this.fieldChangedInvalidated) {
+			this.fieldChangedInvalidated = false;
+			this.fieldChanged.removeIf(EventListener::isInvalid);
+		}
+
+		for (BlockPos pos : this.powerChangedInvalidated) {
+			List<DoubleTracker> trackers = this.powerChanged.get(pos);
+			if (trackers != null && trackers.removeIf(EventListener::isInvalid) && trackers.isEmpty()) {
+				this.powerChanged.remove(pos);
+			}
+		}
+		this.powerChangedInvalidated.clear();
 
 		if (this.field.hasInterference()) {
 			for (FieldElement e : this.elements.values()) {
@@ -108,15 +159,26 @@ public class FieldInstance {
 				double newSum = influenceSum(e.pos());
 				if (prevSum == newSum) continue;
 				e.influenceSumCache = newSum;
-				e.setPower(FieldMath.power(this.field.interferenceThreshold(), newSum));
+				double power = FieldMath.power(this.field.interferenceThreshold(), newSum);
+				e.setPower(power);
+				dispatchPowerChange(e.pos(), power);
 			}
 		}
+	}
 
-		this.notifyPowerChangedOnNextUpdate.forEach(pos -> {
-			FieldElement element = this.elements.get(pos);
-			if (element != null) element.broadcastPowerChanged();
-		});
-		this.notifyPowerChangedOnNextUpdate.clear();
+	private void dispatchFieldChanged(@NotNull BlockPos pos, @NotNull FieldElement element, boolean removed) {
+		for (FieldChangedListener l : this.fieldChanged) {
+			if (l.isValid()) l.changed.onFieldChanged(pos, element, removed);
+		}
+	}
+
+	private void dispatchPowerChange(@NotNull BlockPos pos, double value) {
+		List<DoubleTracker> trackers = this.powerChanged.get(pos);
+		if (trackers != null) {
+			for (DoubleTracker t : trackers) {
+				if (t.isValid()) t.set(value);
+			}
+		}
 	}
 
 	public void setDirty() {
@@ -146,6 +208,48 @@ public class FieldInstance {
 			CompoundTag tag2 = list.getCompound(i);
 			BlockPos pos = new BlockPos(tag2.getInt("x"), tag2.getInt("y"), tag2.getInt("z"));
 			this.elements.put(pos, new FieldElement(this, pos, tag2));
+		}
+	}
+
+	private static sealed abstract class EventListener {
+		public final FieldListener listener;
+
+		private EventListener(@NotNull FieldListener listener) {
+			this.listener = Objects.requireNonNull(listener);
+		}
+
+		public boolean isValid() {
+			return this.listener.isValid();
+		}
+
+		public boolean isInvalid() {
+			return !this.listener.isValid();
+		}
+	}
+
+	private static final class FieldChangedListener extends EventListener {
+		private final FieldChanged changed;
+
+		private FieldChangedListener(@NotNull FieldListener listener, @NotNull FieldChanged changed) {
+			super(listener);
+			this.changed = Objects.requireNonNull(changed);
+		}
+	}
+
+	private static final class DoubleTracker extends EventListener {
+		private final DoubleConsumer changed;
+		private double value;
+
+		private DoubleTracker(@NotNull FieldListener listener, @NotNull DoubleConsumer changed, double value) {
+			super(listener);
+			this.changed = Objects.requireNonNull(changed);
+			this.value = value;
+		}
+
+		public void set(double value) {
+			if (!(this.value != value)) return;
+			this.value = value;
+			this.changed.accept(value);
 		}
 	}
 }

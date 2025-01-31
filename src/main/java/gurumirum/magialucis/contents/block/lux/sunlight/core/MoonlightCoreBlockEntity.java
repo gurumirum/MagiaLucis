@@ -25,6 +25,6 @@ public class MoonlightCoreBlockEntity extends BaseSunlightCoreBlockEntity<Moonli
 
 	@Override
 	protected @NotNull MoonlightCoreBehavior createNodeBehavior() {
-		return new MoonlightCoreBehavior();
+		return new MoonlightCoreBehavior(getBlockPos());
 	}
 }

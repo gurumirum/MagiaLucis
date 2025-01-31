@@ -7,7 +7,7 @@ import gurumirum.magialucis.client.render.prism.SunlightCoreBlockPrismEffect;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntity;
-import gurumirum.magialucis.impl.field.Field;
+import gurumirum.magialucis.impl.field.*;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
@@ -32,7 +32,8 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 		implements Ticker.Client {
 	public static final double LINK_DISTANCE = 7;
 
-	private double power;
+	private FieldListener listener = FieldListener.invalid();
+	private double clientSidePower;
 
 	private float clientSideRotation;
 	private float clientSideRotationO;
@@ -58,31 +59,27 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 
 	@Override
 	protected void register() {
+		this.listener.invalidate();
+
 		super.register();
-		Field f = field();
-		if (f != null) registerField(f);
+
+		FieldInstance inst = FieldManager.tryGetField(this.level, field());
+		if (inst != null) {
+			this.listener = inst.listener()
+					.powerChanged(getBlockPos(), power -> {
+						ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);
+					});
+		}
 	}
 
 	@Override
 	protected void unregister(boolean destroyed) {
 		super.unregister(destroyed);
-		if (destroyed) {
-			Field f = field();
-			if (f != null) unregisterField(f);
-		}
-	}
-
-	@Override
-	protected void setFieldPower(@NotNull Field field, double power) {
-		if (field == field()) {
-			this.power = power;
-			ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);
-			nodeBehavior().setPower(power);
-		}
+		this.listener.invalidate();
 	}
 
 	private void updateOversaturatedProperty() {
-		if (!updateProperty(OVERSATURATED, this.power < 1))
+		if (!updateProperty(OVERSATURATED, nodeBehavior().fieldPower() < 1))
 			syncToClient();
 	}
 
@@ -142,7 +139,7 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
 		super.save(tag, lookupProvider, context);
 		if (context.isSync()) {
-			tag.putDouble("power", this.power);
+			tag.putDouble("power", nodeBehavior().fieldPower());
 		}
 	}
 
@@ -150,13 +147,13 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 	protected void load(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
 		super.load(tag, lookupProvider, context);
 		if (context.isSync()) {
-			this.power = tag.getDouble("power");
+			this.clientSidePower = tag.getDouble("power");
 		}
 	}
 
 	@Override
 	public void addDebugText(@NotNull List<String> list) {
 		super.addDebugText(list);
-		list.add("Power: " + this.power);
+		list.add("Power: " + this.clientSidePower);
 	}
 }

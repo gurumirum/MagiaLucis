@@ -40,7 +40,11 @@ public class FieldManager extends SavedData {
 	}
 
 	public @NotNull FieldInstance getOrCreate(Field field) {
-		return this.fields.computeIfAbsent(field, Field::createInstance);
+		return this.fields.computeIfAbsent(field, f -> {
+			FieldInstance inst = f.createInstance();
+			inst.manager = this;
+			return inst;
+		});
 	}
 
 	@Override
@@ -76,7 +80,9 @@ public class FieldManager extends SavedData {
 				continue;
 			}
 
-			this.fields.put(field, field.createInstance(tag2));
+			FieldInstance inst = field.createInstance(tag2);
+			inst.manager = this;
+			this.fields.put(field, inst);
 		}
 	}
 

@@ -2,15 +2,23 @@ package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.LuxNodeTypes;
+import gurumirum.magialucis.impl.field.Field;
+import gurumirum.magialucis.impl.field.Fields;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxSpecialNodeBehavior;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
-public class MoonlightCoreBehavior extends BaseSunlightCoreNodeBehavior implements LuxSpecialNodeBehavior {
+public class MoonlightCoreBehavior extends BaseSunlightCoreNodeBehavior {
+	public MoonlightCoreBehavior(@NotNull BlockPos pos) {
+		super(pos);
+	}
+
 	@Override
 	public @NotNull LuxNodeType<?> type() {
 		return LuxNodeTypes.MOONLIGHT_CORE;
@@ -26,5 +34,14 @@ public class MoonlightCoreBehavior extends BaseSunlightCoreNodeBehavior implemen
 		super.alterIncomingLux(level, luxNet, node, incomingLux);
 		incomingLux.z -= incomingLux.x + incomingLux.y;
 		incomingLux.x = incomingLux.y = 0;
+	}
+
+	@Override
+	protected @NotNull Field field() {
+		return Fields.MOONLIGHT_CORE;
+	}
+
+	public MoonlightCoreBehavior(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super(tag, lookupProvider);
 	}
 }

@@ -27,6 +27,6 @@ public class SunlightCoreBlockEntity extends BaseSunlightCoreBlockEntity<Sunligh
 
 	@Override
 	protected @NotNull SunlightCoreBehavior createNodeBehavior() {
-		return new SunlightCoreBehavior();
+		return new SunlightCoreBehavior(getBlockPos());
 	}
 }

@@ -3,7 +3,9 @@ package gurumirum.magialucis.contents.block.lux.ambercore;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
-import gurumirum.magialucis.impl.field.Field;
+import gurumirum.magialucis.impl.field.FieldInstance;
+import gurumirum.magialucis.impl.field.FieldListener;
+import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.field.Fields;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
@@ -27,7 +29,8 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> 
 	private static final int CYCLE = 50;
 
 	private @Nullable BlockPos.MutableBlockPos mpos;
-	private double power;
+	private FieldListener listener = FieldListener.invalid();
+	private double clientSidePower;
 
 	public AmberCoreBlockEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.AMBER_CORE.get(), pos, blockState);
@@ -35,37 +38,33 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> 
 
 	@Override
 	protected @NotNull AmberCoreBehavior createNodeBehavior() {
-		return new AmberCoreBehavior();
+		return new AmberCoreBehavior(getBlockPos(), getBlockState().getValue(SKYLIGHT_INTERFERENCE));
 	}
 
 	@Override
 	protected void register() {
+		this.listener.invalidate();
+
 		super.register();
-		if (!getBlockState().getValue(SKYLIGHT_INTERFERENCE)) registerField(Fields.AMBER_CORE);
+
+		FieldInstance inst = FieldManager.tryGetField(this.level, Fields.AMBER_CORE);
+		if (inst != null) {
+			this.listener = inst.listener()
+					.powerChanged(getBlockPos(), power -> {
+						ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);
+					});
+		}
 	}
 
 	@Override
 	protected void unregister(boolean destroyed) {
 		super.unregister(destroyed);
-		if (destroyed) unregisterField(Fields.AMBER_CORE);
-	}
-
-	@Override
-	protected void setFieldPower(@NotNull Field field, double power) {
-		if (field == Fields.AMBER_CORE) {
-			this.power = power;
-			ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);
-			updatePower();
-		}
+		this.listener.invalidate();
 	}
 
 	private void updateOversaturatedProperty() {
-		if (!updateProperty(OVERSATURATED, !getBlockState().getValue(SKYLIGHT_INTERFERENCE) && this.power < 1))
+		if (!updateProperty(OVERSATURATED, !getBlockState().getValue(SKYLIGHT_INTERFERENCE) && nodeBehavior().fieldPower() < 1))
 			syncToClient();
-	}
-
-	private void updatePower() {
-		nodeBehavior().setPower(getBlockState().getValue(SKYLIGHT_INTERFERENCE) ? 0 : this.power);
 	}
 
 	@Override
@@ -82,9 +81,7 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> 
 
 		boolean skylightInterference = brightnessMax >= 8;
 		if (updateProperty(SKYLIGHT_INTERFERENCE, skylightInterference)) {
-			if (skylightInterference) unregisterField(Fields.AMBER_CORE);
-			else registerField(Fields.AMBER_CORE);
-			updatePower();
+			nodeBehavior().setDisabled(level, skylightInterference);
 		}
 	}
 
@@ -109,7 +106,7 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> 
 	protected void save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
 		super.save(tag, lookupProvider, context);
 		if (context.isSync()) {
-			tag.putDouble("power", this.power);
+			tag.putDouble("power", nodeBehavior().fieldPower());
 		}
 	}
 
@@ -117,13 +114,13 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> 
 	protected void load(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider, SaveLoadContext context) {
 		super.load(tag, lookupProvider, context);
 		if (context.isSync()) {
-			this.power = tag.getDouble("power");
+			this.clientSidePower = tag.getDouble("power");
 		}
 	}
 
 	@Override
 	public void addDebugText(@NotNull List<String> list) {
 		super.addDebugText(list);
-		list.add("Power: " + this.power);
+		list.add("Power: " + this.clientSidePower);
 	}
 }
