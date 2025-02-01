@@ -119,7 +119,7 @@ public final class ModCommands {
 	}
 
 	private static MutableComponent node(LuxNet luxNet, LuxNode node) {
-		MutableComponent c = Component.literal(nodePlaintext(node));
+		MutableComponent c = Component.literal(node.toString());
 		List<String> tooltips = new ArrayList<>();
 
 		LuxNodeInterface iface = node.iface();
@@ -131,7 +131,7 @@ public final class ModCommands {
 			tooltips.add("Inbound Links:");
 			for (var e2 : luxNet.inboundLinks(node).entrySet()) {
 				InWorldLinkInfo info = e2.getValue();
-				String str = " " + nodePlaintext(e2.getKey());
+				String str = " " + e2.getKey();
 				if (info == null) str += " implicit";
 				tooltips.add(str);
 			}
@@ -141,7 +141,7 @@ public final class ModCommands {
 			tooltips.add("Outbound Links:");
 			for (var e2 : luxNet.outboundLinks(node).entrySet()) {
 				InWorldLinkInfo info = e2.getValue();
-				String str = " " + nodePlaintext(e2.getKey());
+				String str = " " + e2.getKey();
 				if (info == null) str += " implicit";
 				tooltips.add(str);
 			}
@@ -156,22 +156,6 @@ public final class ModCommands {
 		}
 
 		return c;
-	}
-
-
-	private static String nodePlaintext(LuxNode node) {
-		StringBuilder stb = new StringBuilder();
-
-		boolean loaded = node.isLoaded();
-		stb.append(loaded ? '[' : '(');
-		stb.append(node.id);
-		stb.append(": ");
-
-		ResourceLocation id = node.behavior().type().id();
-		stb.append(id.getNamespace().equals(MagiaLucisMod.MODID) ? id.getPath() : id.toString());
-
-		stb.append(loaded ? ']' : ')');
-		return stb.toString();
 	}
 
 	private static int printLuxNetLinks(CommandSourceStack source, ServerLevel level) {

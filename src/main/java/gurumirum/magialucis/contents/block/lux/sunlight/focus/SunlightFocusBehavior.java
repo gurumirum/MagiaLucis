@@ -50,11 +50,9 @@ public class SunlightFocusBehavior implements LuxGeneratorNodeBehavior {
 
 	@Override
 	public void generateLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d generatedLux) {
-		if (node.isLoaded()) {
-			SunlightLogic.getColor(level, pos(),
-					SunlightLogic.DEFAULT_BASE_INTENSITY * (skyVisibility() / 16.0),
-					generatedLux);
-		}
+		SunlightLogic.getColor(level, pos(),
+				SunlightLogic.DEFAULT_BASE_INTENSITY * (skyVisibility() / 16.0),
+				generatedLux);
 	}
 
 	public void save(CompoundTag tag, HolderLookup.Provider lookupProvider) {

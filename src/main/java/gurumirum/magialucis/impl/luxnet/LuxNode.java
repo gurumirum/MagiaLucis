@@ -144,6 +144,22 @@ public final class LuxNode {
 		return Objects.hashCode(this.id);
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder stb = new StringBuilder();
+
+		boolean loaded = isLoaded();
+		stb.append(loaded ? '[' : '(');
+		stb.append(this.id);
+		stb.append(": ");
+
+		ResourceLocation id = behavior().type().id();
+		stb.append(id.getNamespace().equals(MagiaLucisMod.MODID) ? id.getPath() : id.toString());
+
+		stb.append(loaded ? ']' : ')');
+		return stb.toString();
+	}
+
 	enum BindInterfaceResult {
 		SUCCESS,
 		FAIL,
