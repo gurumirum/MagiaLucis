@@ -53,14 +53,14 @@ public final class BlockEntityTracker {
 	public static void onLevelUnload(LevelEvent.Unload event) {
 		BlockEntityTracker tracker = trackers.remove(event.getLevel());
 		if (tracker != null) {
-			tracker.removeAll(UnregisterContext.CHUNK_FULLY_UNLOADED);
+			tracker.unregisterAll(UnregisterContext.CHUNK_FULLY_UNLOADED);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onServerStopping(ServerStoppingEvent event) {
 		for (BlockEntityTracker tracker : trackers.values()) {
-			tracker.removeAll(UnregisterContext.SERVER_STOPPING);
+			tracker.unregisterAll(UnregisterContext.SERVER_STOPPING);
 		}
 		trackers.clear();
 	}
@@ -80,12 +80,14 @@ public final class BlockEntityTracker {
 		this.blockEntities.computeIfAbsent(ChunkPos.asLong(pos), l -> new ArrayList<>())
 				.add(blockEntity);
 
-		if (level.isLoaded(pos)) {
-			blockEntity.register(level);
+		if (this.level.isLoaded(pos)) {
+			blockEntity.register(this.level);
 		}
 	}
 
 	private void onChunkTicketLevelUpdated(long chunkPos, int oldTicket, int newTicket) {
+		if (!this.blockEntities.containsKey(chunkPos)) return;
+
 		int prev = this.chunkTicketDemotionCache.remove(chunkPos);
 		if (prev != -1) {
 			applyTicketChange(chunkPos, prev, newTicket);
@@ -104,31 +106,40 @@ public final class BlockEntityTracker {
 		boolean register = ChunkLevel.isBlockTicking(newTicket);
 		if (ChunkLevel.isBlockTicking(oldTicket) == register) return;
 
-		var list = this.blockEntities.get(chunkPos);
+		List<RegisteredBlockEntity> list = this.blockEntities.get(chunkPos);
 		if (list == null) return;
 
-		for (RegisteredBlockEntity be : list) {
-			if (register) be.register(this.level);
-			else be.unregister(this.level, UnregisterContext.CHUNK_PARTIALLY_UNLOADED);
-		}
+		if (register) registerList(list);
+		else unregisterList(list, UnregisterContext.CHUNK_PARTIALLY_UNLOADED);
 	}
 
 	private void onChunkUnload(long chunkPos) {
 		var list = this.blockEntities.remove(chunkPos);
 		if (list == null) return;
 
-		for (RegisteredBlockEntity be : list) {
-			be.unregister(this.level, UnregisterContext.CHUNK_FULLY_UNLOADED);
-		}
-
+		unregisterList(list, UnregisterContext.CHUNK_FULLY_UNLOADED);
 		this.chunkTicketDemotionCache.remove(chunkPos);
 	}
 
-	private void removeAll(UnregisterContext context) {
-		for (var e2 : this.blockEntities.long2ObjectEntrySet()) {
-			for (RegisteredBlockEntity be : e2.getValue()) {
-				be.unregister(this.level, context);
-			}
+	private void unregisterAll(UnregisterContext context) {
+		for (var e : this.blockEntities.long2ObjectEntrySet()) {
+			unregisterList(e.getValue(), context);
+		}
+	}
+
+	private void registerList(List<RegisteredBlockEntity> list) {
+		for (int i = 0; i < list.size(); i++) {
+			RegisteredBlockEntity be = list.get(i);
+			if (be.isRemoved()) list.remove(i--);
+			else be.register(this.level);
+		}
+	}
+
+	private void unregisterList(List<RegisteredBlockEntity> list, UnregisterContext context) {
+		for (int i = 0; i < list.size(); i++) {
+			RegisteredBlockEntity be = list.get(i);
+			if (be.isRemoved()) list.remove(i--);
+			else be.unregister(this.level, context);
 		}
 	}
 }

@@ -28,14 +28,14 @@ public final class LuxNet extends SavedData {
 	private static final int SYNC_DELAY = 20;
 	private static final int UPDATE_CONNECTION_CYCLE = 20;
 	private static final String NAME = MagiaLucisMod.MODID + "_lux_net";
-	private static final SavedData.Factory<LuxNet> FACTORY = new Factory<>(LuxNet::new, LuxNet::new);
 
 	public static @Nullable LuxNet tryGet(@Nullable Level level) {
 		return level instanceof ServerLevel serverLevel ? get(serverLevel) : null;
 	}
 
 	public static @NotNull LuxNet get(@NotNull ServerLevel level) {
-		return level.getDataStorage().computeIfAbsent(FACTORY, NAME);
+		return level.getDataStorage().computeIfAbsent(new Factory<>(LuxNet::new,
+				(tag, provider) -> new LuxNet(level, tag, provider)), NAME);
 	}
 
 	public static int tryRegister(@Nullable Level level, @NotNull LuxNodeInterface iface, int existingId) {
@@ -236,16 +236,18 @@ public final class LuxNet extends SavedData {
 		if (dst.iface() != null) queueConnectionSync(dst.id);
 	}
 
-	private void addLink(@NotNull LuxNode src, @NotNull LuxNode dst, @Nullable InWorldLinkInfo linkInfo) {
-		if (src == dst) return; // disallow self connection
+	private boolean addLink(@NotNull LuxNode src, @NotNull LuxNode dst, @Nullable InWorldLinkInfo linkInfo) {
+		if (src == dst) return false; // disallow self connection
 
 		var outboundLinks = outboundLinks0(src);
-		if (outboundLinks.containsKey(dst) && Objects.equals(outboundLinks.get(dst), linkInfo)) return;
+		if (outboundLinks.containsKey(dst) && Objects.equals(outboundLinks.get(dst), linkInfo)) return false;
 
 		outboundLinks.put(Objects.requireNonNull(dst), linkInfo);
 		inboundLinks0(dst).put(src, linkInfo);
 		if (src.iface() != null) queueConnectionSync(src.id);
 		if (dst.iface() != null) queueConnectionSync(dst.id);
+
+		return true;
 	}
 
 	public void queueLinkUpdate(int nodeId) {
@@ -457,11 +459,14 @@ public final class LuxNet extends SavedData {
 		if (this.idIncrement != 0) tag.putInt("id", this.idIncrement);
 
 		if (!this.nodes.isEmpty()) {
+			int nodes = 0, links = 0;
+
 			ListTag list = new ListTag();
 			for (var e : this.nodes.int2ObjectEntrySet()) {
 				CompoundTag tag2 = e.getValue().save(lookupProvider);
 				tag2.putInt("id", e.getIntKey());
 				list.add(tag2);
+				nodes++;
 			}
 			tag.put("nodes", list);
 
@@ -477,24 +482,33 @@ public final class LuxNet extends SavedData {
 					tag2.putInt("dst", dst.id);
 					if (linkInfo != null) tag2.put("info", linkInfo.save());
 					list.add(tag2);
+					links++;
 				}
 			}
 			tag.put("links", list);
+
+			MagiaLucisMod.LOGGER.debug("LuxNet: Saved {} nodes, {} links", nodes, links);
 		}
 
 		return tag;
 	}
 
-	private LuxNet(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	private LuxNet(ServerLevel level, CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		this.idIncrement = tag.getInt("id");
+
+		int nodes = 0, links = 0;
 
 		if (tag.contains("nodes", Tag.TAG_LIST)) {
 			ListTag list = tag.getList("nodes", Tag.TAG_COMPOUND);
 			for (int i = 0; i < list.size(); i++) {
 				CompoundTag tag2 = list.getCompound(i);
 				int id = tag2.getInt("id");
-				if (id != NO_ID && !this.nodes.containsKey(id))
-					this.nodes.put(id, new LuxNode(id, tag2, lookupProvider));
+				if (id != NO_ID && !this.nodes.containsKey(id)) {
+					LuxNode node = new LuxNode(id, tag2, lookupProvider);
+					this.nodes.put(id, node);
+					updateBehaviorCache(node);
+					nodes++;
+				}
 			}
 		}
 
@@ -502,16 +516,32 @@ public final class LuxNet extends SavedData {
 			ListTag list = tag.getList("links", Tag.TAG_COMPOUND);
 			for (int i = 0; i < list.size(); i++) {
 				CompoundTag tag2 = list.getCompound(i);
-				LuxNode src = get(tag2.getInt("src"));
-				LuxNode dst = get(tag2.getInt("dst"));
+				int srcId = tag2.getInt("src");
+				int dstId = tag2.getInt("dst");
+				LuxNode src = get(srcId);
+				LuxNode dst = get(dstId);
 
-				if (src == null || dst == null) continue;
+				if (src == null || dst == null) {
+					MagiaLucisMod.LOGGER.warn("Cannot restore link of {} -> {}: invalid node(s)", srcId, dstId);
+					continue;
+				}
 
 				InWorldLinkInfo linkInfo = tag2.contains("info", Tag.TAG_COMPOUND) ?
 						new InWorldLinkInfo(tag2.getCompound("info")) : null;
 
-				addLink(src, dst, linkInfo);
+				if (addLink(src, dst, linkInfo)) {
+					links++;
+				} else {
+					MagiaLucisMod.LOGGER.warn("Cannot restore link of {} -> {}: link failed", srcId, dstId);
+				}
 			}
+		}
+
+		if (nodes > 0) {
+			for (LuxNode n : this.nodes.values()) {
+				n.initBehavior(level, this);
+			}
+			MagiaLucisMod.LOGGER.debug("LuxNet: Restored {} nodes, {} links", nodes, links);
 		}
 	}
 

@@ -153,6 +153,11 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 	}
 
 	@Override
+	public @Nullable BlockPos nodeBlockPos() {
+		return getBlockPos();
+	}
+
+	@Override
 	public void addDebugText(@NotNull List<String> list) {
 		list.add("Node: #" + luxNodeId() + " [" + getBlockPos().toShortString() + "]");
 

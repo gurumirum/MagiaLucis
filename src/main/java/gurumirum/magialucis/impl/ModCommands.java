@@ -14,6 +14,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.DimensionArgument;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
@@ -27,7 +28,6 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -49,12 +49,19 @@ public final class ModCommands {
 												.executes(context ->
 														printLuxNetNodes(context.getSource(), DimensionArgument.getDimension(context, "dimension")))
 										)
-								).then(literal("links")
+								).then(literal("outboundLinks")
 										.executes(context ->
-												printLuxNetLinks(context.getSource(), context.getSource().getLevel())
+												printLuxNetLinks(context.getSource(), context.getSource().getLevel(), true)
 										).then(argument("dimension", DimensionArgument.dimension())
 												.executes(context ->
-														printLuxNetLinks(context.getSource(), DimensionArgument.getDimension(context, "dimension")))
+														printLuxNetLinks(context.getSource(), DimensionArgument.getDimension(context, "dimension"), true))
+										)
+								).then(literal("inboundLinks")
+										.executes(context ->
+												printLuxNetLinks(context.getSource(), context.getSource().getLevel(), false)
+										).then(argument("dimension", DimensionArgument.dimension())
+												.executes(context ->
+														printLuxNetLinks(context.getSource(), DimensionArgument.getDimension(context, "dimension"), false))
 										)
 								)
 						).then(literal("clear")
@@ -103,28 +110,40 @@ public final class ModCommands {
 		source.sendSuccess(() -> Component.literal("Luxnet of dimension " + level.dimension().location() + ": " +
 				nodes.size() + " nodes"), false);
 
-		MutableComponent c = Component.empty();
-		boolean _first = true;
+		if (!nodes.isEmpty()) {
+			MutableComponent c = Component.empty();
+			boolean _first = true;
 
-		for (var e : nodes.int2ObjectEntrySet()) {
-			if (_first) _first = false;
-			else c.append("  ");
+			for (var e : nodes.int2ObjectEntrySet()) {
+				if (_first) _first = false;
+				else c.append("  ");
 
-			c.append(node(luxNet, e.getValue()));
+				c.append(node(luxNet, e.getValue()));
+			}
+
+			source.sendSuccess(() -> c, false);
 		}
-
-		source.sendSuccess(() -> c, false);
 
 		return 1;
 	}
 
 	private static MutableComponent node(LuxNet luxNet, LuxNode node) {
-		MutableComponent c = Component.literal(node.toString());
+		return Component.literal(node.toString()).withStyle(nodeTooltip(luxNet, node));
+	}
+
+	private static Style nodeTooltip(LuxNet luxNet, LuxNode node) {
 		List<String> tooltips = new ArrayList<>();
+
+		ResourceLocation id = node.behavior().type().id();
+		tooltips.add("Node #" + node.id + ": " + (id.getNamespace().equals(MagiaLucisMod.MODID) ? id.getPath() : id.toString()));
+
+		BlockPos pos = node.lastBlockPos();
+		tooltips.add("Block Position: " + (pos == null ? "N/A" :
+				"(" + pos.toShortString() + ")" + (node.isLoaded() ? "" : "?")));
 
 		LuxNodeInterface iface = node.iface();
 		if (iface != null) {
-			tooltips.add("Interface: " + iface);
+			tooltips.add("Interface: " + iface.getClass().getSimpleName() + " " + Integer.toHexString(System.identityHashCode(iface)));
 		}
 
 		if (luxNet.hasInboundLink(node)) {
@@ -147,50 +166,48 @@ public final class ModCommands {
 			}
 		}
 
-		if (!tooltips.isEmpty()) {
-			c = c.withStyle(Style.EMPTY.withHoverEvent(
-					new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(
-							String.join("\n", tooltips)
-					))
-			));
-		}
-
-		return c;
+		return Style.EMPTY.withHoverEvent(
+				new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(
+						String.join("\n", tooltips))));
 	}
 
-	private static int printLuxNetLinks(CommandSourceStack source, ServerLevel level) {
+	private static int printLuxNetLinks(CommandSourceStack source, ServerLevel level, boolean outbound) {
 		LuxNet luxNet = LuxNet.get(level);
-
-		Set<LuxNode> nodesWithOutboundLink = luxNet.nodesWithOutboundLink();
-		Set<LuxNode> nodesWithInboundLink = luxNet.nodesWithInboundLink();
-
-		int links = nodesWithOutboundLink.stream()
-				.mapToInt(n -> luxNet.outboundLinks(n).size())
+		Set<LuxNode> nodesWithLink = outbound ? luxNet.nodesWithOutboundLink() : luxNet.nodesWithInboundLink();
+		int links = nodesWithLink.stream()
+				.mapToInt(n -> (outbound ? luxNet.outboundLinks(n) : luxNet.inboundLinks(n)).size())
 				.sum();
 
-		source.sendSuccess(() -> Component.literal("Luxnet of dimension " + level.dimension().location() + ": " +
+		source.sendSuccess(() -> Component.literal("LuxNet of dimension " + level.dimension().location() + ": " +
 				links + " links"), false);
 
-		source.sendSuccess(() -> Component.literal("Outbound Links: "), false);
+		if (links > 0) {
+			for (LuxNode node : nodesWithLink) {
+				var map = outbound ? luxNet.outboundLinks(node) : luxNet.inboundLinks(node);
+				if (map.isEmpty()) continue;
 
-		for (LuxNode node : nodesWithOutboundLink) {
-			var map = luxNet.outboundLinks(node);
-			if (map.isEmpty()) continue;
-			source.sendSuccess(() -> Component.literal(node.id + " -> [" +
-					map.entrySet().stream()
-							.map(e -> e.getValue() == null ? "(" + e.getKey().id + ")" : "" + e.getKey().id)
-							.collect(Collectors.joining(", ")) + "]"), false);
-		}
+				MutableComponent nodeText = node(luxNet, node);
+				MutableComponent things = Component.empty();
 
-		source.sendSuccess(() -> Component.literal("Inbound Links: "), false);
+				things.append(outbound ? " -> { " : "{ ");
 
-		for (LuxNode node : nodesWithInboundLink) {
-			var map = luxNet.inboundLinks(node);
-			if (map.isEmpty()) continue;
-			source.sendSuccess(() -> Component.literal("[" +
-					map.entrySet().stream()
-							.map(e -> e.getValue() == null ? "(" + e.getKey().id + ")" : "" + e.getKey().id)
-							.collect(Collectors.joining(", ")) + "] -> " + node.id), false);
+				boolean first = true;
+
+				for (var e : map.entrySet()) {
+					if (first) first = false;
+					else things.append(", ");
+
+					things.append(Component.literal(
+							e.getValue() == null ? "*" + e.getKey() + "*" : "" + e.getKey()
+					).withStyle(nodeTooltip(luxNet, e.getKey())));
+				}
+
+				things.append(outbound ? " }" : " } -> ");
+
+				source.sendSuccess(() -> outbound ?
+						Component.empty().append(nodeText).append(things) :
+						Component.empty().append(things).append(nodeText), false);
+			}
 		}
 
 		return 1;

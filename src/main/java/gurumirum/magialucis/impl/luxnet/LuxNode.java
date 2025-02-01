@@ -5,8 +5,10 @@ import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -21,6 +23,8 @@ public final class LuxNode {
 
 	private @Nullable LuxNodeInterface iface;
 	private LuxNodeBehavior behavior = LuxNodeBehavior.none();
+
+	private @Nullable BlockPos lastBlockPos;
 
 	final Vector3d charge = new Vector3d();
 	final Vector3d incomingChargeCache = new Vector3d();
@@ -37,6 +41,10 @@ public final class LuxNode {
 		return this.behavior;
 	}
 
+	public @Nullable BlockPos lastBlockPos() {
+		return this.iface != null ? this.iface.nodeBlockPos() : this.lastBlockPos;
+	}
+
 	public boolean isLoaded() {
 		return this.iface != null;
 	}
@@ -49,9 +57,14 @@ public final class LuxNode {
 		if (this.iface == iface) return BindInterfaceResult.NO_CHANGE;
 		else if (iface != null && this.iface != null) return BindInterfaceResult.FAIL;
 
+		LuxNodeInterface prev = this.iface;
 		this.iface = iface;
 		if (iface != null) {
+			this.lastBlockPos = null;
 			setBehavior(level, luxNet, iface.updateNodeBehavior(this.behavior, true));
+		} else {
+			this.lastBlockPos = prev.nodeBlockPos();
+			if (this.lastBlockPos != null) this.lastBlockPos = this.lastBlockPos.immutable();
 		}
 		return BindInterfaceResult.SUCCESS;
 	}
@@ -92,6 +105,9 @@ public final class LuxNode {
 		if (this.charge.y > 0) tag.putDouble("chargeG", this.charge.y);
 		if (this.charge.z > 0) tag.putDouble("chargeB", this.charge.z);
 
+		BlockPos lastBlockPos = lastBlockPos();
+		if (lastBlockPos != null) tag.put("lastBlockPos", NbtUtils.writeBlockPos(lastBlockPos));
+
 		tag.putString("behaviorType", behavior().type().id().toString());
 		CompoundTag tag2 = behavior().type().writeCast(behavior(), lookupProvider);
 		if (tag2 != null) tag.put("behavior", tag2);
@@ -106,31 +122,39 @@ public final class LuxNode {
 		this.charge.y = tag.getDouble("chargeG");
 		this.charge.z = tag.getDouble("chargeB");
 
+		this.lastBlockPos = NbtUtils.readBlockPos(tag, "lastBlockPos").orElse(null);
+		this.behavior = readBehavior(id, tag, lookupProvider);
+	}
+
+	void initBehavior(ServerLevel level, LuxNet luxNet) {
+		this.behavior.onBind(level, luxNet, this);
+	}
+
+	private static @NotNull LuxNodeBehavior readBehavior(int id, CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ResourceLocation behaviorTypeId = ResourceLocation.tryParse(tag.getString("behaviorType"));
 		if (behaviorTypeId != null) {
 			LuxNodeType<?> type = Contents.luxNodeTypeRegistry().get(behaviorTypeId);
 			if (type != null) {
 				try {
 					CompoundTag tag2 = tag.contains("behavior", Tag.TAG_COMPOUND) ? tag.getCompound("behavior") : null;
-					this.behavior = type.read(tag2, lookupProvider);
+					LuxNodeBehavior behavior = type.read(tag2, lookupProvider);
 					//noinspection ConstantValue
-					if (this.behavior == null) {
-						MagiaLucisMod.LOGGER.error("Behavior type {} on node #{} failed to construct a behavior",
-								type, id);
-						this.behavior = LuxNodeBehavior.none();
-					}
+					if (behavior != null) return behavior;
+
+					MagiaLucisMod.LOGGER.error("Behavior type {} on node #{} failed to construct a behavior",
+							type, id);
+					return LuxNodeBehavior.none();
 				} catch (Exception ex) {
 					MagiaLucisMod.LOGGER.error("Behavior type {} on node #{} threw an exception",
 							type, id);
-					this.behavior = LuxNodeBehavior.none();
+					return LuxNodeBehavior.none();
 				}
-				return;
 			}
 		}
 
 		MagiaLucisMod.LOGGER.error("Unknown behavior type for lux node #{}, behavior type: {}",
 				id, tag.getString("behaviorType"));
-		this.behavior = LuxNodeBehavior.none();
+		return LuxNodeBehavior.none();
 	}
 
 	@Override
