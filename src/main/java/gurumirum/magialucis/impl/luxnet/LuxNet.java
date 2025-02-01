@@ -20,10 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public final class LuxNet extends SavedData {
 	public static final int NO_ID = 0;
@@ -80,6 +77,7 @@ public final class LuxNet extends SavedData {
 	private final IntSet queuedConnectionSyncs = new IntOpenHashSet();
 
 	private final IntSet updateCacheSet = new IntOpenHashSet();
+	private final List<LuxNode> nodeCache = new ArrayList<>();
 
 	private final LinkCollector linkCollector = new LinkCollector();
 
@@ -216,10 +214,14 @@ public final class LuxNet extends SavedData {
 
 	private void unlinkAll(@NotNull LuxNode node) {
 		if (hasOutboundLink(node)) {
-			for (var n : outboundLinks0(node).keySet().toArray(new LuxNode[0])) removeLink(node, n);
+			this.nodeCache.addAll(outboundLinks0(node).keySet());
+			for (var n : this.nodeCache) removeLink(node, n);
+			this.nodeCache.clear();
 		}
 		if (hasInboundLink(node)) {
-			for (var n : inboundLinks0(node).keySet().toArray(new LuxNode[0])) removeLink(n, node);
+			this.nodeCache.addAll(inboundLinks0(node).keySet());
+			for (var n : this.nodeCache) removeLink(n, node);
+			this.nodeCache.clear();
 		}
 	}
 
@@ -326,18 +328,18 @@ public final class LuxNet extends SavedData {
 		this.updateCacheSet.clear();
 	}
 
-	@SuppressWarnings("unchecked") // bruh
 	private void updateLink(LuxNode node, LuxNodeInterface iface) {
 		this.linkCollector.init(node);
 		iface.updateLink(this, this.linkCollector);
 
 		var map = this.srcToDst.get(node);
 		if (map != null && !map.isEmpty()) {
-			for (Map.Entry<LuxNode, @Nullable InWorldLinkInfo> e : map.entrySet().toArray(new Map.Entry[0])) {
-				LuxNode n = e.getKey();
+			this.nodeCache.addAll(map.keySet());
+			for (LuxNode n : this.nodeCache) {
 				if (n.iface() == null || this.linkCollector.links.containsKey(n.id)) continue;
 				removeLink(node, n);
 			}
+			this.nodeCache.clear();
 		}
 
 		for (Int2IntMap.Entry e : this.linkCollector.links.int2IntEntrySet()) {
