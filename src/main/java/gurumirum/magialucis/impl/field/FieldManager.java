@@ -76,13 +76,13 @@ public class FieldManager extends SavedData {
 			ResourceLocation id = ResourceLocation.tryParse(idString);
 
 			if (id == null) {
-				MagiaLucisMod.LOGGER.info("Cannot parse field with invalid id '{}'", idString);
+				MagiaLucisMod.LOGGER.error("Cannot parse field with invalid id '{}'", idString);
 				continue;
 			}
 
 			Field field = FieldRegistry.fields().get(id);
 			if (field == null) {
-				MagiaLucisMod.LOGGER.info("Cannot find field with id '{}'", id);
+				MagiaLucisMod.LOGGER.error("Cannot find field with id '{}'", id);
 				continue;
 			}
 

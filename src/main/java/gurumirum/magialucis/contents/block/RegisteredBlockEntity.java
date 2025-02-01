@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents.block;
 
-import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.impl.BlockEntityTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -35,8 +34,6 @@ public abstract class RegisteredBlockEntity extends BlockEntityBase {
 	public final void register(@NotNull ServerLevel serverLevel) {
 		if (!this.registered) {
 			this.registered = true;
-			MagiaLucisMod.LOGGER.debug("Registering {} at {}",
-					getClass().getSimpleName(), getBlockPos().toShortString());
 			onRegister(serverLevel);
 		}
 	}
@@ -44,8 +41,6 @@ public abstract class RegisteredBlockEntity extends BlockEntityBase {
 	public final void unregister(@NotNull ServerLevel serverLevel, @NotNull UnregisterContext context) {
 		if (this.registered) {
 			this.registered = false;
-			MagiaLucisMod.LOGGER.debug("Unregistering {} at {}, ctx: {}",
-					getClass().getSimpleName(), getBlockPos().toShortString(), context);
 			onUnregister(serverLevel, context);
 		}
 	}

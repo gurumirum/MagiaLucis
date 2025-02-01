@@ -1,6 +1,5 @@
 package gurumirum.magialucis.impl.field;
 
-import gurumirum.magialucis.MagiaLucisMod;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
@@ -45,7 +44,6 @@ public class FieldInstance {
 	public @NotNull FieldElement add(@NotNull BlockPos pos) {
 		return this.elements.computeIfAbsent(pos.immutable(), p -> {
 			FieldElement element = new FieldElement(this, p);
-			MagiaLucisMod.LOGGER.info("Adding new field element at {}, field {}", p, this.field.id);
 			setDirty();
 			dispatchFieldChanged(p, element, false);
 			return element;
@@ -57,7 +55,6 @@ public class FieldInstance {
 		if (element == null) return;
 
 		setDirty();
-		MagiaLucisMod.LOGGER.info("Removing field element at {}, field {}", pos, this.field.id);
 		dispatchFieldChanged(pos, element, true);
 		dispatchPowerChange(pos, 0);
 	}
@@ -120,10 +117,6 @@ public class FieldInstance {
 
 	void listenFieldChanged(@NotNull FieldListener listener, @NotNull FieldChanged changed) {
 		this.fieldChanged.add(new FieldChangedListener(listener, changed));
-
-		MagiaLucisMod.LOGGER.info("New field changed event listener on field {}, total n. of listeners: {}",
-				this.field.id,
-				this.fieldChanged.size());
 	}
 
 	void listenPowerChanged(@NotNull FieldListener listener, @NotNull BlockPos pos, @NotNull DoubleConsumer changed) {
@@ -131,12 +124,6 @@ public class FieldInstance {
 
 		List<DoubleTracker> list = this.powerChanged.computeIfAbsent(pos, p -> new ArrayList<>());
 		list.add(new DoubleTracker(listener, changed, element != null ? element.power() : 0));
-
-		MagiaLucisMod.LOGGER.info("New power changed event listener on field {}, total n. of listeners: {}",
-				this.field.id,
-				this.powerChanged.values().stream()
-						.mapToInt(List::size)
-						.sum());
 	}
 
 	void fieldChangedInvalidated() {
