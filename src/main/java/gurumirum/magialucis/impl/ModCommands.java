@@ -5,20 +5,27 @@ import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.field.FieldRegistry;
+import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxNode;
+import gurumirum.magialucis.impl.luxnet.LuxNodeInterface;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.DimensionArgument;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -96,46 +103,75 @@ public final class ModCommands {
 		source.sendSuccess(() -> Component.literal("Luxnet of dimension " + level.dimension().location() + ": " +
 				nodes.size() + " nodes"), false);
 
+		MutableComponent c = Component.empty();
+		boolean _first = true;
+
 		for (var e : nodes.int2ObjectEntrySet()) {
-			LuxNode node = e.getValue();
-			StringBuilder stb = new StringBuilder();
+			if (_first) _first = false;
+			else c.append("  ");
 
-			if (luxNet.hasInboundLink(node)) {
-				stb.append("[");
-				boolean first = true;
-				for (var e2 : luxNet.inboundLinks(node).entrySet()) {
-					if (first) first = false;
-					else stb.append(" ");
-
-					boolean implicit = e2.getValue() == null;
-					if (implicit) stb.append("(");
-					stb.append(e2.getKey().id);
-					if (implicit) stb.append(")");
-				}
-				stb.append("] -> ");
-			}
-
-			stb.append("[").append(node.id).append("]");
-
-			if (luxNet.hasOutboundLink(node)) {
-				stb.append(" -> [");
-				boolean first = true;
-				for (var e2 : luxNet.outboundLinks(node).entrySet()) {
-					if (first) first = false;
-					else stb.append(" ");
-
-					boolean implicit = e2.getValue() == null;
-					if (implicit) stb.append("(");
-					stb.append(e2.getKey().id);
-					if (implicit) stb.append(")");
-				}
-				stb.append("]");
-			}
-
-			source.sendSuccess(() -> Component.literal(stb.toString()), false);
+			c.append(node(luxNet, e.getValue()));
 		}
 
+		source.sendSuccess(() -> c, false);
+
 		return 1;
+	}
+
+	private static MutableComponent node(LuxNet luxNet, LuxNode node) {
+		MutableComponent c = Component.literal(nodePlaintext(node));
+		List<String> tooltips = new ArrayList<>();
+
+		LuxNodeInterface iface = node.iface();
+		if (iface != null) {
+			tooltips.add("Interface: " + iface);
+		}
+
+		if (luxNet.hasInboundLink(node)) {
+			tooltips.add("Inbound Links:");
+			for (var e2 : luxNet.inboundLinks(node).entrySet()) {
+				InWorldLinkInfo info = e2.getValue();
+				String str = " " + nodePlaintext(e2.getKey());
+				if (info == null) str += " implicit";
+				tooltips.add(str);
+			}
+		}
+
+		if (luxNet.hasOutboundLink(node)) {
+			tooltips.add("Outbound Links:");
+			for (var e2 : luxNet.outboundLinks(node).entrySet()) {
+				InWorldLinkInfo info = e2.getValue();
+				String str = " " + nodePlaintext(e2.getKey());
+				if (info == null) str += " implicit";
+				tooltips.add(str);
+			}
+		}
+
+		if (!tooltips.isEmpty()) {
+			c = c.withStyle(Style.EMPTY.withHoverEvent(
+					new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(
+							String.join("\n", tooltips)
+					))
+			));
+		}
+
+		return c;
+	}
+
+
+	private static String nodePlaintext(LuxNode node) {
+		StringBuilder stb = new StringBuilder();
+
+		boolean loaded = node.isLoaded();
+		stb.append(loaded ? '[' : '(');
+		stb.append(node.id);
+		stb.append(": ");
+
+		ResourceLocation id = node.behavior().type().id();
+		stb.append(id.getNamespace().equals(MagiaLucisMod.MODID) ? id.getPath() : id.toString());
+
+		stb.append(loaded ? ']' : ')');
+		return stb.toString();
 	}
 
 	private static int printLuxNetLinks(CommandSourceStack source, ServerLevel level) {

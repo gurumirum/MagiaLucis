@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents.block;
 
-import gurumirum.magialucis.utils.ServerTickQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -18,49 +17,11 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 public abstract class BlockEntityBase extends BlockEntity {
-	private @Nullable ServerTickQueue.Ticket initTicket;
-
 	public BlockEntityBase(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
 	}
-
-	@Override
-	public void onLoad() {
-		super.onLoad();
-		if (this.level != null && !this.level.isClientSide) {
-			if (this.initTicket != null) this.initTicket.drop();
-			register();
-		}
-	}
-
-	@Override
-	public void onChunkUnloaded() {
-		super.onChunkUnloaded();
-		if (this.level != null && !this.level.isClientSide) unregister(false);
-	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		if (this.level != null && !this.level.isClientSide) unregister(true);
-	}
-
-	@Override
-	public void clearRemoved() {
-		super.clearRemoved();
-		if (this.level != null && !this.level.isClientSide) {
-			if (this.initTicket != null) this.initTicket.drop();
-			this.initTicket = ServerTickQueue.enqueue(Objects.requireNonNull(this.level.getServer()), this::register);
-		}
-	}
-
-	protected void register() {}
-	protected void unregister(boolean destroyed) {}
 
 	public void syncToClient() {
 		Level level = getLevel();

@@ -2,8 +2,8 @@ package gurumirum.magialucis.contents.block.fieldmonitor;
 
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.contents.block.BlockEntityBase;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
+import gurumirum.magialucis.contents.block.RegisteredBlockEntity;
 import gurumirum.magialucis.impl.field.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -11,6 +11,7 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class FieldMonitorBlockEntity extends BlockEntityBase implements DebugTextProvider {
+public class FieldMonitorBlockEntity extends RegisteredBlockEntity implements DebugTextProvider {
 	private @Nullable ResourceLocation fieldId;
 	private double influenceSum;
 
@@ -39,11 +40,13 @@ public class FieldMonitorBlockEntity extends BlockEntityBase implements DebugTex
 		setChanged();
 	}
 
-	@Override protected void register() {
+	@Override
+	protected void onRegister(@NotNull ServerLevel serverLevel) {
 		registerField();
 	}
 
-	@Override protected void unregister(boolean destroyed) {
+	@Override
+	protected void onUnregister(@NotNull ServerLevel serverLevel, @NotNull UnregisterContext context) {
 		unregisterField();
 	}
 

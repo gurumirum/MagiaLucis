@@ -7,7 +7,10 @@ import gurumirum.magialucis.client.render.prism.SunlightCoreBlockPrismEffect;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntity;
-import gurumirum.magialucis.impl.field.*;
+import gurumirum.magialucis.impl.field.Field;
+import gurumirum.magialucis.impl.field.FieldInstance;
+import gurumirum.magialucis.impl.field.FieldListener;
+import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
@@ -15,6 +18,7 @@ import gurumirum.magialucis.utils.ServerTickQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -58,23 +62,24 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 	}
 
 	@Override
-	protected void register() {
+	protected void onRegister(@NotNull ServerLevel serverLevel) {
 		this.listener.invalidate();
 
-		super.register();
+		super.onRegister(serverLevel);
 
-		FieldInstance inst = FieldManager.tryGetField(this.level, field());
-		if (inst != null) {
-			this.listener = inst.listener()
-					.powerChanged(getBlockPos(), power -> {
-						ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);
-					});
-		}
+		Field field = field();
+		if (field == null) return;
+
+		FieldInstance inst = FieldManager.get(serverLevel).getOrCreate(field);
+		this.listener = inst.listener()
+				.powerChanged(getBlockPos(), power -> {
+					ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);
+				});
 	}
 
 	@Override
-	protected void unregister(boolean destroyed) {
-		super.unregister(destroyed);
+	protected void onUnregister(@NotNull ServerLevel serverLevel, @NotNull UnregisterContext context) {
+		super.onUnregister(serverLevel, context);
 		this.listener.invalidate();
 	}
 

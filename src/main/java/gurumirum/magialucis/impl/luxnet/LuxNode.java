@@ -48,20 +48,21 @@ public final class LuxNode {
 	BindInterfaceResult bindInterface(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @Nullable LuxNodeInterface iface) {
 		if (this.iface == iface) return BindInterfaceResult.NO_CHANGE;
 		else if (iface != null && this.iface != null) return BindInterfaceResult.FAIL;
+
 		this.iface = iface;
-		setBehavior(level, luxNet, iface != null ?
-				Objects.requireNonNullElse(iface.updateNodeBehavior(this.behavior, true), LuxNodeBehavior.none()) :
-				LuxNodeBehavior.none());
+		if (iface != null) {
+			setBehavior(level, luxNet, iface.updateNodeBehavior(this.behavior, true));
+		}
 		return BindInterfaceResult.SUCCESS;
 	}
 
 	boolean updateBehavior(@NotNull ServerLevel level, @NotNull LuxNet luxNet) {
 		if (this.iface == null) return false;
-		return setBehavior(level, luxNet,
-				Objects.requireNonNullElse(this.iface.updateNodeBehavior(this.behavior, false), LuxNodeBehavior.none()));
+		return setBehavior(level, luxNet, this.iface.updateNodeBehavior(this.behavior, false));
 	}
 
-	private boolean setBehavior(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNodeBehavior behavior) {
+	private boolean setBehavior(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @Nullable LuxNodeBehavior behavior) {
+		if (behavior == null) behavior = LuxNodeBehavior.none();
 		if (behavior == this.behavior) return false;
 
 		LuxNodeBehavior prevBehavior = this.behavior;

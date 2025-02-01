@@ -1,8 +1,8 @@
 package gurumirum.magialucis.contents.block.lux;
 
 import gurumirum.magialucis.capability.LinkDestination;
-import gurumirum.magialucis.contents.block.BlockEntityBase;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
+import gurumirum.magialucis.contents.block.RegisteredBlockEntity;
 import gurumirum.magialucis.impl.luxnet.*;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
 import gurumirum.magialucis.utils.NumberFormats;
@@ -15,6 +15,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
@@ -25,7 +26,7 @@ import org.joml.Vector3d;
 
 import java.util.*;
 
-public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends BlockEntityBase
+public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends RegisteredBlockEntity
 		implements LuxNodeInterface, LinkDestination, LuxNodeSyncPropertyAccess, DebugTextProvider {
 	private final Vector3d luxFlow = new Vector3d();
 	private final Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks = new Int2ObjectOpenHashMap<>();
@@ -79,14 +80,14 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Bloc
 	}
 
 	@Override
-	protected void register() {
-		this.nodeId = LuxNet.tryRegister(this.level, this, this.nodeId);
+	protected void onRegister(@NotNull ServerLevel serverLevel) {
+		this.nodeId = LuxNet.register(serverLevel, this, this.nodeId);
 	}
 
 	@Override
-	protected void unregister(boolean destroyed) {
-		if (destroyed) LuxNet.tryUnregister(this.level, this.nodeId);
-		else LuxNet.tryUnbindInterface(this.level, this.nodeId);
+	protected void onUnregister(@NotNull ServerLevel serverLevel, @NotNull UnregisterContext context) {
+		if (context.isRemoved()) LuxNet.unregister(serverLevel, this.nodeId);
+		else LuxNet.unbindInterface(serverLevel, this.nodeId);
 		this.nodeId = NO_ID;
 	}
 

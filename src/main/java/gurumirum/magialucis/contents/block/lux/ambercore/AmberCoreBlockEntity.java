@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,23 +43,21 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> 
 	}
 
 	@Override
-	protected void register() {
+	protected void onRegister(@NotNull ServerLevel serverLevel) {
 		this.listener.invalidate();
 
-		super.register();
+		super.onRegister(serverLevel);
 
-		FieldInstance inst = FieldManager.tryGetField(this.level, Fields.AMBER_CORE);
-		if (inst != null) {
-			this.listener = inst.listener()
-					.powerChanged(getBlockPos(), power -> {
-						ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);
-					});
-		}
+		FieldInstance inst = FieldManager.get(serverLevel).getOrCreate(Fields.AMBER_CORE);
+		this.listener = inst.listener()
+				.powerChanged(getBlockPos(), power -> {
+					ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);
+				});
 	}
 
 	@Override
-	protected void unregister(boolean destroyed) {
-		super.unregister(destroyed);
+	protected void onUnregister(@NotNull ServerLevel serverLevel, @NotNull UnregisterContext context) {
+		super.onUnregister(serverLevel, context);
 		this.listener.invalidate();
 	}
 
