@@ -7,10 +7,15 @@ import gurumirum.magialucis.impl.field.Fields;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,6 +24,8 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class AmberLanternBlock extends BaseLanternBlock.Stateless implements EntityBlock {
 	public static final int RANGE = 10;
@@ -86,16 +93,17 @@ public class AmberLanternBlock extends BaseLanternBlock.Stateless implements Ent
 		if (!level.isLoaded(mpos)) return false;
 
 		BlockState s2 = level.getBlockState(mpos);
-		if (!s2.isAir()) return false;
+		boolean waterlogged = false;
+
+		if (!s2.isAir()) {
+			if (!s2.is(Blocks.WATER)) return false;
+
+			FluidState fluidState = level.getFluidState(mpos);
+			if (fluidState.isEmpty() || !fluidState.isSourceOfType(Fluids.WATER)) return false;
+			else waterlogged = true;
+		}
 
 		if (level.getBrightness(LightLayer.BLOCK, mpos) > 10) return false;
-
-		FluidState fluidState = level.getFluidState(mpos);
-		boolean waterlogged;
-
-		if (fluidState.isEmpty()) waterlogged = false;
-		else if (fluidState.isSourceOfType(Fluids.WATER)) waterlogged = true;
-		else return false;
 
 		level.setBlock(mpos, ModBlocks.AMBER_LIGHT.block().defaultBlockState()
 				.setValue(ModBlockStateProps.LANTERN, true)
@@ -115,5 +123,12 @@ public class AmberLanternBlock extends BaseLanternBlock.Stateless implements Ent
 	@Override
 	public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
 		return new AmberLanternBlockEntity(pos, state);
+	}
+
+	@Override
+	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
+	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
+		tooltip.add(Component.translatable("block.magialucis.amber_lantern.tooltip.0"));
+		tooltip.add(Component.translatable("block.magialucis.amber_lantern.tooltip.1"));
 	}
 }

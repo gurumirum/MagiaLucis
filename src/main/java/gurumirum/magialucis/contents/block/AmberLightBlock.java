@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents.block;
 
+import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldManager;
@@ -10,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -52,7 +53,9 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level,
 	                                       @NotNull BlockPos pos, @NotNull CollisionContext context) {
-		return !state.getValue(LANTERN) || context.isHoldingItem(Wands.AMBER_TORCH.asItem()) ? SHAPE : Shapes.empty();
+		return !state.getValue(LANTERN) ||
+				context.isHoldingItem(Wands.AMBER_TORCH.asItem()) ||
+				context.isHoldingItem(ModBlocks.AMBER_LANTERN.asItem()) ? SHAPE : Shapes.empty();
 	}
 
 	@Override
@@ -66,7 +69,8 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 		FieldManager manager = FieldManager.get(level);
 		FieldInstance inst = manager.get(Fields.AMBER_LANTERN);
 		if (inst == null || !inst.hasInfluence(pos)) {
-			level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+			level.setBlock(pos, state.getValue(WATERLOGGED) ?
+					Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState(), 2);
 		}
 	}
 
@@ -82,8 +86,8 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 			Minecraft mc = Minecraft.getInstance();
 			if (mc.player == null) return;
 
-			Item amberTorch = Wands.AMBER_TORCH.asItem();
-			if (!mc.player.getMainHandItem().is(amberTorch) && !mc.player.getOffhandItem().is(amberTorch)) return;
+			ItemStack heldItem = mc.player.getMainHandItem();
+			if (!heldItem.is(Wands.AMBER_TORCH.asItem()) && !heldItem.is(ModBlocks.AMBER_LANTERN.asItem())) return;
 		}
 
 		double x = pos.getX() + 0.5;

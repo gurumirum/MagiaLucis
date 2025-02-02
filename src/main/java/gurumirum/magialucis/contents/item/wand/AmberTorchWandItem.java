@@ -2,11 +2,15 @@ package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.block.ModBlockStateProps;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,17 +20,22 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 public class AmberTorchWandItem extends LuxContainerItem {
 	public static final int COST_PER_LIGHT_SOURCE = 5;
 
 	private static final int HIT_DISTANCE = 15;
 	private static final int PARTICLE_COUNT = 8;
+	private static final int PARTICLE_COUNT_WATERLOGGED = 8;
 
 	public AmberTorchWandItem(Properties properties) {
 		super(properties);
@@ -44,17 +53,7 @@ public class AmberTorchWandItem extends LuxContainerItem {
 
 		InteractionResult result = placeLight(level, player, hand, stack, hitResult);
 		if (result.indicateItemUse()) {
-			Vec3 playerPos = player.getEyePosition().lerp(player.getPosition(0), 0.5);
-			int count = (int)playerPos.distanceTo(hitResult.getLocation());
-
-			for (int i = 0; i < count; i++) {
-				Vec3 particlePos = playerPos.lerp(hitResult.getLocation(), i / (float)count)
-						.offsetRandom(player.getRandom(), 0.5f);
-				level.addParticle(ParticleTypes.FLAME,
-						particlePos.x, particlePos.y, particlePos.z,
-						0.0, 0.0, 0.0);
-			}
-
+			particleLine(level, player, hitResult.getLocation());
 			stack.set(ModDataComponents.LUX_CHARGE, charge - COST_PER_LIGHT_SOURCE);
 			applyCooldown(player);
 		}
@@ -85,7 +84,9 @@ public class AmberTorchWandItem extends LuxContainerItem {
 		BlockPos pos = blockHitResult.getBlockPos();
 		BlockState state = level.getBlockState(pos);
 
-		if (state.is(ModBlocks.AMBER_LIGHT.block())) return InteractionResult.FAIL;
+		if (state.is(ModBlocks.AMBER_LIGHT.block()) && !state.getValue(ModBlockStateProps.LANTERN)) {
+			return InteractionResult.FAIL;
+		}
 		if (!state.canBeReplaced()) {
 			pos = pos.relative(blockHitResult.getDirection());
 			state = level.getBlockState(pos);
@@ -98,7 +99,7 @@ public class AmberTorchWandItem extends LuxContainerItem {
 				.getStateForPlacement(new BlockPlaceContext(player, hand, stack, blockHitResult));
 		if (placeState == null) return InteractionResult.FAIL;
 
-		magicalFlameCircle(level, pos);
+		particleCircle(level, pos, placeState.getValue(BlockStateProperties.WATERLOGGED));
 		level.playSound(null, player.blockPosition(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.5F, 1.0F);
 		level.setBlockAndUpdate(pos, placeState);
 		return InteractionResult.SUCCESS;
@@ -109,14 +110,53 @@ public class AmberTorchWandItem extends LuxContainerItem {
 		player.getCooldowns().addCooldown(this, 10);
 	}
 
-	private static void magicalFlameCircle(Level level, BlockPos pos) {
-		double x = (double)pos.getX() + 0.5;
-		double y = (double)pos.getY() + 0.5;
-		double z = (double)pos.getZ() + 0.5;
-		for (int i = 0; i < PARTICLE_COUNT; i++) {
-			level.addParticle(ParticleTypes.FLAME, x, y, z, 0.1 * (level.getRandom().nextDouble() + 0.5) * Math.sin(2 * Math.PI / PARTICLE_COUNT * i),
-					level.getRandom().nextDouble() * 0.05,
-					0.1 * (level.getRandom().nextDouble() + 0.5) * Math.cos(2 * Math.PI / PARTICLE_COUNT * i));
+	private static void particleCircle(Level level, BlockPos pos, boolean waterlogged) {
+		double x = pos.getX() + 0.5;
+		double y = pos.getY() + 0.5;
+		double z = pos.getZ() + 0.5;
+
+		int count = waterlogged ? PARTICLE_COUNT_WATERLOGGED : PARTICLE_COUNT;
+		double hSpd = waterlogged ? 0.5 : 0.1;
+		double vSpd = waterlogged ? 0.5 : 0.05;
+
+		for (int i = 0; i < count; i++) {
+			level.addParticle(waterlogged ? ParticleTypes.BUBBLE : ParticleTypes.FLAME,
+					x, y, z,
+					hSpd * (level.getRandom().nextDouble() + 0.5) * Math.sin(2 * Math.PI / count * i),
+					vSpd * level.getRandom().nextDouble(),
+					hSpd * (level.getRandom().nextDouble() + 0.5) * Math.cos(2 * Math.PI / count * i));
+		}
+	}
+
+	private static void particleLine(Level level, Player player, Vec3 hitLocation) {
+		Vector3f pos = player.position().toVector3f();
+		pos.y += player.getBbHeight() / 2;
+		Vector3f end = hitLocation.toVector3f();
+
+		int count = (int)pos.distance(end);
+		if (count <= 0) return;
+
+		// prevent position clipping through block and end up producing wrong type of particles at the end
+		Vector3f incr = end.sub(pos).mul(0.98f).div(count);
+		MutableBlockPos mpos = new MutableBlockPos();
+
+		for (int i = 0; i < count; i++) {
+			pos.add(incr);
+			mpos.set(Mth.floor(pos.x), Mth.floor(pos.y), Mth.floor(pos.z));
+
+			FluidState fluidState = level.getFluidState(mpos);
+			boolean waterlogged = fluidState.is(Tags.Fluids.WATER);
+			RandomSource random = level.getRandom();
+
+			for (int j = 0; j < (waterlogged ? 2 : 1); j++) {
+				float xo = (random.nextFloat() - .5f) * .5f;
+				float yo = (random.nextFloat() - .5f) * .5f;
+				float zo = (random.nextFloat() - .5f) * .5f;
+
+				level.addParticle(waterlogged ? ParticleTypes.BUBBLE : ParticleTypes.FLAME,
+						pos.x + xo, pos.y + yo, pos.z + zo,
+						0.0, waterlogged ? (j + 1) * 0.001 : 0.0, 0.0);
+			}
 		}
 	}
 }
