@@ -1,23 +1,44 @@
 {
   "variants": {
-    "facing=down": {
+    "facing=down,waterlogged=false": {
       "model": "magialucis:block/amber_lamp_up"
     },
-    "facing=east": {
+    "facing=down,waterlogged=true": {
+      "model": "magialucis:block/amber_lamp_up"
+    },
+    "facing=east,waterlogged=false": {
       "model": "magialucis:block/amber_lamp_side",
       "y": 270
     },
-    "facing=north": {
+    "facing=east,waterlogged=true": {
+      "model": "magialucis:block/amber_lamp_side",
+      "y": 270
+    },
+    "facing=north,waterlogged=false": {
       "model": "magialucis:block/amber_lamp_side",
       "y": 180
     },
-    "facing=south": {
+    "facing=north,waterlogged=true": {
+      "model": "magialucis:block/amber_lamp_side",
+      "y": 180
+    },
+    "facing=south,waterlogged=false": {
       "model": "magialucis:block/amber_lamp_side"
     },
-    "facing=up": {
+    "facing=south,waterlogged=true": {
+      "model": "magialucis:block/amber_lamp_side"
+    },
+    "facing=up,waterlogged=false": {
       "model": "magialucis:block/amber_lamp_down"
     },
-    "facing=west": {
+    "facing=up,waterlogged=true": {
+      "model": "magialucis:block/amber_lamp_down"
+    },
+    "facing=west,waterlogged=false": {
+      "model": "magialucis:block/amber_lamp_side",
+      "y": 90
+    },
+    "facing=west,waterlogged=true": {
       "model": "magialucis:block/amber_lamp_side",
       "y": 90
     }

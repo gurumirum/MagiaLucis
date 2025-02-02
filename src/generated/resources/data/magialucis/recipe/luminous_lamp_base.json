@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "c:ingots/rose_gold"
+    },
+    "2": {
+      "tag": "minecraft:logs"
+    },
+    "3": {
+      "tag": "magialucis:lapides_manalis"
+    },
+    "4": {
+      "item": "magialucis:luminous_resonance_core"
+    }
+  },
+  "pattern": [
+    "121",
+    "343",
+    "121"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:luminous_lamp_base"
+  }
+}
