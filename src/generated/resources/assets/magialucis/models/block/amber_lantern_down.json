@@ -1,5 +1,5 @@
 {
-  "parent": "magialucis:block/lamp_down",
+  "parent": "magialucis:block/lantern_down",
   "textures": {
     "base_bottom": "magialucis:block/amber_lantern_base_bottom",
     "base_top": "magialucis:block/amber_lantern_base_top",

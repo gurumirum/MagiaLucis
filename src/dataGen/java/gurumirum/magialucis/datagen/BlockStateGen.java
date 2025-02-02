@@ -172,7 +172,7 @@ public class BlockStateGen extends BlockStateProvider {
 		String modelName = baseName + "_" + s + (enabled ? "" : "_disabled");
 
 		return this.lanternModels.computeIfAbsent(modelName, n -> {
-			BlockModelBuilder b = models().withExistingParent(n, id("block/lamp_" + s));
+			BlockModelBuilder b = models().withExistingParent(n, id("block/lantern_" + s));
 			b.texture("top", id("block/" + baseName + "_top"));
 			b.texture("bottom", id("block/" + baseName + "_bottom"));
 			b.texture("side", id("block/" + baseName + "_side"));
