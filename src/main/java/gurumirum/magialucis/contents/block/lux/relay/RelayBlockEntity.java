@@ -18,6 +18,7 @@ import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -78,27 +79,35 @@ public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavi
 	public @Nullable LinkDestination chooseLinkDestination(@NotNull Level level,
 	                                                       @Nullable ServerSideLinkContext context,
 	                                                       @NotNull BlockHitResult hitResult) {
-		Direction baseDirection = getBlockState().getValue(BlockStateProperties.FACING).getOpposite();
+		return testLinkDirection(hitResult.getLocation()) ?
+				level.getCapability(ModCapabilities.LINK_DESTINATION, hitResult.getBlockPos(), hitResult.getDirection()) :
+				null;
+	}
+
+	@SuppressWarnings("SuspiciousNameCombination")
+	private boolean testLinkDirection(Vec3 connectLocation) {
+		Direction dir = getBlockState().getValue(BlockStateProperties.FACING);
 
 		BlockPos pos = getBlockPos();
-		Vec3 loc = hitResult.getLocation();
 		Vector3f v = new Vector3f().set(
-						loc.x - pos.getX() - 0.5,
-						loc.y - pos.getY() - 0.5,
-						loc.z - pos.getZ() - 0.5)
-				.rotate(baseDirection.getRotation().invert());
+				pos.getX() + 0.5 - connectLocation.x,
+				pos.getY() + 0.5 - connectLocation.y,
+				pos.getZ() + 0.5 - connectLocation.z
+		);
 
-		final double angle = Math.cos(Math.PI / 4) + 0.01;
+		Direction.Axis axis = dir.getAxis();
+		return (axis != Direction.Axis.X && testAngle(v.y, v.z, dir.getStepY(), dir.getStepZ())) ||
+				(axis != Direction.Axis.Y && testAngle(v.x, v.z, dir.getStepX(), dir.getStepZ())) ||
+				(axis != Direction.Axis.Z && testAngle(v.x, v.y, dir.getStepX(), dir.getStepY()));
+	}
 
-		Vector2f v2 = new Vector2f(v.x, v.y).normalize();
-		if (v2.dot(new Vector2f(0, 1)) >= angle) {
-			v2.set(v.z, v.y).normalize();
-			if (v2.dot(new Vector2f(0, 1)) >= angle) {
-				return null;
-			}
-		}
+	private static boolean testAngle(float v1x, float v1y, float v2x, float v2y) {
+		final float angleCos = (float)(Math.cos(Math.PI / 4) + 0.1);
 
-		return level.getCapability(ModCapabilities.LINK_DESTINATION, hitResult.getBlockPos(), hitResult.getDirection());
+		if (v1x == 0 && v1y == 0) return true;
+
+		float dot = new Vector2f(v1x, v1y).normalize().dot(new Vector2f(v2x, v2y));
+		return dot <= angleCos;
 	}
 
 	@Override
@@ -109,6 +118,15 @@ public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavi
 			return LinkTestResult.reject();
 		}
 		return LinkTestResult.linkable(luxNodeId());
+	}
+
+	@Override
+	public @NotNull Vec3 linkOrigin() {
+		Vec3i n = getBlockState().getValue(BlockStateProperties.FACING).getNormal();
+		return Vec3.atLowerCornerWithOffset(getBlockPos(),
+				0.5 + n.getX() * 0.01,
+				0.5 + n.getY() * 0.01,
+				0.5 + n.getZ() * 0.01);
 	}
 
 	@Override

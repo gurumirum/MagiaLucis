@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
@@ -125,8 +126,8 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 			case EAST -> yRot = -Mth.HALF_PI;
 		}
 
-		LuxUtils.linkToInWorldNode(this, linkCollector, xRot, yRot, LINK_DISTANCE,
-				0, null, true);
+		LuxUtils.linkToInWorldNode(this, linkCollector, xRot, yRot,
+				Vec3.atCenterOf(getBlockPos()), LINK_DISTANCE, 0, null, true);
 	}
 
 	@Override

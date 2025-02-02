@@ -44,6 +44,7 @@ public final class ConfigurationWandOverlay {
 	private static final int TINT_MISSING = 0xeeffff00;
 	private static final int TINT_REMOVE = 0xee800000;
 	private static final int TINT_INPUT = 0xee284ea4;
+	private static final int TINT_INVALID = 0xee888888;
 
 	public static void render(RenderLevelStageEvent event) {
 		visualData.overlayText.clear();
@@ -194,19 +195,18 @@ public final class ConfigurationWandOverlay {
 					visualData.lines.add(new Line(linkState.origin(), linkState.linkLocation(), TINT_REMOVE));
 				}
 
-				BlockHitResult connection = LuxUtils.traceConnection(level, linkSourcePos.pos(),
+				BlockHitResult connection = LuxUtils.traceConnection(level,
 						msg.orientation().xRot(), msg.orientation().yRot(),
-						linkSource.linkDistance());
+						linkSourcePos.pos(), linkSource.linkOrigin(), linkSource.linkDistance());
 
 				LinkDestinationSelector dstSelector = linkSource.linkDestinationSelector();
 				if (dstSelector == null) dstSelector = LinkDestinationSelector.DEFAULT;
 				LinkDestination dst = dstSelector.chooseLinkDestination(level, null, connection);
 
-				boolean linkable = dst != null && dst.linkWithSource(
-								new LinkContext(level, linkSource.clientSideInterface(), connection))
-						.isLinkable();
 				visualData.lines.add(new Line(linkSourcePos.pos(), connection.getLocation(),
-						linkable ? TINT_SELECT : TINT_MISSING));
+						dst == null ? TINT_INVALID : dst.linkWithSource(
+								new LinkContext(level, linkSource.clientSideInterface(), connection)
+						).isLinkable() ? TINT_SELECT : TINT_MISSING));
 			}
 		}
 

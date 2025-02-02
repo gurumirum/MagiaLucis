@@ -181,7 +181,8 @@ public class ConfigurationWandItem extends Item {
 			double linkDistance = linkSource.linkDistance();
 			for (int i = 0; i < arr.length; i++) {
 				LinkSource.Orientation o = linkSource.getLink(i);
-				arr[i] = o == null ? null : LuxUtils.traceConnection(level, originPos, o.xRot(), o.yRot(), linkDistance);
+				arr[i] = o == null ? null : LuxUtils.traceConnection(level, o.xRot(), o.yRot(),
+						originPos, linkSource.linkOrigin(), linkDistance);
 			}
 			return arr;
 		}

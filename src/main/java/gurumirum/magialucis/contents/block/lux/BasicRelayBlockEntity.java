@@ -13,6 +13,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -43,8 +44,8 @@ public abstract class BasicRelayBlockEntity<B extends LuxNodeBehavior> extends L
 		for (int i = 0; i < this.links.size(); i++) {
 			Orientation o = this.links.get(i);
 			if (o != null) {
-				LuxUtils.linkToInWorldNode(this, linkCollector, o.xRot(), o.yRot(), linkDistance(),
-						i, linkDestinationSelector(), true);
+				LuxUtils.linkToInWorldNode(this, linkCollector, o.xRot(), o.yRot(),
+						linkOrigin(), linkDistance(), i, linkDestinationSelector(), true);
 			}
 		}
 	}
@@ -52,6 +53,11 @@ public abstract class BasicRelayBlockEntity<B extends LuxNodeBehavior> extends L
 	@Override
 	public @Nullable LinkDestinationSelector linkDestinationSelector() {
 		return null;
+	}
+
+	@Override
+	public @NotNull Vec3 linkOrigin() {
+		return Vec3.atCenterOf(getBlockPos());
 	}
 
 	@Override

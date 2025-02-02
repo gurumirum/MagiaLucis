@@ -75,30 +75,32 @@ public final class LuxUtils {
 		}
 	}
 
-	public static @NotNull BlockHitResult traceConnection(Level level, BlockPos pos,
-	                                                      float xRot, float yRot,
+	public static @NotNull BlockHitResult traceConnection(Level level, float xRot, float yRot,
+	                                                      BlockPos linkOriginPos, Vec3 linkOriginLocation,
 	                                                      double linkDistance) {
 		Vector3d vec = LinkSource.Orientation.toVector(xRot, yRot, new Vector3d());
 
 		return safeClip(level, new ClipContext(
-				Vec3.atCenterOf(pos).add(vec.x, vec.y, vec.z),
-				new Vec3(
-						pos.getX() + .5f + vec.x * linkDistance,
-						pos.getY() + .5f + vec.y * linkDistance,
-						pos.getZ() + .5f + vec.z * linkDistance),
-				ClipContext.Block.VISUAL, ClipContext.Fluid.NONE,
-				LuxNetCollisionContext.EMPTY));
+						linkOriginLocation,
+						new Vec3(
+								linkOriginLocation.x + vec.x * linkDistance,
+								linkOriginLocation.y + vec.y * linkDistance,
+								linkOriginLocation.z + vec.z * linkDistance),
+						ClipContext.Block.VISUAL, ClipContext.Fluid.NONE,
+						LuxNetCollisionContext.EMPTY),
+				linkOriginPos);
 	}
 
 	public static boolean linkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
-	                                        float xRot, float yRot, double linkDistance,
+	                                        float xRot, float yRot, Vec3 linkOrigin, double linkDistance,
 	                                        int linkIndex, @Nullable LinkDestinationSelector selector,
 	                                        boolean registerLinkFail) {
 		Level level = blockEntity.getLevel();
 		if (level == null) return false;
 
 		BlockPos pos = blockEntity.getBlockPos();
-		BlockHitResult hitResult = traceConnection(level, pos, xRot, yRot, linkDistance);
+		BlockHitResult hitResult = traceConnection(level, xRot, yRot,
+				pos, linkOrigin, linkDistance);
 
 		if (hitResult.getType() == HitResult.Type.BLOCK && !hitResult.getBlockPos().equals(pos)) {
 			if (selector == null) selector = LinkDestinationSelector.DEFAULT;
@@ -158,11 +160,14 @@ public final class LuxUtils {
 	 *
 	 * @return Block hit result
 	 */
-	public static BlockHitResult safeClip(Level level, ClipContext context) {
+	public static BlockHitResult safeClip(Level level, ClipContext context, @Nullable BlockPos origin) {
 		return BlockGetter.traverseBlocks(context.getFrom(), context.getTo(), context, (ctx, pos) -> {
 			if (!level.isLoaded(pos)) {
 				Vec3 center = Vec3.atCenterOf(pos);
 				return BlockHitResult.miss(center, Direction.getNearest(center), pos);
+			}
+			if (pos.equals(origin)) {
+				return null;
 			}
 
 			BlockState state = level.getBlockState(pos);
