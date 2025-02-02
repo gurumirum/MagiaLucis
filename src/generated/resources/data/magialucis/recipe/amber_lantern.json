@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "minecraft:logs"
+    },
+    "2": {
+      "tag": "c:gems/amber"
+    },
+    "3": {
+      "item": "magialucis:luminous_resonator"
+    }
+  },
+  "pattern": [
+    " 1 ",
+    "232",
+    " 1 "
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:amber_lantern"
+  }
+}

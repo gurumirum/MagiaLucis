@@ -1,87 +1,87 @@
 {
   "variants": {
     "enabled=false,facing=down,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_up_disabled"
+      "model": "magialucis:block/luminous_lantern_up_disabled"
     },
     "enabled=false,facing=down,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_up_disabled"
+      "model": "magialucis:block/luminous_lantern_up_disabled"
     },
     "enabled=false,facing=east,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_side_disabled",
+      "model": "magialucis:block/luminous_lantern_side_disabled",
       "y": 270
     },
     "enabled=false,facing=east,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_side_disabled",
+      "model": "magialucis:block/luminous_lantern_side_disabled",
       "y": 270
     },
     "enabled=false,facing=north,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_side_disabled",
+      "model": "magialucis:block/luminous_lantern_side_disabled",
       "y": 180
     },
     "enabled=false,facing=north,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_side_disabled",
+      "model": "magialucis:block/luminous_lantern_side_disabled",
       "y": 180
     },
     "enabled=false,facing=south,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_side_disabled"
+      "model": "magialucis:block/luminous_lantern_side_disabled"
     },
     "enabled=false,facing=south,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_side_disabled"
+      "model": "magialucis:block/luminous_lantern_side_disabled"
     },
     "enabled=false,facing=up,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_down_disabled"
+      "model": "magialucis:block/luminous_lantern_down_disabled"
     },
     "enabled=false,facing=up,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_down_disabled"
+      "model": "magialucis:block/luminous_lantern_down_disabled"
     },
     "enabled=false,facing=west,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_side_disabled",
+      "model": "magialucis:block/luminous_lantern_side_disabled",
       "y": 90
     },
     "enabled=false,facing=west,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_side_disabled",
+      "model": "magialucis:block/luminous_lantern_side_disabled",
       "y": 90
     },
     "enabled=true,facing=down,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_up"
+      "model": "magialucis:block/luminous_lantern_up"
     },
     "enabled=true,facing=down,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_up"
+      "model": "magialucis:block/luminous_lantern_up"
     },
     "enabled=true,facing=east,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_side",
+      "model": "magialucis:block/luminous_lantern_side",
       "y": 270
     },
     "enabled=true,facing=east,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_side",
+      "model": "magialucis:block/luminous_lantern_side",
       "y": 270
     },
     "enabled=true,facing=north,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_side",
+      "model": "magialucis:block/luminous_lantern_side",
       "y": 180
     },
     "enabled=true,facing=north,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_side",
+      "model": "magialucis:block/luminous_lantern_side",
       "y": 180
     },
     "enabled=true,facing=south,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_side"
+      "model": "magialucis:block/luminous_lantern_side"
     },
     "enabled=true,facing=south,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_side"
+      "model": "magialucis:block/luminous_lantern_side"
     },
     "enabled=true,facing=up,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_down"
+      "model": "magialucis:block/luminous_lantern_down"
     },
     "enabled=true,facing=up,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_down"
+      "model": "magialucis:block/luminous_lantern_down"
     },
     "enabled=true,facing=west,waterlogged=false": {
-      "model": "magialucis:block/luminous_lamp_side",
+      "model": "magialucis:block/luminous_lantern_side",
       "y": 90
     },
     "enabled=true,facing=west,waterlogged=true": {
-      "model": "magialucis:block/luminous_lamp_side",
+      "model": "magialucis:block/luminous_lantern_side",
       "y": 90
     }
   }

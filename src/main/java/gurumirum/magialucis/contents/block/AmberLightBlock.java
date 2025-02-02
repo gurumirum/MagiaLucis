@@ -31,7 +31,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.LAMP;
+import static gurumirum.magialucis.contents.block.ModBlockStateProps.LANTERN;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
 public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
@@ -41,18 +41,18 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 		super(properties);
 		registerDefaultState(defaultBlockState()
 				.setValue(WATERLOGGED, false)
-				.setValue(LAMP, false));
+				.setValue(LANTERN, false));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(WATERLOGGED, LAMP);
+		builder.add(WATERLOGGED, LANTERN);
 	}
 
 	@Override
 	protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level,
 	                                       @NotNull BlockPos pos, @NotNull CollisionContext context) {
-		return !state.getValue(LAMP) || context.isHoldingItem(Wands.AMBER_TORCH.asItem()) ? SHAPE : Shapes.empty();
+		return !state.getValue(LANTERN) || context.isHoldingItem(Wands.AMBER_TORCH.asItem()) ? SHAPE : Shapes.empty();
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 	protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level,
 	                          @NotNull BlockPos pos, @NotNull RandomSource random) {
 		FieldManager manager = FieldManager.get(level);
-		FieldInstance inst = manager.get(Fields.AMBER_LAMP);
+		FieldInstance inst = manager.get(Fields.AMBER_LANTERN);
 		if (inst == null || !inst.hasInfluence(pos)) {
 			level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
 		}
@@ -72,13 +72,13 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	protected boolean isRandomlyTicking(@NotNull BlockState state) {
-		return state.getValue(LAMP);
+		return state.getValue(LANTERN);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-		if (state.getValue(LAMP)) {
+		if (state.getValue(LANTERN)) {
 			Minecraft mc = Minecraft.getInstance();
 			if (mc.player == null) return;
 

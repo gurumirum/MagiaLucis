@@ -7,18 +7,18 @@ import gurumirum.magialucis.impl.field.Fields;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AmberLampBlockEntity extends BlockEntityBase {
-	public AmberLampBlockEntity(BlockPos pos, BlockState blockState) {
-		super(ModBlockEntities.AMBER_LAMP.get(), pos, blockState);
+public class AmberLanternBlockEntity extends BlockEntityBase {
+	public AmberLanternBlockEntity(BlockPos pos, BlockState blockState) {
+		super(ModBlockEntities.AMBER_LANTERN.get(), pos, blockState);
 	}
 
 	@Override public void onLoad() {
 		super.onLoad();
 		if (this.level != null && !this.level.isClientSide) {
-			FieldInstance inst = FieldManager.tryGetField(this.level, Fields.AMBER_LAMP);
+			FieldInstance inst = FieldManager.tryGetField(this.level, Fields.AMBER_LANTERN);
 			if (inst != null) {
 				inst.add(getBlockPos());
-				this.level.scheduleTick(getBlockPos(), getBlockState().getBlock(), AmberLampBlock.TICK_CYCLE);
+				this.level.scheduleTick(getBlockPos(), getBlockState().getBlock(), AmberLanternBlock.TICK_CYCLE);
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.contents.block.AmberLampBlockEntity;
+import gurumirum.magialucis.contents.block.AmberLanternBlockEntity;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlockEntity;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntity;
@@ -26,8 +26,8 @@ public final class ModBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmberCoreBlockEntity>> AMBER_CORE =
 			blockEntity("amber_core", AmberCoreBlockEntity::new, ModBlocks.AMBER_CORE);
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmberLampBlockEntity>> AMBER_LAMP =
-			blockEntity("amber_lamp", AmberLampBlockEntity::new, ModBlocks.AMBER_LAMP);
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmberLanternBlockEntity>> AMBER_LANTERN =
+			blockEntity("amber_lantern", AmberLanternBlockEntity::new, ModBlocks.AMBER_LANTERN);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LightBasinBlockEntity>> LIGHT_BASIN =
 			blockEntity("light_basin", LightBasinBlockEntity::new, ModBlocks.LIGHT_BASIN);
@@ -60,12 +60,12 @@ public final class ModBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> LUMINOUS_REMOTE_CHARGER =
 			blockEntity("remote_charger",
 					(pos, state) -> new RemoteChargerBlockEntity(ChargerTier.LUMINOUS, pos, state),
-					ModBlocks.LUMINOUS_RESONANCE_LAMP);
+					ModBlocks.LUMINOUS_RESONANCE_LANTERN);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> LUSTROUS_REMOTE_CHARGER =
 			blockEntity("lustrous_remote_charger",
 					(pos, state) -> new RemoteChargerBlockEntity(ChargerTier.LUSTROUS, pos, state),
-					ModBlocks.LUSTROUS_RESONANCE_LAMP);
+					ModBlocks.LUSTROUS_RESONANCE_LANTERN);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LuxSourceBlockEntity>> LUX_SOURCE =
 			blockEntity("lux_source", LuxSourceBlockEntity::new, ModBlocks.LUX_SOURCE, ModBlocks.LUX_SOURCE_2);

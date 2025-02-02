@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
 import gurumirum.magialucis.contents.ChargerTier;
-import gurumirum.magialucis.contents.block.BaseLampBlock;
+import gurumirum.magialucis.contents.block.BaseLanternBlock;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.core.BlockPos;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class RemoteChargerBlock extends BaseLampBlock implements EntityBlock {
+public class RemoteChargerBlock extends BaseLanternBlock implements EntityBlock {
 	private final ChargerTier chargerTier;
 
 	public RemoteChargerBlock(Properties properties, ChargerTier chargerTier) {

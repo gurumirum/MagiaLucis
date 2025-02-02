@@ -81,9 +81,9 @@ public class BlockStateGen extends BlockStateProvider {
 				.texture("side", LUMINOUS_CHARGER.id().withPath(p -> "block/" + p + "_side"))
 				.texture("bottom", LUMINOUS_CHARGER.id().withPath(p -> "block/" + p + "_bottom")));
 
-		lamp(AMBER_LAMP.block(), "amber_lamp", "amber_lamp");
-		lamp(LUMINOUS_LAMP_BASE.block(), "luminous_lamp", null);
-		lamp(LUMINOUS_RESONANCE_LAMP.block(), "luminous_lamp", "luminous_resonance_lamp");
+		lantern(AMBER_LANTERN.block(), "amber_lantern", "amber_lantern");
+		lantern(LUMINOUS_LANTERN_BASE.block(), "luminous_lantern", null);
+		lantern(LUMINOUS_RESONANCE_LANTERN.block(), "luminous_lantern", "luminous_resonance_lantern");
 
 		BlockModelBuilder amberCore = models().cubeColumnHorizontal(AMBER_CORE.id().getPath(),
 				id("block/amber_core_side"), mcLoc("block/oak_log_top"));
@@ -142,9 +142,9 @@ public class BlockStateGen extends BlockStateProvider {
 		itemModels().simpleBlockItem(block.block());
 	}
 
-	private final Map<String, ModelFile> lampModels = new Object2ObjectOpenHashMap<>();
+	private final Map<String, ModelFile> lanternModels = new Object2ObjectOpenHashMap<>();
 
-	private void lamp(Block block, String baseName, @Nullable String overlayName) {
+	private void lantern(Block block, String baseName, @Nullable String overlayName) {
 		getVariantBuilder(block).forAllStates(state -> {
 			Direction dir = state.getValue(BlockStateProperties.FACING);
 			ConfiguredModel.Builder<?> b = ConfiguredModel.builder();
@@ -152,7 +152,7 @@ public class BlockStateGen extends BlockStateProvider {
 			boolean _enabled = overlayName != null && (
 					state.hasProperty(BlockStateProperties.ENABLED) ?
 							state.getValue(BlockStateProperties.ENABLED) : true);
-			b.modelFile(lamp(dir, _enabled, baseName, overlayName));
+			b.modelFile(lantern(dir, _enabled, baseName, overlayName));
 
 			if (dir.getAxis() != Direction.Axis.Y) {
 				b.rotationY((int)(dir.toYRot()) % 360);
@@ -160,10 +160,10 @@ public class BlockStateGen extends BlockStateProvider {
 
 			return b.build();
 		});
-		simpleBlockItem(block, lamp(Direction.DOWN, overlayName != null, baseName, overlayName));
+		simpleBlockItem(block, lantern(Direction.DOWN, overlayName != null, baseName, overlayName));
 	}
 
-	private ModelFile lamp(Direction facing, boolean enabled, String baseName, @Nullable String overlayName) {
+	private ModelFile lantern(Direction facing, boolean enabled, String baseName, @Nullable String overlayName) {
 		String s = switch (facing) {
 			case DOWN -> "up";
 			case UP -> "down";
@@ -171,7 +171,7 @@ public class BlockStateGen extends BlockStateProvider {
 		};
 		String modelName = baseName + "_" + s + (enabled ? "" : "_disabled");
 
-		return this.lampModels.computeIfAbsent(modelName, n -> {
+		return this.lanternModels.computeIfAbsent(modelName, n -> {
 			BlockModelBuilder b = models().withExistingParent(n, id("block/lamp_" + s));
 			b.texture("top", id("block/" + baseName + "_top"));
 			b.texture("bottom", id("block/" + baseName + "_bottom"));

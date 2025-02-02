@@ -1,9 +1,0 @@
-{
-  "parent": "magialucis:block/lamp_up",
-  "textures": {
-    "bottom": "magialucis:block/amber_lamp_bottom",
-    "side": "magialucis:block/amber_lamp_side",
-    "side_overlay": "magialucis:block/amber_lamp_side_overlay",
-    "top": "magialucis:block/amber_lamp_top"
-  }
-}

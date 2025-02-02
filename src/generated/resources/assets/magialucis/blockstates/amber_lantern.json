@@ -1,45 +1,45 @@
 {
   "variants": {
     "facing=down,waterlogged=false": {
-      "model": "magialucis:block/amber_lamp_up"
+      "model": "magialucis:block/amber_lantern_up"
     },
     "facing=down,waterlogged=true": {
-      "model": "magialucis:block/amber_lamp_up"
+      "model": "magialucis:block/amber_lantern_up"
     },
     "facing=east,waterlogged=false": {
-      "model": "magialucis:block/amber_lamp_side",
+      "model": "magialucis:block/amber_lantern_side",
       "y": 270
     },
     "facing=east,waterlogged=true": {
-      "model": "magialucis:block/amber_lamp_side",
+      "model": "magialucis:block/amber_lantern_side",
       "y": 270
     },
     "facing=north,waterlogged=false": {
-      "model": "magialucis:block/amber_lamp_side",
+      "model": "magialucis:block/amber_lantern_side",
       "y": 180
     },
     "facing=north,waterlogged=true": {
-      "model": "magialucis:block/amber_lamp_side",
+      "model": "magialucis:block/amber_lantern_side",
       "y": 180
     },
     "facing=south,waterlogged=false": {
-      "model": "magialucis:block/amber_lamp_side"
+      "model": "magialucis:block/amber_lantern_side"
     },
     "facing=south,waterlogged=true": {
-      "model": "magialucis:block/amber_lamp_side"
+      "model": "magialucis:block/amber_lantern_side"
     },
     "facing=up,waterlogged=false": {
-      "model": "magialucis:block/amber_lamp_down"
+      "model": "magialucis:block/amber_lantern_down"
     },
     "facing=up,waterlogged=true": {
-      "model": "magialucis:block/amber_lamp_down"
+      "model": "magialucis:block/amber_lantern_down"
     },
     "facing=west,waterlogged=false": {
-      "model": "magialucis:block/amber_lamp_side",
+      "model": "magialucis:block/amber_lantern_side",
       "y": 90
     },
     "facing=west,waterlogged=true": {
-      "model": "magialucis:block/amber_lamp_side",
+      "model": "magialucis:block/amber_lantern_side",
       "y": 90
     }
   }

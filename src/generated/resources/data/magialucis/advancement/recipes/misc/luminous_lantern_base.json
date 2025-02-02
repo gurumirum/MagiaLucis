@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magialucis:amber_lamp"
+        "recipe": "magialucis:luminous_lantern_base"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "magialucis:amber_lamp"
+      "magialucis:luminous_lantern_base"
     ]
   }
 }

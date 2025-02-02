@@ -21,7 +21,7 @@ import java.util.EnumMap;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
-public abstract class BaseLampBlock extends Block {
+public abstract class BaseLanternBlock extends Block {
 	private static final EnumMap<Direction, VoxelShape> SHAPE = new EnumMap<>(Direction.class);
 	private static final EnumMap<Direction, VoxelShape> LUX_NODE_SHAPE = new EnumMap<>(Direction.class);
 
@@ -60,7 +60,7 @@ public abstract class BaseLampBlock extends Block {
 		LUX_NODE_SHAPE.put(Direction.NORTH, box(4, 2, 4, 12, 14, 16));
 	}
 
-	public BaseLampBlock(Properties properties) {
+	public BaseLanternBlock(Properties properties) {
 		super(properties);
 
 		BlockState state = defaultBlockState().setValue(FACING, Direction.DOWN).setValue(WATERLOGGED, false);
@@ -113,7 +113,7 @@ public abstract class BaseLampBlock extends Block {
 		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
-	public static class Stateless extends BaseLampBlock {
+	public static class Stateless extends BaseLanternBlock {
 		public Stateless(Properties properties) {
 			super(properties);
 		}

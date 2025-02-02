@@ -1,6 +1,6 @@
 package gurumirum.magialucis.impl.field;
 
-import gurumirum.magialucis.contents.block.AmberLampBlock;
+import gurumirum.magialucis.contents.block.AmberLanternBlock;
 
 import static gurumirum.magialucis.MagiaLucisMod.id;
 import static gurumirum.magialucis.impl.field.FieldRegistry.register;
@@ -20,10 +20,10 @@ public final class Fields {
 			.interferenceThreshold(2)
 			.build(id("moonlight_core")));
 
-	public static final Field AMBER_LAMP = register(new FieldBuilder()
-			.forceRange(AmberLampBlock.RANGE)
+	public static final Field AMBER_LANTERN = register(new FieldBuilder()
+			.forceRange(AmberLanternBlock.RANGE)
 			.forceDiminishPower(0)
-			.build(id("amber_lamp")));
+			.build(id("amber_lantern")));
 
 	public static void init() {}
 }

@@ -1,0 +1,9 @@
+{
+  "parent": "magialucis:block/lamp_up",
+  "textures": {
+    "bottom": "magialucis:block/luminous_lantern_bottom",
+    "side": "magialucis:block/luminous_lantern_side",
+    "side_overlay": "magialucis:block/empty",
+    "top": "magialucis:block/luminous_lantern_top"
+  }
+}

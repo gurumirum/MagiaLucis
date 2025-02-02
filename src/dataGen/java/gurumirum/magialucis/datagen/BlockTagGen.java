@@ -74,9 +74,9 @@ public class BlockTagGen extends BlockTagsProvider {
 
 		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
 				LUMINOUS_CHARGER.block(),
-				LUMINOUS_LAMP_BASE.block(),
-				LUMINOUS_RESONANCE_LAMP.block(),
-				LUSTROUS_RESONANCE_LAMP.block(),
+				LUMINOUS_LANTERN_BASE.block(),
+				LUMINOUS_RESONANCE_LANTERN.block(),
+				LUSTROUS_RESONANCE_LANTERN.block(),
 				RELAY.block(),
 				LIGHT_BASIN.block(),
 				SUNLIGHT_CORE.block(),
@@ -106,7 +106,8 @@ public class BlockTagGen extends BlockTagsProvider {
 
 		tag(BlockTags.MINEABLE_WITH_AXE).add(
 				AMBER_CHARGER.block(),
-				AMBER_CORE.block());
+				AMBER_CORE.block(),
+				AMBER_LANTERN.block());
 
 		tag(BlockTags.NEEDS_STONE_TOOL).add(
 				SILVER_BLOCK.block(),

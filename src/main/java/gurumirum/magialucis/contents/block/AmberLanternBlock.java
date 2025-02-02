@@ -20,7 +20,7 @@ import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AmberLampBlock extends BaseLampBlock.Stateless implements EntityBlock {
+public class AmberLanternBlock extends BaseLanternBlock.Stateless implements EntityBlock {
 	public static final int RANGE = 10;
 	public static final int TICK_CYCLE = 20;
 
@@ -60,7 +60,7 @@ public class AmberLampBlock extends BaseLampBlock.Stateless implements EntityBlo
 		mpos.set((byte)(pos >> 16), (byte)(pos >> 8), (byte)pos);
 	}
 
-	public AmberLampBlock(Properties properties) {
+	public AmberLanternBlock(Properties properties) {
 		super(properties);
 	}
 
@@ -98,7 +98,7 @@ public class AmberLampBlock extends BaseLampBlock.Stateless implements EntityBlo
 		else return false;
 
 		level.setBlock(mpos, ModBlocks.AMBER_LIGHT.block().defaultBlockState()
-				.setValue(ModBlockStateProps.LAMP, true)
+				.setValue(ModBlockStateProps.LANTERN, true)
 				.setValue(BlockStateProperties.WATERLOGGED, waterlogged), 2);
 
 		return true;
@@ -107,13 +107,13 @@ public class AmberLampBlock extends BaseLampBlock.Stateless implements EntityBlo
 	@Override
 	protected void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
 	                        @NotNull BlockState newState, boolean movedByPiston) {
-		FieldInstance inst = FieldManager.tryGetField(level, Fields.AMBER_LAMP, false);
+		FieldInstance inst = FieldManager.tryGetField(level, Fields.AMBER_LANTERN, false);
 		if (inst == null) return;
 		inst.remove(pos);
 	}
 
 	@Override
 	public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-		return new AmberLampBlockEntity(pos, state);
+		return new AmberLanternBlockEntity(pos, state);
 	}
 }

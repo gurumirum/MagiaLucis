@@ -243,7 +243,7 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
 
-		shaped(MISC, ModBlocks.AMBER_LAMP)
+		shaped(MISC, ModBlocks.AMBER_LANTERN)
 				.pattern(" 1 ")
 				.pattern("232")
 				.pattern(" 1 ")
@@ -253,7 +253,7 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
 
-		shaped(MISC, ModBlocks.LUMINOUS_LAMP_BASE)
+		shaped(MISC, ModBlocks.LUMINOUS_LANTERN_BASE)
 				.pattern("121")
 				.pattern("343")
 				.pattern("121")
@@ -264,12 +264,12 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
 
-		shaped(MISC, ModBlocks.LUMINOUS_RESONANCE_LAMP)
+		shaped(MISC, ModBlocks.LUMINOUS_RESONANCE_LANTERN)
 				.pattern(" 1 ")
 				.pattern("1C1")
 				.pattern(" 1 ")
 				.define('1', gem(GemStats.BRIGHTSTONE))
-				.define('C', ModBlocks.LUMINOUS_LAMP_BASE)
+				.define('C', ModBlocks.LUMINOUS_LANTERN_BASE)
 				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
 

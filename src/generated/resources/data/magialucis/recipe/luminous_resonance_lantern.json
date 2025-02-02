@@ -3,22 +3,19 @@
   "category": "misc",
   "key": {
     "1": {
-      "tag": "minecraft:logs"
+      "tag": "magialucis:brightstones"
     },
-    "2": {
-      "tag": "c:gems/amber"
-    },
-    "3": {
-      "item": "magialucis:luminous_resonator"
+    "C": {
+      "item": "magialucis:luminous_lantern_base"
     }
   },
   "pattern": [
     " 1 ",
-    "232",
+    "1C1",
     " 1 "
   ],
   "result": {
     "count": 1,
-    "id": "magialucis:amber_lamp"
+    "id": "magialucis:luminous_resonance_lantern"
   }
 }
