@@ -55,8 +55,10 @@ public class AmberWreathItem extends LuxContainerCurioItem {
 
 		boolean active = AccessoryLogic.updateCharge(slotContext, stack,
 				6, COST_PER_UPDATE,
-				(entity.hasEffect(ModMobEffects.NATURES_BLESSING) ||
-						level.isDay() == this.day && level.getBrightness(LightLayer.SKY, entity.blockPosition()) > 12));
+				entity.hasEffect(ModMobEffects.NATURES_BLESSING) ||
+						((this.day ? level.isDay() : level.isNight()) &&
+								level.getBrightness(LightLayer.SKY, entity.blockPosition()) > 12)
+		);
 
 		boolean stackActive = stack.getOrDefault(ModDataComponents.ACTIVE, false);
 		if (stackActive != active) {
