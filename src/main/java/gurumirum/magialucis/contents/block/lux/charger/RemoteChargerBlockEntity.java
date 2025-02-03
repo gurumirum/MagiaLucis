@@ -85,8 +85,9 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior
 					}
 				}
 			}
+
+			charge.zero();
 		}
-		nodeBehavior().reset();
 	}
 
 	@Override

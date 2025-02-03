@@ -42,10 +42,9 @@ public class ChargerBehavior implements LuxConsumerNodeBehavior {
 
 	@Override
 	public void consumeLux(@NotNull ServerLevel level, @NotNull LuxNet luxNet, @NotNull LuxNode node, @NotNull Vector3d receivedLux) {
-		if (node.isLoaded()) {
-			this.luxInput.nextSampler().set(receivedLux);
-			LuxUtils.transfer(receivedLux, this.charge, this.maxChargeStorage);
-		}
+		this.luxInput.nextSampler().set(receivedLux);
+		this.charge.add(receivedLux).max(this.maxChargeStorage);
+		receivedLux.zero();
 	}
 
 	public void reset() {

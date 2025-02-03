@@ -83,15 +83,18 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 
 	@Override
 	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+		Vector3d charge = nodeBehavior().charge;
 		ItemStack stack = this.inventory.getStackInSlot(0);
+
 		if (!stack.isEmpty()) {
-			if (ChargeLogic.chargeItem(nodeBehavior().charge, stack, nodeBehavior().luxInput.min(new Vector3d()))) {
+			Vector3d luxInput = nodeBehavior().luxInput.min(new Vector3d());
+			if (ChargeLogic.chargeItem(charge, stack, luxInput)) {
 				this.syncContents = true;
 				setChanged();
 			}
 		}
 
-		nodeBehavior().reset();
+		charge.zero();
 
 		if (this.syncContents && level.getGameTime() % SYNC_INTERVAL == 0) {
 			this.syncContents = false;
