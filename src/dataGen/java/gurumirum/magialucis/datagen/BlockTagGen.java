@@ -34,7 +34,7 @@ public class BlockTagGen extends BlockTagsProvider {
 		var netherOres = tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK);
 
 		for (Ore ore : Ore.values()) {
-			var tags = c("ores/" + ore.oreId());
+			var tags = c("ores/" + ore.oreBaseName());
 			for (OreType oreType : OreType.values()) {
 				if (!ore.exists(oreType)) continue;
 

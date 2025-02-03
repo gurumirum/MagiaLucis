@@ -50,7 +50,7 @@ public class ItemTagGen extends ItemTagsProvider {
 		tag(ModItemTags.LUMINOUS_ALLOY_NUGGETS).add(ModItems.LUMINOUS_ALLOY_NUGGET.asItem());
 
 		copy(Tags.Blocks.ORES, Tags.Items.ORES);
-		for (Ore ore : Ore.values()) copyCommonTag("ores/" + ore.oreId());
+		for (Ore ore : Ore.values()) copyCommonTag("ores/" + ore.oreBaseName());
 
 		copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
 
