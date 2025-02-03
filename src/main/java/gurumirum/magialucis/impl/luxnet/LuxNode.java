@@ -59,13 +59,17 @@ public final class LuxNode {
 
 		LuxNodeInterface prev = this.iface;
 		this.iface = iface;
+
+		setBehavior(level, luxNet, iface != null ?
+				iface.updateNodeBehavior(this.behavior, true) : LuxNodeBehavior.none());
+
 		if (iface != null) {
 			this.lastBlockPos = null;
-			setBehavior(level, luxNet, iface.updateNodeBehavior(this.behavior, true));
 		} else {
-			this.lastBlockPos = prev.nodeBlockPos();
-			if (this.lastBlockPos != null) this.lastBlockPos = this.lastBlockPos.immutable();
+			BlockPos lastBlockPos = prev.nodeBlockPos();
+			this.lastBlockPos = lastBlockPos != null ? lastBlockPos.immutable() : null;
 		}
+
 		return BindInterfaceResult.SUCCESS;
 	}
 
