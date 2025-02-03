@@ -31,7 +31,7 @@ public class PillarOrnamentBlock extends Block {
 	}
 
 	public boolean isTopOrnament() {
-		return top;
+		return this.top;
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class PillarOrnamentBlock extends Block {
 		} else if (isConnectedPillarBlock(s2, clickedFace.getOpposite())) {
 			facing = this.top ? clickedFace : clickedFace.getOpposite();
 		} else {
-			facing = clickedFace;
+			facing = this.top ? clickedFace.getOpposite() : clickedFace;
 		}
 
 		return defaultBlockState().setValue(FACING, facing);
