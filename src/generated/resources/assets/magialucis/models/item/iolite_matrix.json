@@ -1,0 +1,6 @@
+{
+  "parent": "magialucis:item/matrix",
+  "textures": {
+    "texture": "magialucis:block/matrix/iolite"
+  }
+}

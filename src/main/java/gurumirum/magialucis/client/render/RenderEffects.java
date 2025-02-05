@@ -5,11 +5,10 @@ import gurumirum.magialucis.client.render.light.LightEffectProvider;
 import gurumirum.magialucis.client.render.light.LightEffectRender;
 import gurumirum.magialucis.client.render.prism.PrismEffect;
 import gurumirum.magialucis.client.render.prism.PrismEffectRender;
-import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlockEntityRenderer;
-import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlockEntityRenderer;
 import gurumirum.magialucis.contents.item.wand.ConfigurationWandOverlay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.LevelAccessor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -43,8 +42,7 @@ public final class RenderEffects {
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) {
 			MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
 
-			bufferSource.endBatch(ModRenderTypes.positionTextureColor(SunlightCoreBlockEntityRenderer.TEXTURE));
-			bufferSource.endBatch(ModRenderTypes.positionTextureColor(MoonlightCoreBlockEntityRenderer.TEXTURE));
+			bufferSource.endBatch(ModRenderTypes.positionTextureColor(InventoryMenu.BLOCK_ATLAS));
 
 			AncientLightCrumblingRender.render(event);
 			LightEffectRender.render(event);

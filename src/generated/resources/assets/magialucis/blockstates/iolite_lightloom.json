@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "magialucis:block/lightloom",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "magialucis:block/lightloom"
+    },
+    "facing=south": {
+      "model": "magialucis:block/lightloom",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magialucis:block/lightloom",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "sources": [
+    {
+      "type": "neoforge:namespaced_directory",
+      "namespace": "magialucis",
+      "prefix": "",
+      "source": "block/matrix"
+    }
+  ]
+}

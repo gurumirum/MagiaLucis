@@ -1,12 +1,15 @@
 package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.contents.block.AmberLanternBlockEntity;
+import gurumirum.magialucis.contents.block.ArtisanryTableBlockEntity;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlockEntity;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntity;
-import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntity;
-import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntity;
 import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlockEntity;
+import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntity;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlockEntity;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
+import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntity;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlockEntity;
@@ -29,6 +32,15 @@ public final class ModBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmberLanternBlockEntity>> AMBER_LANTERN =
 			blockEntity("amber_lantern", AmberLanternBlockEntity::new, ModBlocks.AMBER_LANTERN);
 
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ArtisanryTableBlockEntity>> ARTISANRY_TABLE =
+			blockEntity("artisanry_table", ArtisanryTableBlockEntity::new, ModBlocks.ARTISANRY_TABLE);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LightLoomBlockEntity>> CITRINE_LIGHTLOOM =
+			lightLoom("citrine_lightloom", LightLoomType.CITRINE, ModBlocks.CITRINE_LIGHTLOOM);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LightLoomBlockEntity>> IOLITE_LIGHTLOOM =
+			lightLoom("iolite_lightloom", LightLoomType.IOLITE, ModBlocks.IOLITE_LIGHTLOOM);
+
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LightBasinBlockEntity>> LIGHT_BASIN =
 			blockEntity("light_basin", LightBasinBlockEntity::new, ModBlocks.LIGHT_BASIN);
 
@@ -48,27 +60,43 @@ public final class ModBlockEntities {
 			blockEntity("relay", RelayBlockEntity::new, ModBlocks.RELAY);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChargerBlockEntity>> AMBER_CHARGER =
-			blockEntity("amber_charger",
-					(pos, state) -> new ChargerBlockEntity(ChargerTier.PRIMITIVE, pos, state),
-					ModBlocks.AMBER_CHARGER);
+			charger("amber_charger", ChargerTier.PRIMITIVE, ModBlocks.AMBER_CHARGER);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChargerBlockEntity>> LUMINOUS_CHARGER =
-			blockEntity("luminous_charger",
-					(pos, state) -> new ChargerBlockEntity(ChargerTier.LUMINOUS, pos, state),
-					ModBlocks.LUMINOUS_CHARGER);
+			charger("luminous_charger", ChargerTier.LUMINOUS, ModBlocks.LUMINOUS_CHARGER);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> LUMINOUS_REMOTE_CHARGER =
-			blockEntity("remote_charger",
-					(pos, state) -> new RemoteChargerBlockEntity(ChargerTier.LUMINOUS, pos, state),
-					ModBlocks.LUMINOUS_RESONANCE_LANTERN);
+			remoteCharger("remote_charger", ChargerTier.LUMINOUS, ModBlocks.LUMINOUS_RESONANCE_LANTERN);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> LUSTROUS_REMOTE_CHARGER =
-			blockEntity("lustrous_remote_charger",
-					(pos, state) -> new RemoteChargerBlockEntity(ChargerTier.LUSTROUS, pos, state),
-					ModBlocks.LUSTROUS_RESONANCE_LANTERN);
+			remoteCharger("lustrous_remote_charger", ChargerTier.LUSTROUS, ModBlocks.LUSTROUS_RESONANCE_LANTERN);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LuxSourceBlockEntity>> LUX_SOURCE =
 			blockEntity("lux_source", LuxSourceBlockEntity::new, ModBlocks.LUX_SOURCE, ModBlocks.LUX_SOURCE_2);
+
+	private static DeferredHolder<BlockEntityType<?>, BlockEntityType<LightLoomBlockEntity>> lightLoom(
+			String name, LightLoomType type, BlockProvider... validBlocks
+	) {
+		return blockEntity(name,
+				(pos, state) -> new LightLoomBlockEntity(type, pos, state),
+				validBlocks);
+	}
+
+	private static DeferredHolder<BlockEntityType<?>, BlockEntityType<ChargerBlockEntity>> charger(
+			String name, ChargerTier tier, BlockProvider... validBlocks
+	) {
+		return blockEntity(name,
+				(pos, state) -> new ChargerBlockEntity(tier, pos, state),
+				validBlocks);
+	}
+
+	private static DeferredHolder<BlockEntityType<?>, BlockEntityType<RemoteChargerBlockEntity>> remoteCharger(
+			String name, ChargerTier tier, BlockProvider... validBlocks
+	) {
+		return blockEntity(name,
+				(pos, state) -> new RemoteChargerBlockEntity(tier, pos, state),
+				validBlocks);
+	}
 
 	@SuppressWarnings("DataFlowIssue")
 	private static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> blockEntity(

@@ -57,7 +57,7 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 	public void onLoad() {
 		super.onLoad();
 		if (this.level != null && this.level.isClientSide) {
-			RenderEffects.light.register(new BlockLightEffectProvider<>(this, 1.5f));
+			RenderEffects.light.register(new BlockLightEffectProvider<>(this).sphereSize(1.5f));
 			RenderEffects.prism.register(new SunlightCoreBlockPrismEffect(this));
 		}
 	}

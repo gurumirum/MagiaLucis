@@ -31,6 +31,14 @@ public sealed interface LightEffect {
 		return FastColor.ARGB32.color(r, g, b);
 	}
 
+	static float sphereRadius(double luxFlowSum) {
+		return (float)(1 / 4.0 * (Math.log10(luxFlowSum)));
+	}
+
+	static float rayRadius(double luxFlowSum) {
+		return (float)(1 / 10.0 * (Math.log10(Math.max(15, luxFlowSum))));
+	}
+
 	record SpotEffect(float radius, Vec3 start, int color) implements LightEffect {}
 
 	record LineEffect(float radius, Vec3 start, Vec3 end, int color, boolean fallOff) implements LightEffect {}

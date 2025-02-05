@@ -14,15 +14,21 @@ import org.joml.Vector3d;
 public class BlockLightEffectProvider<T extends BlockEntity & LuxNodeSyncPropertyAccess>
 		extends RenderEffect.BlockEntityBound<T>
 		implements LightEffectProvider {
-	private final float radiusModifier;
+	private float sphereRadiusModifier = 1;
+	private float rayRadiusModifier = 1;
 
 	public BlockLightEffectProvider(T blockEntity) {
-		this(blockEntity, 1);
+		super(blockEntity);
 	}
 
-	public BlockLightEffectProvider(T blockEntity, float radiusModifier) {
-		super(blockEntity);
-		this.radiusModifier = radiusModifier;
+	public BlockLightEffectProvider<T> sphereSize(float modifier) {
+		this.sphereRadiusModifier = modifier;
+		return this;
+	}
+
+	public BlockLightEffectProvider<T> raySize(float modifier) {
+		this.rayRadiusModifier = modifier;
+		return this;
 	}
 
 	protected @Nullable Vec3 origin() {
@@ -32,38 +38,69 @@ public class BlockLightEffectProvider<T extends BlockEntity & LuxNodeSyncPropert
 	@Override
 	public void getLightEffects(float partialTicks, @NotNull Collector collector) {
 		Vector3d luxFlow = this.blockEntity.luxFlow(new Vector3d());
-		double sum = LuxUtils.sum(luxFlow);
-		if (sum <= 1) return;
 
+		float rm = sphereRadiusModifier(partialTicks);
+		if (rm > 0) sphereEffects(partialTicks, collector, luxFlow, rm);
+
+		rm = rayRadiusModifier(partialTicks);
+		if (rm > 0) rayEffects(partialTicks, collector, luxFlow, rm);
+	}
+
+	protected void sphereEffects(float partialTicks, Collector collector, Vector3d luxFlow, float radiusModifier) {
 		Vec3 origin = origin();
 		if (origin == null) return;
 
-		int color = LightEffect.getLightColor(luxFlow);
+		double sum = LuxUtils.sum(luxFlow);
+		if (sum <= 1) return;
 
-		float radius = (float)(1 / 4.0 * (Math.log10(sum)));
+		collector.addCircularEffect(LightEffect.sphereRadius(sum) * radiusModifier, origin, LightEffect.getLightColor(luxFlow));
+	}
 
-		if (this.radiusModifier > 0) {
-			collector.addCircularEffect(radius * this.radiusModifier, origin, color);
-		}
+	protected void rayEffects(float partialTicks, Collector collector, Vector3d luxFlow, float radiusModifier) {
+		Vec3 origin = origin();
+		if (origin == null) return;
 
 		var outboundLinks = this.blockEntity.outboundLinks();
 		if (outboundLinks.size() > 1) {
 			luxFlow.div(outboundLinks.size());
-			sum = LuxUtils.sum(luxFlow);
-			if (sum <= 1) return;
 		}
-		radius = (float)(1 / 10.0 * Math.log10(Math.max(15, sum)));
+
+		int color = 0;
+		boolean colorInitialized = false;
+
+		double sum = LuxUtils.sum(luxFlow);
+		if (sum <= 1) return;
+
+		float radius = LightEffect.rayRadius(sum) * radiusModifier;
 
 		for (var e : outboundLinks.int2ObjectEntrySet()) {
 			InWorldLinkInfo info = e.getValue();
 			if (info == null) continue;
+
+			if (!colorInitialized) {
+				colorInitialized = true;
+				color = LightEffect.getLightColor(luxFlow);
+			}
+
 			collector.addCylindricalEffect(radius, origin, Vec3.atCenterOf(info.linkPos()), color, false);
 		}
 
 		for (InWorldLinkState linkState : this.blockEntity.linkStates()) {
 			if (linkState != null && !linkState.linked()) {
+				if (!colorInitialized) {
+					colorInitialized = true;
+					color = LightEffect.getLightColor(luxFlow);
+				}
 				collector.addCylindricalEffect(radius, origin, linkState.linkLocation(), color, true);
 			}
 		}
+	}
+
+	protected float sphereRadiusModifier(float partialTicks) {
+		return this.sphereRadiusModifier;
+	}
+
+	protected float rayRadiusModifier(float partialTicks) {
+		return this.rayRadiusModifier;
 	}
 }

@@ -2,6 +2,8 @@ package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.*;
+import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,6 +32,7 @@ import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import org.jetbrains.annotations.NotNull;
@@ -77,9 +80,10 @@ public class LootGen extends LootTableProvider {
 		}
 
 		private void genModBlockModels(ModBlocks modBlock) {
-			if (modBlock.block().getLootTable() == BuiltInLootTables.EMPTY) return;
+			Block block = modBlock.block();
+			if (block.getLootTable() == BuiltInLootTables.EMPTY) return;
 			switch (modBlock) {
-				case RELAY -> add(ModBlocks.RELAY.block(), b -> lootTable().withPool(
+				case RELAY -> add(block, b -> lootTable().withPool(
 						applyExplosionCondition(b, lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(b)
@@ -89,9 +93,20 @@ public class LootGen extends LootTableProvider {
 								)
 						)
 				));
+				case ARTISANRY_TABLE -> add(block, b -> lootTable().withPool(
+						applyExplosionCondition(block, lootPool()
+								.setRolls(ConstantValue.exactly(1.0F))
+								.add(LootItem.lootTableItem(block)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(ModBlockStateProps.LEFT, true))
+										)
+								)
+						)
+				));
 				default -> {
-					if (modBlock.blockItem() != null) dropSelf(modBlock.block());
-					else add(modBlock.block(), noDrop());
+					if (modBlock.blockItem() != null) dropSelf(block);
+					else add(block, noDrop());
 				}
 			}
 		}

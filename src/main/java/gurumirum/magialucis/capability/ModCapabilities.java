@@ -4,6 +4,7 @@ import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.Wands;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Items;
@@ -71,6 +72,10 @@ public final class ModCapabilities {
 		directLinkDestination(event, ModBlockEntities.LUMINOUS_REMOTE_CHARGER.get());
 		linkDestination(event, ModBlockEntities.LUSTROUS_REMOTE_CHARGER.get());
 		directLinkDestination(event, ModBlockEntities.LUSTROUS_REMOTE_CHARGER.get());
+
+		for (LightLoomType type : LightLoomType.values()) {
+			linkDestination(event, type.blockEntityType());
+		}
 
 		linkDestination(event, ModBlockEntities.LIGHT_BASIN.get());
 		event.registerBlockEntity(ItemHandler.BLOCK, ModBlockEntities.LIGHT_BASIN.get(), (lightBasin, direction) -> {

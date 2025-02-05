@@ -1,0 +1,14 @@
+{
+  "loader": "neoforge:composite",
+  "children": {
+    "solid": {
+      "parent": "magialucis:block/lightloom_solid"
+    },
+    "translucent": {
+      "parent": "magialucis:block/lightloom_translucent"
+    }
+  },
+  "textures": {
+    "particle": "magialucis:block/lightloom_front"
+  }
+}

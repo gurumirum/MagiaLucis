@@ -4,6 +4,7 @@ import gurumirum.magialucis.contents.BlockProvider;
 import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.Ore;
 import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
@@ -109,6 +110,23 @@ public class BlockStateGen extends BlockStateProvider {
 
 		models().getBuilder(SUNLIGHT_FOCUS.id().getPath()).texture("particle", "block/sunlight_focus_mirror_top_center");
 		simpleBlock(SUNLIGHT_FOCUS.block(), new ModelFile.UncheckedModelFile(SUNLIGHT_FOCUS.id().withPrefix("block/")));
+
+		var artisanryTableLeft = new ModelFile.UncheckedModelFile(id("block/artisanry_table_left"));
+		var artisanryTableRight = new ModelFile.UncheckedModelFile(id("block/artisanry_table_right"));
+		var artisanryTableLeftL = new ModelFile.UncheckedModelFile(id("block/artisanry_table_left_lightloom"));
+		var artisanryTableRightL = new ModelFile.UncheckedModelFile(id("block/artisanry_table_right_lightloom"));
+		horizontalBlock(ARTISANRY_TABLE.block(), state ->
+				state.getValue(ModBlockStateProps.LEFT) ?
+						state.getValue(ModBlockStateProps.LIGHTLOOM) ? artisanryTableLeftL : artisanryTableLeft :
+						state.getValue(ModBlockStateProps.LIGHTLOOM) ? artisanryTableRightL : artisanryTableRight);
+
+		var lightloom = new ModelFile.UncheckedModelFile(id("block/lightloom"));
+		var lightloomItem = new ModelFile.UncheckedModelFile(id("item/lightloom"));
+
+		for (LightLoomType type : LightLoomType.values()) {
+			horizontalBlock(type.block(), lightloom);
+			simpleBlockItem(type.block(), lightloomItem);
+		}
 
 		for (Ore ore : Ore.values()) ore.allOreBlocks().forEach(this::simpleBlock);
 	}

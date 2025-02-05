@@ -77,7 +77,7 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 	public void onLoad() {
 		super.onLoad();
 		if (this.level != null && this.level.isClientSide) {
-			RenderEffects.light.register(new BlockLightEffectProvider<>(this, 1));
+			RenderEffects.light.register(new BlockLightEffectProvider<>(this));
 		}
 	}
 

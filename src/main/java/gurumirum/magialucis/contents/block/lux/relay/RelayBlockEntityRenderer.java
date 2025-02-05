@@ -6,14 +6,17 @@ import com.mojang.math.Axis;
 import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
+import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.AprilFoolsUtils;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -53,7 +56,7 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 			blockEntity.luxFlow(this.luxFlow);
 			double sum = LuxUtils.sum(this.luxFlow);
 
-			drawItem(blockEntity.getLevel(), partialTick, poseStack, ModRenderTypes.STUB_BUFFER, stack,
+			drawGemItem(blockEntity.getLevel(), partialTick, poseStack, ModRenderTypes.STUB_BUFFER, stack,
 					sum >= 1 ? LightTexture.FULL_BRIGHT : packedLight, packedOverlay);
 			ModRenderTypes.STUB_BUFFER.endBatch();
 		}
@@ -81,8 +84,8 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 		if (transformed) poseStack.popPose();
 	}
 
-	public static void drawItem(@Nullable Level level, float partialTick, PoseStack poseStack,
-	                            MultiBufferSource bufferSource, ItemStack stack, int packedLight, int packedOverlay) {
+	public static void drawGemItem(@Nullable Level level, float partialTick, PoseStack poseStack,
+	                               MultiBufferSource bufferSource, ItemStack stack, int packedLight, int packedOverlay) {
 		poseStack.pushPose();
 		poseStack.translate(.5f, .5f - 2 / 16f, .5f);
 
@@ -103,5 +106,47 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 				0);
 
 		poseStack.popPose();
+	}
+
+	public static void renderByItem(@NotNull ItemStack stack, @NotNull ItemDisplayContext displayContext,
+	                                @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer,
+	                                int packedLight, int packedOverlay) {
+		Minecraft mc = Minecraft.getInstance();
+		float partialTicks = mc.getTimer().getGameTimeDeltaPartialTick(false);
+
+		BakedModel blockModel = mc.getBlockRenderer().getBlockModel(ModBlocks.RELAY.block().defaultBlockState());
+
+		for (RenderType renderType : blockModel.getRenderTypes(stack, true)) {
+			mc.getItemRenderer().renderModelLists(blockModel, stack, packedLight, packedOverlay,
+					poseStack, buffer.getBuffer(renderType));
+		}
+
+		ItemStack relayItem = RelayItemData.getItem(stack);
+		if (!relayItem.isEmpty()) {
+			RelayBlockEntityRenderer.drawGemItem(mc.level, partialTicks, poseStack, buffer, relayItem,
+					packedLight, packedOverlay);
+		}
+
+		if (mc.options.graphicsMode().get() == GraphicsStatus.FABULOUS) {
+			poseStack.pushPose();
+
+			Level level = mc.level;
+
+			if (level != null) {
+				poseStack.translate(.5f, 0, .5f);
+				poseStack.mulPose(Axis.YP.rotation(RotationLogic.rotation(level.getGameTime(), ROTATION_PERIOD, partialTicks)));
+				poseStack.translate(-.5f, 0, -.5f);
+			}
+
+			VertexConsumer vc = buffer.getBuffer(ModRenderTypes.positionTextureColor(
+					AprilFoolsUtils.APRIL_FOOLS ? RenderShapes.NO_FABULOUS_TEXTURE_JOKE : RenderShapes.NO_FABULOUS_TEXTURE));
+			RenderShapes.noFabulousWarning(poseStack, vc, AprilFoolsUtils.APRIL_FOOLS);
+
+			poseStack.popPose();
+		} else {
+			VertexConsumer vc = buffer.getBuffer(ModRenderTypes.PRISM_ITEM_ENTITY);
+			RenderShapes.drawOctahedron(poseStack, vc, 0xffd2ecf6, false);
+			RenderShapes.drawOctahedron(poseStack, vc, -1, true);
+		}
 	}
 }

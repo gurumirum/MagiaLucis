@@ -1,6 +1,7 @@
 package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.client.ClientInit;
+import gurumirum.magialucis.client.Textures;
 import gurumirum.magialucis.contents.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -190,8 +191,12 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(ModItems.MECHANICAL_COMPONENT.asItem());
 		basicItem(ModItems.LUMINOUS_MECHANICAL_COMPONENT.asItem());
 
+		matrixItem(ModItems.CITRINE_MATRIX.asItem(), Textures.CITRINE_MATRIX);
+		matrixItem(ModItems.IOLITE_MATRIX.asItem(), Textures.IOLITE_MATRIX);
+
 		basicItem(ModItems.SUNLIGHT_INFUSED_POWDER.asItem());
 		basicItem(ModItems.MOONLIGHT_INFUSED_POWDER.asItem());
+
 		basicItem(ModItems.STONE_OF_PURIFICATION.asItem());
 
 		basicItem(ModItems.COPPER_NUGGET.asItem());
@@ -230,6 +235,16 @@ public class ItemModelGen extends ItemModelProvider {
 		return getBuilder(item.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
 				.texture("layer0", texture);
+	}
+
+	@SuppressWarnings("UnusedReturnValue")
+	private ItemModelBuilder matrixItem(Item item, ResourceLocation texture) {
+		return matrixItem(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)), texture);
+	}
+
+	private ItemModelBuilder matrixItem(ResourceLocation item, ResourceLocation texture) {
+		return withExistingParent(item.getPath(), id("item/matrix"))
+				.texture("texture", texture);
 	}
 
 	private ItemModelBuilder noChargeItem(Item item) {

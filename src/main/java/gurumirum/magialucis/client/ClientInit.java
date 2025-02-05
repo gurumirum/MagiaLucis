@@ -6,14 +6,14 @@ import gurumirum.magialucis.contents.*;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
-import gurumirum.magialucis.contents.block.lux.relay.RelayItemExtension;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreItemExtension;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreItemExtension;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntityRenderer;
-import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusItemExtension;
 import gurumirum.magialucis.contents.entity.EnderChestPortalRenderer;
 import gurumirum.magialucis.contents.entity.LesserIceProjectileRenderer;
 import gurumirum.magialucis.contents.entity.TempleGuardianModel;
@@ -42,6 +42,7 @@ import java.util.Arrays;
 
 import static gurumirum.magialucis.MagiaLucisMod.MODID;
 import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.client.render.CustomRenderItemExtension.customRenderItem;
 
 @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientInit {
@@ -111,10 +112,17 @@ public final class ClientInit {
 	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerItem(new WandItemExtension(), Arrays.stream(Wands.values())
 				.map(Wands::asItem).toArray(Item[]::new));
-		event.registerItem(new RelayItemExtension(), ModBlocks.RELAY.asItem());
+		event.registerItem(customRenderItem(RelayBlockEntityRenderer::renderByItem), ModBlocks.RELAY.asItem());
 		event.registerItem(new SunlightCoreItemExtension(), ModBlocks.SUNLIGHT_CORE.blockItem());
 		event.registerItem(new MoonlightCoreItemExtension(), ModBlocks.MOONLIGHT_CORE.blockItem());
-		event.registerItem(new SunlightFocusItemExtension(), ModBlocks.SUNLIGHT_FOCUS.blockItem());
+		event.registerItem(customRenderItem(SunlightFocusBlockEntityRenderer::renderByItem), ModBlocks.SUNLIGHT_FOCUS.blockItem());
+
+		for (LightLoomType type : LightLoomType.values()) {
+			event.registerItem(customRenderItem((stack, displayContext, poseStack,
+			                                     buffer, packedLight, packedOverlay) ->
+					LightLoomBlockEntityRenderer.renderByItem(stack, displayContext, poseStack, buffer,
+							packedLight, packedOverlay, type)), type.item());
+		}
 	}
 
 	@SubscribeEvent
@@ -142,6 +150,11 @@ public final class ClientInit {
 		event.registerBlockEntityRenderer(ModBlockEntities.MOONLIGHT_CORE.get(), MoonlightCoreBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.SUNLIGHT_FOCUS.get(), SunlightFocusBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LIGHT_BASIN.get(), LightBasinBlockEntityRenderer::new);
+
+		for (LightLoomType type : LightLoomType.values()) {
+			event.registerBlockEntityRenderer(type.blockEntityType(),
+					ctx -> new LightLoomBlockEntityRenderer(ctx, type));
+		}
 	}
 
 	@SubscribeEvent

@@ -28,6 +28,7 @@ public class Datagen {
 		event.getGenerator().addProvider(c, new BlockStateGen(o, exf));
 		event.getGenerator().addProvider(c, new ItemModelGen(o, exf));
 		event.getGenerator().addProvider(c, new ParticleDescriptionGen(o, exf));
+		event.getGenerator().addProvider(c, new AtlasGen(o, l, exf));
 
 		var l2 = event.getGenerator().addProvider(s, (DataProvider.Factory<DatapackBuiltinEntriesProvider>)output ->
 				new DatapackBuiltinEntriesProvider(output, l, DatapackEntryGen.getEntries(),

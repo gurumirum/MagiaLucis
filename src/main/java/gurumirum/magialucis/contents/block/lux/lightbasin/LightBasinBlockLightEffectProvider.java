@@ -1,7 +1,7 @@
-package gurumirum.magialucis.client.render.light;
+package gurumirum.magialucis.contents.block.lux.lightbasin;
 
+import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.contents.block.ModBlockStateProps;
-import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +9,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class LightBasinBlockLightEffectProvider extends BlockLightEffectProvider<LightBasinBlockEntity> {
 	public LightBasinBlockLightEffectProvider(LightBasinBlockEntity blockEntity) {
-		super(blockEntity, 0.5f);
+		super(blockEntity);
+		sphereSize(0.5f);
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package gurumirum.magialucis.contents.block.lux.lightbasin;
 import com.mojang.datafixers.util.Pair;
 import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.client.render.RenderEffects;
-import gurumirum.magialucis.client.render.light.LightBasinBlockLightEffectProvider;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.block.ModBlockStateProps;

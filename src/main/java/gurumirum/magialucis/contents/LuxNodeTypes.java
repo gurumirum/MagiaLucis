@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBehavior;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBehavior;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBehavior;
@@ -55,6 +56,12 @@ public final class LuxNodeTypes {
 			Contents.LUX_NODE_TYPES.register(
 					chargerTier.chargerBehaviorType(true).id().getPath(),
 					() -> chargerTier.chargerBehaviorType(true));
+		}
+
+		for (LightLoomType type : LightLoomType.values()) {
+			Contents.LUX_NODE_TYPES.register(
+					type.behaviorType().id().getPath(),
+					type::behaviorType);
 		}
 	}
 

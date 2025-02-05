@@ -2,16 +2,16 @@ package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
-import gurumirum.magialucis.contents.block.AmberLanternBlock;
-import gurumirum.magialucis.contents.block.AmberLightBlock;
-import gurumirum.magialucis.contents.block.BaseLanternBlock;
+import gurumirum.magialucis.contents.block.*;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlock;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlock;
+import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlock;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
 import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
-import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlock;
@@ -49,36 +49,19 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.strength(1)
 			.sound(SoundType.GLASS))),
 
-	AMBER_CHARGER(BlockProfile.customBlock(p -> new ChargerBlock(p, ChargerTier.PRIMITIVE), Properties.of().strength(2.5f))),
-	LUMINOUS_CHARGER(BlockProfile.customBlock(p -> new ChargerBlock(p, ChargerTier.LUMINOUS), Properties.of()
-			.requiresCorrectToolForDrops()
-			.strength(2.5f))),
-
-	AMBER_LANTERN(BlockProfile.customBlock(AmberLanternBlock::new, Properties.of()
-			.requiresCorrectToolForDrops()
-			.strength(2.5f)
-			.lightLevel(state -> 15))),
-
-	LUMINOUS_LANTERN_BASE(BlockProfile.customBlock(BaseLanternBlock.Stateless::new, Properties.of()
-			.requiresCorrectToolForDrops()
-			.strength(2.5f))),
-
-	LUMINOUS_RESONANCE_LANTERN(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUMINOUS), Properties.of()
-			.requiresCorrectToolForDrops()
-			.strength(2.5f)
-			.lightLevel(state -> state.getValue(BlockStateProperties.ENABLED) ? 15 : 0))),
-
-	LUSTROUS_RESONANCE_LANTERN(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUSTROUS), Properties.of()
-			.requiresCorrectToolForDrops()
-			.strength(2.5f)
-			.lightLevel(state -> state.getValue(BlockStateProperties.ENABLED) ? 15 : 0))),
-
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of()
 			.strength(2.5f)
 			.sound(SoundType.WOOD)
 			.lightLevel(AmberCoreBlock::getLightValue))),
 
-	LIGHT_BASIN(BlockProfile.customBlock(LightBasinBlock::new, ModBuildingBlocks.lapisManalis())),
+	AMBER_CHARGER(BlockProfile.customBlock(p -> new ChargerBlock(p, ChargerTier.PRIMITIVE), Properties.of()
+			.strength(2.5f)
+			.sound(SoundType.WOOD))),
+
+	AMBER_LANTERN(BlockProfile.customBlock(AmberLanternBlock::new, Properties.of()
+			.strength(2.5f)
+			.sound(SoundType.WOOD)
+			.lightLevel(state -> 15))),
 
 	SUNLIGHT_CORE(BlockProfile.customBlock(SunlightCoreBlock::new, Properties.of()
 			.noOcclusion()
@@ -93,6 +76,39 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.requiresCorrectToolForDrops()
 			.strength(3.5f)
 			.sound(SoundType.STONE))),
+
+	ARTISANRY_TABLE(BlockProfile.customBlock(ArtisanryTableBlock::new, Properties.of()
+			.strength(2.5f)
+			.sound(SoundType.WOOD))),
+
+	CITRINE_LIGHTLOOM(BlockProfile.customBlock(p -> new LightLoomBlock(p, LightLoomType.CITRINE), Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f)
+			.sound(SoundType.METAL))),
+	IOLITE_LIGHTLOOM(BlockProfile.customBlock(p -> new LightLoomBlock(p, LightLoomType.IOLITE), Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f)
+			.sound(SoundType.METAL))),
+
+	LIGHT_BASIN(BlockProfile.customBlock(LightBasinBlock::new, ModBuildingBlocks.lapisManalis())),
+
+	LUMINOUS_CHARGER(BlockProfile.customBlock(p -> new ChargerBlock(p, ChargerTier.LUMINOUS), Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f))),
+
+	LUMINOUS_LANTERN_BASE(BlockProfile.customBlock(BaseLanternBlock.Stateless::new, Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f))),
+
+	LUMINOUS_RESONANCE_LANTERN(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUMINOUS), Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f)
+			.lightLevel(state -> state.getValue(BlockStateProperties.ENABLED) ? 15 : 0))),
+
+	LUSTROUS_RESONANCE_LANTERN(BlockProfile.customBlock(p -> new RemoteChargerBlock(p, ChargerTier.LUSTROUS), Properties.of()
+			.requiresCorrectToolForDrops()
+			.strength(2.5f)
+			.lightLevel(state -> state.getValue(BlockStateProperties.ENABLED) ? 15 : 0))),
 
 	LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
 			GemStats.BRIGHTSTONE, 10), Properties.of().strength(2.5f))),

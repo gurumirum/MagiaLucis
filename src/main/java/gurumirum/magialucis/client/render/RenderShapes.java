@@ -3,7 +3,14 @@ package gurumirum.magialucis.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.MagiaLucisMod;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -301,42 +308,54 @@ public final class RenderShapes {
 		vc.addVertex(pose, x1, y1, z2).setColor(c2);
 	}
 
-	// TODO uv's all fucked up and idc enough to fix it sorry
 	public static void texturedTintedBox(PoseStack poseStack, VertexConsumer vc,
 	                                     float x1, float y1, float z1,
 	                                     float x2, float y2, float z2,
 	                                     int c1) {
+		texturedTintedBox(poseStack, vc,
+				x1, y1, z1,
+				x2, y2, z2,
+				0, 1, 0, 1,
+				c1);
+	}
+
+	// TODO uv's all fucked up and idc enough to fix it sorry
+	public static void texturedTintedBox(PoseStack poseStack, VertexConsumer vc,
+	                                     float x1, float y1, float z1,
+	                                     float x2, float y2, float z2,
+	                                     float u1, float u2, float v1, float v2,
+	                                     int c1) {
 		PoseStack.Pose pose = poseStack.last();
 
-		vc.addVertex(pose, x1, y1, z1).setUv(0, 1).setColor(c1);
-		vc.addVertex(pose, x1, y2, z1).setUv(0, 0).setColor(c1);
-		vc.addVertex(pose, x2, y2, z1).setUv(1, 0).setColor(c1);
-		vc.addVertex(pose, x2, y1, z1).setUv(1, 1).setColor(c1);
+		vc.addVertex(pose, x1, y1, z1).setUv(u1, v2).setColor(c1);
+		vc.addVertex(pose, x1, y2, z1).setUv(u1, v1).setColor(c1);
+		vc.addVertex(pose, x2, y2, z1).setUv(u2, v1).setColor(c1);
+		vc.addVertex(pose, x2, y1, z1).setUv(u2, v2).setColor(c1);
 
-		vc.addVertex(pose, x1, y1, z2).setUv(0, 1).setColor(c1);
-		vc.addVertex(pose, x1, y1, z1).setUv(0, 0).setColor(c1);
-		vc.addVertex(pose, x2, y1, z1).setUv(1, 0).setColor(c1);
-		vc.addVertex(pose, x2, y1, z2).setUv(1, 1).setColor(c1);
+		vc.addVertex(pose, x1, y1, z2).setUv(u1, v2).setColor(c1);
+		vc.addVertex(pose, x1, y1, z1).setUv(u1, v1).setColor(c1);
+		vc.addVertex(pose, x2, y1, z1).setUv(u2, v1).setColor(c1);
+		vc.addVertex(pose, x2, y1, z2).setUv(u2, v2).setColor(c1);
 
-		vc.addVertex(pose, x1, y1, z1).setUv(1, 0).setColor(c1);
-		vc.addVertex(pose, x1, y1, z2).setUv(1, 1).setColor(c1);
-		vc.addVertex(pose, x1, y2, z2).setUv(0, 1).setColor(c1);
-		vc.addVertex(pose, x1, y2, z1).setUv(0, 0).setColor(c1);
+		vc.addVertex(pose, x1, y1, z1).setUv(u2, v1).setColor(c1);
+		vc.addVertex(pose, x1, y1, z2).setUv(u2, v2).setColor(c1);
+		vc.addVertex(pose, x1, y2, z2).setUv(u1, v2).setColor(c1);
+		vc.addVertex(pose, x1, y2, z1).setUv(u1, v1).setColor(c1);
 
-		vc.addVertex(pose, x2, y2, z2).setUv(0, 1).setColor(c1);
-		vc.addVertex(pose, x2, y2, z1).setUv(0, 0).setColor(c1);
-		vc.addVertex(pose, x1, y2, z1).setUv(1, 0).setColor(c1);
-		vc.addVertex(pose, x1, y2, z2).setUv(1, 1).setColor(c1);
+		vc.addVertex(pose, x2, y2, z2).setUv(u1, v2).setColor(c1);
+		vc.addVertex(pose, x2, y2, z1).setUv(u1, v1).setColor(c1);
+		vc.addVertex(pose, x1, y2, z1).setUv(u2, v1).setColor(c1);
+		vc.addVertex(pose, x1, y2, z2).setUv(u2, v2).setColor(c1);
 
-		vc.addVertex(pose, x2, y2, z1).setUv(1, 0).setColor(c1);
-		vc.addVertex(pose, x2, y2, z2).setUv(1, 1).setColor(c1);
-		vc.addVertex(pose, x2, y1, z2).setUv(0, 1).setColor(c1);
-		vc.addVertex(pose, x2, y1, z1).setUv(0, 0).setColor(c1);
+		vc.addVertex(pose, x2, y2, z1).setUv(u2, v1).setColor(c1);
+		vc.addVertex(pose, x2, y2, z2).setUv(u2, v2).setColor(c1);
+		vc.addVertex(pose, x2, y1, z2).setUv(u1, v2).setColor(c1);
+		vc.addVertex(pose, x2, y1, z1).setUv(u1, v1).setColor(c1);
 
-		vc.addVertex(pose, x2, y1, z2).setUv(0, 1).setColor(c1);
-		vc.addVertex(pose, x2, y2, z2).setUv(0, 0).setColor(c1);
-		vc.addVertex(pose, x1, y2, z2).setUv(1, 0).setColor(c1);
-		vc.addVertex(pose, x1, y1, z2).setUv(1, 1).setColor(c1);
+		vc.addVertex(pose, x2, y1, z2).setUv(u1, v2).setColor(c1);
+		vc.addVertex(pose, x2, y2, z2).setUv(u1, v1).setColor(c1);
+		vc.addVertex(pose, x1, y2, z2).setUv(u2, v1).setColor(c1);
+		vc.addVertex(pose, x1, y1, z2).setUv(u2, v2).setColor(c1);
 	}
 
 	private static final int SPHERE_Y_SLICE = 16;
@@ -469,5 +488,31 @@ public final class RenderShapes {
 		vc.addVertex(pose, x2, y2, z2).setColor(color);
 		if (reverseCull) vc.addVertex(pose, x1, y1, z1).setColor(color);
 		vc.addVertex(pose, x3, y3, z3).setColor(color);
+	}
+
+	public static void renderMatrix(@NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource,
+	                                @NotNull ResourceLocation texture, float coreRotation, float scale,
+	                                @Nullable Quaternionf rotation) {
+		poseStack.pushPose();
+		poseStack.translate(.5f, .5f, .5f);
+
+		Quaternionf q = new Quaternionf();
+		if (rotation != null) q.mul(rotation);
+		q.rotateYXZ(-coreRotation, (float)(Math.PI / 4), (float)(Math.PI / 4));
+
+		poseStack.mulPose(q);
+		poseStack.scale(scale, scale, scale);
+		poseStack.translate(-.5f, -.5f, -.5f);
+
+		TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
+
+		VertexConsumer vc = bufferSource.getBuffer(ModRenderTypes.positionTextureColor(InventoryMenu.BLOCK_ATLAS));
+		texturedTintedBox(poseStack, vc,
+				4 / 16f, 4 / 16f, 4 / 16f,
+				12 / 16f, 12 / 16f, 12 / 16f,
+				sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1(),
+				-1);
+
+		poseStack.popPose();
 	}
 }

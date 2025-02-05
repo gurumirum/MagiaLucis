@@ -4,6 +4,7 @@ import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.ModBlockTags;
 import gurumirum.magialucis.contents.Ore;
 import gurumirum.magialucis.contents.OreType;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -104,10 +105,15 @@ public class BlockTagGen extends BlockTagsProvider {
 				ROSE_GOLD_BLOCK.block(),
 				STERLING_SILVER_BLOCK.block());
 
+		for (LightLoomType type : LightLoomType.values()) {
+			tag(BlockTags.MINEABLE_WITH_PICKAXE).add(type.block());
+		}
+
 		tag(BlockTags.MINEABLE_WITH_AXE).add(
 				AMBER_CHARGER.block(),
 				AMBER_CORE.block(),
-				AMBER_LANTERN.block());
+				AMBER_LANTERN.block(),
+				ARTISANRY_TABLE.block());
 
 		tag(BlockTags.NEEDS_STONE_TOOL).add(
 				SILVER_BLOCK.block(),

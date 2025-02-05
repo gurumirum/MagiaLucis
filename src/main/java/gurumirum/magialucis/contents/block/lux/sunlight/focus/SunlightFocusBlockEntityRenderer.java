@@ -10,6 +10,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -56,7 +58,8 @@ public class SunlightFocusBlockEntityRenderer implements BlockEntityRenderer<Sun
 		// TODO light effect maybe
 	}
 
-	private void draw(SunlightFocusBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, int packedOverlay, BakedModel model) {
+	private void draw(SunlightFocusBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource,
+	                  int packedOverlay, BakedModel model) {
 		Level level = blockEntity.getLevel();
 		if (level == null) return;
 		BlockState state = blockEntity.getBlockState();
@@ -67,5 +70,37 @@ public class SunlightFocusBlockEntityRenderer implements BlockEntityRenderer<Sun
 				false, RandomSource.create(),
 				state.getSeed(pos), packedOverlay,
 				ModelData.EMPTY, RenderType.SOLID);
+	}
+
+	private static final Quaternionf itemQuat = new Quaternionf();
+
+	public static void renderByItem(@NotNull ItemStack stack, @NotNull ItemDisplayContext displayContext,
+	                                @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer,
+	                                int packedLight, int packedOverlay) {
+		Minecraft mc = Minecraft.getInstance();
+		BakedModel model1 = mc.getModelManager().getModel(SunlightFocusModels.MODEL_1);
+		BakedModel model2 = mc.getModelManager().getModel(SunlightFocusModels.MODEL_2);
+		BakedModel model3 = mc.getModelManager().getModel(SunlightFocusModels.MODEL_3);
+
+		drawItem(stack, poseStack, buffer, packedLight, packedOverlay, model1);
+		drawItem(stack, poseStack, buffer, packedLight, packedOverlay, model2);
+
+		poseStack.pushPose();
+		poseStack.translate(8 / 16.0, 10 / 16.0, 8 / 16.0);
+		poseStack.mulPose(itemQuat.identity().rotateX(-(float)Math.PI / 6));
+		poseStack.translate(-8 / 16.0, -10 / 16.0, -8 / 16.0);
+
+		drawItem(stack, poseStack, buffer, packedLight, packedOverlay, model3);
+
+		poseStack.popPose();
+	}
+
+	private static void drawItem(ItemStack stack, PoseStack poseStack, MultiBufferSource buffer,
+	                             int packedLight, int packedOverlay, BakedModel model) {
+		for (RenderType renderType : model.getRenderTypes(stack, true)) {
+			Minecraft.getInstance().getItemRenderer().renderModelLists(
+					model, ItemStack.EMPTY, packedLight, packedOverlay, poseStack,
+					buffer.getBuffer(renderType));
+		}
 	}
 }
