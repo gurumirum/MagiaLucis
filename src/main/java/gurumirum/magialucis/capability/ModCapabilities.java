@@ -1,5 +1,6 @@
 package gurumirum.magialucis.capability;
 
+import gurumirum.magialucis.capability.impl.ItemStackLuxAcceptor;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModBlockEntities;

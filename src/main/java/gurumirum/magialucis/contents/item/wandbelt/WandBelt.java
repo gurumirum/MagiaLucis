@@ -11,6 +11,8 @@ import top.theillusivec4.curios.api.SlotResult;
 public final class WandBelt {
 	private WandBelt() {}
 
+	public static int SLOTS = 18;
+
 	public static @NotNull ItemStack get(Player player) {
 		return CuriosApi.getCuriosInventory(player)
 				.flatMap(h -> h.findCurio(ModCurioSlots.WAND_BELT, 0)

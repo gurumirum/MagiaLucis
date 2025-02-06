@@ -2,6 +2,8 @@ package gurumirum.magialucis.contents.item.wandbelt;
 
 import gurumirum.magialucis.contents.ModItemTags;
 import gurumirum.magialucis.contents.ModMenus;
+import gurumirum.magialucis.utils.ModUtils;
+import gurumirum.magialucis.utils.QuickMoveLogic;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -17,24 +19,25 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gurumirum.magialucis.client.SharedGUI.PLAYER_INV_HEIGHT;
-import static gurumirum.magialucis.client.SharedGUI.PLAYER_INV_WIDTH;
+import static gurumirum.magialucis.client.SharedGUI.*;
 
 public class WandBeltMenu extends AbstractContainerMenu {
 	public static final int WAND_BELT_WIDTH = 18 * 9 + (16 - 9) * 2;
 	public static final int WAND_BELT_HEIGHT = 18 * 2 + (16 - 9) * 2;
 
 	public static final int WIDTH = Math.max(PLAYER_INV_WIDTH, WAND_BELT_WIDTH);
-	public static final int HEIGHT = WAND_BELT_HEIGHT +
-			11 + // inventory label
-			PLAYER_INV_HEIGHT;
+	public static final int HEIGHT = WAND_BELT_HEIGHT + PLAYER_INV_LABEL_HEIGHT + PLAYER_INV_HEIGHT;
 
 	public static final int PLAYER_INV_LABEL_Y = WAND_BELT_HEIGHT;
-	public static final int PLAYER_INV_Y = PLAYER_INV_LABEL_Y + 11;
+	public static final int PLAYER_INV_Y = PLAYER_INV_LABEL_Y + PLAYER_INV_LABEL_HEIGHT;
 
 	private static final int WAND_BELT_SLOT_UPPER_ROW_Y = 8;
 	private static final int WAND_BELT_SLOT_LOWER_ROW_Y = WAND_BELT_SLOT_UPPER_ROW_Y + 18;
 	private static final int WAND_BELT_SLOT_SINGLE_ROW_Y = (WAND_BELT_SLOT_UPPER_ROW_Y + WAND_BELT_SLOT_LOWER_ROW_Y) / 2;
+
+	private static final QuickMoveLogic quickMoveLogic = QuickMoveLogic.builder(WandBelt.SLOTS)
+			.insertion(stack -> stack.is(ModItemTags.WANDS), 0, WandBelt.SLOTS)
+			.build();
 
 	private final List<WandBeltSlot> wandBeltSlots;
 	private final DataSlot selectedIndex = DataSlot.standalone();
@@ -45,12 +48,12 @@ public class WandBeltMenu extends AbstractContainerMenu {
 	private boolean updateOneRow = true;
 
 	public WandBeltMenu(int containerId, Inventory playerInv) {
-		super(ModMenus.WANG_BELT_MENU.get(), containerId);
+		super(ModMenus.WANG_BELT.get(), containerId);
 		this.wandBeltSlots = setup(playerInv, this.wandBeltInv = new ClientSideItemHandler(), -1);
 	}
 
 	public WandBeltMenu(int containerId, Inventory playerInv, IItemHandlerModifiable wandBeltInv, int selectedIndex, int wandBeltInventoryIndex) {
-		super(ModMenus.WANG_BELT_MENU.get(), containerId);
+		super(ModMenus.WANG_BELT.get(), containerId);
 		this.wandBeltSlots = setup(playerInv, this.wandBeltInv = new ServerSideItemHandlerWrapper(wandBeltInv), selectedIndex);
 		this.wandBeltInventoryIndex.set(wandBeltInventoryIndex);
 	}
@@ -72,14 +75,8 @@ public class WandBeltMenu extends AbstractContainerMenu {
 			}
 		}
 
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, PLAYER_INV_Y + 8 + i * 18));
-			}
-		}
-
-		for (int i = 0; i < 9; i++) {
-			addSlot(new Slot(playerInv, i, 8 + i * 18, PLAYER_INV_Y + 66) {
+		ModUtils.addInventorySlots(playerInv, 0, PLAYER_INV_Y, this::addSlot, (inv, i, x, y) -> {
+			return i < 9 ? new Slot(playerInv, i, x, y) {
 				@Override
 				public boolean mayPlace(@NotNull ItemStack stack) {
 					return WandBeltMenu.this.wandBeltInventoryIndex.get() != getSlotIndex();
@@ -89,8 +86,8 @@ public class WandBeltMenu extends AbstractContainerMenu {
 				public boolean mayPickup(@NotNull Player player) {
 					return WandBeltMenu.this.wandBeltInventoryIndex.get() != getSlotIndex();
 				}
-			});
-		}
+			} : new Slot(playerInv, i, x, y);
+		});
 
 		return wandBeltSlots;
 	}
@@ -151,34 +148,7 @@ public class WandBeltMenu extends AbstractContainerMenu {
 
 	@Override
 	public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-		ItemStack stack = ItemStack.EMPTY;
-		Slot slot = this.slots.get(index);
-		if (slot.hasItem()) {
-			ItemStack slotItem = slot.getItem();
-			stack = slotItem.copy();
-
-			if (index < 18) {
-				if (!moveItemStackTo(slotItem, 18, 54, true)) {
-					return ItemStack.EMPTY;
-				}
-			} else {
-				if (stack.is(ModItemTags.WANDS)) {
-					if (moveItemStackTo(slotItem, 0, 18, false)) {
-						return ItemStack.EMPTY;
-					}
-				} else if (index < 45) {
-					if (!moveItemStackTo(slotItem, 45, 54, false)) {
-						return ItemStack.EMPTY;
-					}
-				} else if (!moveItemStackTo(slotItem, 18, 45, false)) {
-					return ItemStack.EMPTY;
-				}
-			}
-
-			slot.onTake(player, stack);
-		}
-
-		return stack;
+		return quickMoveLogic.perform(this, player, index);
 	}
 
 	@Override
@@ -243,7 +213,7 @@ public class WandBeltMenu extends AbstractContainerMenu {
 
 	private class ClientSideItemHandler extends ItemStackHandler {
 		public ClientSideItemHandler() {
-			super(18);
+			super(WandBelt.SLOTS);
 		}
 
 		@Override

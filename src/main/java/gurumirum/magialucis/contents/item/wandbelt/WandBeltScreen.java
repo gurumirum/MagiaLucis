@@ -4,9 +4,9 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.client.BaseScreen;
 import gurumirum.magialucis.client.SharedGUI;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class WandBeltScreen extends AbstractContainerScreen<WandBeltMenu> {
+public class WandBeltScreen extends BaseScreen<WandBeltMenu> {
 	public static final ResourceLocation TEXTURE = MagiaLucisMod.id("textures/gui/wand_belt.png");
 	public static final ResourceLocation EMPTY_SLOT_TEXTURE = MagiaLucisMod.id("textures/slot/empty_slot_wand.png");
 
@@ -24,13 +24,16 @@ public class WandBeltScreen extends AbstractContainerScreen<WandBeltMenu> {
 	public WandBeltScreen(WandBeltMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
 		this.playerInventory = playerInventory;
+	}
 
-		this.imageWidth = WandBeltMenu.WIDTH;
-		this.imageHeight = WandBeltMenu.HEIGHT;
-		this.titleLabelX = WandBeltMenu.WIDTH / 2;
-		this.titleLabelY = -11;
-		this.inventoryLabelX = 8;
-		this.inventoryLabelY = WandBeltMenu.PLAYER_INV_LABEL_Y;
+	@Override
+	protected int computeImageWidth() {
+		return WandBeltMenu.WIDTH;
+	}
+
+	@Override
+	protected int computeImageHeight() {
+		return WandBeltMenu.HEIGHT;
 	}
 
 	@Override
@@ -55,7 +58,7 @@ public class WandBeltScreen extends AbstractContainerScreen<WandBeltMenu> {
 			drawWandBeltSlot(guiGraphics, slot, this.leftPos, this.topPos, true, !slot.hasItem());
 		}
 
-		SharedGUI.drawInventoryBg(this, guiGraphics, WandBeltMenu.PLAYER_INV_Y);
+		super.renderBg(guiGraphics, partialTick, mouseX, mouseY);
 	}
 
 	@Override
@@ -71,12 +74,6 @@ public class WandBeltScreen extends AbstractContainerScreen<WandBeltMenu> {
 			RenderSystem.disableBlend();
 			RenderSystem.enableDepthTest();
 		}
-	}
-
-	@Override
-	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		guiGraphics.drawCenteredString(this.font, this.title, this.titleLabelX, this.titleLabelY, -1);
-		guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -1);
 	}
 
 	@Override

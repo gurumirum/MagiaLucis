@@ -1,9 +1,13 @@
-package gurumirum.magialucis.contents.block;
+package gurumirum.magialucis.contents.block.artisanrytable;
 
+import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -18,6 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.border.WorldBorder;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -100,7 +105,7 @@ public class ArtisanryTableBlock extends Block implements EntityBlock {
 
 	@Override
 	public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-		return new ArtisanryTableBlockEntity(pos, state);
+		return state.getValue(LEFT) ? new ArtisanryTableBlockEntity(pos, state) : null;
 	}
 
 	@Override
@@ -190,5 +195,26 @@ public class ArtisanryTableBlock extends Block implements EntityBlock {
 		}
 
 		return state;
+	}
+
+	@Override
+	protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level,
+	                                                    @NotNull BlockPos pos, @NotNull Player player,
+	                                                    @NotNull BlockHitResult hitResult) {
+		ItemStack stack = player.getMainHandItem();
+		if (stack.getItem() instanceof BlockItem blockItem &&
+				blockItem.getBlock() instanceof LightLoomBlock) {
+			return InteractionResult.PASS;
+		}
+
+		if (!level.isClientSide) {
+			BlockPos leftPos = state.getValue(LEFT) ? pos :
+					pos.relative(state.getValue(HORIZONTAL_FACING).getCounterClockWise());
+
+			if (level.getBlockEntity(leftPos) instanceof ArtisanryTableBlockEntity artisanryTable) {
+				player.openMenu(artisanryTable);
+			}
+		}
+		return InteractionResult.SUCCESS;
 	}
 }

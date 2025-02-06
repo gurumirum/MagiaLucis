@@ -4,11 +4,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Consumer;
 
 public final class ModUtils {
 	private ModUtils() {}
@@ -47,5 +51,34 @@ public final class ModUtils {
 		ItemEntity itemEntity = new ItemEntity(level, x, y, z, stack);
 		itemEntity.setDeltaMovement(dx, dy, dz);
 		level.addFreshEntity(itemEntity);
+	}
+
+	public static void addInventorySlots(@NotNull Inventory inventory, int inventoryX, int inventoryY,
+	                                     @NotNull Consumer<Slot> addSlot) {
+		addInventorySlots(inventory, inventoryX, inventoryY, addSlot, null);
+	}
+
+	public static void addInventorySlots(@NotNull Inventory inventory, int inventoryX, int inventoryY,
+	                                     @NotNull Consumer<Slot> addSlot, @Nullable SlotFactory slotFactory) {
+		if (slotFactory == null) slotFactory = SlotFactory.DEFAULT;
+
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlot.accept(slotFactory.createSlot(inventory, j + i * 9 + 9,
+						inventoryX + 8 + j * 18, inventoryY + 8 + i * 18));
+			}
+		}
+
+		for (int i = 0; i < 9; i++) {
+			addSlot.accept(slotFactory.createSlot(inventory, i,
+					inventoryX + 8 + i * 18, inventoryY + 66));
+		}
+	}
+
+	@FunctionalInterface
+	public interface SlotFactory {
+		SlotFactory DEFAULT = Slot::new;
+
+		@NotNull Slot createSlot(@NotNull Inventory inv, int i, int x, int y);
 	}
 }

@@ -2,19 +2,19 @@ package gurumirum.magialucis.contents.block.lux.lightbasin;
 
 import com.mojang.datafixers.util.Pair;
 import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.capability.impl.FixedItemStackHandler;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.block.ModBlockStateProps;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
-import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipeEvaluation;
+import gurumirum.magialucis.contents.recipe.LuxRecipeEvaluation;
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipeInput;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.ModUtils;
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -26,7 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
@@ -43,7 +42,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 	private boolean syncContents;
 
 	private @Nullable ResourceLocation currentRecipeId;
-	private @Nullable TransfusionRecipeEvaluation currentRecipe;
+	private @Nullable LuxRecipeEvaluation currentRecipe;
 	private int progress;
 	private int noLuxInputTicks;
 
@@ -123,7 +122,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 				this.noLuxInputTicks = 0;
 
 				if (this.progress >= this.currentRecipe.processTicks()) {
-					if (consume(this.currentRecipe.consumption())) {
+					if (this.currentRecipe.consumption().apply(this.inventory)) {
 						ModUtils.drop(level, this.currentRecipe.result(),
 								pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5,
 								0, 0.15, 0);
@@ -152,22 +151,6 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 			this.syncContents = false;
 			syncToClient();
 		}
-	}
-
-	private boolean consume(Int2IntMap consumption) {
-		for (var e : consumption.int2IntEntrySet()) {
-			int index = e.getIntKey();
-			if (index < 0 || index >= this.inventory.getSlots()) return false;
-
-			int count = e.getIntValue();
-			if (this.inventory.getStackInSlot(index).getCount() < count) return false;
-		}
-
-		for (var e : consumption.int2IntEntrySet()) {
-			this.inventory.extractItem(e.getIntKey(), e.getIntValue(), false);
-		}
-
-		return true;
 	}
 
 	public boolean dropLastContent(@Nullable Player player) {
@@ -244,13 +227,10 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		this.contentsDirty = true;
 	}
 
-	private final class LightBasinInventory extends ItemStackHandler implements TransfusionRecipeInput {
+	private final class LightBasinInventory extends FixedItemStackHandler implements TransfusionRecipeInput {
 		public LightBasinInventory() {
 			super(4);
 		}
-
-		@Override
-		public void setSize(int size) {} // no-op
 
 		@Override
 		protected void onContentsChanged(int slot) {

@@ -69,10 +69,10 @@ public class WandBeltItem extends Item {
 		ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
 		if (contents != null) {
 			int count = 0;
-			for (ItemStack _s : contents.nonEmptyItems()) count++;
+			for (ItemStack ignored : contents.nonEmptyItems()) count++;
 			if (count > 0) {
 				tooltip.add(Component.translatable("item.magialucis.wand_belt.tooltip.stored",
-						Component.literal(count+"").withStyle(ChatFormatting.YELLOW)));
+						Component.literal(count + "").withStyle(ChatFormatting.YELLOW)));
 			}
 		}
 	}
@@ -104,7 +104,7 @@ public class WandBeltItem extends Item {
 
 	public static class ItemHandler extends ComponentItemHandler {
 		public ItemHandler(MutableDataComponentHolder parent) {
-			super(parent, DataComponents.CONTAINER, 18);
+			super(parent, DataComponents.CONTAINER, WandBelt.SLOTS);
 		}
 
 		@Override

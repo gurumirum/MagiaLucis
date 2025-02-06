@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents.recipe.transfusion;
 
+import gurumirum.magialucis.contents.recipe.LuxRecipeEvaluation;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -9,7 +10,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public interface TransfusionRecipe extends Recipe<TransfusionRecipeInput> {
-	@NotNull TransfusionRecipeEvaluation evaluate(@NotNull TransfusionRecipeInput input);
+	@NotNull LuxRecipeEvaluation evaluate(@NotNull TransfusionRecipeInput input);
 
 	@Deprecated
 	@Override

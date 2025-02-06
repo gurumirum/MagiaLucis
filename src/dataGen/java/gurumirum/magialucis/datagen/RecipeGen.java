@@ -1,14 +1,19 @@
 package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.capability.GemStats;
-import gurumirum.magialucis.contents.*;
+import gurumirum.magialucis.contents.GemItems;
+import gurumirum.magialucis.contents.ModBlocks;
+import gurumirum.magialucis.contents.ModItemTags;
+import gurumirum.magialucis.contents.Ore;
 import gurumirum.magialucis.datagen.builder.AncientLightRecipeBuilder;
+import gurumirum.magialucis.datagen.builder.ArtisanryRecipeBuilder;
 import gurumirum.magialucis.datagen.builder.LightBasinRecipeBuilder;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -366,23 +371,23 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_soul_brightstone", has(GemItems.SOUL_BRIGHTSTONE))
 				.save(out);
 
-		shaped(TOOLS, SPEED_RING)
+		artisanry(SPEED_RING)
 				.pattern("12 ")
 				.pattern("2 2")
 				.pattern(" 2 ")
 				.define('1', gem(GemStats.CITRINE))
 				.define('2', ModItemTags.ROSE_GOLD_NUGGETS)
-				.unlockedBy("has_citrine", hasGem(GemStats.CITRINE))
+				.instant()
 				.save(out);
 
-		shaped(TOOLS, OBSIDIAN_BRACELET)
+		artisanry(OBSIDIAN_BRACELET)
 				.pattern("121")
 				.pattern("232")
 				.pattern("121")
 				.define('1', gem(GemStats.OBSIDIAN))
 				.define('2', Tags.Items.STRINGS)
 				.define('3', LUMINOUS_RESONATOR)
-				.unlockedBy("has_obsidian", hasGem(GemStats.OBSIDIAN))
+				.processTicks(100)
 				.save(out);
 
 		shaped(TOOLS, SHIELD_NECKLACE)
@@ -736,6 +741,18 @@ public class RecipeGen extends RecipeProvider {
 
 	private static LightBasinRecipeBuilder lightBasin() {
 		return new LightBasinRecipeBuilder();
+	}
+
+	private static ArtisanryRecipeBuilder artisanry(ItemLike item) {
+		return new ArtisanryRecipeBuilder(new ItemStack(item));
+	}
+
+	private static ArtisanryRecipeBuilder artisanry(ItemLike item, int count) {
+		return new ArtisanryRecipeBuilder(new ItemStack(item, count));
+	}
+
+	private static ArtisanryRecipeBuilder artisanry(ItemStack stack) {
+		return new ArtisanryRecipeBuilder(stack);
 	}
 
 	private static Ingredient gem(GemStats gem) {

@@ -3,6 +3,7 @@ package gurumirum.magialucis.client;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.client.particle.LightParticle;
 import gurumirum.magialucis.contents.*;
+import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableScreen;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntityRenderer;
@@ -127,7 +128,8 @@ public final class ClientInit {
 
 	@SubscribeEvent
 	public static void registerMenuScreens(RegisterMenuScreensEvent event) {
-		event.register(ModMenus.WANG_BELT_MENU.get(), WandBeltScreen::new);
+		event.register(ModMenus.WANG_BELT.get(), WandBeltScreen::new);
+		event.register(ModMenus.ARTISANRY_TABLE.get(), ArtisanryTableScreen::new);
 	}
 
 	@SubscribeEvent

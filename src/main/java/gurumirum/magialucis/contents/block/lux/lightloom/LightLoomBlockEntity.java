@@ -6,6 +6,7 @@ import gurumirum.magialucis.impl.luxnet.LuxNet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3d;
 
 public class LightLoomBlockEntity extends LuxNodeBlockEntity<LightLoomBehavior> {
 	private final LightLoomType type;
@@ -17,6 +18,10 @@ public class LightLoomBlockEntity extends LuxNodeBlockEntity<LightLoomBehavior> 
 
 	public LightLoomType type() {
 		return this.type;
+	}
+
+	public @NotNull Vector3d luxInput(@NotNull Vector3d dest) {
+		return nodeBehavior().luxInput.min(dest);
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.contents.block.AmberLanternBlockEntity;
-import gurumirum.magialucis.contents.block.ArtisanryTableBlockEntity;
+import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableBlockEntity;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlockEntity;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntity;

@@ -1,26 +1,22 @@
-package gurumirum.magialucis.contents.recipe.transfusion;
+package gurumirum.magialucis.contents.recipe;
 
-import gurumirum.magialucis.contents.recipe.ConsumptionRecord;
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import it.unimi.dsi.fastutil.ints.Int2IntMaps;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
 import java.util.function.Supplier;
 
-public final class TransfusionRecipeEvaluation {
-	private static final TransfusionRecipeEvaluation FAIL = new TransfusionRecipeEvaluation();
+public final class LuxRecipeEvaluation {
+	private static final LuxRecipeEvaluation FAIL = new LuxRecipeEvaluation();
 
-	public static TransfusionRecipeEvaluation fail() {
+	public static LuxRecipeEvaluation fail() {
 		return FAIL;
 	}
 
 	private final @Nullable Supplier<ItemStack> result;
 	private final int processTicks;
-	private final Int2IntMap consumption;
+	private final ConsumptionRecord consumption;
 
 	private final double minLuxInputR;
 	private final double minLuxInputG;
@@ -31,10 +27,12 @@ public final class TransfusionRecipeEvaluation {
 	private final double maxLuxInputB;
 	private final double maxLuxInputSum;
 
-	private TransfusionRecipeEvaluation() {
+	private @Nullable ItemStack resultCache;
+
+	private LuxRecipeEvaluation() {
 		this.result = null;
 		this.processTicks = 0;
-		this.consumption = Int2IntMaps.EMPTY_MAP;
+		this.consumption = ConsumptionRecord.none();
 
 		this.minLuxInputR = 0;
 		this.minLuxInputG = 0;
@@ -46,12 +44,12 @@ public final class TransfusionRecipeEvaluation {
 		this.maxLuxInputSum = Double.POSITIVE_INFINITY;
 	}
 
-	public TransfusionRecipeEvaluation(@NotNull Supplier<ItemStack> result, int processTicks, @NotNull ConsumptionRecord consumption,
-	                                   double minLuxInputR, double minLuxInputG, double minLuxInputB, double minLuxInputSum,
-	                                   double maxLuxInputR, double maxLuxInputG, double maxLuxInputB, double maxLuxInputSum) {
+	public LuxRecipeEvaluation(@NotNull Supplier<ItemStack> result, int processTicks, @NotNull ConsumptionRecord consumption,
+	                           double minLuxInputR, double minLuxInputG, double minLuxInputB, double minLuxInputSum,
+	                           double maxLuxInputR, double maxLuxInputG, double maxLuxInputB, double maxLuxInputSum) {
 		this.result = result;
 		this.processTicks = processTicks;
-		this.consumption = consumption.map();
+		this.consumption = consumption.immutable();
 
 		this.minLuxInputR = minLuxInputR;
 		this.minLuxInputG = minLuxInputG;
@@ -68,14 +66,17 @@ public final class TransfusionRecipeEvaluation {
 	}
 
 	public @NotNull ItemStack result() {
-		return this.result != null ? this.result.get() : ItemStack.EMPTY;
+		if (this.resultCache == null) {
+			this.resultCache = this.result != null ? this.result.get() : ItemStack.EMPTY;
+		}
+		return this.resultCache;
 	}
 
 	public int processTicks() {
 		return processTicks;
 	}
 
-	public @NotNull @UnmodifiableView Int2IntMap consumption() {
+	public @NotNull ConsumptionRecord consumption() {
 		return this.consumption;
 	}
 

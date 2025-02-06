@@ -1,5 +1,7 @@
-package gurumirum.magialucis.capability;
+package gurumirum.magialucis.capability.impl;
 
+import gurumirum.magialucis.capability.LuxAcceptor;
+import gurumirum.magialucis.capability.LuxContainerStat;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.world.item.ItemStack;

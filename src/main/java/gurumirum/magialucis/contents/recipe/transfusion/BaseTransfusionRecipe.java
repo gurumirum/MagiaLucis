@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import gurumirum.magialucis.contents.recipe.ConsumptionRecord;
 import gurumirum.magialucis.contents.recipe.IngredientStack;
+import gurumirum.magialucis.contents.recipe.LuxRecipeEvaluation;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamDecoder;
@@ -81,8 +82,8 @@ public abstract class BaseTransfusionRecipe implements TransfusionRecipe {
 	}
 
 	@Override
-	public @NotNull TransfusionRecipeEvaluation evaluate(@NotNull TransfusionRecipeInput input) {
-		ConsumptionRecord consumption = new ConsumptionRecord();
+	public @NotNull LuxRecipeEvaluation evaluate(@NotNull TransfusionRecipeInput input) {
+		ConsumptionRecord.Mutable consumption = ConsumptionRecord.create();
 
 		for (IngredientStack is : ingredients()) {
 			int countLeft = is.count();
@@ -99,10 +100,10 @@ public abstract class BaseTransfusionRecipe implements TransfusionRecipe {
 					countLeft = 0;
 				}
 			}
-			if (countLeft > 0) return TransfusionRecipeEvaluation.fail();
+			if (countLeft > 0) return LuxRecipeEvaluation.fail();
 		}
 
-		return new TransfusionRecipeEvaluation(() -> result().copy(), processTicks(), consumption,
+		return new LuxRecipeEvaluation(() -> result().copy(), processTicks(), consumption,
 				minLuxInputR(), minLuxInputG(), minLuxInputB(), minLuxInputSum(),
 				maxLuxInputR(), maxLuxInputG(), maxLuxInputB(), maxLuxInputSum());
 	}
