@@ -14,7 +14,9 @@
       }
     }
   ],
-  "minLuxInputSum": 150.0,
+  "luxInput": {
+    "minSum": 150.0
+  },
   "processTicks": 100,
   "result": {
     "count": 6,

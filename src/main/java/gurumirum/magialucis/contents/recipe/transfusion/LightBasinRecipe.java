@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.recipe.IngredientStack;
+import gurumirum.magialucis.contents.recipe.LuxInputCondition;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -14,12 +15,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class LightBasinRecipe extends BaseTransfusionRecipe {
-	public LightBasinRecipe(ItemStack result, List<IngredientStack> ingredients, int processTicks,
-	                        double minLuxInputR, double minLuxInputG, double minLuxInputB, double minLuxInputSum,
-	                        double maxLuxInputR, double maxLuxInputG, double maxLuxInputB, double maxLuxInputSum) {
-		super(result, ingredients, processTicks,
-				minLuxInputR, minLuxInputG, minLuxInputB, minLuxInputSum,
-				maxLuxInputR, maxLuxInputG, maxLuxInputB, maxLuxInputSum);
+	public LightBasinRecipe(@NotNull ItemStack result, @NotNull List<IngredientStack> ingredients,
+	                        int processTicks, @NotNull LuxInputCondition luxInputCondition) {
+		super(result, ingredients, processTicks, luxInputCondition);
 	}
 
 	@Override

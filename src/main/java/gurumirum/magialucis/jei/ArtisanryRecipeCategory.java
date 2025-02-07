@@ -2,10 +2,12 @@ package gurumirum.magialucis.jei;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.contents.recipe.artisanry.ArtisanryRecipe;
+import gurumirum.magialucis.contents.recipe.LuxInputCondition;
+import gurumirum.magialucis.contents.recipe.artisanry.SimpleArtisanryRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeType;
@@ -18,9 +20,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ArtisanryRecipeCategory implements IRecipeCategory<ArtisanryRecipe> {
-	public static final RecipeType<ArtisanryRecipe> RECIPE_TYPE = new RecipeType<>(
-			MagiaLucisMod.id("artisanry"), ArtisanryRecipe.class);
+public class ArtisanryRecipeCategory implements IRecipeCategory<SimpleArtisanryRecipe> {
+	public static final RecipeType<SimpleArtisanryRecipe> RECIPE_TYPE = new RecipeType<>(
+			MagiaLucisMod.id("artisanry"), SimpleArtisanryRecipe.class);
 
 	private final IDrawable icon;
 	private final ICraftingGridHelper craftingGridHelper;
@@ -31,7 +33,7 @@ public class ArtisanryRecipeCategory implements IRecipeCategory<ArtisanryRecipe>
 	}
 
 	@Override
-	public @NotNull RecipeType<ArtisanryRecipe> getRecipeType() {
+	public @NotNull RecipeType<SimpleArtisanryRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
 
@@ -56,11 +58,29 @@ public class ArtisanryRecipeCategory implements IRecipeCategory<ArtisanryRecipe>
 	}
 
 	@Override
-	public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull ArtisanryRecipe recipe, @NotNull IFocusGroup focuses) {
+	public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull SimpleArtisanryRecipe recipe, @NotNull IFocusGroup focuses) {
 		Minecraft minecraft = Minecraft.getInstance();
 		ClientLevel level = minecraft.level;
 		if (level == null) throw new NullPointerException("level must not be null.");
 		this.craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem(level.registryAccess())));
 		this.craftingGridHelper.createAndSetIngredients(builder, recipe.getIngredients(), 3, 3);
+	}
+
+	@Override
+	public void createRecipeExtras(@NotNull IRecipeExtrasBuilder builder, @NotNull SimpleArtisanryRecipe recipe, @NotNull IFocusGroup focuses) {
+		if (recipe.processTicks() > 0) {
+			builder.addAnimatedRecipeArrow(recipe.processTicks())
+					.setPosition(61, 19);
+			JeiLogic.processTimeWidget(this, builder, recipe.processTicks());
+		} else {
+			builder.addRecipeArrow()
+					.setPosition(61, 19);
+		}
+
+		LuxInputCondition luxInputCondition = recipe.luxInputCondition();
+		boolean usesLux = !luxInputCondition.equals(LuxInputCondition.none());
+		if (usesLux) {
+			builder.addWidget(new LuxInputWidget(luxInputCondition, 64, 2));
+		}
 	}
 }

@@ -49,7 +49,7 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 	private @Nullable ResourceLocation currentRecipeId;
 	private @Nullable LuxRecipeEvaluation currentRecipe;
 	private boolean recipeChecked;
-	private int progress;
+	private double progress;
 	private int noLuxInputTicks;
 
 	private @Nullable LuxRecipeEvaluation recipePreview;
@@ -73,7 +73,7 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 		return this.currentRecipe;
 	}
 
-	public int progress() {
+	public double progress() {
 		return this.progress;
 	}
 
@@ -144,12 +144,13 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 					level.getBlockEntity(lightLoomPos) instanceof LightLoomBlockEntity ll ?
 					ll : null;
 
-			Vector3d vector3d = lightLoom != null ? lightLoom.luxInput(new Vector3d()) : new Vector3d();
-			if (this.currentRecipe.testLuxInput(vector3d)) {
+			Vector3d luxInput = lightLoom != null ? lightLoom.luxInput(new Vector3d()) : new Vector3d();
+			double v = this.currentRecipe.luxInputCondition().computeProgress(luxInput);
+			if (v > 0) {
 				this.noLuxInputTicks = 0;
 
 				int processTicks = this.currentRecipe.processTicks();
-				if (this.progress < processTicks) this.progress++;
+				if (this.progress < processTicks) this.progress += v;
 				if (this.progress >= processTicks) {
 					if (this.inventory.insertItem(SLOTS_OUTPUT, this.currentRecipe.result(), true).isEmpty()) {
 						if (this.currentRecipe.consumption().apply(
@@ -198,7 +199,7 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 			tag.put("inventory", this.inventory.serializeNBT(lookupProvider));
 			if (this.currentRecipeId != null) {
 				tag.putString("currentRecipe", this.currentRecipeId.toString());
-				tag.putInt("progress", this.progress);
+				tag.putDouble("progress", this.progress);
 			}
 		}
 	}
@@ -211,7 +212,7 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 			this.inventory.deserializeNBT(lookupProvider, tag.getCompound("inventory"));
 			if (tag.contains("currentRecipe", Tag.TAG_STRING)) {
 				this.currentRecipeId = ResourceLocation.tryParse(tag.getString("currentRecipe"));
-				this.progress = tag.getInt("progress");
+				this.progress = tag.getDouble("progress");
 			} else {
 				this.currentRecipeId = null;
 				this.progress = 0;

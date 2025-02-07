@@ -1,16 +1,12 @@
 {
   "type": "magialucis:artisanry",
-  "luxInput": {
-    "minG": 20.0,
-    "minR": 20.0
-  },
   "pattern": {
     "key": {
       "1": {
-        "tag": "c:gems/citrine"
+        "item": "magialucis:red_brightstone"
       },
       "2": {
-        "tag": "c:nuggets/rose_gold"
+        "tag": "c:nuggets/sterling_silver"
       }
     },
     "pattern": [
@@ -22,6 +18,6 @@
   "processTicks": 200,
   "result": {
     "count": 1,
-    "id": "magialucis:speed_ring"
+    "id": "magialucis:fire_arrow_ring"
   }
 }

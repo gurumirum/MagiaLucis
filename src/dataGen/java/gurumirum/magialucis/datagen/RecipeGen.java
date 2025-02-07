@@ -36,6 +36,11 @@ import static net.minecraft.data.recipes.ShapedRecipeBuilder.shaped;
 import static net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless;
 
 public class RecipeGen extends RecipeProvider {
+	public static final int RING_RECIPE_TICKS = 200;
+	public static final int BRACELET_RECIPE_TICKS = 500;
+	public static final int NECKLACE_RECIPE_TICKS = 2000;
+	public static final int HEADWEAR_RECIPE_TICKS = 4000;
+
 	public RecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries);
 	}
@@ -355,20 +360,21 @@ public class RecipeGen extends RecipeProvider {
 				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
 				.save(out);
 
-		shaped(TOOLS, FIRE_ARROW_RING)
+		artisanry(FIRE_ARROW_RING)
 				.pattern("12 ")
 				.pattern("2 2")
 				.pattern(" 2 ")
 				.define('1', GemItems.RED_BRIGHTSTONE)
 				.define('2', ModItemTags.STERLING_SILVER_NUGGETS)
-				.unlockedBy("has_red_brightstone", has(GemItems.RED_BRIGHTSTONE))
+				.processTicks(RING_RECIPE_TICKS)
 				.save(out);
 
-		shaped(TOOLS, SOUL_CROWN)
+		artisanry(SOUL_CROWN)
 				.pattern("111")
 				.pattern("1 1")
 				.define('1', GemItems.SOUL_BRIGHTSTONE)
-				.unlockedBy("has_soul_brightstone", has(GemItems.SOUL_BRIGHTSTONE))
+				.processTicks(HEADWEAR_RECIPE_TICKS)
+				.luxInput(b -> b.minR(50))
 				.save(out);
 
 		artisanry(SPEED_RING)
@@ -377,7 +383,8 @@ public class RecipeGen extends RecipeProvider {
 				.pattern(" 2 ")
 				.define('1', gem(GemStats.CITRINE))
 				.define('2', ModItemTags.ROSE_GOLD_NUGGETS)
-				.instant()
+				.processTicks(RING_RECIPE_TICKS)
+				.luxInput(b -> b.minR(20).minG(20))
 				.save(out);
 
 		artisanry(OBSIDIAN_BRACELET)
@@ -387,17 +394,19 @@ public class RecipeGen extends RecipeProvider {
 				.define('1', gem(GemStats.OBSIDIAN))
 				.define('2', Tags.Items.STRINGS)
 				.define('3', LUMINOUS_RESONATOR)
-				.processTicks(100)
+				.processTicks(BRACELET_RECIPE_TICKS)
+				.luxInput(b -> b.minB(50))
 				.save(out);
 
-		shaped(TOOLS, SHIELD_NECKLACE)
+		artisanry(SHIELD_NECKLACE)
 				.pattern("2 2")
 				.pattern("232")
 				.pattern(" 1 ")
 				.define('1', gem(GemStats.POLISHED_LAPIS_LAZULI))
 				.define('2', ModItemTags.ROSE_GOLD_NUGGETS)
 				.define('3', LUMINOUS_RESONATOR)
-				.unlockedBy("has_polished_lapis_lazuli", hasGem(GemStats.POLISHED_LAPIS_LAZULI))
+				.processTicks(NECKLACE_RECIPE_TICKS)
+				.luxInput(b -> b.minB(300))
 				.save(out);
 
 		slab(out, BUILDING_BLOCKS, LAPIS_MANALIS_SLAB, LAPIS_MANALIS);
@@ -527,35 +536,35 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(Blocks.SAND)
 				.result(GemItems.BRIGHTSTONE)
 				.processTicks(40)
-				.minLuxInputSum(25)
+				.luxInput(b -> b.minSum(25))
 				.save(out);
 
 		lightBasin()
 				.ingredient(Blocks.RED_SAND)
 				.result(GemItems.RED_BRIGHTSTONE)
 				.processTicks(40)
-				.minLuxInputSum(25)
+				.luxInput(b -> b.minSum(25))
 				.save(out);
 
 		lightBasin()
 				.ingredient(Blocks.ICE)
 				.result(GemItems.ICY_BRIGHTSTONE)
 				.processTicks(40)
-				.minLuxInputSum(25)
+				.luxInput(b -> b.minSum(25))
 				.save(out);
 
 		lightBasin()
 				.ingredient(Blocks.SOUL_SAND)
 				.result(GemItems.SOUL_BRIGHTSTONE)
 				.processTicks(80)
-				.minLuxInputSum(75)
+				.luxInput(b -> b.minSum(75))
 				.save(out);
 
 		lightBasin()
 				.ingredient(Ingredient.of(Blocks.STONE, Blocks.DEEPSLATE))
 				.result(LAPIS_MANALIS)
 				.processTicks(60)
-				.minLuxInputSum(50)
+				.luxInput(b -> b.minSum(50))
 				.save(out);
 
 		lightBasin()
@@ -563,7 +572,7 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(ModItemTags.SILVER_NUGGETS)
 				.result(ELECTRUM_NUGGET, 2)
 				.processTicks(20)
-				.minLuxInputSum(100)
+				.luxInput(b -> b.minSum(100))
 				.save(out);
 
 		lightBasin()
@@ -571,7 +580,7 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(ModItemTags.COPPER_NUGGETS)
 				.result(ROSE_GOLD_NUGGET, 2)
 				.processTicks(20)
-				.minLuxInputSum(100)
+				.luxInput(b -> b.minSum(100))
 				.save(out);
 
 		lightBasin()
@@ -579,7 +588,7 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(ModItemTags.COPPER_NUGGETS)
 				.result(STERLING_SILVER_NUGGET, 2)
 				.processTicks(20)
-				.minLuxInputSum(100)
+				.luxInput(b -> b.minSum(100))
 				.save(out);
 
 		lightBasin()
@@ -589,15 +598,14 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(Tags.Items.NUGGETS_IRON)
 				.result(LUMINOUS_ALLOY_NUGGET, 3)
 				.processTicks(30)
-				.minLuxInputR(80)
-				.minLuxInputG(80)
+				.luxInput(b -> b.minR(80).minG(80))
 				.save(out);
 
 		lightBasin()
 				.ingredient(Items.OBSIDIAN)
 				.result(GemItems.OBSIDIAN)
 				.processTicks(80)
-				.minLuxInputB(60)
+				.luxInput(b -> b.minB(80))
 				.save(out);
 
 		lightBasin()
@@ -605,8 +613,7 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(gem(GemStats.CITRINE))
 				.result(SUNLIGHT_INFUSED_POWDER, 3)
 				.processTicks(100)
-				.minLuxInputR(100)
-				.minLuxInputG(100)
+				.luxInput(b -> b.minR(100).minG(100))
 				.save(out);
 
 		lightBasin()
@@ -614,7 +621,7 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(gem(GemStats.IOLITE))
 				.result(MOONLIGHT_INFUSED_POWDER, 3)
 				.processTicks(100)
-				.minLuxInputB(100)
+				.luxInput(b -> b.minB(100))
 				.save(out);
 
 		lightBasin()
@@ -622,7 +629,7 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(MOONLIGHT_INFUSED_POWDER)
 				.result(STONE_OF_PURIFICATION)
 				.processTicks(500)
-				.minLuxInputSum(100)
+				.luxInput(b -> b.minSum(100))
 				.save(out);
 
 		lightBasin()
@@ -630,7 +637,7 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(Tags.Items.GEMS_QUARTZ, 8)
 				.result(GemItems.PURIFIED_QUARTZ, 6)
 				.processTicks(100)
-				.minLuxInputSum(150)
+				.luxInput(b -> b.minSum(150))
 				.save(out);
 
 		lightBasin()
@@ -638,7 +645,7 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(Items.REDSTONE_BLOCK)
 				.result(GemItems.CRYSTALLIZED_REDSTONE)
 				.processTicks(200)
-				.minLuxInputSum(150)
+				.luxInput(b -> b.minSum(150))
 				.save(out);
 
 		lightBasin()
@@ -646,7 +653,7 @@ public class RecipeGen extends RecipeProvider {
 				.ingredient(Items.LAPIS_BLOCK)
 				.result(GemItems.POLISHED_LAPIS_LAZULI)
 				.processTicks(200)
-				.minLuxInputSum(150)
+				.luxInput(b -> b.minSum(150))
 				.save(out);
 	}
 

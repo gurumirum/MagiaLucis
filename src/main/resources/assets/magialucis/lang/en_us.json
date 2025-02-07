@@ -177,6 +177,7 @@
   "item.magialucis.tooltip.lux_transfer_rate.b": "B: %s",
   "item.magialucis.tooltip.lux_transfer_rate.g": "G: %s",
   "item.magialucis.tooltip.lux_transfer_rate.r": "R: %s",
+  "item.magialucis.tooltip.lux_transfer_rate.sum": "Sum: %s",
   "item.magialucis.tooltip.remote_charger": "§7Charges held and equipped items of nearby players",
   "item.magialucis.topaz": "Topaz",
   "item.magialucis.wand_belt": "Wand Belt",

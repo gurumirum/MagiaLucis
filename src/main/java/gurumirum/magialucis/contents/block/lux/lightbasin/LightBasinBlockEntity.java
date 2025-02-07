@@ -43,7 +43,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 
 	private @Nullable ResourceLocation currentRecipeId;
 	private @Nullable LuxRecipeEvaluation currentRecipe;
-	private int progress;
+	private double progress;
 	private int noLuxInputTicks;
 
 	public LightBasinBlockEntity(BlockPos pos, BlockState blockState) {
@@ -115,10 +115,12 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		boolean working = false;
 
 		if (this.currentRecipe != null) {
-			if (this.currentRecipe.testLuxInput(nodeBehavior().luxInput.min(new Vector3d()))) {
+			Vector3d luxInput = nodeBehavior().luxInput.min(new Vector3d());
+			double progress = this.currentRecipe.luxInputCondition().computeProgress(luxInput);
+			if (progress > 0) {
 				working = true;
 
-				this.progress++;
+				this.progress += progress;
 				this.noLuxInputTicks = 0;
 
 				if (this.progress >= this.currentRecipe.processTicks()) {
@@ -199,7 +201,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		if (context.isSaveLoad()) {
 			if (this.currentRecipeId != null) {
 				tag.putString("currentRecipe", this.currentRecipeId.toString());
-				tag.putInt("progress", this.progress);
+				tag.putDouble("progress", this.progress);
 			}
 		}
 	}
@@ -217,7 +219,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		if (context.isSaveLoad()) {
 			if (tag.contains("currentRecipe", Tag.TAG_STRING)) {
 				this.currentRecipeId = ResourceLocation.tryParse(tag.getString("currentRecipe"));
-				this.progress = tag.getInt("progress");
+				this.progress = tag.getDouble("progress");
 			} else {
 				this.currentRecipeId = null;
 				this.progress = 0;

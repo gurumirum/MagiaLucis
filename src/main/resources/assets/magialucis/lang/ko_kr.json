@@ -177,6 +177,7 @@
   "item.magialucis.tooltip.lux_transfer_rate.b": "B: %s",
   "item.magialucis.tooltip.lux_transfer_rate.g": "G: %s",
   "item.magialucis.tooltip.lux_transfer_rate.r": "R: %s",
+  "item.magialucis.tooltip.lux_transfer_rate.sum": "합계: %s",
   "item.magialucis.tooltip.remote_charger": "§7주변 플레이어가 들고 있거나 장비한 아이템 충전",
   "item.magialucis.topaz": "토파즈",
   "item.magialucis.wand_belt": "마법봉 벨트",

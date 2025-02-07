@@ -26,8 +26,10 @@
       }
     }
   ],
-  "minLuxInputG": 80.0,
-  "minLuxInputR": 80.0,
+  "luxInput": {
+    "minG": 80.0,
+    "minR": 80.0
+  },
   "processTicks": 30,
   "result": {
     "count": 3,

@@ -15,7 +15,13 @@ import java.util.Optional;
 
 import static gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableBlockEntity.*;
 
-public class ArtisanryRecipeTransferInfo implements IRecipeTransferInfo<ArtisanryTableMenu, ArtisanryRecipe> {
+public class ArtisanryRecipeTransferInfo<R extends ArtisanryRecipe> implements IRecipeTransferInfo<ArtisanryTableMenu, R> {
+	private final RecipeType<R> type;
+
+	public ArtisanryRecipeTransferInfo(RecipeType<R> type) {
+		this.type = type;
+	}
+
 	@Override
 	public @NotNull Class<? extends ArtisanryTableMenu> getContainerClass() {
 		return ArtisanryTableMenu.class;
@@ -27,22 +33,22 @@ public class ArtisanryRecipeTransferInfo implements IRecipeTransferInfo<Artisanr
 	}
 
 	@Override
-	public @NotNull RecipeType<ArtisanryRecipe> getRecipeType() {
-		return ArtisanryRecipeCategory.RECIPE_TYPE;
+	public @NotNull RecipeType<R> getRecipeType() {
+		return this.type;
 	}
 
 	@Override
-	public boolean canHandle(@NotNull ArtisanryTableMenu menu, @NotNull ArtisanryRecipe recipe) {
+	public boolean canHandle(@NotNull ArtisanryTableMenu menu, @NotNull R recipe) {
 		return true;
 	}
 
 	@Override
-	public @NotNull List<Slot> getRecipeSlots(@NotNull ArtisanryTableMenu menu, @NotNull ArtisanryRecipe recipe) {
+	public @NotNull List<Slot> getRecipeSlots(@NotNull ArtisanryTableMenu menu, @NotNull R recipe) {
 		return menu.slots.subList(SLOTS_GRID, SLOTS_GRID + SLOTS_GRID_COUNT);
 	}
 
 	@Override
-	public @NotNull List<Slot> getInventorySlots(@NotNull ArtisanryTableMenu menu, @NotNull ArtisanryRecipe recipe) {
+	public @NotNull List<Slot> getInventorySlots(@NotNull ArtisanryTableMenu menu, @NotNull R recipe) {
 		List<Slot> list = new ArrayList<>();
 		list.addAll(menu.slots.subList(SLOTS_CONTAINER, SLOTS_CONTAINER + SLOTS_CONTAINER_COUNT));
 		list.addAll(menu.slots.subList(SLOTS, SLOTS + 36));

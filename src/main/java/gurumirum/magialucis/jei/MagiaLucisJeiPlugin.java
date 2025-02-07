@@ -6,6 +6,7 @@ import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableScreen;
+import gurumirum.magialucis.contents.recipe.artisanry.SimpleArtisanryRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -54,6 +55,8 @@ public class MagiaLucisJeiPlugin implements IModPlugin {
 		registration.addRecipes(ArtisanryRecipeCategory.RECIPE_TYPE, recipeManager
 				.getAllRecipesFor(ModRecipes.ARTISANRY_TYPE.get()).stream()
 				.map(RecipeHolder::value)
+				.map(r -> r instanceof SimpleArtisanryRecipe s ? s : null)
+				.filter(Objects::nonNull)
 				.toList());
 	}
 
@@ -84,7 +87,8 @@ public class MagiaLucisJeiPlugin implements IModPlugin {
 				ArtisanryRecipeCategory.RECIPE_TYPE);
 	}
 
-	@Override public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-		registration.addRecipeTransferHandler(new ArtisanryRecipeTransferInfo());
+	@Override
+	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+		registration.addRecipeTransferHandler(new ArtisanryRecipeTransferInfo<>(ArtisanryRecipeCategory.RECIPE_TYPE));
 	}
 }

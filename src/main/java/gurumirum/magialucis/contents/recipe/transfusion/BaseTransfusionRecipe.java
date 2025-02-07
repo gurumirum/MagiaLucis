@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import gurumirum.magialucis.contents.recipe.ConsumptionRecord;
 import gurumirum.magialucis.contents.recipe.IngredientStack;
+import gurumirum.magialucis.contents.recipe.LuxInputCondition;
 import gurumirum.magialucis.contents.recipe.LuxRecipeEvaluation;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -22,32 +23,17 @@ public abstract class BaseTransfusionRecipe implements TransfusionRecipe {
 	private final ItemStack result;
 	private final List<IngredientStack> ingredients;
 	private final int processTicks;
-	private final double minLuxInputR;
-	private final double minLuxInputG;
-	private final double minLuxInputB;
-	private final double minLuxInputSum;
-	private final double maxLuxInputR;
-	private final double maxLuxInputG;
-	private final double maxLuxInputB;
-	private final double maxLuxInputSum;
+	private final LuxInputCondition luxInputCondition;
 
-	public BaseTransfusionRecipe(ItemStack result, List<IngredientStack> ingredients, int processTicks,
-	                             double minLuxInputR, double minLuxInputG, double minLuxInputB, double minLuxInputSum,
-	                             double maxLuxInputR, double maxLuxInputG, double maxLuxInputB, double maxLuxInputSum) {
+	public BaseTransfusionRecipe(@NotNull ItemStack result, @NotNull List<IngredientStack> ingredients,
+	                             int processTicks, @NotNull LuxInputCondition luxInputCondition) {
 		this.result = result;
 		this.ingredients = ingredients;
 		this.processTicks = processTicks;
-		this.minLuxInputR = minLuxInputR;
-		this.minLuxInputG = minLuxInputG;
-		this.minLuxInputB = minLuxInputB;
-		this.minLuxInputSum = minLuxInputSum;
-		this.maxLuxInputR = maxLuxInputR;
-		this.maxLuxInputG = maxLuxInputG;
-		this.maxLuxInputB = maxLuxInputB;
-		this.maxLuxInputSum = maxLuxInputSum;
+		this.luxInputCondition = luxInputCondition;
 	}
 
-	public ItemStack result() {
+	public @NotNull ItemStack result() {
 		return this.result;
 	}
 	public @NotNull @UnmodifiableView List<IngredientStack> ingredients() {
@@ -56,29 +42,8 @@ public abstract class BaseTransfusionRecipe implements TransfusionRecipe {
 	public int processTicks() {
 		return this.processTicks;
 	}
-	public double minLuxInputR() {
-		return this.minLuxInputR;
-	}
-	public double minLuxInputG() {
-		return this.minLuxInputG;
-	}
-	public double minLuxInputB() {
-		return this.minLuxInputB;
-	}
-	public double minLuxInputSum() {
-		return this.minLuxInputSum;
-	}
-	public double maxLuxInputR() {
-		return this.maxLuxInputR;
-	}
-	public double maxLuxInputG() {
-		return this.maxLuxInputG;
-	}
-	public double maxLuxInputB() {
-		return this.maxLuxInputB;
-	}
-	public double maxLuxInputSum() {
-		return this.maxLuxInputSum;
+	public @NotNull LuxInputCondition luxInputCondition() {
+		return luxInputCondition;
 	}
 
 	@Override
@@ -103,9 +68,7 @@ public abstract class BaseTransfusionRecipe implements TransfusionRecipe {
 			if (countLeft > 0) return LuxRecipeEvaluation.fail();
 		}
 
-		return new LuxRecipeEvaluation(() -> result().copy(), processTicks(), consumption,
-				minLuxInputR(), minLuxInputG(), minLuxInputB(), minLuxInputSum(),
-				maxLuxInputR(), maxLuxInputG(), maxLuxInputB(), maxLuxInputSum());
+		return new LuxRecipeEvaluation(() -> result().copy(), processTicks(), consumption, luxInputCondition());
 	}
 
 	@Override
@@ -113,42 +76,26 @@ public abstract class BaseTransfusionRecipe implements TransfusionRecipe {
 		return this.result;
 	}
 
-	protected static <T extends BaseTransfusionRecipe> Products.P11<RecordCodecBuilder.Mu<T>,
-			ItemStack, List<IngredientStack>, Integer,
-			Double, Double, Double, Double,
-			Double, Double, Double, Double> commonFields(RecordCodecBuilder.Instance<T> instance) {
+	protected static <T extends BaseTransfusionRecipe> Products.P4<
+			RecordCodecBuilder.Mu<T>, ItemStack, List<IngredientStack>,
+			Integer, LuxInputCondition> commonFields(RecordCodecBuilder.Instance<T> instance) {
 		return instance.group(
 				ItemStack.STRICT_CODEC.fieldOf("result").forGetter(BaseTransfusionRecipe::result),
 				IngredientStack.CODEC.listOf().fieldOf("ingredients").forGetter(BaseTransfusionRecipe::ingredients),
 				Codec.intRange(1, Integer.MAX_VALUE).fieldOf("processTicks").forGetter(BaseTransfusionRecipe::processTicks),
-				Codec.doubleRange(0, Double.MAX_VALUE).optionalFieldOf("minLuxInputR", 0.0).forGetter(BaseTransfusionRecipe::minLuxInputR),
-				Codec.doubleRange(0, Double.MAX_VALUE).optionalFieldOf("minLuxInputG", 0.0).forGetter(BaseTransfusionRecipe::minLuxInputG),
-				Codec.doubleRange(0, Double.MAX_VALUE).optionalFieldOf("minLuxInputB", 0.0).forGetter(BaseTransfusionRecipe::minLuxInputB),
-				Codec.doubleRange(0, Double.MAX_VALUE).optionalFieldOf("minLuxInputSum", 0.0).forGetter(BaseTransfusionRecipe::minLuxInputSum),
-				Codec.doubleRange(0, Double.POSITIVE_INFINITY).optionalFieldOf("maxLuxInputR", Double.POSITIVE_INFINITY).forGetter(BaseTransfusionRecipe::maxLuxInputR),
-				Codec.doubleRange(0, Double.POSITIVE_INFINITY).optionalFieldOf("maxLuxInputG", Double.POSITIVE_INFINITY).forGetter(BaseTransfusionRecipe::maxLuxInputG),
-				Codec.doubleRange(0, Double.POSITIVE_INFINITY).optionalFieldOf("maxLuxInputB", Double.POSITIVE_INFINITY).forGetter(BaseTransfusionRecipe::maxLuxInputB),
-				Codec.doubleRange(0, Double.POSITIVE_INFINITY).optionalFieldOf("maxLuxInputSum", Double.POSITIVE_INFINITY).forGetter(BaseTransfusionRecipe::maxLuxInputSum)
+				LuxInputCondition.CODEC.codec().optionalFieldOf("luxInput", LuxInputCondition.none()).forGetter(BaseTransfusionRecipe::luxInputCondition)
 		);
 	}
 
 	private static final StreamEncoder<RegistryFriendlyByteBuf, BaseTransfusionRecipe> _commonEncoder = (buffer, recipe) -> {
-		ItemStack.STREAM_CODEC.encode(buffer, recipe.result());
+		ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
 
-		List<IngredientStack> ingredients = recipe.ingredients();
+		List<IngredientStack> ingredients = recipe.ingredients;
 		buffer.writeVarInt(ingredients.size());
 		for (IngredientStack is : ingredients) IngredientStack.STREAM_CODEC.encode(buffer, is);
 
-		buffer.writeVarInt(recipe.processTicks());
-
-		buffer.writeDouble(recipe.minLuxInputR());
-		buffer.writeDouble(recipe.minLuxInputG());
-		buffer.writeDouble(recipe.minLuxInputB());
-		buffer.writeDouble(recipe.minLuxInputSum());
-		buffer.writeDouble(recipe.maxLuxInputR());
-		buffer.writeDouble(recipe.maxLuxInputG());
-		buffer.writeDouble(recipe.maxLuxInputB());
-		buffer.writeDouble(recipe.maxLuxInputSum());
+		buffer.writeVarInt(recipe.processTicks);
+		LuxInputCondition.STREAM_CODEC.encode(buffer, recipe.luxInputCondition);
 	};
 
 	@SuppressWarnings("unchecked")
@@ -166,26 +113,15 @@ public abstract class BaseTransfusionRecipe implements TransfusionRecipe {
 			}
 
 			int processTicks = buffer.readVarInt();
+			LuxInputCondition luxInputCondition = LuxInputCondition.STREAM_CODEC.decode(buffer);
 
-			double minLuxInputR = buffer.readDouble();
-			double minLuxInputG = buffer.readDouble();
-			double minLuxInputB = buffer.readDouble();
-			double minLuxInputSum = buffer.readDouble();
-			double maxLuxInputR = buffer.readDouble();
-			double maxLuxInputG = buffer.readDouble();
-			double maxLuxInputB = buffer.readDouble();
-			double maxLuxInputSum = buffer.readDouble();
-
-			return ctor.createInstance(result, ingredients, processTicks,
-					minLuxInputR, minLuxInputG, minLuxInputB, minLuxInputSum,
-					maxLuxInputR, maxLuxInputG, maxLuxInputB, maxLuxInputSum);
+			return ctor.createInstance(result, ingredients, processTicks, luxInputCondition);
 		};
 	}
 
 	@FunctionalInterface
 	public interface Ctor<R extends BaseTransfusionRecipe> {
 		R createInstance(ItemStack result, List<IngredientStack> ingredients, int processTicks,
-		                 double minLuxInputR, double minLuxInputG, double minLuxInputB, double minLuxInputSum,
-		                 double maxLuxInputR, double maxLuxInputG, double maxLuxInputB, double maxLuxInputSum);
+		                 LuxInputCondition luxInputCondition);
 	}
 }

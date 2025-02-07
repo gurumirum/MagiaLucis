@@ -1,5 +1,6 @@
 package gurumirum.magialucis.datagen.builder;
 
+import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.recipe.IngredientStack;
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -12,22 +13,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class BaseTransfusionRecipeBuilder<B extends BaseTransfusionRecipeBuilder<B>>
 		extends ModRecipeBuilder<TransfusionRecipe> {
 	protected final List<IngredientStack> ingredients = new ArrayList<>();
-
 	protected ItemStack result = ItemStack.EMPTY;
-
 	protected int processTicks;
-	protected double minLuxInputR = 0;
-	protected double minLuxInputG = 0;
-	protected double minLuxInputB = 0;
-	protected double minLuxInputSum = 0;
-	protected double maxLuxInputR = Double.POSITIVE_INFINITY;
-	protected double maxLuxInputG = Double.POSITIVE_INFINITY;
-	protected double maxLuxInputB = Double.POSITIVE_INFINITY;
-	protected double maxLuxInputSum = Double.POSITIVE_INFINITY;
+	protected final LuxInputConditionBuilder luxInput = new LuxInputConditionBuilder();
 
 	@SuppressWarnings("unchecked")
 	private B self() {
@@ -81,57 +74,8 @@ public abstract class BaseTransfusionRecipeBuilder<B extends BaseTransfusionReci
 		return self();
 	}
 
-	public B minLuxInputs(double r, double g, double b) {
-		this.minLuxInputR = r;
-		this.minLuxInputG = g;
-		this.minLuxInputB = b;
-		return self();
-	}
-
-	public B maxLuxInputs(double r, double g, double b) {
-		this.maxLuxInputR = r;
-		this.maxLuxInputG = g;
-		this.maxLuxInputB = b;
-		return self();
-	}
-
-	public B minLuxInputR(double value) {
-		this.minLuxInputR = value;
-		return self();
-	}
-
-	public B minLuxInputG(double value) {
-		this.minLuxInputG = value;
-		return self();
-	}
-
-	public B minLuxInputB(double value) {
-		this.minLuxInputB = value;
-		return self();
-	}
-
-	public B minLuxInputSum(double value) {
-		this.minLuxInputSum = value;
-		return self();
-	}
-
-	public B maxLuxInputR(double value) {
-		this.maxLuxInputR = value;
-		return self();
-	}
-
-	public B maxLuxInputG(double value) {
-		this.maxLuxInputG = value;
-		return self();
-	}
-
-	public B maxLuxInputB(double value) {
-		this.maxLuxInputB = value;
-		return self();
-	}
-
-	public B maxLuxInputSum(double value) {
-		this.maxLuxInputSum = value;
+	public B luxInput(Consumer<LuxInputConditionBuilder> consumer) {
+		consumer.accept(this.luxInput);
 		return self();
 	}
 
@@ -147,30 +91,8 @@ public abstract class BaseTransfusionRecipeBuilder<B extends BaseTransfusionReci
 			throw new IllegalStateException("Transfusion recipe " + id + " has no ingredients");
 		if (this.processTicks <= 0)
 			throw new IllegalStateException("Transfusion recipe " + id + " has no process ticks");
-		validateDoubleValue(id, this.minLuxInputR, this.maxLuxInputR, "R", absoluteMaxLuxInputR());
-		validateDoubleValue(id, this.minLuxInputG, this.maxLuxInputG, "G", absoluteMaxLuxInputG());
-		validateDoubleValue(id, this.minLuxInputB, this.maxLuxInputB, "B", absoluteMaxLuxInputB());
-		validateDoubleValue(id, this.minLuxInputSum, this.maxLuxInputSum, "Sum", absoluteMaxLuxInputSum());
+		this.luxInput.validate(id, absoluteMaxLuxInput());
 	}
 
-	protected void validateDoubleValue(ResourceLocation id, double min, double max, String componentName, double absMax) {
-		if (min < 0 || Double.isNaN(min))
-			throw new IllegalStateException("Transfusion recipe " + id + " has invalid minLuxInput" + componentName + " value");
-		if (max < 0 || Double.isNaN(max))
-			throw new IllegalStateException("Transfusion recipe " + id + " has invalid minLuxInput" + componentName + " value");
-		if (min > max)
-			throw new IllegalStateException("Transfusion recipe " + id + " has minLuxInput" + componentName + " value greater than maxLuxInput" + componentName);
-		if (min > absMax)
-			throw new IllegalStateException("Transfusion recipe " + id + " has minLuxInput" + componentName + " value greater than absolute max value of " + absMax);
-		if (max != Double.POSITIVE_INFINITY && max > absMax)
-			throw new IllegalStateException("Transfusion recipe " + id + " has maxLuxInput" + componentName + " value greater than absolute max value of " + absMax);
-	}
-
-	protected abstract double absoluteMaxLuxInputR();
-	protected abstract double absoluteMaxLuxInputG();
-	protected abstract double absoluteMaxLuxInputB();
-
-	protected double absoluteMaxLuxInputSum() {
-		return absoluteMaxLuxInputR() + absoluteMaxLuxInputG() + absoluteMaxLuxInputB();
-	}
+	protected abstract @Nullable LuxStat absoluteMaxLuxInput();
 }

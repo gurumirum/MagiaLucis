@@ -150,7 +150,7 @@ public class ArtisanryTableMenu extends AbstractContainerMenu {
 		@Override
 		public int get(int index) {
 			return switch (index) {
-				case 0 -> this.artisanryTable.progress();
+				case 0 -> (int)this.artisanryTable.progress();
 				case 1 -> this.artisanryTable.recipeInProgress() ? this.artisanryTable.totalProgress() : -1;
 				case 2 -> this.artisanryTable.inventory().getStackInSlot(SLOTS_OUTPUT).isEmpty() ? 0 : 1;
 				case 3 -> {

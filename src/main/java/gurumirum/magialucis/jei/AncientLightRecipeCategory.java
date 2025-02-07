@@ -7,8 +7,6 @@ import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.placement.HorizontalAlignment;
-import mezz.jei.api.gui.placement.VerticalAlignment;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -88,17 +86,7 @@ public class AncientLightRecipeCategory implements IRecipeCategory<AncientLightR
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, AncientLightRecipe recipe, @NotNull IFocusGroup focuses) {
 		builder.addRecipeArrow().setPosition(26, 9);
-
-		double cookTimeSeconds = Math.floor((recipe.getProcessTicksView() / 20.0) * 100) / 100;
-
-		if (Double.isFinite(cookTimeSeconds) && cookTimeSeconds > 0) {
-			Component timeString = Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds);
-			builder.addText(timeString, getWidth() - 20, 10)
-					.setPosition(0, 0, getWidth(), getHeight(), HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM)
-					.setTextAlignment(HorizontalAlignment.RIGHT)
-					.setTextAlignment(VerticalAlignment.BOTTOM)
-					.setColor(0xFF808080);
-		}
+		JeiLogic.processTimeWidget(this, builder, recipe.getProcessTicksView());
 	}
 
 	@Override

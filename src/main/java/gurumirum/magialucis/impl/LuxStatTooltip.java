@@ -106,27 +106,32 @@ public final class LuxStatTooltip {
 
 		tooltip.add(i++, Component.literal(indent + " ").append(Component.translatable(
 						"item.magialucis.tooltip.lux_transfer_rate.r",
-						component(stat, stat.rMaxTransfer()).withStyle(ChatFormatting.RED))
+						componentMeter(stat.rMaxTransfer(), stat).withStyle(ChatFormatting.RED))
 				.withStyle(ChatFormatting.GRAY)));
 
 		tooltip.add(i++, Component.literal(indent + " ").append(Component.translatable(
 						"item.magialucis.tooltip.lux_transfer_rate.g",
-						component(stat, stat.gMaxTransfer()).withStyle(ChatFormatting.GREEN))
+						componentMeter(stat.gMaxTransfer(), stat).withStyle(ChatFormatting.GREEN))
 				.withStyle(ChatFormatting.GRAY)));
 
 		tooltip.add(i++, Component.literal(indent + " ").append(Component.translatable(
 						"item.magialucis.tooltip.lux_transfer_rate.b",
-						component(stat, stat.bMaxTransfer()).withStyle(ChatFormatting.BLUE))
+						componentMeter(stat.bMaxTransfer(), stat).withStyle(ChatFormatting.BLUE))
 				.withStyle(ChatFormatting.GRAY)));
 	}
 
-	private static MutableComponent component(LuxStat stat, double maxTransfer) {
-		if (maxTransfer <= 0 || maxTransfer < stat.minLuxThreshold() || Double.isInfinite(stat.minLuxThreshold())) {
-			return Component.empty().append(Component.literal("  0").withStyle(ChatFormatting.DARK_GRAY));
-		} else {
-			double level = (Math.log10(maxTransfer) - 1) * 2;
-			return Component.literal(bar(level)).append(String.format("  " + NumberFormats.DECIMAL.format(maxTransfer)));
+	public static MutableComponent componentMeter(double maxTransfer) {
+		return componentMeter(maxTransfer, null);
+	}
+
+	public static MutableComponent componentMeter(double maxTransfer, @Nullable LuxStat stat) {
+		if (!Double.isNaN(maxTransfer) && maxTransfer > 0) {
+			if (stat == null || (maxTransfer >= stat.minLuxThreshold() && !Double.isInfinite(stat.minLuxThreshold()))) {
+				double level = (Math.log10(maxTransfer) - 1) * 2;
+				return Component.literal(bar(level)).append(String.format("  " + NumberFormats.DECIMAL.format(maxTransfer)));
+			}
 		}
+		return Component.empty().append(Component.literal("  0").withStyle(ChatFormatting.DARK_GRAY));
 	}
 
 	private static String bar(double level) {
