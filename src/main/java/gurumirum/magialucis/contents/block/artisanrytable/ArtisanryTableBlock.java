@@ -4,6 +4,7 @@ import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +27,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -216,5 +218,21 @@ public class ArtisanryTableBlock extends Block implements EntityBlock {
 			}
 		}
 		return InteractionResult.SUCCESS;
+	}
+
+	@Override
+	protected void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
+	                        @NotNull BlockState newState, boolean movedByPiston) {
+		if (!state.is(newState.getBlock())) {
+			if (level.getBlockEntity(pos) instanceof ArtisanryTableBlockEntity artisanryTable) {
+				IItemHandlerModifiable inv = artisanryTable.inventory();
+				for (int i = 0; i < inv.getSlots(); i++) {
+					ItemStack stack = inv.getStackInSlot(i);
+					Containers.dropItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, stack);
+				}
+			}
+		}
+
+		super.onRemove(state, level, pos, newState, movedByPiston);
 	}
 }
