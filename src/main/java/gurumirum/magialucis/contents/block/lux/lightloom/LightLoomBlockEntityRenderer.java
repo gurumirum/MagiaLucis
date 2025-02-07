@@ -43,7 +43,7 @@ public class LightLoomBlockEntityRenderer implements BlockEntityRenderer<LightLo
 	public void render(@NotNull LightLoomBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack,
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		RenderShapes.renderMatrix(poseStack, bufferSource, type.matrixTexture(),
-				blockEntity.getLevel() != null ? RotationLogic.rotation(blockEntity.getLevel().getGameTime(), 100, partialTick) : 0,
+				blockEntity.clientSideAngle(partialTick) * (float)(Math.PI / 180),
 				.5f, angles.get(blockEntity.getBlockState().getValue(HORIZONTAL_FACING)));
 	}
 

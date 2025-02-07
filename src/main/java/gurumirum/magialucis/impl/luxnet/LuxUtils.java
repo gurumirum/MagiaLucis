@@ -190,8 +190,14 @@ public final class LuxUtils {
 	public static void addSpreadingLightParticle(@NotNull Level level,
 	                                             double x, double y, double z,
 	                                             double offset, double speed) {
+		addSpreadingLightParticle(level, x, y, z, offset, speed, false);
+	}
+
+	public static void addSpreadingLightParticle(@NotNull Level level,
+	                                             double x, double y, double z,
+	                                             double offset, double speed, boolean onlyUpwards) {
 		Vector3d direction = LinkSource.Orientation.toVector(
-				(float)(level.random.nextFloat() * Math.PI * 2 - Math.PI),
+				(float)(level.random.nextFloat() * (onlyUpwards ? Math.PI : Math.PI * 2) - Math.PI),
 				(float)(level.random.nextFloat() * Math.PI * 2),
 				new Vector3d());
 

@@ -34,8 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumMap;
 import java.util.Map;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.LEFT;
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.LIGHTLOOM;
+import static gurumirum.magialucis.contents.block.ModBlockStateProps.*;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
 public class ArtisanryTableBlock extends Block implements EntityBlock {
@@ -97,12 +96,13 @@ public class ArtisanryTableBlock extends Block implements EntityBlock {
 	public ArtisanryTableBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState()
-				.setValue(LIGHTLOOM, false));
+				.setValue(LIGHTLOOM, false)
+				.setValue(WORKING, false));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) {
-		builder.add(HORIZONTAL_FACING, LEFT, LIGHTLOOM);
+		builder.add(HORIZONTAL_FACING, LEFT, LIGHTLOOM, WORKING);
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class ArtisanryTableBlock extends Block implements EntityBlock {
 	@Override
 	public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(
 			@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-		return Ticker.server(level);
+		return Ticker.both(level);
 	}
 
 	@Override

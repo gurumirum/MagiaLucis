@@ -5,11 +5,14 @@ import gurumirum.magialucis.capability.impl.FixedItemStackHandler;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.block.BlockEntityBase;
+import gurumirum.magialucis.contents.block.ModBlockStateProps;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlockEntity;
 import gurumirum.magialucis.contents.recipe.LuxRecipeEvaluation;
 import gurumirum.magialucis.contents.recipe.artisanry.ArtisanryRecipeInput;
+import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -34,7 +37,9 @@ import java.util.AbstractList;
 import java.util.List;
 import java.util.Objects;
 
-public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker.Server, MenuProvider {
+import static gurumirum.magialucis.contents.block.ModBlockStateProps.WORKING;
+
+public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker.Both, MenuProvider {
 	public static final int SLOTS_CONTAINER = 0;
 	public static final int SLOTS_CONTAINER_COUNT = 12;
 	public static final int SLOTS_GRID = SLOTS_CONTAINER + SLOTS_CONTAINER_COUNT;
@@ -125,6 +130,19 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 	}
 
 	@Override
+	public void updateClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+		if (level.getGameTime() % 4 == 0 && getBlockState().getValue(ModBlockStateProps.WORKING)) {
+			Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING).getClockWise();
+			LuxUtils.addSpreadingLightParticle(level, pos.getX() + 0.5 + direction.getStepX() * (1 / 8.0),
+					pos.getY() + 1,
+					pos.getZ() + 0.5 + direction.getStepZ() * (1 / 8.0),
+					0.1f,
+					0.02f,
+					true);
+		}
+	}
+
+	@Override
 	public void updateServer(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
 		if (this.gridContentsDirty) {
 			this.gridContentsDirty = false;
@@ -137,6 +155,8 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 			}
 		}
 
+		boolean working = false;
+
 		if (this.currentRecipe != null) {
 			BlockPos lightLoomPos = getBlockPos().above().relative(getBlockState()
 					.getValue(BlockStateProperties.HORIZONTAL_FACING).getClockWise());
@@ -147,6 +167,7 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 			Vector3d luxInput = lightLoom != null ? lightLoom.luxInput(new Vector3d()) : new Vector3d();
 			double v = this.currentRecipe.luxInputCondition().computeProgress(luxInput);
 			if (v > 0) {
+				working = true;
 				this.noLuxInputTicks = 0;
 
 				int processTicks = this.currentRecipe.processTicks();
@@ -178,6 +199,8 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 		} else {
 			this.progress = 0;
 		}
+
+		updateProperty(WORKING, working);
 	}
 
 	@Override

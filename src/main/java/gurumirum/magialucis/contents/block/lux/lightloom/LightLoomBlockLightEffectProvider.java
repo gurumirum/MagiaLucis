@@ -17,6 +17,8 @@ public class LightLoomBlockLightEffectProvider extends BlockLightEffectProvider<
 
 	@Override
 	protected void rayEffects(float partialTicks, Collector collector, Vector3d luxFlow, float radiusModifier) {
+		if (!this.blockEntity.clientSideActive()) return;
+
 		Vec3 origin = origin();
 		if (origin == null) return;
 
