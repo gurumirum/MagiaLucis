@@ -38,7 +38,11 @@ public enum ModBuildingBlocks implements ItemLike, BlockProvider {
 
 	ELECTRUM_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL))),
 	ROSE_GOLD_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL))),
-	STERLING_SILVER_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL)));
+	STERLING_SILVER_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).instrument(NoteBlockInstrument.BELL))),
+
+	LUMINOUS_ALLOY_BLOCK(BlockProfile.block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+			.lightLevel(state -> 10))),
+	;
 
 	private final DeferredBlock<? extends Block> block;
 	@Nullable

@@ -65,13 +65,15 @@ public class BlockTagGen extends BlockTagsProvider {
 		tag(ModBlockTags.ELECTRUM_BLOCKS).add(ELECTRUM_BLOCK.block());
 		tag(ModBlockTags.ROSE_GOLD_BLOCKS).add(ROSE_GOLD_BLOCK.block());
 		tag(ModBlockTags.STERLING_SILVER_BLOCKS).add(STERLING_SILVER_BLOCK.block());
+		tag(ModBlockTags.LUMINOUS_ALLOY_BLOCKS).add(LUMINOUS_ALLOY_BLOCK.block());
 
 		tag(Tags.Blocks.STORAGE_BLOCKS).addTags(
 				ModBlockTags.SILVER_BLOCKS,
 				ModBlockTags.RAW_SILVER_BLOCKS,
 				ModBlockTags.ELECTRUM_BLOCKS,
 				ModBlockTags.ROSE_GOLD_BLOCKS,
-				ModBlockTags.STERLING_SILVER_BLOCKS);
+				ModBlockTags.STERLING_SILVER_BLOCKS,
+				ModBlockTags.LUMINOUS_ALLOY_BLOCKS);
 
 		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
 				LUMINOUS_CHARGER.block(),
@@ -103,7 +105,8 @@ public class BlockTagGen extends BlockTagsProvider {
 				RAW_SILVER_BLOCK.block(),
 				ELECTRUM_BLOCK.block(),
 				ROSE_GOLD_BLOCK.block(),
-				STERLING_SILVER_BLOCK.block());
+				STERLING_SILVER_BLOCK.block(),
+				LUMINOUS_ALLOY_BLOCK.block());
 
 		for (LightLoomType type : LightLoomType.values()) {
 			tag(BlockTags.MINEABLE_WITH_PICKAXE).add(type.block());
@@ -119,13 +122,15 @@ public class BlockTagGen extends BlockTagsProvider {
 				SILVER_BLOCK.block(),
 				ELECTRUM_BLOCK.block(),
 				ROSE_GOLD_BLOCK.block(),
-				STERLING_SILVER_BLOCK.block());
+				STERLING_SILVER_BLOCK.block(),
+				LUMINOUS_ALLOY_BLOCK.block());
 
 		tag(BlockTags.BEACON_BASE_BLOCKS).add(
 				SILVER_BLOCK.block(),
 				ELECTRUM_BLOCK.block(),
 				ROSE_GOLD_BLOCK.block(),
-				STERLING_SILVER_BLOCK.block());
+				STERLING_SILVER_BLOCK.block(),
+				LUMINOUS_ALLOY_BLOCK.block());
 
 		tag(ModBlockTags.LAPIDES_MANALIS).add(
 				LAPIS_MANALIS.block(),

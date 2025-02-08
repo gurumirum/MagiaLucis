@@ -18,6 +18,7 @@ public final class ModBlockTags {
 	public static final TagKey<Block> ELECTRUM_BLOCKS = BlockTags.create(c("storage_blocks/electrum"));
 	public static final TagKey<Block> ROSE_GOLD_BLOCKS = BlockTags.create(c("storage_blocks/rose_gold"));
 	public static final TagKey<Block> STERLING_SILVER_BLOCKS = BlockTags.create(c("storage_blocks/sterling_silver"));
+	public static final TagKey<Block> LUMINOUS_ALLOY_BLOCKS = BlockTags.create(c("storage_blocks/luminous_alloy"));
 
 	private static ResourceLocation c(String id) {
 		return ResourceLocation.fromNamespaceAndPath("c", id);

@@ -31,6 +31,7 @@ public abstract class MaterialRecipes extends SharedRecipeLogic {
 		nineBlockStorageRecipes(out, MISC, ELECTRUM_INGOT, BUILDING_BLOCKS, ELECTRUM_BLOCK);
 		nineBlockStorageRecipes(out, MISC, ROSE_GOLD_INGOT, BUILDING_BLOCKS, ROSE_GOLD_BLOCK);
 		nineBlockStorageRecipes(out, MISC, STERLING_SILVER_INGOT, BUILDING_BLOCKS, STERLING_SILVER_BLOCK);
+		nineBlockStorageRecipes(out, MISC, LUMINOUS_ALLOY_INGOT, BUILDING_BLOCKS, LUMINOUS_ALLOY_BLOCK);
 
 		nineBlockStorageRecipesWithCustomPacking(out, MISC, COPPER_NUGGET,
 				MISC, Items.COPPER_INGOT, "copper_ingot_from_nuggets", "copper_ingot");

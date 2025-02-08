@@ -66,6 +66,7 @@ public class BlockStateGen extends BlockStateProvider {
 		s(ELECTRUM_BLOCK);
 		s(ROSE_GOLD_BLOCK);
 		s(STERLING_SILVER_BLOCK);
+		s(LUMINOUS_ALLOY_BLOCK);
 
 		simpleBlock(AMBER_LIGHT.block(), new ModelFile.UncheckedModelFile(AMBER_LIGHT.id().withPrefix("block/")));
 		models().getBuilder(AMBER_LIGHT.id().getPath()).texture("particle", "block/empty");

@@ -36,6 +36,7 @@
   "block.magialucis.light_basin": "빛받이 대야",
   "block.magialucis.light_basin.tooltip.0": "§7윗면에서 빛을 받아들임",
   "block.magialucis.lightloom_base": "빛 직조기 틀",
+  "block.magialucis.luminous_alloy_block": "빛나는 합금 블록",
   "block.magialucis.luminous_charger": "빛나는 충전 패드",
   "block.magialucis.luminous_lantern_base": "빛나는 랜턴 틀",
   "block.magialucis.luminous_resonance_lantern": "빛나는 공명 랜턴",
@@ -70,7 +71,6 @@
 
   "effect.magialucis.natures_blessing": "자연의 은총",
   "effect.magialucis.recall_fatigue": "회귀 후유증",
-
   "entity.magialucis.ender_chest_portal": "공허 차원문",
   "entity.magialucis.lesser_ice_projectile": "얼음 조각",
   "entity.magialucis.temple_guardian": "신전 수호자",

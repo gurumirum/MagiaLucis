@@ -59,6 +59,7 @@ public class ItemTagGen extends ItemTagsProvider {
 		copyTag(ModBlockTags.ELECTRUM_BLOCKS.location());
 		copyTag(ModBlockTags.ROSE_GOLD_BLOCKS.location());
 		copyTag(ModBlockTags.STERLING_SILVER_BLOCKS.location());
+		copyTag(ModBlockTags.LUMINOUS_ALLOY_BLOCKS.location());
 
 		var gems = tag(Tags.Items.GEMS);
 		for (GemItems gem : GemItems.values()) {
