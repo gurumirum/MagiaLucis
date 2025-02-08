@@ -2,13 +2,16 @@ package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
-import gurumirum.magialucis.contents.block.*;
+import gurumirum.magialucis.contents.block.AmberLanternBlock;
+import gurumirum.magialucis.contents.block.AmberLightBlock;
+import gurumirum.magialucis.contents.block.BaseLanternBlock;
 import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableBlock;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlock;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlock;
 import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBaseBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
@@ -82,14 +85,9 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.strength(2.5f)
 			.sound(SoundType.WOOD))),
 
-	CITRINE_LIGHTLOOM(BlockProfile.customBlock(p -> new LightLoomBlock(p, LightLoomType.CITRINE), Properties.of()
-			.requiresCorrectToolForDrops()
-			.strength(2.5f)
-			.sound(SoundType.METAL))),
-	IOLITE_LIGHTLOOM(BlockProfile.customBlock(p -> new LightLoomBlock(p, LightLoomType.IOLITE), Properties.of()
-			.requiresCorrectToolForDrops()
-			.strength(2.5f)
-			.sound(SoundType.METAL))),
+	LIGHTLOOM_BASE(BlockProfile.customBlock(LightLoomBaseBlock::new, lightloom())),
+	CITRINE_LIGHTLOOM(BlockProfile.customBlock(p -> new LightLoomBlock(p, LightLoomType.CITRINE), lightloom())),
+	IOLITE_LIGHTLOOM(BlockProfile.customBlock(p -> new LightLoomBlock(p, LightLoomType.IOLITE), lightloom())),
 
 	LIGHT_BASIN(BlockProfile.customBlock(LightBasinBlock::new, ModBuildingBlocks.lapisManalis())),
 
@@ -170,4 +168,11 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 	}
 
 	public static void init() {}
+
+	private static Properties lightloom() {
+		return Properties.of()
+				.requiresCorrectToolForDrops()
+				.strength(2.5f)
+				.sound(SoundType.METAL);
+	}
 }

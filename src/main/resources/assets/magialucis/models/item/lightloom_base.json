@@ -225,9 +225,15 @@
     }
   ],
   "display": {
+    "firstperson_righthand": {
+      "rotation": [0, 45, 0],
+      "translation": [0, 2.75, 0],
+      "scale": [0.6, 0.6, 0.6]
+    },
     "gui": {
       "rotation": [30, 225, 0],
-      "translation": [0, 2.25, 0]
+      "translation": [0, 2, 0],
+      "scale": [0.8, 0.8, 0.8]
     }
   }
 }

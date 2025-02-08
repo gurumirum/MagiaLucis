@@ -10,6 +10,8 @@
   "block.magialucis.amber_light": "Amber Light",
   "block.magialucis.amber_ore": "Amber Ore",
   "block.magialucis.aquamarine_ore": "Aquamarine Ore",
+  "block.magialucis.artisanry_table": "Artisanry Table",
+  "block.magialucis.citrine_lightloom": "Citrine Lightloom",
   "block.magialucis.citrine_ore": "Citrine Ore",
   "block.magialucis.cordierite_ore": "Cordierite Ore",
   "block.magialucis.deepslate_ruby_ore": "Deepslate Ruby Ore",
@@ -18,6 +20,7 @@
   "block.magialucis.deepslate_topaz_ore": "Deepslate Topaz Ore",
   "block.magialucis.electrum_block": "Block of Electrum",
   "block.magialucis.field_monitor": "Field Monitor",
+  "block.magialucis.iolite_lightloom": "Iolite Lightloom",
   "block.magialucis.lapis_manalis": "Lapis Manalis",
   "block.magialucis.lapis_manalis_brick_slab": "Lapis Manalis Brick Slab",
   "block.magialucis.lapis_manalis_brick_stairs": "Lapis Manalis Brick Stairs",
@@ -32,6 +35,7 @@
   "block.magialucis.lapis_manalis_stairs": "Lapis Manalis Stairs",
   "block.magialucis.light_basin": "Light Basin",
   "block.magialucis.light_basin.tooltip.0": "§7Accepts light on top side",
+  "block.magialucis.lightloom_base": "Lightloom Frame",
   "block.magialucis.luminous_charger": "Luminous Charging Pad",
   "block.magialucis.luminous_lantern_base": "Luminous Lantern Frame",
   "block.magialucis.luminous_resonance_lantern": "Luminous Resonance Lantern",
@@ -193,5 +197,6 @@
   "itemGroup.magialucis.resources": "Magia Lucis: Resources",
 
   "jei.magialucis.ancient_light": "Ancient Light",
+  "jei.magialucis.artisanry": "Artisanry",
   "jei.magialucis.light_basin": "Light Basin"
 }

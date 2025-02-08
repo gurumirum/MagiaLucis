@@ -10,6 +10,8 @@
   "block.magialucis.amber_light": "호박석 불빛",
   "block.magialucis.amber_ore": "호박석 광석",
   "block.magialucis.aquamarine_ore": "아쿠아마린 광석",
+  "block.magialucis.artisanry_table": "세공 작업대",
+  "block.magialucis.citrine_lightloom": "황수정 빛 직조기",
   "block.magialucis.citrine_ore": "황수정 광석",
   "block.magialucis.cordierite_ore": "근청석 광석",
   "block.magialucis.deepslate_ruby_ore": "심층암 루비 광석",
@@ -18,6 +20,7 @@
   "block.magialucis.deepslate_topaz_ore": "심층암 토파즈 광석",
   "block.magialucis.electrum_block": "엘렉트럼 블록",
   "block.magialucis.field_monitor": "에너지장 관측계",
+  "block.magialucis.iolite_lightloom": "아이올라이트 빛 직조기",
   "block.magialucis.lapis_manalis": "명계의 돌",
   "block.magialucis.lapis_manalis_brick_slab": "명계의 돌 벽돌 반 블록",
   "block.magialucis.lapis_manalis_brick_stairs": "명계의 돌 벽돌 계단",
@@ -32,6 +35,7 @@
   "block.magialucis.lapis_manalis_stairs": "명계의 돌 계단",
   "block.magialucis.light_basin": "빛받이 대야",
   "block.magialucis.light_basin.tooltip.0": "§7윗면에서 빛을 받아들임",
+  "block.magialucis.lightloom_base": "빛 직조기 틀",
   "block.magialucis.luminous_charger": "빛나는 충전 패드",
   "block.magialucis.luminous_lantern_base": "빛나는 랜턴 틀",
   "block.magialucis.luminous_resonance_lantern": "빛나는 공명 랜턴",
@@ -193,5 +197,6 @@
   "itemGroup.magialucis.resources": "Magia Lucis: 자원",
 
   "jei.magialucis.ancient_light": "고대의 빛",
+  "jei.magialucis.artisanry": "세공",
   "jei.magialucis.light_basin": "빛받이 대야"
 }

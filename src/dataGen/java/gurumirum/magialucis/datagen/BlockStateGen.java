@@ -123,6 +123,8 @@ public class BlockStateGen extends BlockStateProvider {
 		var lightloom = new ModelFile.UncheckedModelFile(id("block/lightloom"));
 		var lightloomItem = new ModelFile.UncheckedModelFile(id("item/lightloom"));
 
+		horizontalBlock(LIGHTLOOM_BASE.block(), lightloom);
+
 		for (LightLoomType type : LightLoomType.values()) {
 			horizontalBlock(type.block(), lightloom);
 			simpleBlockItem(type.block(), lightloomItem);
