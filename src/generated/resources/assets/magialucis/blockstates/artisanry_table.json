@@ -1,62 +1,122 @@
 {
   "variants": {
-    "facing=east,left=false,lightloom=false": {
+    "facing=east,left=false,lightloom=false,working=false": {
       "model": "magialucis:block/artisanry_table_right",
       "y": 90
     },
-    "facing=east,left=false,lightloom=true": {
+    "facing=east,left=false,lightloom=false,working=true": {
+      "model": "magialucis:block/artisanry_table_right",
+      "y": 90
+    },
+    "facing=east,left=false,lightloom=true,working=false": {
       "model": "magialucis:block/artisanry_table_right_lightloom",
       "y": 90
     },
-    "facing=east,left=true,lightloom=false": {
+    "facing=east,left=false,lightloom=true,working=true": {
+      "model": "magialucis:block/artisanry_table_right_lightloom",
+      "y": 90
+    },
+    "facing=east,left=true,lightloom=false,working=false": {
       "model": "magialucis:block/artisanry_table_left",
       "y": 90
     },
-    "facing=east,left=true,lightloom=true": {
+    "facing=east,left=true,lightloom=false,working=true": {
+      "model": "magialucis:block/artisanry_table_left",
+      "y": 90
+    },
+    "facing=east,left=true,lightloom=true,working=false": {
       "model": "magialucis:block/artisanry_table_left_lightloom",
       "y": 90
     },
-    "facing=north,left=false,lightloom=false": {
+    "facing=east,left=true,lightloom=true,working=true": {
+      "model": "magialucis:block/artisanry_table_left_lightloom",
+      "y": 90
+    },
+    "facing=north,left=false,lightloom=false,working=false": {
       "model": "magialucis:block/artisanry_table_right"
     },
-    "facing=north,left=false,lightloom=true": {
+    "facing=north,left=false,lightloom=false,working=true": {
+      "model": "magialucis:block/artisanry_table_right"
+    },
+    "facing=north,left=false,lightloom=true,working=false": {
       "model": "magialucis:block/artisanry_table_right_lightloom"
     },
-    "facing=north,left=true,lightloom=false": {
+    "facing=north,left=false,lightloom=true,working=true": {
+      "model": "magialucis:block/artisanry_table_right_lightloom"
+    },
+    "facing=north,left=true,lightloom=false,working=false": {
       "model": "magialucis:block/artisanry_table_left"
     },
-    "facing=north,left=true,lightloom=true": {
+    "facing=north,left=true,lightloom=false,working=true": {
+      "model": "magialucis:block/artisanry_table_left"
+    },
+    "facing=north,left=true,lightloom=true,working=false": {
       "model": "magialucis:block/artisanry_table_left_lightloom"
     },
-    "facing=south,left=false,lightloom=false": {
+    "facing=north,left=true,lightloom=true,working=true": {
+      "model": "magialucis:block/artisanry_table_left_lightloom"
+    },
+    "facing=south,left=false,lightloom=false,working=false": {
       "model": "magialucis:block/artisanry_table_right",
       "y": 180
     },
-    "facing=south,left=false,lightloom=true": {
+    "facing=south,left=false,lightloom=false,working=true": {
+      "model": "magialucis:block/artisanry_table_right",
+      "y": 180
+    },
+    "facing=south,left=false,lightloom=true,working=false": {
       "model": "magialucis:block/artisanry_table_right_lightloom",
       "y": 180
     },
-    "facing=south,left=true,lightloom=false": {
+    "facing=south,left=false,lightloom=true,working=true": {
+      "model": "magialucis:block/artisanry_table_right_lightloom",
+      "y": 180
+    },
+    "facing=south,left=true,lightloom=false,working=false": {
       "model": "magialucis:block/artisanry_table_left",
       "y": 180
     },
-    "facing=south,left=true,lightloom=true": {
+    "facing=south,left=true,lightloom=false,working=true": {
+      "model": "magialucis:block/artisanry_table_left",
+      "y": 180
+    },
+    "facing=south,left=true,lightloom=true,working=false": {
       "model": "magialucis:block/artisanry_table_left_lightloom",
       "y": 180
     },
-    "facing=west,left=false,lightloom=false": {
+    "facing=south,left=true,lightloom=true,working=true": {
+      "model": "magialucis:block/artisanry_table_left_lightloom",
+      "y": 180
+    },
+    "facing=west,left=false,lightloom=false,working=false": {
       "model": "magialucis:block/artisanry_table_right",
       "y": 270
     },
-    "facing=west,left=false,lightloom=true": {
+    "facing=west,left=false,lightloom=false,working=true": {
+      "model": "magialucis:block/artisanry_table_right",
+      "y": 270
+    },
+    "facing=west,left=false,lightloom=true,working=false": {
       "model": "magialucis:block/artisanry_table_right_lightloom",
       "y": 270
     },
-    "facing=west,left=true,lightloom=false": {
+    "facing=west,left=false,lightloom=true,working=true": {
+      "model": "magialucis:block/artisanry_table_right_lightloom",
+      "y": 270
+    },
+    "facing=west,left=true,lightloom=false,working=false": {
       "model": "magialucis:block/artisanry_table_left",
       "y": 270
     },
-    "facing=west,left=true,lightloom=true": {
+    "facing=west,left=true,lightloom=false,working=true": {
+      "model": "magialucis:block/artisanry_table_left",
+      "y": 270
+    },
+    "facing=west,left=true,lightloom=true,working=false": {
+      "model": "magialucis:block/artisanry_table_left_lightloom",
+      "y": 270
+    },
+    "facing=west,left=true,lightloom=true,working=true": {
       "model": "magialucis:block/artisanry_table_left_lightloom",
       "y": 270
     }
