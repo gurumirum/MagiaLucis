@@ -35,7 +35,7 @@ public class RecipeGen extends RecipeProvider {
 
 		if (!this.mismatchingNamespaceRecipes.isEmpty()) {
 			throw new IllegalStateException(this.mismatchingNamespaceRecipes.size() +
-					" recipes with mismatching names have been registered:\n  " +
+					" recipes with mismatching namespace have been registered:\n  " +
 					this.mismatchingNamespaceRecipes.stream()
 							.map(Object::toString)
 							.collect(Collectors.joining("\n  ")));
