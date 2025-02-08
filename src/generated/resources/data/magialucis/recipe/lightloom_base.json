@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "c:ingots/iron"
+    },
+    "2": {
+      "tag": "magialucis:brightstones"
+    }
+  },
+  "pattern": [
+    "1 1",
+    "121",
+    "111"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:lightloom_base"
+  }
+}

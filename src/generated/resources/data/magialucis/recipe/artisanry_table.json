@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "minecraft:planks"
+    },
+    "2": {
+      "item": "minecraft:crafting_table"
+    },
+    "3": {
+      "item": "minecraft:chest"
+    }
+  },
+  "pattern": [
+    "121",
+    "131"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:artisanry_table"
+  }
+}

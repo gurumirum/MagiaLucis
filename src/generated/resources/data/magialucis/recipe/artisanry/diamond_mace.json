@@ -21,7 +21,7 @@
       "1  "
     ]
   },
-  "processTicks": 1000,
+  "processTicks": 400,
   "result": {
     "count": 1,
     "id": "magialucis:diamond_mace"

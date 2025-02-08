@@ -16,7 +16,7 @@ import static net.minecraft.data.recipes.RecipeCategory.TOOLS;
 import static net.minecraft.data.recipes.ShapedRecipeBuilder.shaped;
 
 public abstract class WandRecipes extends SharedRecipeLogic {
-	public static final int WAND_RECIPE_TICKS = 1000;
+	public static final int WAND_RECIPE_TICKS = 400;
 
 	public static void add(@NotNull RecipeOutput out) {
 		shaped(TOOLS, ANCIENT_LIGHT)

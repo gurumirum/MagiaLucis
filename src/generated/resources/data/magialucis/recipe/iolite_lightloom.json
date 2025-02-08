@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "magialucis:lightloom_base"
+    },
+    {
+      "item": "magialucis:iolite_matrix"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:iolite_lightloom"
+  }
+}

@@ -14,10 +14,10 @@ import static gurumirum.magialucis.contents.Accessories.*;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.LAPIS_MANALIS_BRICK_SLAB;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.LAPIS_MANALIS_SLAB;
 import static gurumirum.magialucis.contents.ModItems.*;
-import static gurumirum.magialucis.contents.ModItems.LUMINOUS_MECHANICAL_COMPONENT;
 import static net.minecraft.data.recipes.RecipeCategory.MISC;
 import static net.minecraft.data.recipes.RecipeCategory.TOOLS;
 import static net.minecraft.data.recipes.ShapedRecipeBuilder.shaped;
+import static net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless;
 
 public abstract class CraftingRecipes extends SharedRecipeLogic {
 	public static void add(@NotNull RecipeOutput out) {
@@ -91,50 +91,6 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.unlockedBy("has_brightstones", hasGem(GemStats.BRIGHTSTONE))
 				.save(out);
 
-		shaped(MISC, ModBlocks.AMBER_CHARGER)
-				.pattern("121")
-				.define('1', ItemTags.LOGS)
-				.define('2', gem(GemStats.AMBER))
-				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
-				.save(out);
-
-		shaped(MISC, ModBlocks.LUMINOUS_CHARGER)
-				.pattern("121")
-				.define('1', ModItemTags.LAPIDES_MANALIS)
-				.define('2', LUMINOUS_RESONATOR)
-				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
-				.save(out);
-
-		shaped(MISC, ModBlocks.AMBER_LANTERN)
-				.pattern(" 1 ")
-				.pattern("232")
-				.pattern(" 1 ")
-				.define('1', ItemTags.LOGS)
-				.define('2', gem(GemStats.AMBER))
-				.define('3', LUMINOUS_RESONATOR)
-				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
-				.save(out);
-
-		shaped(MISC, ModBlocks.LUMINOUS_LANTERN_BASE)
-				.pattern("121")
-				.pattern("343")
-				.pattern("121")
-				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
-				.define('2', ItemTags.LOGS)
-				.define('3', ModItemTags.LAPIDES_MANALIS)
-				.define('4', LUMINOUS_RESONANCE_CORE)
-				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
-				.save(out);
-
-		shaped(MISC, ModBlocks.LUMINOUS_RESONANCE_LANTERN)
-				.pattern(" 1 ")
-				.pattern("1C1")
-				.pattern(" 1 ")
-				.define('1', gem(GemStats.BRIGHTSTONE))
-				.define('C', ModBlocks.LUMINOUS_LANTERN_BASE)
-				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
-				.save(out);
-
 		shaped(MISC, ModBlocks.AMBER_CORE)
 				.pattern("121")
 				.pattern("232")
@@ -145,13 +101,21 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
 				.save(out);
 
-		shaped(MISC, ModBlocks.LIGHT_BASIN)
+		shaped(MISC, ModBlocks.AMBER_CHARGER)
 				.pattern("121")
-				.pattern("333")
-				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
-				.define('2', ModItemTags.SILVER_INGOTS)
-				.define('3', ModItemTags.LAPIDES_MANALIS)
-				.unlockedBy("has_silver_ingots", has(ModItemTags.SILVER_INGOTS))
+				.define('1', ItemTags.LOGS)
+				.define('2', gem(GemStats.AMBER))
+				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
+				.save(out);
+
+		shaped(MISC, ModBlocks.AMBER_LANTERN)
+				.pattern(" 1 ")
+				.pattern("232")
+				.pattern(" 1 ")
+				.define('1', ItemTags.LOGS)
+				.define('2', gem(GemStats.AMBER))
+				.define('3', LUMINOUS_RESONATOR)
+				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
 
 		shaped(MISC, ModBlocks.SUNLIGHT_CORE)
@@ -185,6 +149,72 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.define('3', Ingredient.of(LAPIS_MANALIS_SLAB, LAPIS_MANALIS_BRICK_SLAB))
 				.define('4', MECHANICAL_COMPONENT)
 				.unlockedBy("has_silver", has(ModItemTags.SILVER_INGOTS))
+				.save(out);
+
+		shaped(MISC, ModBlocks.ARTISANRY_TABLE)
+				.pattern("121")
+				.pattern("131")
+				.define('1', ItemTags.PLANKS)
+				.define('2', Items.CRAFTING_TABLE)
+				.define('3', Items.CHEST)
+				.unlockedBy("has_planks", has(ItemTags.PLANKS))
+				.save(out);
+
+		shaped(MISC, ModBlocks.LIGHTLOOM_BASE)
+				.pattern("1 1")
+				.pattern("121")
+				.pattern("111")
+				.define('1', Tags.Items.INGOTS_IRON)
+				.define('2', gem(GemStats.BRIGHTSTONE))
+				.unlockedBy("has_brightstone", hasGem(GemStats.BRIGHTSTONE))
+				.save(out);
+
+		shapeless(MISC, ModBlocks.CITRINE_LIGHTLOOM)
+				.requires(ModBlocks.LIGHTLOOM_BASE)
+				.requires(CITRINE_MATRIX)
+				.unlockedBy("has_citrine", hasGem(GemStats.CITRINE))
+				.save(out);
+
+		shapeless(MISC, ModBlocks.IOLITE_LIGHTLOOM)
+				.requires(ModBlocks.LIGHTLOOM_BASE)
+				.requires(IOLITE_MATRIX)
+				.unlockedBy("has_iolite", hasGem(GemStats.IOLITE))
+				.save(out);
+
+		shaped(MISC, ModBlocks.LIGHT_BASIN)
+				.pattern("121")
+				.pattern("333")
+				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
+				.define('2', ModItemTags.SILVER_INGOTS)
+				.define('3', ModItemTags.LAPIDES_MANALIS)
+				.unlockedBy("has_silver_ingots", has(ModItemTags.SILVER_INGOTS))
+				.save(out);
+
+		shaped(MISC, ModBlocks.LUMINOUS_CHARGER)
+				.pattern("121")
+				.define('1', ModItemTags.LAPIDES_MANALIS)
+				.define('2', LUMINOUS_RESONATOR)
+				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
+				.save(out);
+
+		shaped(MISC, ModBlocks.LUMINOUS_LANTERN_BASE)
+				.pattern("121")
+				.pattern("343")
+				.pattern("121")
+				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
+				.define('2', ItemTags.LOGS)
+				.define('3', ModItemTags.LAPIDES_MANALIS)
+				.define('4', LUMINOUS_RESONANCE_CORE)
+				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
+				.save(out);
+
+		shaped(MISC, ModBlocks.LUMINOUS_RESONANCE_LANTERN)
+				.pattern(" 1 ")
+				.pattern("1C1")
+				.pattern(" 1 ")
+				.define('1', gem(GemStats.BRIGHTSTONE))
+				.define('C', ModBlocks.LUMINOUS_LANTERN_BASE)
+				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
 
 		shaped(TOOLS, WAND_BELT)
