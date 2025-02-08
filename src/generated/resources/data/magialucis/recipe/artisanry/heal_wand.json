@@ -1,0 +1,31 @@
+{
+  "type": "magialucis:artisanry",
+  "luxInput": {
+    "minB": 60.0,
+    "minG": 50.0,
+    "minR": 60.0
+  },
+  "pattern": {
+    "key": {
+      "1": {
+        "tag": "c:ingots/gold"
+      },
+      "2": {
+        "item": "magialucis:pearl"
+      },
+      "C": {
+        "item": "magialucis:luminous_resonator"
+      }
+    },
+    "pattern": [
+      " 12",
+      " C1",
+      "1  "
+    ]
+  },
+  "processTicks": 1000,
+  "result": {
+    "count": 1,
+    "id": "magialucis:heal_wand"
+  }
+}

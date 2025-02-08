@@ -1,0 +1,36 @@
+{
+  "type": "magialucis:artisanry",
+  "luxInput": {
+    "minB": 25.0,
+    "minG": 15.0
+  },
+  "pattern": {
+    "key": {
+      "1": {
+        "tag": "c:ingots/rose_gold"
+      },
+      "2": {
+        "tag": "c:gems/aquamarine"
+      },
+      "3": {
+        "tag": "c:leathers"
+      },
+      "4": {
+        "tag": "c:dyes/red"
+      },
+      "C": {
+        "item": "magialucis:luminous_resonator"
+      }
+    },
+    "pattern": [
+      " 32",
+      "4C3",
+      "14 "
+    ]
+  },
+  "processTicks": 1000,
+  "result": {
+    "count": 1,
+    "id": "magialucis:recall_staff"
+  }
+}

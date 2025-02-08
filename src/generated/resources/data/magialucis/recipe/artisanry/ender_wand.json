@@ -1,0 +1,30 @@
+{
+  "type": "magialucis:artisanry",
+  "luxInput": {
+    "minB": 15.0,
+    "minG": 30.0
+  },
+  "pattern": {
+    "key": {
+      "1": {
+        "tag": "c:ingots/silver"
+      },
+      "2": {
+        "item": "minecraft:ender_pearl"
+      },
+      "C": {
+        "item": "magialucis:luminous_resonator"
+      }
+    },
+    "pattern": [
+      " 12",
+      " C1",
+      "1  "
+    ]
+  },
+  "processTicks": 1000,
+  "result": {
+    "count": 1,
+    "id": "magialucis:ender_wand"
+  }
+}

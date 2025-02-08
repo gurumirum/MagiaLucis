@@ -30,7 +30,7 @@ public enum GemStats implements LuxStat {
 	AMETHYST(RGB332.of(7, 2, 3), 50, 120, true, true),
 	OBSIDIAN(RGB332.of(1, 0, 1), 30, 750, false),
 	PRISMARINE(RGB332.of(0, 5, 2), 30, 400, true, true),
-	ENDER_PEARL(RGB332.of(0, 2, 1), 40, 500, false, true),
+	ENDER_PEARL(RGB332.of(1, 2, 1), 40, 500, false, true),
 
 	// TIER 2
 

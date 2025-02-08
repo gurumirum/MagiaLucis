@@ -1,14 +1,22 @@
 package gurumirum.magialucis.datagen.recipe;
 
 import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModItemTags;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
+import static gurumirum.magialucis.contents.Accessories.*;
+import static gurumirum.magialucis.contents.ModBuildingBlocks.LAPIS_MANALIS_BRICK_SLAB;
+import static gurumirum.magialucis.contents.ModBuildingBlocks.LAPIS_MANALIS_SLAB;
 import static gurumirum.magialucis.contents.ModItems.*;
 import static gurumirum.magialucis.contents.ModItems.LUMINOUS_MECHANICAL_COMPONENT;
 import static net.minecraft.data.recipes.RecipeCategory.MISC;
+import static net.minecraft.data.recipes.RecipeCategory.TOOLS;
 import static net.minecraft.data.recipes.ShapedRecipeBuilder.shaped;
 
 public abstract class CraftingRecipes extends SharedRecipeLogic {
@@ -72,5 +80,136 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.unlockedBy("has_iolite", hasGem(GemStats.IOLITE))
 				.save(out);
 
+
+		shaped(MISC, ModBlocks.RELAY)
+				.pattern(" 1 ")
+				.pattern("1 1")
+				.pattern("232")
+				.define('1', gem(GemStats.BRIGHTSTONE))
+				.define('2', Tags.Items.NUGGETS_GOLD)
+				.define('3', ItemTags.WOODEN_SLABS)
+				.unlockedBy("has_brightstones", hasGem(GemStats.BRIGHTSTONE))
+				.save(out);
+
+		shaped(MISC, ModBlocks.AMBER_CHARGER)
+				.pattern("121")
+				.define('1', ItemTags.LOGS)
+				.define('2', gem(GemStats.AMBER))
+				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
+				.save(out);
+
+		shaped(MISC, ModBlocks.LUMINOUS_CHARGER)
+				.pattern("121")
+				.define('1', ModItemTags.LAPIDES_MANALIS)
+				.define('2', LUMINOUS_RESONATOR)
+				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
+				.save(out);
+
+		shaped(MISC, ModBlocks.AMBER_LANTERN)
+				.pattern(" 1 ")
+				.pattern("232")
+				.pattern(" 1 ")
+				.define('1', ItemTags.LOGS)
+				.define('2', gem(GemStats.AMBER))
+				.define('3', LUMINOUS_RESONATOR)
+				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
+				.save(out);
+
+		shaped(MISC, ModBlocks.LUMINOUS_LANTERN_BASE)
+				.pattern("121")
+				.pattern("343")
+				.pattern("121")
+				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
+				.define('2', ItemTags.LOGS)
+				.define('3', ModItemTags.LAPIDES_MANALIS)
+				.define('4', LUMINOUS_RESONANCE_CORE)
+				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
+				.save(out);
+
+		shaped(MISC, ModBlocks.LUMINOUS_RESONANCE_LANTERN)
+				.pattern(" 1 ")
+				.pattern("1C1")
+				.pattern(" 1 ")
+				.define('1', gem(GemStats.BRIGHTSTONE))
+				.define('C', ModBlocks.LUMINOUS_LANTERN_BASE)
+				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
+				.save(out);
+
+		shaped(MISC, ModBlocks.AMBER_CORE)
+				.pattern("121")
+				.pattern("232")
+				.pattern("121")
+				.define('1', ItemTags.LOGS)
+				.define('2', gem(GemStats.AMBER))
+				.define('3', Items.HONEYCOMB)
+				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
+				.save(out);
+
+		shaped(MISC, ModBlocks.LIGHT_BASIN)
+				.pattern("121")
+				.pattern("333")
+				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
+				.define('2', ModItemTags.SILVER_INGOTS)
+				.define('3', ModItemTags.LAPIDES_MANALIS)
+				.unlockedBy("has_silver_ingots", has(ModItemTags.SILVER_INGOTS))
+				.save(out);
+
+		shaped(MISC, ModBlocks.SUNLIGHT_CORE)
+				.pattern("111")
+				.pattern("121")
+				.pattern("343")
+				.define('1', gem(GemStats.BRIGHTSTONE))
+				.define('2', CITRINE_MATRIX)
+				.define('3', Tags.Items.NUGGETS_GOLD)
+				.define('4', ItemTags.PLANKS)
+				.unlockedBy("has_citrine", hasGem(GemStats.CITRINE))
+				.save(out);
+
+		shaped(MISC, ModBlocks.MOONLIGHT_CORE)
+				.pattern("111")
+				.pattern("121")
+				.pattern("343")
+				.define('1', gem(GemStats.BRIGHTSTONE))
+				.define('2', IOLITE_MATRIX)
+				.define('3', ModItemTags.SILVER_NUGGETS)
+				.define('4', ItemTags.PLANKS)
+				.unlockedBy("has_iolite", hasGem(GemStats.IOLITE))
+				.save(out);
+
+		shaped(MISC, ModBlocks.SUNLIGHT_FOCUS)
+				.pattern("111")
+				.pattern("242")
+				.pattern("323")
+				.define('1', ModItemTags.SILVER_INGOTS)
+				.define('2', ModItemTags.LAPIDES_MANALIS)
+				.define('3', Ingredient.of(LAPIS_MANALIS_SLAB, LAPIS_MANALIS_BRICK_SLAB))
+				.define('4', MECHANICAL_COMPONENT)
+				.unlockedBy("has_silver", has(ModItemTags.SILVER_INGOTS))
+				.save(out);
+
+		shaped(TOOLS, WAND_BELT)
+				.pattern("122")
+				.pattern("2 2")
+				.pattern("222")
+				.define('1', ModItemTags.BASIC_ALLOY_NUGGETS)
+				.define('2', Tags.Items.LEATHERS)
+				.unlockedBy("has_wands", has(ModItemTags.WANDS))
+				.save(out);
+
+		shaped(TOOLS, DRUID_WREATH)
+				.pattern("212")
+				.pattern("2 2")
+				.define('1', gem(GemStats.AMBER))
+				.define('2', ItemTags.LEAVES)
+				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
+				.save(out);
+
+		shaped(TOOLS, DRYAD_WREATH)
+				.pattern("212")
+				.pattern("2 2")
+				.define('1', gem(GemStats.AMBER))
+				.define('2', ItemTags.SMALL_FLOWERS)
+				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
+				.save(out);
 	}
 }
