@@ -94,15 +94,16 @@ public class SplitterBlockEntity extends LuxNodeBlockEntity<DynamicLuxNodeBehavi
 			byte l = apertureLevel(dir);
 			if (l == 0) continue;
 
+			int weight = IntMath.pow(3, l - 1);
 			Direction side = RelativeDirection.getSide(facing, dir);
 
 			if (!LuxUtils.directLinkToInWorldNode(this, linkCollector,
 					getBlockPos().relative(side), side.getOpposite(), i, null,
-					l, false)) {
+					weight, false)) {
 
 				LuxUtils.linkToInWorldNode(this, linkCollector, Orientation.of(side),
 						Vec3.atCenterOf(getBlockPos()), LinkSource.DEFAULT_LINK_DISTANCE, i, null,
-						l, true);
+						weight, true);
 			}
 
 			i++;
