@@ -2,8 +2,8 @@ package gurumirum.magialucis.impl.luxnet;
 
 import gurumirum.magialucis.capability.DirectLinkDestination;
 import gurumirum.magialucis.capability.LinkDestination;
-import gurumirum.magialucis.capability.LinkSource;
 import gurumirum.magialucis.contents.ModParticles;
+import gurumirum.magialucis.utils.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -75,10 +75,10 @@ public final class LuxUtils {
 		}
 	}
 
-	public static @NotNull BlockHitResult traceConnection(Level level, float xRot, float yRot,
+	public static @NotNull BlockHitResult traceConnection(Level level, Orientation orientation,
 	                                                      BlockPos linkOriginPos, Vec3 linkOriginLocation,
 	                                                      double linkDistance) {
-		Vector3d vec = LinkSource.Orientation.toVector(xRot, yRot, new Vector3d());
+		Vector3d vec = orientation.toVector(new Vector3d());
 
 		return safeClip(level, new ClipContext(
 						linkOriginLocation,
@@ -92,14 +92,22 @@ public final class LuxUtils {
 	}
 
 	public static boolean linkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
-	                                        float xRot, float yRot, Vec3 linkOrigin, double linkDistance,
+	                                        Orientation orientation, Vec3 linkOrigin, double linkDistance,
 	                                        int linkIndex, @Nullable LinkDestinationSelector selector,
-	                                        boolean registerLinkFail) {
+	                                        int linkWeight, boolean registerLinkFail) {
+		return linkToInWorldNode(blockEntity, linkCollector, orientation, linkOrigin, linkDistance, linkIndex, selector,
+				linkWeight, registerLinkFail, linkWeight);
+	}
+
+	public static boolean linkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
+	                                        Orientation orientation, Vec3 linkOrigin, double linkDistance,
+	                                        int linkIndex, @Nullable LinkDestinationSelector selector,
+	                                        int linkWeight, boolean registerLinkFail, int failedLinkWeight) {
 		Level level = blockEntity.getLevel();
 		if (level == null) return false;
 
 		BlockPos pos = blockEntity.getBlockPos();
-		BlockHitResult hitResult = traceConnection(level, xRot, yRot,
+		BlockHitResult hitResult = traceConnection(level, orientation,
 				pos, linkOrigin, linkDistance);
 
 		if (hitResult.getType() == HitResult.Type.BLOCK && !hitResult.getBlockPos().equals(pos)) {
@@ -110,11 +118,11 @@ public final class LuxUtils {
 				return linkCollector.inWorldLink(linkIndex,
 						dest.linkWithSource(context).nodeId(),
 						pos, hitResult.getBlockPos(), hitResult.getLocation(),
-						registerLinkFail);
+						linkWeight, registerLinkFail, failedLinkWeight);
 			}
 		}
 		if (registerLinkFail) {
-			linkCollector.inWorldLinkFail(linkIndex, pos, hitResult.getBlockPos(), hitResult.getLocation());
+			linkCollector.inWorldLinkFail(linkIndex, pos, hitResult.getBlockPos(), hitResult.getLocation(), failedLinkWeight);
 		}
 		return false;
 	}
@@ -122,7 +130,16 @@ public final class LuxUtils {
 	public static boolean directLinkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
 	                                              BlockPos linkDestPos, Direction side,
 	                                              int linkIndex, @Nullable DirectLinkDestinationSelector selector,
-	                                              boolean registerLinkFail) {
+	                                              int linkWeight, boolean registerLinkFail) {
+		return directLinkToInWorldNode(blockEntity, linkCollector, linkDestPos, side, linkIndex, selector,
+				linkWeight, registerLinkFail, linkWeight);
+	}
+
+
+	public static boolean directLinkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
+	                                              BlockPos linkDestPos, Direction side,
+	                                              int linkIndex, @Nullable DirectLinkDestinationSelector selector,
+	                                              int linkWeight, boolean registerLinkFail, int failedLinkWeight) {
 		Level level = blockEntity.getLevel();
 		if (level == null) return false;
 
@@ -142,7 +159,7 @@ public final class LuxUtils {
 								.add(1, 1, 1)
 								.scale(0.5)
 								.add(Vec3.atLowerCornerOf(linkDestPos)),
-						registerLinkFail);
+						linkWeight, registerLinkFail, failedLinkWeight);
 			}
 		}
 		if (registerLinkFail) {
@@ -150,7 +167,8 @@ public final class LuxUtils {
 					Vec3.atLowerCornerOf(side.getNormal())
 							.add(1, 1, 1)
 							.scale(0.5)
-							.add(Vec3.atLowerCornerOf(linkDestPos)));
+							.add(Vec3.atLowerCornerOf(linkDestPos)),
+					failedLinkWeight);
 		}
 		return false;
 	}
@@ -196,7 +214,7 @@ public final class LuxUtils {
 	public static void addSpreadingLightParticle(@NotNull Level level,
 	                                             double x, double y, double z,
 	                                             double offset, double speed, boolean onlyUpwards) {
-		Vector3d direction = LinkSource.Orientation.toVector(
+		Vector3d direction = Orientation.toVector(
 				(float)(level.random.nextFloat() * (onlyUpwards ? Math.PI : Math.PI * 2) - Math.PI),
 				(float)(level.random.nextFloat() * Math.PI * 2),
 				new Vector3d());

@@ -10,12 +10,13 @@ import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlock;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlock;
 import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlock;
+import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlock;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBaseBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
-import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
+import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlock;
@@ -51,6 +52,11 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 
 	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of()
 			.strength(1)
+			.sound(SoundType.GLASS))),
+
+	SPLITTER(BlockProfile.customBlock(SplitterBlock::new, Properties.of()
+			.noOcclusion()
+			.strength(2.5f)
 			.sound(SoundType.GLASS))),
 
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of()
@@ -150,7 +156,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 				for (GemStats g : GemStats.values()) {
 					g.forEachItem(item -> {
 						ItemStack stack = new ItemStack(this);
-						stack.set(ModDataComponents.RELAY_ITEM, new RelayItemData(new ItemStack(item)));
+						stack.set(ModDataComponents.GEM_ITEM, new GemItemData(new ItemStack(item)));
 						o.accept(stack);
 					});
 				}

@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.capability.GemStats;
-import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
+import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -66,7 +66,7 @@ public enum CreativeTabType {
 		@Override
 		protected ItemStack icon() {
 			ItemStack stack = new ItemStack(ModBlocks.RELAY);
-			stack.set(ModDataComponents.RELAY_ITEM, new RelayItemData(new ItemStack(Items.DIAMOND)));
+			stack.set(ModDataComponents.GEM_ITEM, new GemItemData(new ItemStack(Items.DIAMOND)));
 			return stack;
 		}
 

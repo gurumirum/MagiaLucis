@@ -6,6 +6,7 @@ import gurumirum.magialucis.contents.*;
 import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableScreen;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
@@ -17,8 +18,8 @@ import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreItemExt
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntityRenderer;
 import gurumirum.magialucis.contents.entity.EnderChestPortalRenderer;
 import gurumirum.magialucis.contents.entity.LesserIceProjectileRenderer;
-import gurumirum.magialucis.contents.entity.TempleGuardianModel;
-import gurumirum.magialucis.contents.entity.TempleGuardianRenderer;
+import gurumirum.magialucis.contents.entity.templeguardian.TempleGuardianModel;
+import gurumirum.magialucis.contents.entity.templeguardian.TempleGuardianRenderer;
 import gurumirum.magialucis.contents.item.accessory.ObsidianBraceletItem;
 import gurumirum.magialucis.contents.item.accessory.ShieldCurioItem;
 import gurumirum.magialucis.contents.item.wand.*;
@@ -145,6 +146,7 @@ public final class ClientInit {
 		event.registerEntityRenderer(ModEntities.TEMPLE_GUARDIAN.get(), TempleGuardianRenderer::new);
 
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.SPLITTER.get(), SplitterBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.AMBER_CHARGER.get(), ChargerBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUMINOUS_CHARGER.get(), ChargerBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);

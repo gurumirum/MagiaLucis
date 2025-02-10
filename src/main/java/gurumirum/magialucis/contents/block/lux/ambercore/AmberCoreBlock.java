@@ -25,8 +25,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.OVERSATURATED;
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKYLIGHT_INTERFERENCE;
+import static gurumirum.magialucis.contents.block.ModBlockStates.OVERSATURATED;
+import static gurumirum.magialucis.contents.block.ModBlockStates.SKYLIGHT_INTERFERENCE;
 
 public class AmberCoreBlock extends Block implements EntityBlock {
 	public static final LuxStat STAT = LuxStat.simple(

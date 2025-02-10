@@ -196,7 +196,7 @@ public final class ConfigurationWandOverlay {
 				}
 
 				BlockHitResult connection = LuxUtils.traceConnection(level,
-						msg.orientation().xRot(), msg.orientation().yRot(),
+						msg.orientation(),
 						linkSourcePos.pos(), linkSource.linkOrigin(), linkSource.linkDistance());
 
 				LinkDestinationSelector dstSelector = linkSource.linkDestinationSelector();
@@ -226,7 +226,7 @@ public final class ConfigurationWandOverlay {
 		if (!(level.getBlockEntity(pos) instanceof LuxNodeSyncPropertyAccess props)) return;
 
 		for (var e : props.outboundLinks().int2ObjectEntrySet()) {
-			InWorldLinkInfo linkInfo = e.getValue();
+			InWorldLinkInfo linkInfo = e.getValue().inWorld();
 			if (linkInfo == null) continue;
 			visualData.lines.add(new Line(linkInfo.origin(), linkInfo.linkLocation(),
 					remove && linkSource != null ? TINT_REMOVE : TINT_SELECT));
@@ -239,7 +239,7 @@ public final class ConfigurationWandOverlay {
 		}
 
 		for (var e : props.inboundLinks().int2ObjectEntrySet()) {
-			InWorldLinkInfo linkInfo = e.getValue();
+			InWorldLinkInfo linkInfo = e.getValue().inWorld();
 			if (linkInfo == null) continue;
 			visualData.lines.add(new Line(linkInfo.origin(), linkInfo.linkLocation(), TINT_INPUT));
 		}

@@ -32,7 +32,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.LANTERN;
+import static gurumirum.magialucis.contents.block.ModBlockStates.LANTERN;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
 public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {

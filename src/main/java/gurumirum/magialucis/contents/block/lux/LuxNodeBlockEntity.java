@@ -29,12 +29,13 @@ import java.util.*;
 public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends RegisteredBlockEntity
 		implements LuxNodeInterface, LinkDestination, LuxNodeSyncPropertyAccess, DebugTextProvider {
 	private final Vector3d luxFlow = new Vector3d();
-	private final Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks = new Int2ObjectOpenHashMap<>();
-	private final Int2ObjectMap<@Nullable InWorldLinkInfo> inboundLinks = new Int2ObjectOpenHashMap<>();
+	private final Int2ObjectMap<LinkInfo> outboundLinks = new Int2ObjectOpenHashMap<>();
+	private final Int2ObjectMap<LinkInfo> inboundLinks = new Int2ObjectOpenHashMap<>();
 	private final Int2ObjectMap<InWorldLinkState> linkIndexToState = new Int2ObjectOpenHashMap<>();
 
 	private int nodeId;
 	private @Nullable B nodeBehavior;
+	private int totalLinkWeight;
 
 	public LuxNodeBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
@@ -51,18 +52,23 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 	}
 
 	@Override
-	public @NotNull @UnmodifiableView Int2ObjectMap<@Nullable InWorldLinkInfo> outboundLinks() {
+	public @NotNull @UnmodifiableView Int2ObjectMap<LinkInfo> outboundLinks() {
 		return Int2ObjectMaps.unmodifiable(this.outboundLinks);
 	}
 
 	@Override
-	public @NotNull @UnmodifiableView Int2ObjectMap<@Nullable InWorldLinkInfo> inboundLinks() {
+	public @NotNull @UnmodifiableView Int2ObjectMap<LinkInfo> inboundLinks() {
 		return Int2ObjectMaps.unmodifiable(this.inboundLinks);
 	}
 
 	@Override
 	public @NotNull @UnmodifiableView Collection<InWorldLinkState> linkStates() {
 		return Collections.unmodifiableCollection(this.linkIndexToState.values());
+	}
+
+	@Override
+	public int totalLinkWeight() {
+		return this.totalLinkWeight;
 	}
 
 	protected final @Nullable LuxNet getLuxNet() {
@@ -81,7 +87,9 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 
 	@Override
 	protected void onRegister(@NotNull ServerLevel serverLevel) {
-		this.nodeId = LuxNet.register(serverLevel, this, this.nodeId);
+		int prevId = this.nodeId;
+		this.nodeId = LuxNet.register(serverLevel, this, prevId);
+		if (prevId != this.nodeId) syncToClient();
 	}
 
 	@Override
@@ -121,23 +129,26 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 	}
 
 	@Override
-	public void syncConnection(@NotNull @UnmodifiableView Map<LuxNode, @Nullable InWorldLinkInfo> outboundLinks,
-	                           @NotNull @UnmodifiableView Map<LuxNode, @Nullable InWorldLinkInfo> inboundLinks) {
+	public void syncConnection(LuxNet.OutboundLink outboundLinks, LuxNet.InboundLink inboundLinks) {
 		boolean changed = false;
 
-		if (!equals(this.outboundLinks, outboundLinks)) {
+		if (!equals(this.outboundLinks, outboundLinks.links())) {
 			changed = true;
 			this.outboundLinks.clear();
-			for (var e : outboundLinks.entrySet()) {
+			for (var e : outboundLinks.links().entrySet()) {
 				this.outboundLinks.put(e.getKey().id, e.getValue());
 			}
 		}
-		if (!equals(this.inboundLinks, inboundLinks)) {
+		if (!equals(this.inboundLinks, inboundLinks.links())) {
 			changed = true;
 			this.inboundLinks.clear();
-			for (var e : inboundLinks.entrySet()) {
+			for (var e : inboundLinks.links().entrySet()) {
 				this.inboundLinks.put(e.getKey().id, e.getValue());
 			}
+		}
+		if (this.totalLinkWeight != outboundLinks.totalLinkWeight()) {
+			changed = true;
+			this.totalLinkWeight = outboundLinks.totalLinkWeight();
 		}
 
 		if (changed) syncToClient();
@@ -168,21 +179,22 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 		list.add("LUX Flow: " + this.luxFlow.toString(NumberFormats.DECIMAL));
 	}
 
-	private void addLinkDebugText(List<String> list, Int2ObjectMap<@Nullable InWorldLinkInfo> links, boolean inbound) {
+	private void addLinkDebugText(List<String> list, Int2ObjectMap<LinkInfo> links, boolean inbound) {
 		boolean first = true;
 		int writtenEntries = 0;
 		int skippedEntries = 0;
 		final int limit = 5;
 
 		for (var e : links.int2ObjectEntrySet()) {
-			if (e.getValue() == null) continue;
+			LinkInfo info = e.getValue();
+			if (info.inWorld() == null) continue;
 			if (first) {
 				first = false;
 				list.add("");
 				list.add(inbound ? "Inbound Links:" : "Outbound Links:");
 			}
 			if (writtenEntries < limit) {
-				BlockPos pos = inbound ? e.getValue().origin() : BlockPos.containing(e.getValue().linkLocation());
+				BlockPos pos = inbound ? info.inWorld().origin() : BlockPos.containing(info.inWorld().linkLocation());
 				list.add("#" + e.getIntKey() + " [" + pos.toShortString() + "]");
 				writtenEntries++;
 			} else skippedEntries++;
@@ -208,6 +220,8 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 				CompoundTag tag2 = list.getCompound(i);
 				this.linkIndexToState.put(tag2.getInt("index"), new InWorldLinkState(tag2));
 			}
+
+			this.totalLinkWeight = tag.getInt("totalLinkWeight");
 		}
 	}
 
@@ -229,6 +243,8 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 				list.add(tag2);
 			}
 			tag.put("linkIndexToState", list);
+
+			tag.putInt("totalLinkWeight", this.totalLinkWeight);
 		}
 	}
 
@@ -240,16 +256,16 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	private static boolean equals(Int2ObjectMap<@Nullable InWorldLinkInfo> m1, Map<LuxNode, @Nullable InWorldLinkInfo> m2) {
+	private static boolean equals(Int2ObjectMap<LinkInfo> m1, Map<LuxNode, LinkInfo> m2) {
 		if (m1.size() != m2.size()) return false;
 		for (var e : m2.entrySet()) {
-			InWorldLinkInfo linkInfo = m1.get(e.getKey().id);
+			LinkInfo linkInfo = m1.get(e.getKey().id);
 			if (!Objects.equals(linkInfo, e.getValue())) return false;
 		}
 		return true;
 	}
 
-	private static ListTag saveLinkMap(Int2ObjectMap<@Nullable InWorldLinkInfo> map) {
+	private static ListTag saveLinkMap(Int2ObjectMap<LinkInfo> map) {
 		ListTag list = new ListTag();
 		for (var e : map.int2ObjectEntrySet()) {
 			CompoundTag tag = new CompoundTag();
@@ -263,11 +279,11 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 		return list;
 	}
 
-	private static void loadLinkMap(ListTag list, Int2ObjectMap<@Nullable InWorldLinkInfo> map) {
+	private static void loadLinkMap(ListTag list, Int2ObjectMap<LinkInfo> map) {
 		map.clear();
 		for (int i = 0; i < list.size(); i++) {
 			CompoundTag tag = list.getCompound(i);
-			map.put(tag.getInt("id"), tag.getBoolean("hasInfo") ? new InWorldLinkInfo(tag) : null);
+			map.put(tag.getInt("id"), new LinkInfo(tag));
 		}
 	}
 }

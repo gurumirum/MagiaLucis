@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.entity;
+package gurumirum.magialucis.contents.entity.templeguardian;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -18,8 +18,8 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-import static gurumirum.magialucis.contents.entity.TempleGuardianModel.TEX_HEIGHT;
-import static gurumirum.magialucis.contents.entity.TempleGuardianModel.TEX_WIDTH;
+import static gurumirum.magialucis.contents.entity.templeguardian.TempleGuardianModel.TEX_HEIGHT;
+import static gurumirum.magialucis.contents.entity.templeguardian.TempleGuardianModel.TEX_WIDTH;
 
 public class TempleGuardianRenderer extends MobRenderer<TempleGuardian, TempleGuardianModel<TempleGuardian>> {
 	private static final ResourceLocation TEXTURE = MagiaLucisMod.id("textures/entity/temple_guardian.png");

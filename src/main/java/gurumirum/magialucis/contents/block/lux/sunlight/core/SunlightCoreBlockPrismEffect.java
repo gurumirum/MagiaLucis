@@ -1,9 +1,9 @@
-package gurumirum.magialucis.client.render.prism;
+package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.client.render.RenderShapes;
-import gurumirum.magialucis.contents.block.lux.sunlight.core.BaseSunlightCoreBlockEntity;
+import gurumirum.magialucis.client.render.prism.BlockPrismEffect;
 import org.jetbrains.annotations.NotNull;
 
 public class SunlightCoreBlockPrismEffect extends BlockPrismEffect<BaseSunlightCoreBlockEntity<?>> {

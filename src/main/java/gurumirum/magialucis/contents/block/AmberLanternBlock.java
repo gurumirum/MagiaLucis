@@ -106,7 +106,7 @@ public class AmberLanternBlock extends BaseLanternBlock.Stateless implements Ent
 		if (level.getBrightness(LightLayer.BLOCK, mpos) > 10) return false;
 
 		level.setBlock(mpos, ModBlocks.AMBER_LIGHT.block().defaultBlockState()
-				.setValue(ModBlockStateProps.LANTERN, true)
+				.setValue(ModBlockStates.LANTERN, true)
 				.setValue(BlockStateProperties.WATERLOGGED, waterlogged), 2);
 
 		return true;

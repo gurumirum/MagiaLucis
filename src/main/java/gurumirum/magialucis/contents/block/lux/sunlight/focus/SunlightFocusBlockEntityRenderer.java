@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import gurumirum.magialucis.capability.LinkSource;
+import gurumirum.magialucis.utils.Orientation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -33,7 +33,7 @@ public class SunlightFocusBlockEntityRenderer implements BlockEntityRenderer<Sun
 
 		draw(blockEntity, poseStack, bufferSource, packedOverlay, model1);
 
-		LinkSource.Orientation o = blockEntity.getLink(0);
+		Orientation o = blockEntity.getLink(0);
 		if (o != null) {
 			poseStack.pushPose();
 			poseStack.translate(8 / 16.0, 0, 8 / 16.0);

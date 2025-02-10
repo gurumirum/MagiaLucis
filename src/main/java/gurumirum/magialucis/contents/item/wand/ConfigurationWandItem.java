@@ -5,6 +5,7 @@ import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.net.msgs.SetLinkMsg;
+import gurumirum.magialucis.utils.Orientation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
@@ -132,9 +133,9 @@ public class ConfigurationWandItem extends Item {
 			double maxDistance = linkDistance + 3;
 			if (maxDistance * maxDistance < linkSourcePos.distToCenterSqr(cursorLocation)) return null;
 
-			LinkSource.Orientation orientation = cursorPos == null || Screen.hasControlDown() ?
-					LinkSource.Orientation.fromPosition(linkSourcePos, cursorLocation) :
-					LinkSource.Orientation.fromPosition(linkSourcePos, cursorPos);
+			Orientation orientation = cursorPos == null || Screen.hasControlDown() ?
+					Orientation.fromPosition(linkSourcePos, cursorLocation) :
+					Orientation.fromPosition(linkSourcePos, cursorPos);
 
 			if (player.isSecondaryUseActive()) {
 				// remove the closest link with tangent less than 90 degrees
@@ -144,7 +145,7 @@ public class ConfigurationWandItem extends Item {
 				float closestAngle = Float.POSITIVE_INFINITY;
 
 				for (int i = 0, maxLinks = linkSource.maxLinks(); i < maxLinks; i++) {
-					LinkSource.Orientation o = linkSource.getLink(i);
+					Orientation o = linkSource.getLink(i);
 					if (o == null) continue;
 
 					float angle = Math.abs(o.toQuat(q2).difference(q1).angle());
@@ -180,8 +181,8 @@ public class ConfigurationWandItem extends Item {
 			BlockHitResult[] arr = new BlockHitResult[linkSource.maxLinks()];
 			double linkDistance = linkSource.linkDistance();
 			for (int i = 0; i < arr.length; i++) {
-				LinkSource.Orientation o = linkSource.getLink(i);
-				arr[i] = o == null ? null : LuxUtils.traceConnection(level, o.xRot(), o.yRot(),
+				Orientation o = linkSource.getLink(i);
+				arr[i] = o == null ? null : LuxUtils.traceConnection(level, o,
 						originPos, linkSource.linkOrigin(), linkDistance);
 			}
 			return arr;

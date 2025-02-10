@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKY_VISIBILITY;
+import static gurumirum.magialucis.contents.block.ModBlockStates.SKY_VISIBILITY;
 
 public class SunlightFocusBlock extends Block implements EntityBlock {
 	public static final LuxStat STAT = LuxStat.simple(RGB332.WHITE,

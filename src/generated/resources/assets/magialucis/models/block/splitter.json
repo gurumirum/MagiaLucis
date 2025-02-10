@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/cube",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "down": "magialucis:block/splitter_input",
+    "east": "magialucis:block/splitter",
+    "north": "magialucis:block/splitter",
+    "particle": "magialucis:block/splitter",
+    "south": "magialucis:block/splitter",
+    "up": "magialucis:block/splitter",
+    "west": "magialucis:block/splitter"
+  }
+}

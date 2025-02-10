@@ -3,8 +3,8 @@ package gurumirum.magialucis.contents.block;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-public final class ModBlockStateProps {
-	private ModBlockStateProps() {}
+public final class ModBlockStates {
+	private ModBlockStates() {}
 
 	public static final BooleanProperty LANTERN = BooleanProperty.create("lantern");
 	public static final BooleanProperty OVERSATURATED = BooleanProperty.create("oversaturated");

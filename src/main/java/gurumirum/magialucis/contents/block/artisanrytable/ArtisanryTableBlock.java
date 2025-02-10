@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumMap;
 import java.util.Map;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.*;
+import static gurumirum.magialucis.contents.block.ModBlockStates.*;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
 public class ArtisanryTableBlock extends Block implements EntityBlock {

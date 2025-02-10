@@ -23,8 +23,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.OVERSATURATED;
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKYLIGHT_INTERFERENCE;
+import static gurumirum.magialucis.contents.block.ModBlockStates.OVERSATURATED;
+import static gurumirum.magialucis.contents.block.ModBlockStates.SKYLIGHT_INTERFERENCE;
 
 public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> implements Ticker.Server {
 	private static final int CYCLE = 50;
@@ -95,7 +95,7 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> 
 		for (Direction dir : Direction.values()) {
 			this.mpos.set(pos).move(dir);
 			if (LuxUtils.directLinkToInWorldNode(this, linkCollector, this.mpos, dir.getOpposite(),
-					i, null, false)) {
+					i, null, 1, false)) {
 				i++;
 			}
 		}

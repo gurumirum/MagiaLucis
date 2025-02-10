@@ -6,6 +6,7 @@ import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
+import gurumirum.magialucis.utils.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -44,8 +45,8 @@ public abstract class BasicRelayBlockEntity<B extends LuxNodeBehavior> extends L
 		for (int i = 0; i < this.links.size(); i++) {
 			Orientation o = this.links.get(i);
 			if (o != null) {
-				LuxUtils.linkToInWorldNode(this, linkCollector, o.xRot(), o.yRot(),
-						linkOrigin(), linkDistance(), i, linkDestinationSelector(), true);
+				LuxUtils.linkToInWorldNode(this, linkCollector, o,
+						linkOrigin(), linkDistance(), i, linkDestinationSelector(), 1, true);
 			}
 		}
 	}

@@ -3,7 +3,6 @@ package gurumirum.magialucis.contents.block.lux.sunlight.core;
 import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
-import gurumirum.magialucis.client.render.prism.SunlightCoreBlockPrismEffect;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntity;
@@ -14,6 +13,7 @@ import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
+import gurumirum.magialucis.utils.Orientation;
 import gurumirum.magialucis.utils.ServerTickQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -31,7 +31,7 @@ import org.joml.Vector3d;
 
 import java.util.List;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.OVERSATURATED;
+import static gurumirum.magialucis.contents.block.ModBlockStates.OVERSATURATED;
 
 public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNodeBehavior> extends LuxNodeBlockEntity<B>
 		implements Ticker.Client {
@@ -115,19 +115,9 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 
 	@Override
 	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {
-		float xRot = 0, yRot = 0;
-
-		switch (getBlockState().getValue(BlockStateProperties.FACING)) {
-			case DOWN -> xRot = Mth.HALF_PI;
-			case UP -> xRot = -Mth.HALF_PI;
-			case NORTH -> yRot = Mth.PI;
-			case SOUTH -> {}
-			case WEST -> yRot = Mth.HALF_PI;
-			case EAST -> yRot = -Mth.HALF_PI;
-		}
-
-		LuxUtils.linkToInWorldNode(this, linkCollector, xRot, yRot,
-				Vec3.atCenterOf(getBlockPos()), LINK_DISTANCE, 0, null, true);
+		Orientation o = Orientation.of(getBlockState().getValue(BlockStateProperties.FACING));
+		LuxUtils.linkToInWorldNode(this, linkCollector, o,
+				Vec3.atCenterOf(getBlockPos()), LINK_DISTANCE, 0, null, 1, true);
 	}
 
 	@Override

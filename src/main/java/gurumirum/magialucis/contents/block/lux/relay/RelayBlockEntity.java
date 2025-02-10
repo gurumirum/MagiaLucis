@@ -7,9 +7,9 @@ import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
-import gurumirum.magialucis.client.render.prism.RelayBlockPrismEffect;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.block.GemContainerBlock;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
@@ -35,18 +35,21 @@ import org.joml.Vector3f;
 
 import java.util.Objects;
 
-public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavior> implements DirectLinkDestination, LinkDestinationSelector {
+public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavior>
+		implements DirectLinkDestination, LinkDestinationSelector, GemContainerBlock.GemContainer {
 	private ItemStack stack = ItemStack.EMPTY;
 
 	public RelayBlockEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.RELAY.get(), pos, blockState);
 	}
 
-	public ItemStack stack() {
+	@Override
+	public @NotNull ItemStack stack() {
 		return this.stack;
 	}
 
-	public void setStack(ItemStack stack) {
+	@Override
+	public void setStack(@NotNull ItemStack stack) {
 		this.stack = stack;
 		if (luxNodeId() != NO_ID) {
 			nodeBehavior().setStats(Objects.requireNonNullElse(
@@ -165,15 +168,15 @@ public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavi
 	@Override
 	protected void applyImplicitComponents(BlockEntity.@NotNull DataComponentInput componentInput) {
 		super.applyImplicitComponents(componentInput);
-		RelayItemData relayItemData = componentInput.get(ModDataComponents.RELAY_ITEM.get());
-		this.stack = relayItemData != null ? relayItemData.stack().copy() : ItemStack.EMPTY;
+		GemItemData gemItemData = componentInput.get(ModDataComponents.GEM_ITEM.get());
+		this.stack = gemItemData != null ? gemItemData.stack().copy() : ItemStack.EMPTY;
 	}
 
 	@Override
 	protected void collectImplicitComponents(DataComponentMap.@NotNull Builder components) {
 		super.collectImplicitComponents(components);
 		if (!this.stack.isEmpty())
-			components.set(ModDataComponents.RELAY_ITEM.get(), new RelayItemData(this.stack.copy()));
+			components.set(ModDataComponents.GEM_ITEM.get(), new GemItemData(this.stack.copy()));
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents;
 
 import com.mojang.serialization.Codec;
-import gurumirum.magialucis.contents.block.lux.relay.RelayItemData;
+import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
@@ -22,10 +22,10 @@ public final class ModDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> FIELD_ID = register(
 			"field_id", ResourceLocation.CODEC, ResourceLocation.STREAM_CODEC);
 
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<RelayItemData>> RELAY_ITEM = register(
-			"relay_item",
-			ItemStack.CODEC.xmap(RelayItemData::new, RelayItemData::stack),
-			ItemStack.STREAM_CODEC.map(RelayItemData::new, RelayItemData::stack));
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<GemItemData>> GEM_ITEM = register(
+			"gem_item",
+			ItemStack.CODEC.xmap(GemItemData::new, GemItemData::stack),
+			ItemStack.STREAM_CODEC.map(GemItemData::new, GemItemData::stack));
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<GlobalPos>> LINK_SOURCE = register(
 			"link_source", GlobalPos.CODEC, GlobalPos.STREAM_CODEC);

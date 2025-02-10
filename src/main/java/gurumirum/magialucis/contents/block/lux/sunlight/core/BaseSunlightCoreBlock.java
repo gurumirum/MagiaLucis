@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.OVERSATURATED;
+import static gurumirum.magialucis.contents.block.ModBlockStates.OVERSATURATED;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
 public abstract class BaseSunlightCoreBlock extends Block implements EntityBlock {

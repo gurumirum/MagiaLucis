@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.block.lux.lightbasin;
 
 import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
-import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.core.BlockPos;
@@ -40,11 +40,11 @@ public class LightBasinBlock extends Block implements EntityBlock {
 	public LightBasinBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState()
-				.setValue(ModBlockStateProps.WORKING, false));
+				.setValue(ModBlockStates.WORKING, false));
 	}
 
 	@Override protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) {
-		builder.add(ModBlockStateProps.WORKING);
+		builder.add(ModBlockStates.WORKING);
 	}
 
 	@Override

@@ -3,8 +3,9 @@ package gurumirum.magialucis.datagen;
 import gurumirum.magialucis.contents.BlockProvider;
 import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.Ore;
-import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
+import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlockEntity;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
@@ -73,6 +74,26 @@ public class BlockStateGen extends BlockStateProvider {
 
 		directionalBlock(RELAY.block(), models().getExistingFile(id("block/relay")));
 
+		ResourceLocation splitterTex = SPLITTER.id().withPrefix("block/");
+		var splitter = models().withExistingParent(SPLITTER.id().getPath(), "block/cube")
+				.renderType("cutout")
+				.texture("particle", splitterTex)
+				.texture("down", splitterTex.withSuffix("_input"))
+				.texture("up", splitterTex)
+				.texture("north", splitterTex)
+				.texture("south", splitterTex)
+				.texture("west", splitterTex)
+				.texture("east", splitterTex);
+
+		directionalBlock(SPLITTER.block(), splitter);
+		simpleBlockItem(SPLITTER.block(), splitter);
+
+		for (Direction side : Direction.values()) {
+			for (byte apertureLevel = 0; apertureLevel < SplitterBlockEntity.APERTURE_LEVELS; apertureLevel++) {
+				splitterSide(side, apertureLevel);
+			}
+		}
+
 		simpleBlockWithItem(AMBER_CHARGER.block(), models().withExistingParent(AMBER_CHARGER.id().getPath(), id("block/charger"))
 				.texture("top", AMBER_CHARGER.id().withPath(p -> "block/" + p + "_top"))
 				.texture("side", AMBER_CHARGER.id().withPath(p -> "block/" + p + "_side"))
@@ -95,8 +116,8 @@ public class BlockStateGen extends BlockStateProvider {
 				id("block/amber_core_side_oversaturated"), mcLoc("block/oak_log_top"));
 
 		getVariantBuilder(AMBER_CORE.block()).forAllStates(state -> ConfiguredModel.builder()
-				.modelFile(state.getValue(ModBlockStateProps.SKYLIGHT_INTERFERENCE) ? amberCoreDisabled :
-						state.getValue(ModBlockStateProps.OVERSATURATED) ? amberCoreOversaturated : amberCore)
+				.modelFile(state.getValue(ModBlockStates.SKYLIGHT_INTERFERENCE) ? amberCoreDisabled :
+						state.getValue(ModBlockStates.OVERSATURATED) ? amberCoreOversaturated : amberCore)
 				.build());
 		simpleBlockItem(AMBER_CORE.block(), amberCore);
 
@@ -117,9 +138,9 @@ public class BlockStateGen extends BlockStateProvider {
 		var artisanryTableLeftL = new ModelFile.UncheckedModelFile(id("block/artisanry_table_left_lightloom"));
 		var artisanryTableRightL = new ModelFile.UncheckedModelFile(id("block/artisanry_table_right_lightloom"));
 		horizontalBlock(ARTISANRY_TABLE.block(), state ->
-				state.getValue(ModBlockStateProps.LEFT) ?
-						state.getValue(ModBlockStateProps.LIGHTLOOM) ? artisanryTableLeftL : artisanryTableLeft :
-						state.getValue(ModBlockStateProps.LIGHTLOOM) ? artisanryTableRightL : artisanryTableRight);
+				state.getValue(ModBlockStates.LEFT) ?
+						state.getValue(ModBlockStates.LIGHTLOOM) ? artisanryTableLeftL : artisanryTableLeft :
+						state.getValue(ModBlockStates.LIGHTLOOM) ? artisanryTableRightL : artisanryTableRight);
 
 		var lightloom = new ModelFile.UncheckedModelFile(id("block/lightloom"));
 		var lightloomItem = new ModelFile.UncheckedModelFile(id("item/lightloom"));
@@ -161,6 +182,42 @@ public class BlockStateGen extends BlockStateProvider {
 		});
 
 		itemModels().simpleBlockItem(block.block());
+	}
+
+	private void splitterSide(Direction side, int apertureLevel) {
+		final float p1 = 1, p2 = 15;
+
+		float x1, x2, y1, y2, z1, z2;
+
+		if (side.getAxis() == Direction.Axis.X) {
+			x1 = x2 = side.getStepX() > 0 ? p2 : p1;
+		} else {
+			x1 = p1;
+			x2 = p2;
+		}
+
+		if (side.getAxis() == Direction.Axis.Y) {
+			y1 = y2 = side.getStepY() > 0 ? p2 : p1;
+		} else {
+			y1 = p1;
+			y2 = p2;
+		}
+
+		if (side.getAxis() == Direction.Axis.Z) {
+			z1 = z2 = side.getStepZ() > 0 ? p2 : p1;
+		} else {
+			z1 = p1;
+			z2 = p2;
+		}
+
+		models().getBuilder("block/" + SPLITTER.id().getPath() + "/aperture_" + side + "_" + apertureLevel)
+				.renderType("cutout")
+				.texture("texture", SPLITTER.id().withPath(p -> "block/" + p + "_aperture_" + apertureLevel))
+				.element()
+				.from(x1, y1, z1)
+				.to(x2, y2, z2)
+				.face(side).texture("#texture").end()
+				.face(side.getOpposite()).texture("#texture").end();
 	}
 
 	private final Map<String, ModelFile> lanternModels = new Object2ObjectOpenHashMap<>();

@@ -2,7 +2,7 @@ package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.*;
-import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import gurumirum.magialucis.contents.block.ModBlockStates;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.WritableRegistry;
@@ -88,7 +88,7 @@ public class LootGen extends LootTableProvider {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(b)
 										.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-												.include(ModDataComponents.RELAY_ITEM.get())
+												.include(ModDataComponents.GEM_ITEM.get())
 										)
 								)
 						)
@@ -99,7 +99,7 @@ public class LootGen extends LootTableProvider {
 								.add(LootItem.lootTableItem(block)
 										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
 												.setProperties(StatePropertiesPredicate.Builder.properties()
-														.hasProperty(ModBlockStateProps.LEFT, true))
+														.hasProperty(ModBlockStates.LEFT, true))
 										)
 								)
 						)

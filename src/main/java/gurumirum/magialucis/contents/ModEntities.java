@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.entity.EnderChestPortal;
 import gurumirum.magialucis.contents.entity.LesserIceProjectile;
-import gurumirum.magialucis.contents.entity.TempleGuardian;
+import gurumirum.magialucis.contents.entity.templeguardian.TempleGuardian;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neoforged.bus.api.SubscribeEvent;

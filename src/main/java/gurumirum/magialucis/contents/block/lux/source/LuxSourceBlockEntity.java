@@ -38,7 +38,7 @@ public class LuxSourceBlockEntity extends BasicRelayBlockEntity<LuxSourceBehavio
 		for (Direction dir : Direction.values()) {
 			this.mpos.set(pos).move(dir);
 			if (LuxUtils.directLinkToInWorldNode(this, linkCollector, this.mpos, dir.getOpposite(),
-					i, null, false)) {
+					i, null, 1, false)) {
 				i++;
 			}
 		}

@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.lightbasin;
 
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
-import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import gurumirum.magialucis.contents.block.ModBlockStates;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ public class LightBasinBlockLightEffectProvider extends BlockLightEffectProvider
 
 	@Override
 	public void getLightEffects(float partialTicks, @NotNull Collector collector) {
-		if (this.blockEntity.getBlockState().getValue(ModBlockStateProps.WORKING)) {
+		if (this.blockEntity.getBlockState().getValue(ModBlockStates.WORKING)) {
 			super.getLightEffects(partialTicks, collector);
 		}
 	}

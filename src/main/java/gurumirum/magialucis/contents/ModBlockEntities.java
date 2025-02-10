@@ -6,6 +6,7 @@ import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlockEntity;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntity;
 import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlockEntity;
+import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlockEntity;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntity;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlockEntity;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
@@ -58,6 +59,9 @@ public final class ModBlockEntities {
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RelayBlockEntity>> RELAY =
 			blockEntity("relay", RelayBlockEntity::new, ModBlocks.RELAY);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SplitterBlockEntity>> SPLITTER =
+			blockEntity("splitter", SplitterBlockEntity::new, ModBlocks.SPLITTER);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChargerBlockEntity>> AMBER_CHARGER =
 			charger("amber_charger", ChargerTier.PRIMITIVE, ModBlocks.AMBER_CHARGER);

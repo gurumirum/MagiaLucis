@@ -25,7 +25,7 @@ public abstract class BlockEntityBase extends BlockEntity {
 
 	public void syncToClient() {
 		Level level = getLevel();
-		if (level != null) {
+		if (level != null && !level.isClientSide) {
 			BlockState state = getBlockState();
 			level.sendBlockUpdated(getBlockPos(), state, state, 3);
 		}
@@ -37,7 +37,7 @@ public abstract class BlockEntityBase extends BlockEntity {
 	 */
 	@Override
 	public void setChanged() {
-		if (this.level != null) this.level.blockEntityChanged(getBlockPos());
+		if (this.level != null && !this.level.isClientSide) this.level.blockEntityChanged(getBlockPos());
 	}
 
 	public boolean updateProperty(@NotNull BooleanProperty property, boolean newValue) {

@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -84,7 +84,7 @@ public class AmberTorchWandItem extends LuxContainerItem {
 		BlockPos pos = blockHitResult.getBlockPos();
 		BlockState state = level.getBlockState(pos);
 
-		if (state.is(ModBlocks.AMBER_LIGHT.block()) && !state.getValue(ModBlockStateProps.LANTERN)) {
+		if (state.is(ModBlocks.AMBER_LIGHT.block()) && !state.getValue(ModBlockStates.LANTERN)) {
 			return InteractionResult.FAIL;
 		}
 		if (!state.canBeReplaced()) {

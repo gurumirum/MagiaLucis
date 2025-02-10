@@ -1,7 +1,6 @@
-package gurumirum.magialucis.contents.entity;
+package gurumirum.magialucis.contents.entity.templeguardian;
 
 import gurumirum.magialucis.client.render.beam.BeamRender;
-import gurumirum.magialucis.client.render.beam.TempleGuardianBeamEffect;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;

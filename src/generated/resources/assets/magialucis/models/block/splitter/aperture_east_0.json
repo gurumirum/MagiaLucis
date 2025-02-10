@@ -1,0 +1,28 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "east": {
+          "texture": "#texture"
+        },
+        "west": {
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        15,
+        1,
+        1
+      ],
+      "to": [
+        15,
+        15,
+        15
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "texture": "magialucis:block/splitter_aperture_0"
+  }
+}

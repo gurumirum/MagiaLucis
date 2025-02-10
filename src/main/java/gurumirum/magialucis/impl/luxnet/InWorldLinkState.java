@@ -5,13 +5,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public record InWorldLinkState(boolean linked, @NotNull InWorldLinkInfo info) {
-	public InWorldLinkState(boolean linked, @NotNull BlockPos origin, @NotNull BlockPos linkPos, @NotNull Vec3 linkLocation) {
-		this(linked, new InWorldLinkInfo(origin, linkPos, linkLocation));
+public record InWorldLinkState(boolean linked, int weight, @NotNull InWorldLinkInfo info) {
+	public InWorldLinkState(boolean linked, int weight, @NotNull BlockPos origin, @NotNull BlockPos linkPos, @NotNull Vec3 linkLocation) {
+		this(linked, weight, new InWorldLinkInfo(origin, linkPos, linkLocation));
 	}
 
 	public InWorldLinkState(CompoundTag tag) {
-		this(tag.getBoolean("linked"), new InWorldLinkInfo(tag));
+		this(tag.getBoolean("linked"),
+				tag.contains("weight", CompoundTag.TAG_INT) ? Math.max(0, tag.getInt("weight")) : 1,
+				new InWorldLinkInfo(tag));
 	}
 
 	public @NotNull BlockPos origin() {
@@ -29,6 +31,7 @@ public record InWorldLinkState(boolean linked, @NotNull InWorldLinkInfo info) {
 	public CompoundTag save() {
 		CompoundTag tag = new CompoundTag();
 		tag.putBoolean("linked", this.linked);
+		if (this.weight != 1) tag.putInt("weight", this.weight);
 		this.info.save(tag);
 		return tag;
 	}

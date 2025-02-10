@@ -2,8 +2,8 @@ package gurumirum.magialucis.client.render.light;
 
 import gurumirum.magialucis.client.render.RenderEffect;
 import gurumirum.magialucis.contents.block.lux.LuxNodeSyncPropertyAccess;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
 import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
+import gurumirum.magialucis.impl.luxnet.LinkInfo;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
@@ -14,6 +14,8 @@ import org.joml.Vector3d;
 public class BlockLightEffectProvider<T extends BlockEntity & LuxNodeSyncPropertyAccess>
 		extends RenderEffect.BlockEntityBound<T>
 		implements LightEffectProvider {
+	private final Vector3d luxCache = new Vector3d();
+
 	private float sphereRadiusModifier = 1;
 	private float rayRadiusModifier = 1;
 
@@ -60,37 +62,41 @@ public class BlockLightEffectProvider<T extends BlockEntity & LuxNodeSyncPropert
 		Vec3 origin = origin();
 		if (origin == null) return;
 
-		var outboundLinks = this.blockEntity.outboundLinks();
-		if (outboundLinks.size() > 1) {
-			luxFlow.div(outboundLinks.size());
-		}
-
+		int totalLinkWeight = Math.max(1, this.blockEntity.totalLinkWeight());
 		int color = 0;
 		boolean colorInitialized = false;
 
-		double sum = LuxUtils.sum(luxFlow);
-		if (sum <= 1) return;
+		for (var e : this.blockEntity.outboundLinks().int2ObjectEntrySet()) {
+			LinkInfo info = e.getValue();
+			if (info.inWorld() == null) continue;
 
-		float radius = LightEffect.rayRadius(sum) * radiusModifier;
+			double m = (double)info.weight() / totalLinkWeight;
+			double sum = LuxUtils.sum(this.luxCache.set(luxFlow).mul(m));
+			if (sum <= 1) return;
 
-		for (var e : outboundLinks.int2ObjectEntrySet()) {
-			InWorldLinkInfo info = e.getValue();
-			if (info == null) continue;
+			float radius = LightEffect.rayRadius(sum) * radiusModifier;
 
 			if (!colorInitialized) {
 				colorInitialized = true;
 				color = LightEffect.getLightColor(luxFlow);
 			}
 
-			collector.addCylindricalEffect(radius, origin, Vec3.atCenterOf(info.linkPos()), color, false);
+			collector.addCylindricalEffect(radius, origin, Vec3.atCenterOf(info.inWorld().linkPos()), color, false);
 		}
 
 		for (InWorldLinkState linkState : this.blockEntity.linkStates()) {
 			if (linkState != null && !linkState.linked()) {
+				double m = (double)linkState.weight() / totalLinkWeight;
+				double sum = LuxUtils.sum(this.luxCache.set(luxFlow).mul(m));
+				if (sum <= 1) return;
+
+				float radius = LightEffect.rayRadius(sum) * radiusModifier;
+
 				if (!colorInitialized) {
 					colorInitialized = true;
 					color = LightEffect.getLightColor(luxFlow);
 				}
+
 				collector.addCylindricalEffect(radius, origin, linkState.linkLocation(), color, true);
 			}
 		}

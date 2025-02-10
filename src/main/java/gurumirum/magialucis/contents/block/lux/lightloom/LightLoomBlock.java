@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.lightloom;
 
 import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
@@ -43,7 +43,7 @@ public class LightLoomBlock extends LightLoomBaseBlock implements EntityBlock {
 	@Override
 	public @Nullable BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
 		BlockState below = context.getLevel().getBlockState(context.getClickedPos().below());
-		return below.is(ModBlocks.ARTISANRY_TABLE.block()) && !below.getValue(ModBlockStateProps.LEFT) ?
+		return below.is(ModBlocks.ARTISANRY_TABLE.block()) && !below.getValue(ModBlockStates.LEFT) ?
 				defaultBlockState().setValue(HORIZONTAL_FACING,
 						below.getValue(HORIZONTAL_FACING).getCounterClockWise()) :
 				null;
@@ -71,7 +71,7 @@ public class LightLoomBlock extends LightLoomBaseBlock implements EntityBlock {
 			@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState,
 			@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
 		if (direction == Direction.DOWN) {
-			if (neighborState.is(ModBlocks.ARTISANRY_TABLE.block()) && !neighborState.getValue(ModBlockStateProps.LEFT)) {
+			if (neighborState.is(ModBlocks.ARTISANRY_TABLE.block()) && !neighborState.getValue(ModBlockStates.LEFT)) {
 				return state.setValue(HORIZONTAL_FACING, neighborState.getValue(HORIZONTAL_FACING).getCounterClockWise());
 			} else {
 				return Blocks.AIR.defaultBlockState();

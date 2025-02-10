@@ -5,7 +5,7 @@ import gurumirum.magialucis.capability.impl.FixedItemStackHandler;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.block.BlockEntityBase;
-import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlockEntity;
 import gurumirum.magialucis.contents.recipe.LuxRecipeEvaluation;
@@ -37,7 +37,7 @@ import java.util.AbstractList;
 import java.util.List;
 import java.util.Objects;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.WORKING;
+import static gurumirum.magialucis.contents.block.ModBlockStates.WORKING;
 
 public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker.Both, MenuProvider {
 	public static final int SLOTS_CONTAINER = 0;
@@ -131,7 +131,7 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 
 	@Override
 	public void updateClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
-		if (level.getGameTime() % 4 == 0 && getBlockState().getValue(ModBlockStateProps.WORKING)) {
+		if (level.getGameTime() % 4 == 0 && getBlockState().getValue(ModBlockStates.WORKING)) {
 			Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING).getClockWise();
 			LuxUtils.addSpreadingLightParticle(level, pos.getX() + 0.5 + direction.getStepX() * (1 / 8.0),
 					pos.getY() + 1,

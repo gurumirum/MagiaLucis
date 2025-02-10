@@ -1,6 +1,6 @@
 package gurumirum.magialucis.net.msgs;
 
-import gurumirum.magialucis.capability.LinkSource;
+import gurumirum.magialucis.utils.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -12,7 +12,7 @@ import static gurumirum.magialucis.MagiaLucisMod.id;
 public record SetLinkMsg(
 		BlockPos pos,
 		int index,
-		@Nullable LinkSource.Orientation orientation
+		@Nullable Orientation orientation
 ) implements CustomPacketPayload {
 	public static final CustomPacketPayload.Type<SetLinkMsg> TYPE =
 			new CustomPacketPayload.Type<>(id("set_link"));
@@ -32,7 +32,7 @@ public record SetLinkMsg(
 	private static SetLinkMsg decode(FriendlyByteBuf buffer) {
 		return new SetLinkMsg(buffer.readBlockPos(),
 				buffer.readVarInt(),
-				buffer.readBoolean() ? LinkSource.Orientation.fromLong(buffer.readLong()) : null);
+				buffer.readBoolean() ? Orientation.fromLong(buffer.readLong()) : null);
 	}
 
 	@Override

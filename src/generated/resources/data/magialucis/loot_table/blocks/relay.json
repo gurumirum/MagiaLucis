@@ -15,7 +15,7 @@
             {
               "function": "minecraft:copy_components",
               "include": [
-                "magialucis:relay_item"
+                "magialucis:gem_item"
               ],
               "source": "block_entity"
             }

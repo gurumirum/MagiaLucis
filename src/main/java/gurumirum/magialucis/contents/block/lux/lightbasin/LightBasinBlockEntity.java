@@ -6,7 +6,7 @@ import gurumirum.magialucis.capability.impl.FixedItemStackHandler;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModRecipes;
-import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.recipe.LuxRecipeEvaluation;
@@ -78,7 +78,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 
 	@Override
 	public void updateClient(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
-		if (level.getGameTime() % 2 == 0 && getBlockState().getValue(ModBlockStateProps.WORKING)) {
+		if (level.getGameTime() % 2 == 0 && getBlockState().getValue(ModBlockStates.WORKING)) {
 			LuxUtils.addSpreadingLightParticle(level, pos.getX() + 0.5,
 					pos.getY() + 1.25,
 					pos.getZ() + 0.5,
@@ -147,7 +147,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 			this.progress = 0;
 		}
 
-		updateProperty(ModBlockStateProps.WORKING, working);
+		updateProperty(ModBlockStates.WORKING, working);
 
 		if (this.syncContents && level.getGameTime() % SYNC_INTERVAL == 0) {
 			this.syncContents = false;

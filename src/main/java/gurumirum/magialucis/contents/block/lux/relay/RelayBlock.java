@@ -1,11 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.relay;
 
-import gurumirum.magialucis.capability.LuxStat;
-import gurumirum.magialucis.capability.ModCapabilities;
-import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.impl.LuxStatTooltip;
-import gurumirum.magialucis.utils.ModUtils;
-import net.minecraft.ChatFormatting;
+import gurumirum.magialucis.contents.block.GemContainerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -20,9 +15,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,7 +23,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +34,7 @@ import java.util.List;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
-public class RelayBlock extends Block implements EntityBlock, SimpleWaterloggedBlock {
+public class RelayBlock extends GemContainerBlock implements SimpleWaterloggedBlock {
 	private static final EnumMap<Direction, VoxelShape> SHAPE = new EnumMap<>(Direction.class);
 
 	static {
@@ -97,7 +89,6 @@ public class RelayBlock extends Block implements EntityBlock, SimpleWaterloggedB
 		if (state.getValue(WATERLOGGED)) {
 			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
-
 		return state;
 	}
 
@@ -107,18 +98,8 @@ public class RelayBlock extends Block implements EntityBlock, SimpleWaterloggedB
 	                                                    @NotNull BlockHitResult hitResult) {
 		if (hitResult.getDirection() == state.getValue(FACING).getOpposite())
 			return InteractionResult.PASS;
-		if (!player.isSecondaryUseActive())
-			return InteractionResult.PASS;
 
-		if (level.getBlockEntity(pos) instanceof RelayBlockEntity relay) {
-			if (relay.stack().isEmpty()) return InteractionResult.PASS;
-			if (!level.isClientSide) {
-				ModUtils.giveOrDrop(player, level, relay.stack(), pos);
-				relay.setStack(ItemStack.EMPTY);
-			}
-			return InteractionResult.SUCCESS;
-		}
-		return InteractionResult.FAIL;
+		return super.useWithoutItem(state, level, pos, player, hitResult);
 	}
 
 	@Override
@@ -129,55 +110,16 @@ public class RelayBlock extends Block implements EntityBlock, SimpleWaterloggedB
 		if (hitResult.getDirection() == state.getValue(FACING).getOpposite())
 			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-		LuxStat gemStat = stack.getCapability(ModCapabilities.GEM_STAT);
-		if (gemStat == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-
-		if (level.getBlockEntity(pos) instanceof RelayBlockEntity relay) {
-			if (ItemStack.isSameItem(relay.stack(), stack)) {
-				return ItemInteractionResult.CONSUME;
-			}
-			if (!level.isClientSide) {
-				ItemStack split = stack.split(1);
-				ModUtils.giveOrDrop(player, level, relay.stack(), pos);
-				relay.setStack(split);
-			}
-			return ItemInteractionResult.SUCCESS;
-		}
-		return ItemInteractionResult.FAIL;
+		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 	}
 
 	@Override
-	public @NotNull ItemStack getCloneItemStack(@NotNull BlockState state, @NotNull HitResult target,
-	                                            @NotNull LevelReader level, @NotNull BlockPos pos,
-	                                            @NotNull Player player) {
-		ItemStack stack = new ItemStack(this);
-		if (level.getBlockEntity(pos) instanceof RelayBlockEntity relay) {
-			ItemStack relayItem = relay.stack();
-			if (!relayItem.isEmpty()) {
-				stack.set(ModDataComponents.RELAY_ITEM, new RelayItemData(relayItem.copy()));
-			}
-		}
-		return stack;
-	}
-
-	@Override
-	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
-	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		ItemStack s = RelayItemData.getItem(stack);
-		if (!s.isEmpty()) {
-			tooltip.add(s.getHoverName().copy().withStyle(ChatFormatting.GOLD));
-		}
-
+	protected void addDescription(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
+	                              @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
 		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.0"));
 		tooltip.add(Component.translatable("item.magialucis.tooltip.link_source"));
 		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.1"));
 		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.2"));
 		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.3"));
-
-		LuxStat gemStat = s.getCapability(ModCapabilities.GEM_STAT);
-		if (gemStat != null) {
-			LuxStatTooltip.formatStat(gemStat, tooltip, LuxStatTooltip.Type.GEM);
-			LuxStatTooltip.skipAutoTooltipFor(stack);
-		}
 	}
 }

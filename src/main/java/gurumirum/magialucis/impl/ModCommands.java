@@ -1,11 +1,12 @@
 package gurumirum.magialucis.impl;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.field.FieldRegistry;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkInfo;
+import gurumirum.magialucis.impl.luxnet.LinkInfo;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.LuxNodeInterface;
@@ -47,21 +48,39 @@ public final class ModCommands {
 												printLuxNetNodes(context.getSource(), context.getSource().getLevel())
 										).then(argument("dimension", DimensionArgument.dimension())
 												.executes(context ->
-														printLuxNetNodes(context.getSource(), DimensionArgument.getDimension(context, "dimension")))
+														printLuxNetNodes(context.getSource(),
+																DimensionArgument.getDimension(context, "dimension")))
 										)
 								).then(literal("outboundLinks")
 										.executes(context ->
 												printLuxNetLinks(context.getSource(), context.getSource().getLevel(), true)
 										).then(argument("dimension", DimensionArgument.dimension())
 												.executes(context ->
-														printLuxNetLinks(context.getSource(), DimensionArgument.getDimension(context, "dimension"), true))
+														printLuxNetLinks(context.getSource(),
+																DimensionArgument.getDimension(context, "dimension"),
+																true))
 										)
 								).then(literal("inboundLinks")
 										.executes(context ->
 												printLuxNetLinks(context.getSource(), context.getSource().getLevel(), false)
 										).then(argument("dimension", DimensionArgument.dimension())
 												.executes(context ->
-														printLuxNetLinks(context.getSource(), DimensionArgument.getDimension(context, "dimension"), false))
+														printLuxNetLinks(context.getSource(),
+																DimensionArgument.getDimension(context, "dimension"),
+																false))
+										)
+								).then(literal("node")
+										.then(argument("nodeId", IntegerArgumentType.integer())
+												.executes(context ->
+														printLuxNetNode(context.getSource(),
+																context.getSource().getLevel(),
+																IntegerArgumentType.getInteger(context, "nodeId"))
+												).then(argument("dimension", DimensionArgument.dimension())
+														.executes(context ->
+																printLuxNetNode(context.getSource(),
+																		DimensionArgument.getDimension(context, "dimension"),
+																		IntegerArgumentType.getInteger(context, "nodeId")))
+												)
 										)
 								)
 						).then(literal("clear")
@@ -71,14 +90,18 @@ public final class ModCommands {
 												clearLuxNet(context.getSource(), context.getSource().getLevel(), LuxNet.ClearMode.ALL)
 										).then(argument("dimension", DimensionArgument.dimension())
 												.executes(context ->
-														clearLuxNet(context.getSource(), DimensionArgument.getDimension(context, "dimension"), LuxNet.ClearMode.ALL))
+														clearLuxNet(context.getSource(),
+																DimensionArgument.getDimension(context, "dimension"),
+																LuxNet.ClearMode.ALL))
 										)
 								).then(literal("unloaded")
 										.executes(context ->
 												clearLuxNet(context.getSource(), context.getSource().getLevel(), LuxNet.ClearMode.UNLOADED)
 										).then(argument("dimension", DimensionArgument.dimension())
 												.executes(context ->
-														clearLuxNet(context.getSource(), DimensionArgument.getDimension(context, "dimension"), LuxNet.ClearMode.UNLOADED))
+														clearLuxNet(context.getSource(),
+																DimensionArgument.getDimension(context, "dimension"),
+																LuxNet.ClearMode.UNLOADED))
 										)
 								)
 						)
@@ -127,11 +150,38 @@ public final class ModCommands {
 		return 1;
 	}
 
+	private static int printLuxNetNode(CommandSourceStack source, ServerLevel level, int nodeId) {
+		LuxNet luxNet = LuxNet.get(level);
+		LuxNode node = luxNet.get(nodeId);
+		if (node == null) {
+			source.sendFailure(Component.literal("No luxnet node with ID " + nodeId));
+			return 0;
+		} else {
+			MutableComponent c = Component.empty();
+			boolean first = true;
+
+			for (String s : nodeDescription(luxNet, node)) {
+				if (first) first = false;
+				else c.append("\n");
+				c.append(s);
+			}
+
+			source.sendSuccess(() -> c, false);
+			return 1;
+		}
+	}
+
 	private static MutableComponent node(LuxNet luxNet, LuxNode node) {
 		return Component.literal(node.toString()).withStyle(nodeTooltip(luxNet, node));
 	}
 
 	private static Style nodeTooltip(LuxNet luxNet, LuxNode node) {
+		return Style.EMPTY.withHoverEvent(
+				new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(
+						String.join("\n", nodeDescription(luxNet, node)))));
+	}
+
+	private static List<String> nodeDescription(LuxNet luxNet, LuxNode node) {
 		List<String> tooltips = new ArrayList<>();
 
 		ResourceLocation id = node.behavior().type().id();
@@ -148,34 +198,32 @@ public final class ModCommands {
 
 		if (luxNet.hasInboundLink(node)) {
 			tooltips.add("Inbound Links:");
-			for (var e2 : luxNet.inboundLinks(node).entrySet()) {
-				InWorldLinkInfo info = e2.getValue();
+			for (var e2 : luxNet.inboundLinks(node).links().entrySet()) {
+				LinkInfo info = e2.getValue();
 				String str = " " + e2.getKey();
-				if (info == null) str += " implicit";
+				if (info.inWorld() == null) str += " implicit";
 				tooltips.add(str);
 			}
 		}
 
 		if (luxNet.hasOutboundLink(node)) {
 			tooltips.add("Outbound Links:");
-			for (var e2 : luxNet.outboundLinks(node).entrySet()) {
-				InWorldLinkInfo info = e2.getValue();
+			for (var e2 : luxNet.outboundLinks(node).links().entrySet()) {
+				LinkInfo info = e2.getValue();
 				String str = " " + e2.getKey();
-				if (info == null) str += " implicit";
+				if (info.inWorld() == null) str += " implicit";
 				tooltips.add(str);
 			}
 		}
 
-		return Style.EMPTY.withHoverEvent(
-				new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(
-						String.join("\n", tooltips))));
+		return tooltips;
 	}
 
 	private static int printLuxNetLinks(CommandSourceStack source, ServerLevel level, boolean outbound) {
 		LuxNet luxNet = LuxNet.get(level);
 		Set<LuxNode> nodesWithLink = outbound ? luxNet.nodesWithOutboundLink() : luxNet.nodesWithInboundLink();
 		int links = nodesWithLink.stream()
-				.mapToInt(n -> (outbound ? luxNet.outboundLinks(n) : luxNet.inboundLinks(n)).size())
+				.mapToInt(n -> (outbound ? luxNet.outboundLinks(n) : luxNet.inboundLinks(n)).links().size())
 				.sum();
 
 		source.sendSuccess(() -> Component.literal("LuxNet of dimension " + level.dimension().location() + ": " +
@@ -184,7 +232,7 @@ public final class ModCommands {
 		if (links > 0) {
 			for (LuxNode node : nodesWithLink) {
 				var map = outbound ? luxNet.outboundLinks(node) : luxNet.inboundLinks(node);
-				if (map.isEmpty()) continue;
+				if (map.links().isEmpty()) continue;
 
 				MutableComponent nodeText = node(luxNet, node);
 				MutableComponent things = Component.empty();
@@ -193,12 +241,12 @@ public final class ModCommands {
 
 				boolean first = true;
 
-				for (var e : map.entrySet()) {
+				for (var e : map.links().entrySet()) {
 					if (first) first = false;
 					else things.append(", ");
 
 					things.append(Component.literal(
-							e.getValue() == null ? "*" + e.getKey() + "*" : "" + e.getKey()
+							e.getValue().inWorld() == null ? "*" + e.getKey() + "*" : "" + e.getKey()
 					).withStyle(nodeTooltip(luxNet, e.getKey())));
 				}
 

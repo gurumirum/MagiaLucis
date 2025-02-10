@@ -1,6 +1,6 @@
-package gurumirum.magialucis.client.render.beam;
+package gurumirum.magialucis.contents.entity.templeguardian;
 
-import gurumirum.magialucis.contents.entity.TempleGuardian;
+import gurumirum.magialucis.client.render.beam.BeamEffect;
 import gurumirum.magialucis.contents.item.BeamSource;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;

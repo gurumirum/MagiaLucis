@@ -64,6 +64,8 @@ public final class ModCapabilities {
 		linkDestination(event, ModBlockEntities.RELAY.get());
 		directLinkDestination(event, ModBlockEntities.RELAY.get());
 
+		linkDestination(event, ModBlockEntities.SPLITTER.get());
+
 		linkDestination(event, ModBlockEntities.AMBER_CHARGER.get());
 		directLinkDestination(event, ModBlockEntities.AMBER_CHARGER.get());
 		linkDestination(event, ModBlockEntities.LUMINOUS_CHARGER.get());

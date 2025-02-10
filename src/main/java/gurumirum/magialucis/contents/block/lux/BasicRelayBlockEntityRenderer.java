@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents.block.lux;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import gurumirum.magialucis.utils.Orientation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -18,7 +19,7 @@ public class BasicRelayBlockEntityRenderer<T extends BasicRelayBlockEntity<?>> i
 	@Override
 	public void render(@NotNull T blockEntity, float partialTick, @NotNull PoseStack poseStack,
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		for (@Nullable BasicRelayBlockEntity.Orientation o : blockEntity.getLinks()) {
+		for (@Nullable Orientation o : blockEntity.getLinks()) {
 			if (o == null) continue;
 			o.toVector(this.directionCache);
 

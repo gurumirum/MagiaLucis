@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.block.lux.lightloom;
 
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.contents.block.ModBlockStateProps;
+import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
@@ -72,9 +72,9 @@ public class LightLoomBlockEntity extends LuxNodeBlockEntity<LightLoomBehavior>
 		BlockState artisanryTableState = level.getBlockState(artisanryTablePos);
 
 		if (artisanryTableState.is(ModBlocks.ARTISANRY_TABLE.block()) &&
-				artisanryTableState.getValue(ModBlockStateProps.LEFT) &&
+				artisanryTableState.getValue(ModBlockStates.LEFT) &&
 				artisanryTableState.getValue(HORIZONTAL_FACING) == facing.getClockWise()) {
-			working = artisanryTableState.getValue(ModBlockStateProps.WORKING);
+			working = artisanryTableState.getValue(ModBlockStates.WORKING);
 		}
 
 		float targetVelocity = working ? VELOCITY_WORKING : VELOCITY_IDLE;

@@ -16,7 +16,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static gurumirum.magialucis.contents.block.ModBlockStateProps.SKY_VISIBILITY;
+import static gurumirum.magialucis.contents.block.ModBlockStates.SKY_VISIBILITY;
 
 public class SunlightFocusBlockEntity extends BasicRelayBlockEntity<SunlightFocusBehavior> implements LinkDestinationSelector, Ticker.Server {
 	public static final double LINK_DISTANCE = 10;

@@ -121,7 +121,7 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 					poseStack, buffer.getBuffer(renderType));
 		}
 
-		ItemStack relayItem = RelayItemData.getItem(stack);
+		ItemStack relayItem = GemItemData.getItem(stack);
 		if (!relayItem.isEmpty()) {
 			RelayBlockEntityRenderer.drawGemItem(mc.level, partialTicks, poseStack, buffer, relayItem,
 					packedLight, packedOverlay);
