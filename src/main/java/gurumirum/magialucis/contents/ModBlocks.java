@@ -57,7 +57,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 	SPLITTER(BlockProfile.customBlock(SplitterBlock::new, Properties.of()
 			.noOcclusion()
 			.strength(2.5f)
-			.sound(SoundType.GLASS))),
+			.sound(SoundType.WOOD))),
 
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of()
 			.strength(2.5f)

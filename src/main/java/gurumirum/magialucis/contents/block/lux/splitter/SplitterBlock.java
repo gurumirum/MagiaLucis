@@ -4,6 +4,8 @@ import gurumirum.magialucis.contents.block.GemContainerBlock;
 import gurumirum.magialucis.contents.block.RelativeDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -66,7 +68,13 @@ public class SplitterBlock extends GemContainerBlock implements SimpleWaterlogge
 		if (side == facing.getOpposite()) return InteractionResult.PASS;
 
 		if (!level.isClientSide && level.getBlockEntity(pos) instanceof SplitterBlockEntity distributor) {
-			distributor.cycleApertureLevel(RelativeDirection.getRelativeDirection(facing, side));
+			RelativeDirection rel = RelativeDirection.getRelativeDirection(facing, side);
+			byte prev = distributor.apertureLevel(rel);
+			distributor.cycleApertureLevel(rel);
+
+			level.playSound(null, pos, prev < distributor.apertureLevel(rel) ?
+							SoundEvents.IRON_TRAPDOOR_OPEN : SoundEvents.IRON_TRAPDOOR_CLOSE,
+					SoundSource.BLOCKS, .75f, level.getRandom().nextFloat() * 0.1f + 1.1f);
 		}
 
 		return InteractionResult.SUCCESS;
