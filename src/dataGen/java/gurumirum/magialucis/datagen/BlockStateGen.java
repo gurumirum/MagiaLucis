@@ -74,19 +74,8 @@ public class BlockStateGen extends BlockStateProvider {
 
 		directionalBlock(RELAY.block(), models().getExistingFile(id("block/relay")));
 
-		ResourceLocation splitterTex = SPLITTER.id().withPrefix("block/");
-		var splitter = models().withExistingParent(SPLITTER.id().getPath(), "block/cube")
-				.renderType("cutout")
-				.texture("particle", splitterTex)
-				.texture("down", splitterTex.withSuffix("_input"))
-				.texture("up", splitterTex)
-				.texture("north", splitterTex)
-				.texture("south", splitterTex)
-				.texture("west", splitterTex)
-				.texture("east", splitterTex);
-
-		directionalBlock(SPLITTER.block(), splitter);
-		simpleBlockItem(SPLITTER.block(), splitter);
+		directionalBlock(SPLITTER.block(), new ModelFile.UncheckedModelFile(SPLITTER.id().withPrefix("block/")));
+		itemModels().withExistingParent(SPLITTER.id().getPath(), id("item/block_entity"));
 
 		for (Direction side : Direction.values()) {
 			for (byte apertureLevel = 0; apertureLevel < SplitterBlockEntity.APERTURE_LEVELS; apertureLevel++) {

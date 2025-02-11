@@ -29,7 +29,7 @@ public class SplitterBlock extends GemContainerBlock implements SimpleWaterlogge
 
 		BlockState state = defaultBlockState()
 				.setValue(WATERLOGGED, false)
-				.setValue(FACING, Direction.NORTH);
+				.setValue(FACING, Direction.UP);
 
 		registerDefaultState(state);
 	}

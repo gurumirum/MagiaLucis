@@ -151,7 +151,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 
 	public void addItem(CreativeModeTab.Output o) {
 		switch (this) {
-			case RELAY -> {
+			case RELAY, SPLITTER -> {
 				o.accept(this);
 				for (GemStats g : GemStats.values()) {
 					g.forEachItem(item -> {

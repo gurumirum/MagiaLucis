@@ -115,6 +115,7 @@ public final class ClientInit {
 		event.registerItem(new WandItemExtension(), Arrays.stream(Wands.values())
 				.map(Wands::asItem).toArray(Item[]::new));
 		event.registerItem(customRenderItem(RelayBlockEntityRenderer::renderByItem), ModBlocks.RELAY.asItem());
+		event.registerItem(customRenderItem(SplitterBlockEntityRenderer::renderByItem), ModBlocks.SPLITTER.asItem());
 		event.registerItem(new SunlightCoreItemExtension(), ModBlocks.SUNLIGHT_CORE.blockItem());
 		event.registerItem(new MoonlightCoreItemExtension(), ModBlocks.MOONLIGHT_CORE.blockItem());
 		event.registerItem(customRenderItem(SunlightFocusBlockEntityRenderer::renderByItem), ModBlocks.SUNLIGHT_FOCUS.blockItem());
