@@ -7,6 +7,7 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -44,7 +45,7 @@ public enum ModItems implements ItemLike {
 	TEMPLE_GUARDIAN_SPAWN_EGG(ItemProfile.customItem(p -> new DeferredSpawnEggItem(ModEntities.TEMPLE_GUARDIAN, 0xFF727280, 0xFFDEDEDE, p)));
 
 	private final DeferredItem<Item> item;
-	private final CreativeTabType tab;
+	private final @Nullable CreativeTabType tab;
 
 	ModItems() {
 		this(ItemProfile.item(), CreativeTabType.MAIN);
@@ -56,7 +57,7 @@ public enum ModItems implements ItemLike {
 	ModItems(@NotNull CreativeTabType tab) {
 		this(ItemProfile.item(), tab);
 	}
-	ModItems(@NotNull ItemProfile<Item> itemProfile, @NotNull CreativeTabType tab) {
+	ModItems(@NotNull ItemProfile<Item> itemProfile, @Nullable CreativeTabType tab) {
 		this.item = itemProfile.create(name().toLowerCase(Locale.ROOT));
 		this.tab = tab;
 	}
@@ -70,8 +71,8 @@ public enum ModItems implements ItemLike {
 		return this.item.asItem();
 	}
 
-	public CreativeTabType getCreativeTab() {
-		return tab;
+	public @Nullable CreativeTabType getCreativeTab() {
+		return this.tab;
 	}
 
 	public static void init() {}

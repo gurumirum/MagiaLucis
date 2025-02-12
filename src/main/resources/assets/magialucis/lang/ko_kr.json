@@ -127,7 +127,7 @@
   "item.magialucis.luminous_mechanical_component": "빛나는 기계부품",
   "item.magialucis.luminous_resonance_core": "빛나는 공명 코어",
   "item.magialucis.luminous_resonator": "빛나는 공명기",
-  "item.magialucis.mechanical_component": "기계부픔",
+  "item.magialucis.mechanical_component": "기계부품",
   "item.magialucis.moonlight_infused_powder": "달빛이 주입된 가루",
   "item.magialucis.moonstone": "월장석",
   "item.magialucis.obsidian": "흑요석 파편",
@@ -194,6 +194,7 @@
   "itemGroup.magialucis.building_blocks": "Magia Lucis: 건축 블록",
   "itemGroup.magialucis.main": "Magia Lucis",
   "itemGroup.magialucis.mechanisms": "Magia Lucis: 기계장치",
+  "itemGroup.magialucis.transmitters": "Magia Lucis: 에너지 수송 장치",
   "itemGroup.magialucis.resources": "Magia Lucis: 자원",
 
   "jei.magialucis.ancient_light": "고대의 빛",

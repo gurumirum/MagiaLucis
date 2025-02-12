@@ -11,14 +11,14 @@ import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlock;
 import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.connector.ConnectorBlock;
-import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlock;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBaseBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
-import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
 import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
+import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlock;
+import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlock;
@@ -49,21 +49,21 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.replaceable()
 			.noLootTable()
 			.noCollission()
-			.noOcclusion())),
+			.noOcclusion()), null),
 
 	RELAY(BlockProfile.customBlock(RelayBlock::new, Properties.of()
 			.strength(1)
-			.sound(SoundType.GLASS))),
+			.sound(SoundType.GLASS)), CreativeTabType.TRANSMITTERS),
 
 	SPLITTER(BlockProfile.customBlock(SplitterBlock::new, Properties.of()
 			.noOcclusion()
 			.strength(2.5f)
-			.sound(SoundType.WOOD))),
+			.sound(SoundType.WOOD)), CreativeTabType.TRANSMITTERS),
 
 	CONNECTOR(BlockProfile.customBlock(ConnectorBlock::new, Properties.of()
 			.noOcclusion()
 			.strength(2.5f)
-			.sound(SoundType.WOOD))),
+			.sound(SoundType.WOOD)), CreativeTabType.TRANSMITTERS),
 
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of()
 			.strength(2.5f)
@@ -129,13 +129,18 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 	FIELD_MONITOR(BlockProfile.customBlock(FieldMonitorBlock::new, Properties.of().strength(1)));
 
 	private final DeferredBlock<? extends Block> block;
-	@Nullable
-	private final DeferredItem<? extends BlockItem> item;
+	private final @Nullable DeferredItem<? extends BlockItem> item;
+	private final @Nullable CreativeTabType tab;
 
 	ModBlocks(@NotNull BlockProfile<Block, BlockItem> blockProfile) {
+		this(blockProfile, CreativeTabType.MECHANISMS);
+	}
+
+	ModBlocks(@NotNull BlockProfile<Block, BlockItem> blockProfile, @Nullable CreativeTabType tab) {
 		String id = name().toLowerCase(Locale.ROOT);
 		this.block = blockProfile.create(id);
 		this.item = blockProfile.createItem(this.block);
+		this.tab = tab;
 	}
 
 	public @NotNull ResourceLocation id() {
@@ -153,6 +158,10 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 
 	public @Nullable BlockItem blockItem() {
 		return this.item != null ? this.item.get() : null;
+	}
+
+	public @Nullable CreativeTabType getCreativeTab() {
+		return this.tab;
 	}
 
 	public void addItem(CreativeModeTab.Output o) {

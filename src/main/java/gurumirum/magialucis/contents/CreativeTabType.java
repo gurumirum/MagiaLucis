@@ -43,6 +43,10 @@ public enum CreativeTabType {
 			for (var i : ModItems.values()) {
 				if (i.getCreativeTab() == this) o.accept(i);
 			}
+
+			for (var b : ModBlocks.values()) {
+				if (b.getCreativeTab() == this) b.addItem(o);
+			}
 		}
 	},
 	RESOURCES {
@@ -59,10 +63,27 @@ public enum CreativeTabType {
 				if (i.getCreativeTab() == this) o.accept(i);
 			}
 
+			for (var b : ModBlocks.values()) {
+				if (b.getCreativeTab() == this) b.addItem(o);
+			}
+
 			for (var g : GemStats.values()) g.forEachItem(o::accept);
 		}
 	},
 	MECHANISMS {
+		@Override
+		protected ItemStack icon() {
+			return new ItemStack(ModBlocks.SUNLIGHT_CORE);
+		}
+
+		@Override
+		protected void generate(ItemDisplayParameters p, CreativeModeTab.Output o) {
+			for (var b : ModBlocks.values()) {
+				if (b.getCreativeTab() == this) b.addItem(o);
+			}
+		}
+	},
+	TRANSMITTERS {
 		@Override
 		protected ItemStack icon() {
 			ItemStack stack = new ItemStack(ModBlocks.RELAY);
@@ -72,7 +93,9 @@ public enum CreativeTabType {
 
 		@Override
 		protected void generate(ItemDisplayParameters p, CreativeModeTab.Output o) {
-			for (var i : ModBlocks.values()) i.addItem(o);
+			for (var b : ModBlocks.values()) {
+				if (b.getCreativeTab() == this) b.addItem(o);
+			}
 		}
 	},
 	BUILDING_BLOCKS {
