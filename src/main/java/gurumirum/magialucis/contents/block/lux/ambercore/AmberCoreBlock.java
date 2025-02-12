@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents.block.lux.ambercore;
 
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
@@ -30,7 +29,6 @@ import static gurumirum.magialucis.contents.block.ModBlockStates.SKYLIGHT_INTERF
 
 public class AmberCoreBlock extends Block implements EntityBlock {
 	public static final LuxStat STAT = LuxStat.simple(
-			GemStats.AMBER.color(),
 			0,
 			10, 5, 0);
 

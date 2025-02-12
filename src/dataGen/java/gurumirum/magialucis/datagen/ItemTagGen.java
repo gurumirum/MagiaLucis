@@ -62,10 +62,10 @@ public class ItemTagGen extends ItemTagsProvider {
 		copyTag(ModBlockTags.LUMINOUS_ALLOY_BLOCKS.location());
 
 		var gems = tag(Tags.Items.GEMS);
-		for (GemItems gem : GemItems.values()) {
-			if (gem.gem.hasTag() && !gem.gem.isVanilla()) {
-				tag(gem.gem.tag()).add(gem.asItem());
-				gems.add(gem.asItem());
+		for (GemItems gemItem : GemItems.values()) {
+			if (gemItem.gem.hasTag() && !gemItem.gem.isVanilla()) {
+				tag(gemItem.gem.tag()).add(gemItem.asItem());
+				gems.add(gemItem.asItem());
 			}
 		}
 

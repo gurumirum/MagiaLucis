@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.impl.field.Fields;
 import gurumirum.magialucis.utils.NumberFormats;
@@ -20,10 +20,9 @@ import java.util.List;
 
 public class SunlightCoreBlock extends BaseSunlightCoreBlock {
 	public static final LuxStat STAT = LuxStat.simple(
-			GemStats.CITRINE.color(),
 			0, // don't make cores just ignore foci
-			GemStats.CITRINE.rMaxTransfer(),
-			GemStats.CITRINE.gMaxTransfer(),
+			Gem.CITRINE.rMaxTransfer(),
+			Gem.CITRINE.gMaxTransfer(),
 			0); // regular sunlight cores cannot receive blue light
 
 	public SunlightCoreBlock(Properties properties) {

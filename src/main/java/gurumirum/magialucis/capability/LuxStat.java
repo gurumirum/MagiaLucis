@@ -4,9 +4,7 @@ import gurumirum.magialucis.impl.RGB332;
 import org.joml.Vector3d;
 
 public interface LuxStat {
-	LuxStat NULL = simple(RGB332.BLACK, 0, 0, 0, 0);
-
-	byte color();
+	LuxStat NULL = simple(0, 0, 0, 0);
 
 	double minLuxThreshold();
 
@@ -19,22 +17,21 @@ public interface LuxStat {
 	}
 
 	static Simple simple(byte color, double minLuxThreshold, double maxLuxThreshold) {
-		return new Simple(color, minLuxThreshold,
+		return new Simple(minLuxThreshold,
 				maxLuxThreshold * RGB332.rBrightness(color),
 				maxLuxThreshold * RGB332.gBrightness(color),
 				maxLuxThreshold * RGB332.bBrightness(color));
 	}
 
-	static Simple simple(byte color, double minLuxThreshold, double rMaxTransfer, double gMaxTransfer, double bMaxTransfer) {
-		return new Simple(color, minLuxThreshold, rMaxTransfer, gMaxTransfer, bMaxTransfer);
+	static Simple simple(double minLuxThreshold, double rMaxTransfer, double gMaxTransfer, double bMaxTransfer) {
+		return new Simple(minLuxThreshold, rMaxTransfer, gMaxTransfer, bMaxTransfer);
 	}
 
 	static LuxStat.Simple copyOf(LuxStat stat) {
-		return new Simple(stat.color(), stat.minLuxThreshold(), stat.rMaxTransfer(), stat.gMaxTransfer(), stat.bMaxTransfer());
+		return new Simple(stat.minLuxThreshold(), stat.rMaxTransfer(), stat.gMaxTransfer(), stat.bMaxTransfer());
 	}
 
 	record Simple(
-			byte color,
 			double minLuxThreshold,
 			double rMaxTransfer,
 			double gMaxTransfer,

@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.impl.field.Fields;
 import gurumirum.magialucis.utils.NumberFormats;
@@ -20,11 +20,10 @@ import java.util.List;
 
 public class MoonlightCoreBlock extends BaseSunlightCoreBlock {
 	public static final LuxStat STAT = LuxStat.simple(
-			GemStats.IOLITE.color(),
 			0, // don't make cores just ignore foci
 			0,
 			0,
-			GemStats.IOLITE.bMaxTransfer());
+			Gem.IOLITE.bMaxTransfer());
 
 	public MoonlightCoreBlock(Properties properties) {
 		super(properties);

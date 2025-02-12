@@ -42,5 +42,6 @@ public class Datagen {
 		event.getGenerator().addProvider(s, new LootGen(o, l2));
 		event.getGenerator().addProvider(s, new CuriosGen(o, exf, l2));
 		event.getGenerator().addProvider(s, new LootModifierGen(o, l2));
+		event.getGenerator().addProvider(s, new DataMapGen(o, l2));
 	}
 }

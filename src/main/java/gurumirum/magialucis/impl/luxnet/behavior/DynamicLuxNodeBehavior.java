@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DynamicLuxNodeBehavior implements LuxNodeBehavior, LuxStat {
-	private byte color;
 	private double minLuxThreshold;
 	private double rMaxTransfer;
 	private double gMaxTransfer;
@@ -31,11 +30,6 @@ public class DynamicLuxNodeBehavior implements LuxNodeBehavior, LuxStat {
 	}
 
 	@Override
-	public byte color() {
-		return this.color;
-	}
-
-	@Override
 	public double minLuxThreshold() {
 		return this.minLuxThreshold;
 	}
@@ -55,10 +49,6 @@ public class DynamicLuxNodeBehavior implements LuxNodeBehavior, LuxStat {
 		return this.bMaxTransfer;
 	}
 
-	public void setColor(byte color) {
-		this.color = color;
-	}
-
 	public void setMinLuxThreshold(double minLuxThreshold) {
 		this.minLuxThreshold = Double.isNaN(minLuxThreshold) ? 0 : Math.max(minLuxThreshold, 0);
 	}
@@ -76,7 +66,6 @@ public class DynamicLuxNodeBehavior implements LuxNodeBehavior, LuxStat {
 	}
 
 	public void setStats(@NotNull LuxStat stat) {
-		setColor(stat.color());
 		setMinLuxThreshold(stat.minLuxThreshold());
 		setRMaxTransfer(stat.rMaxTransfer());
 		setGMaxTransfer(stat.gMaxTransfer());
@@ -84,7 +73,6 @@ public class DynamicLuxNodeBehavior implements LuxNodeBehavior, LuxStat {
 	}
 
 	public void save(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		tag.putByte("color", this.color);
 		if (this.minLuxThreshold > 0) tag.putDouble("minLuxThreshold", this.minLuxThreshold);
 		if (this.rMaxTransfer > 0) tag.putDouble("rMaxTransfer", this.rMaxTransfer);
 		if (this.gMaxTransfer > 0) tag.putDouble("gMaxTransfer", this.gMaxTransfer);
@@ -92,7 +80,6 @@ public class DynamicLuxNodeBehavior implements LuxNodeBehavior, LuxStat {
 	}
 
 	public DynamicLuxNodeBehavior(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		setColor(tag.getByte("color"));
 		setMinLuxThreshold(tag.getDouble("minLuxThreshold"));
 		setRMaxTransfer(tag.getDouble("rMaxTransfer"));
 		setGMaxTransfer(tag.getDouble("gMaxTransfer"));

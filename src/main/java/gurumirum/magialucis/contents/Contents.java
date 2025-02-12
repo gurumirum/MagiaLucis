@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents;
 
+import gurumirum.magialucis.impl.GemStat;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
@@ -10,6 +11,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,6 +21,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
+import net.neoforged.neoforge.registries.datamaps.DataMapType;
+import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,6 +53,11 @@ public final class Contents {
 
 	static final DeferredRegister<LuxNodeType<?>> LUX_NODE_TYPES = DeferredRegister.create(LUX_NODE_TYPE_REGISTRY_KEY, MODID);
 
+	public static final DataMapType<Item, GemStat> GEM_STAT_DATA_MAP_TYPE = DataMapType.builder(
+					id("gem_stat"), Registries.ITEM, GemStat.CODEC)
+			.synced(GemStat.CODEC, true)
+			.build();
+
 	private static @Nullable Registry<LuxNodeType<?>> luxNodeTypeRegistry;
 
 	public static @NotNull Registry<LuxNodeType<?>> luxNodeTypeRegistry() {
@@ -58,6 +67,10 @@ public final class Contents {
 	public static void init(IEventBus eventBus) {
 		eventBus.addListener((NewRegistryEvent event) -> {
 			luxNodeTypeRegistry = event.create(new RegistryBuilder<>(Contents.LUX_NODE_TYPE_REGISTRY_KEY));
+		});
+
+		eventBus.addListener((RegisterDataMapTypesEvent event) -> {
+			event.register(GEM_STAT_DATA_MAP_TYPE);
 		});
 
 		ITEMS.register(eventBus);

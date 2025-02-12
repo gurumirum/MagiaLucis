@@ -1,7 +1,6 @@
 package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntity;
@@ -16,8 +15,8 @@ import java.util.Objects;
 
 public enum ChargerTier {
 	PRIMITIVE(AmberCoreBlock.STAT),
-	LUMINOUS(GemStats.BRIGHTSTONE),
-	LUSTROUS(GemStats.PURIFIED_QUARTZ);
+	LUMINOUS(Gem.BRIGHTSTONE),
+	LUSTROUS(Gem.PURIFIED_QUARTZ);
 
 	private final LuxStat stat;
 	private final LuxNodeType<ChargerBehavior> chargerBehaviorType;

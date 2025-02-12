@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.recipe;
 
-import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.ModItemTags;
 import gurumirum.magialucis.contents.Ore;
 import gurumirum.magialucis.datagen.builder.AncientLightRecipeBuilder;
@@ -26,14 +26,14 @@ public abstract class SharedRecipeLogic extends RecipeProvider {
 		throw new IllegalStateException("Don't instantiate this :P");
 	}
 
-	protected static Ingredient gem(GemStats gem) {
-		if (gem == GemStats.BRIGHTSTONE) return Ingredient.of(ModItemTags.BRIGHTSTONES);
+	protected static Ingredient gem(Gem gem) {
+		if (gem == Gem.BRIGHTSTONE) return Ingredient.of(ModItemTags.BRIGHTSTONES);
 		else if (gem.hasTag()) return Ingredient.of(gem.tag());
 		else return Ingredient.of(gem.item());
 	}
 
-	protected static Criterion<?> hasGem(GemStats gem) {
-		if (gem == GemStats.BRIGHTSTONE) return has(ModItemTags.BRIGHTSTONES);
+	protected static Criterion<?> hasGem(Gem gem) {
+		if (gem == Gem.BRIGHTSTONE) return has(ModItemTags.BRIGHTSTONES);
 		else if (gem.hasTag()) return has(gem.tag());
 		else return has(gem.item());
 	}

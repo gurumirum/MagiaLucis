@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.recipe;
 
-import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModItemTags;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -27,7 +27,7 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.pattern("21 ")
 				.define('1', ModItemTags.BASIC_ALLOY_NUGGETS)
 				.define('2', ModItemTags.LUMINOUS_ALLOY_INGOTS)
-				.define('3', gem(GemStats.BRIGHTSTONE))
+				.define('3', gem(Gem.BRIGHTSTONE))
 				.unlockedBy("has_luminous_alloy", has(ModItemTags.LUMINOUS_ALLOY_INGOTS))
 				.save(out);
 
@@ -38,7 +38,7 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.define('1', ModItemTags.BASIC_ALLOY_INGOTS)
 				.define('2', LUMINOUS_RESONATOR)
 				.define('3', LUMINOUS_MECHANICAL_COMPONENT)
-				.define('4', gem(GemStats.BRIGHTSTONE))
+				.define('4', gem(Gem.BRIGHTSTONE))
 				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
 
@@ -47,7 +47,7 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.pattern("121")
 				.pattern(" 1 ")
 				.define('1', Tags.Items.INGOTS_IRON)
-				.define('2', gem(GemStats.BRIGHTSTONE))
+				.define('2', gem(Gem.BRIGHTSTONE))
 				.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 				.save(out);
 
@@ -56,7 +56,7 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.pattern("121")
 				.pattern(" 1 ")
 				.define('1', ModItemTags.LUMINOUS_ALLOY_INGOTS)
-				.define('2', gem(GemStats.BRIGHTSTONE))
+				.define('2', gem(Gem.BRIGHTSTONE))
 				.unlockedBy("has_luminous_alloy", has(ModItemTags.LUMINOUS_ALLOY_INGOTS))
 				.save(out);
 
@@ -64,20 +64,20 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.pattern("121")
 				.pattern("232")
 				.pattern("121")
-				.define('1', gem(GemStats.BRIGHTSTONE))
-				.define('2', gem(GemStats.CITRINE))
+				.define('1', gem(Gem.BRIGHTSTONE))
+				.define('2', gem(Gem.CITRINE))
 				.define('3', MECHANICAL_COMPONENT)
-				.unlockedBy("has_citrine", hasGem(GemStats.CITRINE))
+				.unlockedBy("has_citrine", hasGem(Gem.CITRINE))
 				.save(out);
 
 		shaped(MISC, IOLITE_MATRIX)
 				.pattern("121")
 				.pattern("232")
 				.pattern("121")
-				.define('1', gem(GemStats.BRIGHTSTONE))
-				.define('2', gem(GemStats.IOLITE))
+				.define('1', gem(Gem.BRIGHTSTONE))
+				.define('2', gem(Gem.IOLITE))
 				.define('3', LUMINOUS_MECHANICAL_COMPONENT)
-				.unlockedBy("has_iolite", hasGem(GemStats.IOLITE))
+				.unlockedBy("has_iolite", hasGem(Gem.IOLITE))
 				.save(out);
 
 
@@ -85,10 +85,10 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.pattern(" 1 ")
 				.pattern("1 1")
 				.pattern("232")
-				.define('1', gem(GemStats.BRIGHTSTONE))
+				.define('1', gem(Gem.BRIGHTSTONE))
 				.define('2', Tags.Items.NUGGETS_GOLD)
 				.define('3', ItemTags.WOODEN_SLABS)
-				.unlockedBy("has_brightstones", hasGem(GemStats.BRIGHTSTONE))
+				.unlockedBy("has_brightstones", hasGem(Gem.BRIGHTSTONE))
 				.save(out);
 
 		shaped(MISC, ModBlocks.AMBER_CORE)
@@ -96,16 +96,16 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.pattern("232")
 				.pattern("121")
 				.define('1', ItemTags.LOGS)
-				.define('2', gem(GemStats.AMBER))
+				.define('2', gem(Gem.AMBER))
 				.define('3', Items.HONEYCOMB)
-				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
+				.unlockedBy("has_amber", hasGem(Gem.AMBER))
 				.save(out);
 
 		shaped(MISC, ModBlocks.AMBER_CHARGER)
 				.pattern("121")
 				.define('1', ItemTags.LOGS)
-				.define('2', gem(GemStats.AMBER))
-				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
+				.define('2', gem(Gem.AMBER))
+				.unlockedBy("has_amber", hasGem(Gem.AMBER))
 				.save(out);
 
 		shaped(MISC, ModBlocks.AMBER_LANTERN)
@@ -113,7 +113,7 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.pattern("232")
 				.pattern(" 1 ")
 				.define('1', ItemTags.LOGS)
-				.define('2', gem(GemStats.AMBER))
+				.define('2', gem(Gem.AMBER))
 				.define('3', LUMINOUS_RESONATOR)
 				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
@@ -122,22 +122,22 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.pattern("111")
 				.pattern("121")
 				.pattern("343")
-				.define('1', gem(GemStats.BRIGHTSTONE))
+				.define('1', gem(Gem.BRIGHTSTONE))
 				.define('2', CITRINE_MATRIX)
 				.define('3', Tags.Items.NUGGETS_GOLD)
 				.define('4', ItemTags.PLANKS)
-				.unlockedBy("has_citrine", hasGem(GemStats.CITRINE))
+				.unlockedBy("has_citrine", hasGem(Gem.CITRINE))
 				.save(out);
 
 		shaped(MISC, ModBlocks.MOONLIGHT_CORE)
 				.pattern("111")
 				.pattern("121")
 				.pattern("343")
-				.define('1', gem(GemStats.BRIGHTSTONE))
+				.define('1', gem(Gem.BRIGHTSTONE))
 				.define('2', IOLITE_MATRIX)
 				.define('3', ModItemTags.SILVER_NUGGETS)
 				.define('4', ItemTags.PLANKS)
-				.unlockedBy("has_iolite", hasGem(GemStats.IOLITE))
+				.unlockedBy("has_iolite", hasGem(Gem.IOLITE))
 				.save(out);
 
 		shaped(MISC, ModBlocks.SUNLIGHT_FOCUS)
@@ -165,20 +165,20 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.pattern("121")
 				.pattern("111")
 				.define('1', Tags.Items.INGOTS_IRON)
-				.define('2', gem(GemStats.BRIGHTSTONE))
-				.unlockedBy("has_brightstone", hasGem(GemStats.BRIGHTSTONE))
+				.define('2', gem(Gem.BRIGHTSTONE))
+				.unlockedBy("has_brightstone", hasGem(Gem.BRIGHTSTONE))
 				.save(out);
 
 		shapeless(MISC, ModBlocks.CITRINE_LIGHTLOOM)
 				.requires(ModBlocks.LIGHTLOOM_BASE)
 				.requires(CITRINE_MATRIX)
-				.unlockedBy("has_citrine", hasGem(GemStats.CITRINE))
+				.unlockedBy("has_citrine", hasGem(Gem.CITRINE))
 				.save(out);
 
 		shapeless(MISC, ModBlocks.IOLITE_LIGHTLOOM)
 				.requires(ModBlocks.LIGHTLOOM_BASE)
 				.requires(IOLITE_MATRIX)
-				.unlockedBy("has_iolite", hasGem(GemStats.IOLITE))
+				.unlockedBy("has_iolite", hasGem(Gem.IOLITE))
 				.save(out);
 
 		shaped(MISC, ModBlocks.LIGHT_BASIN)
@@ -212,7 +212,7 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.pattern(" 1 ")
 				.pattern("1C1")
 				.pattern(" 1 ")
-				.define('1', gem(GemStats.BRIGHTSTONE))
+				.define('1', gem(Gem.BRIGHTSTONE))
 				.define('C', ModBlocks.LUMINOUS_LANTERN_BASE)
 				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
@@ -229,17 +229,17 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 		shaped(TOOLS, DRUID_WREATH)
 				.pattern("212")
 				.pattern("2 2")
-				.define('1', gem(GemStats.AMBER))
+				.define('1', gem(Gem.AMBER))
 				.define('2', ItemTags.LEAVES)
-				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
+				.unlockedBy("has_amber", hasGem(Gem.AMBER))
 				.save(out);
 
 		shaped(TOOLS, DRYAD_WREATH)
 				.pattern("212")
 				.pattern("2 2")
-				.define('1', gem(GemStats.AMBER))
+				.define('1', gem(Gem.AMBER))
 				.define('2', ItemTags.SMALL_FLOWERS)
-				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
+				.unlockedBy("has_amber", hasGem(Gem.AMBER))
 				.save(out);
 	}
 }

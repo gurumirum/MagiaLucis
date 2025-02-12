@@ -1,9 +1,9 @@
 package gurumirum.magialucis.contents.block;
 
-import gurumirum.magialucis.capability.LuxStat;
-import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
+import gurumirum.magialucis.impl.GemStat;
+import gurumirum.magialucis.impl.GemStatLogic;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.utils.ModUtils;
 import net.minecraft.ChatFormatting;
@@ -54,7 +54,7 @@ public abstract class GemContainerBlock extends Block implements EntityBlock {
 	                                                   @NotNull Level level, @NotNull BlockPos pos,
 	                                                   @NotNull Player player, @NotNull InteractionHand hand,
 	                                                   @NotNull BlockHitResult hitResult) {
-		LuxStat gemStat = stack.getCapability(ModCapabilities.GEM_STAT);
+		GemStat gemStat = GemStatLogic.get(stack);
 		if (gemStat == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
 		if (level.getBlockEntity(pos) instanceof GemContainer gemContainer) {
@@ -95,7 +95,7 @@ public abstract class GemContainerBlock extends Block implements EntityBlock {
 
 		addDescription(stack, context, tooltip, flag);
 
-		LuxStat gemStat = s.getCapability(ModCapabilities.GEM_STAT);
+		GemStat gemStat = GemStatLogic.get(stack);
 		if (gemStat != null) {
 			LuxStatTooltip.formatStat(gemStat, tooltip, LuxStatTooltip.Type.GEM);
 			LuxStatTooltip.skipAutoTooltipFor(stack);

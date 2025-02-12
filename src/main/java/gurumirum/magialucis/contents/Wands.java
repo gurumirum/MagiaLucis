@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxContainerStat;
 import gurumirum.magialucis.contents.item.wand.*;
 import net.minecraft.resources.ResourceLocation;
@@ -20,30 +19,30 @@ public enum Wands implements ItemLike {
 	ICY_CONFIGURATION_WAND(ItemProfile.customItem(ConfigurationWandItem::new, StandardWandShape.WAND), null),
 
 	AMBER_TORCH(ItemProfile.customItem(AmberTorchWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 300, GemStats.AMBER)),
+			LuxContainerStat.withBaseStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 300, Gem.AMBER)),
 
 	LESSER_ICE_STAFF(ItemProfile.customItem(LesserIceStaffItem::new, StandardWandShape.STAFF), null),
 
 	// TODO citrine, iolite wand
 
 	RECALL_STAFF(ItemProfile.customItem(RecallStaffWandItem::new, StandardWandShape.STAFF),
-			LuxContainerStat.withBaseStat(RecallStaffWandItem.COST_PER_RECALL * 3, GemStats.AQUAMARINE)),
+			LuxContainerStat.withBaseStat(RecallStaffWandItem.COST_PER_RECALL * 3, Gem.AQUAMARINE)),
 
 	HEAL_WAND(ItemProfile.customItem(HealWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(HealWandItem.COST_PER_CAST * 5, GemStats.PEARL)),
+			LuxContainerStat.withBaseStat(HealWandItem.COST_PER_CAST * 5, Gem.PEARL)),
 
 	// TODO prismarine wand
 
 	ENDER_WAND(ItemProfile.customItem(EnderChestPortalWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(EnderChestPortalWandItem.COST_PER_PORTAL_TICK * 20 * 300, GemStats.ENDER_PEARL)),
+			LuxContainerStat.withBaseStat(EnderChestPortalWandItem.COST_PER_PORTAL_TICK * 20 * 300, Gem.ENDER_PEARL)),
 
 	// TODO redstone wand
 
 	LAPIS_SHIELD(ItemProfile.customItem(LapisShieldItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(LapisShieldItem.COST_PER_SHIELDING_TICK * 20 * 120, GemStats.POLISHED_LAPIS_LAZULI)),
+			LuxContainerStat.withBaseStat(LapisShieldItem.COST_PER_SHIELDING_TICK * 20 * 120, Gem.POLISHED_LAPIS_LAZULI)),
 
 	DIAMOND_MACE(ItemProfile.customItem(DiamondMaceItem::new),
-			LuxContainerStat.withBaseStat(DiamondMaceItem.COST_PER_ATTACK * 150, GemStats.DIAMOND)),
+			LuxContainerStat.withBaseStat(DiamondMaceItem.COST_PER_ATTACK * 150, Gem.DIAMOND)),
 
 	// TODO ruby, emerald, sapphire
 	//      also the rest of the gems lol

@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.mobeffect;
 
-import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.impl.RGB332;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class RecallFatigueMobEffect extends MobEffect {
 	public RecallFatigueMobEffect() {
-		super(MobEffectCategory.NEUTRAL, RGB332.toRGB32(GemStats.AQUAMARINE.color()));
+		super(MobEffectCategory.NEUTRAL, RGB332.toRGB32(Gem.AQUAMARINE.color()));
 	}
 
 	@Override

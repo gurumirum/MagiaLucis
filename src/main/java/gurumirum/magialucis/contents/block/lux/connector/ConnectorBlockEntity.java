@@ -1,8 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.connector;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.LuxStat;
-import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.contents.ModBlockEntities;
@@ -10,6 +8,7 @@ import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.GemContainerBlock;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
+import gurumirum.magialucis.impl.GemStatLogic;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
@@ -45,8 +44,7 @@ public class ConnectorBlockEntity extends LuxNodeBlockEntity<DynamicLuxNodeBehav
 	public void setStack(@NotNull ItemStack stack) {
 		this.stack = stack;
 		if (luxNodeId() != NO_ID) {
-			nodeBehavior().setStats(Objects.requireNonNullElse(
-					stack.getCapability(ModCapabilities.GEM_STAT), LuxStat.NULL));
+			nodeBehavior().setStats(GemStatLogic.getOrDefault(stack));
 		}
 		setChanged();
 		syncToClient();
@@ -62,7 +60,7 @@ public class ConnectorBlockEntity extends LuxNodeBlockEntity<DynamicLuxNodeBehav
 
 	@Override
 	protected @NotNull DynamicLuxNodeBehavior createNodeBehavior() {
-		return new DynamicLuxNodeBehavior(this.stack.getCapability(ModCapabilities.GEM_STAT));
+		return new DynamicLuxNodeBehavior(GemStatLogic.get(this.stack));
 	}
 
 	@Override

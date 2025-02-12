@@ -47,9 +47,9 @@ public final class LuxStatTooltip {
 			return;
 		}
 
-		LuxStat sourceStat = stack.getCapability(ModCapabilities.GEM_STAT);
-		if (sourceStat != null) {
-			formatInternal(sourceStat, event.getToolTip(), 1, expandedMode(ClientTooltipFlag.of(event.getFlags())), Type.GEM);
+		GemStat gemStat = GemStatLogic.get(stack);
+		if (gemStat != null) {
+			formatInternal(gemStat, event.getToolTip(), 1, expandedMode(ClientTooltipFlag.of(event.getFlags())), Type.GEM);
 		}
 	}
 

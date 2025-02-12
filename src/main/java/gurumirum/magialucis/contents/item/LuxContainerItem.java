@@ -3,9 +3,9 @@ package gurumirum.magialucis.contents.item;
 import gurumirum.magialucis.capability.LuxContainerStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.RotationLogic;
+import gurumirum.magialucis.client.render.light.LightEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.LuxStatTooltip;
-import gurumirum.magialucis.impl.RGB332;
 import gurumirum.magialucis.utils.NumberFormats;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor.ARGB32;
@@ -52,11 +52,11 @@ public class LuxContainerItem extends Item {
 
 	@Override
 	public int getBarColor(@NotNull ItemStack stack) {
-		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
-		if (luxContainerStat == null) return 0;
+		LuxContainerStat stat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
+		if (stat == null) return 0;
 
 		double rotation = RotationLogic.staticRotation(System.currentTimeMillis(), 1000 * 3);
-		int primaryColor = RGB332.toARGB32(luxContainerStat.color(), 255);
+		int primaryColor = LightEffect.getLightColor(stat.rMaxTransfer(), stat.gMaxTransfer(), stat.bMaxTransfer());
 
 		double brightness = (ARGB32.red(primaryColor) + ARGB32.green(primaryColor) + ARGB32.blue(primaryColor)) / 3.0 / 255.0;
 		boolean dark = brightness <= 0.4;

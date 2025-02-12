@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.recipe;
 
-import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModItemTags;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import static gurumirum.magialucis.contents.ModBuildingBlocks.LAPIS_MANALIS;
 import static gurumirum.magialucis.contents.ModItems.*;
-import static gurumirum.magialucis.contents.ModItems.STONE_OF_PURIFICATION;
 
 public abstract class LightBasinRecipes extends SharedRecipeLogic {
 	public static void add(@NotNull RecipeOutput out) {
@@ -94,7 +93,7 @@ public abstract class LightBasinRecipes extends SharedRecipeLogic {
 
 		lightBasin()
 				.ingredient(Items.BLAZE_POWDER)
-				.ingredient(gem(GemStats.CITRINE))
+				.ingredient(gem(Gem.CITRINE))
 				.result(SUNLIGHT_INFUSED_POWDER, 3)
 				.processTicks(100)
 				.luxInput(b -> b.minR(100).minG(100))
@@ -102,7 +101,7 @@ public abstract class LightBasinRecipes extends SharedRecipeLogic {
 
 		lightBasin()
 				.ingredient(Items.BLAZE_POWDER)
-				.ingredient(gem(GemStats.IOLITE))
+				.ingredient(gem(Gem.IOLITE))
 				.result(MOONLIGHT_INFUSED_POWDER, 3)
 				.processTicks(100)
 				.luxInput(b -> b.minB(100))

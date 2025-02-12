@@ -3,7 +3,6 @@ package gurumirum.magialucis.contents.block.lux.relay;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.capability.DirectLinkDestination;
 import gurumirum.magialucis.capability.LinkDestination;
-import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
@@ -11,6 +10,7 @@ import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.GemContainerBlock;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
+import gurumirum.magialucis.impl.GemStatLogic;
 import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
 import gurumirum.magialucis.impl.luxnet.ServerSideLinkContext;
@@ -52,8 +52,7 @@ public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavi
 	public void setStack(@NotNull ItemStack stack) {
 		this.stack = stack;
 		if (luxNodeId() != NO_ID) {
-			nodeBehavior().setStats(Objects.requireNonNullElse(
-					stack.getCapability(ModCapabilities.GEM_STAT), LuxStat.NULL));
+			nodeBehavior().setStats(GemStatLogic.getOrDefault(stack));
 		}
 		setChanged();
 		syncToClient();
@@ -70,7 +69,7 @@ public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavi
 
 	@Override
 	protected @NotNull DynamicLuxNodeBehavior createNodeBehavior() {
-		return new DynamicLuxNodeBehavior(this.stack.getCapability(ModCapabilities.GEM_STAT));
+		return new DynamicLuxNodeBehavior(GemStatLogic.get(this.stack));
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package gurumirum.magialucis.client.render.light;
 
-import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3d;
@@ -11,12 +10,16 @@ public sealed interface LightEffect {
 	int color();
 
 	static int getLightColor(Vector3d luxFlow) {
-		double u = LuxUtils.sum(luxFlow) / 3;
+		return getLightColor(luxFlow.x, luxFlow.y, luxFlow.z);
+	}
+
+	static int getLightColor(double red, double green, double blue) {
+		double u = (red + green + blue) / 3;
 		if (u <= 0) return 0;
 
-		double rv = Math.max(0, luxFlow.x) / u;
-		double gv = Math.max(0, luxFlow.y) / u;
-		double bv = Math.max(0, luxFlow.z) / u;
+		double rv = Math.max(0, red) / u;
+		double gv = Math.max(0, green) / u;
+		double bv = Math.max(0, blue) / u;
 
 		double mv = Math.max(Math.max(rv, gv), bv);
 

@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.recipe;
 
-import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModItemTags;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -38,7 +38,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.pattern("12 ")
 				.pattern("2 2")
 				.pattern(" 2 ")
-				.define('1', gem(GemStats.CITRINE))
+				.define('1', gem(Gem.CITRINE))
 				.define('2', ModItemTags.ROSE_GOLD_NUGGETS)
 				.processTicks(RING_RECIPE_TICKS)
 				.luxInput(b -> b.minR(20).minG(20))
@@ -48,7 +48,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.pattern("121")
 				.pattern("232")
 				.pattern("121")
-				.define('1', gem(GemStats.OBSIDIAN))
+				.define('1', gem(Gem.OBSIDIAN))
 				.define('2', Tags.Items.STRINGS)
 				.define('3', LUMINOUS_RESONATOR)
 				.processTicks(BRACELET_RECIPE_TICKS)
@@ -59,7 +59,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.pattern("2 2")
 				.pattern("232")
 				.pattern(" 1 ")
-				.define('1', gem(GemStats.POLISHED_LAPIS_LAZULI))
+				.define('1', gem(Gem.POLISHED_LAPIS_LAZULI))
 				.define('2', ModItemTags.ROSE_GOLD_NUGGETS)
 				.define('3', LUMINOUS_RESONATOR)
 				.processTicks(NECKLACE_RECIPE_TICKS)

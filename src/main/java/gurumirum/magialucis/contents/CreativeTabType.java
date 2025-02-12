@@ -1,7 +1,6 @@
 package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -67,7 +66,7 @@ public enum CreativeTabType {
 				if (b.getCreativeTab() == this) b.addItem(o);
 			}
 
-			for (var g : GemStats.values()) g.forEachItem(o::accept);
+			for (var g : Gem.values()) g.forEachItem(o::accept);
 		}
 	},
 	MECHANISMS {

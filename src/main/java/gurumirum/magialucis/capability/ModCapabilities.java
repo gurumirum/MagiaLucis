@@ -2,13 +2,11 @@ package gurumirum.magialucis.capability;
 
 import gurumirum.magialucis.capability.impl.ItemStackLuxAcceptor;
 import gurumirum.magialucis.contents.Accessories;
-import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,7 +26,6 @@ public final class ModCapabilities {
 
 	public static final ItemCapability<LuxAcceptor, Void> LUX_ACCEPTOR = ItemCapability.createVoid(id("lux_acceptor"), LuxAcceptor.class);
 	public static final ItemCapability<LuxContainerStat, Void> LUX_CONTAINER_STAT = ItemCapability.createVoid(id("lux_container_stat"), LuxContainerStat.class);
-	public static final ItemCapability<LuxStat, Void> GEM_STAT = ItemCapability.createVoid(id("gem_stat"), LuxStat.class);
 
 	public static final BlockCapability<LinkSource, Void> LINK_SOURCE = BlockCapability.createVoid(id("linkable"), LinkSource.class);
 	public static final BlockCapability<LinkDestination, Direction> LINK_DESTINATION = BlockCapability.createSided(id("link_destination"), LinkDestination.class);
@@ -36,16 +33,6 @@ public final class ModCapabilities {
 
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		for (GemItems value : GemItems.values()) {
-			var stat = value.gem;
-			event.registerItem(GEM_STAT, (s, v) -> stat, value.asItem());
-		}
-		event.registerItem(GEM_STAT, (s, v) -> GemStats.AMETHYST, Items.AMETHYST_SHARD);
-		event.registerItem(GEM_STAT, (s, v) -> GemStats.DIAMOND, Items.DIAMOND);
-		event.registerItem(GEM_STAT, (s, v) -> GemStats.EMERALD, Items.EMERALD);
-		event.registerItem(GEM_STAT, (s, v) -> GemStats.PRISMARINE, Items.PRISMARINE_CRYSTALS);
-		event.registerItem(GEM_STAT, (s, v) -> GemStats.ENDER_PEARL, Items.ENDER_PEARL);
-
 		for (Wands w : Wands.values()) {
 			if (w.luxContainerStat() != null) {
 				luxContainer(event, w.luxContainerStat(), w);

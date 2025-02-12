@@ -4,7 +4,6 @@ import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.sunlight.SunlightLogic;
 import gurumirum.magialucis.impl.LuxStatTooltip;
-import gurumirum.magialucis.impl.RGB332;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -31,7 +30,7 @@ import java.util.List;
 import static gurumirum.magialucis.contents.block.ModBlockStates.SKY_VISIBILITY;
 
 public class SunlightFocusBlock extends Block implements EntityBlock {
-	public static final LuxStat STAT = LuxStat.simple(RGB332.WHITE,
+	public static final LuxStat STAT = LuxStat.simple(
 			0,
 			// use max throughput of foci for the stat
 			SunlightLogic.DEFAULT_BASE_INTENSITY,

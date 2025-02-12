@@ -1,0 +1,130 @@
+{
+  "values": {
+    "#c:gems/amber": {
+      "bMaxTransfer": 9.41176526248455,
+      "gMaxTransfer": 69.41176503896713,
+      "minLuxThreshold": 5.0,
+      "rMaxTransfer": 129.4117659330368
+    },
+    "#c:gems/amethyst": {
+      "bMaxTransfer": 120.0,
+      "gMaxTransfer": 39.52941298484802,
+      "minLuxThreshold": 50.0,
+      "rMaxTransfer": 120.0
+    },
+    "#c:gems/aquamarine": {
+      "bMaxTransfer": 500.0,
+      "gMaxTransfer": 364.705890417099,
+      "minLuxThreshold": 20.0,
+      "rMaxTransfer": 31.3725508749485
+    },
+    "#c:gems/citrine": {
+      "bMaxTransfer": 93.13725680112839,
+      "gMaxTransfer": 215.68627655506134,
+      "minLuxThreshold": 25.0,
+      "rMaxTransfer": 215.68627655506134
+    },
+    "#c:gems/diamond": {
+      "bMaxTransfer": 4000.0,
+      "gMaxTransfer": 4000.0,
+      "minLuxThreshold": 800.0,
+      "rMaxTransfer": 2384.3138217926025
+    },
+    "#c:gems/emerald": {
+      "bMaxTransfer": 313.725508749485,
+      "gMaxTransfer": 5000.0,
+      "minLuxThreshold": 500.0,
+      "rMaxTransfer": 313.725508749485
+    },
+    "#c:gems/iolite": {
+      "bMaxTransfer": 223.52941632270813,
+      "gMaxTransfer": 37.6470610499382,
+      "minLuxThreshold": 10.0,
+      "rMaxTransfer": 37.6470610499382
+    },
+    "#c:gems/prismarine": {
+      "bMaxTransfer": 274.5098114013672,
+      "gMaxTransfer": 291.7647123336792,
+      "minLuxThreshold": 30.0,
+      "rMaxTransfer": 25.0980406999588
+    },
+    "#c:gems/ruby": {
+      "bMaxTransfer": 313.725508749485,
+      "gMaxTransfer": 313.725508749485,
+      "minLuxThreshold": 500.0,
+      "rMaxTransfer": 5000.0
+    },
+    "#c:gems/sapphire": {
+      "bMaxTransfer": 5000.0,
+      "gMaxTransfer": 313.725508749485,
+      "minLuxThreshold": 500.0,
+      "rMaxTransfer": 313.725508749485
+    },
+    "#c:gems/topaz": {
+      "bMaxTransfer": 627.45101749897,
+      "gMaxTransfer": 8627.451062202454,
+      "minLuxThreshold": 5000.0,
+      "rMaxTransfer": 8627.451062202454
+    },
+    "#magialucis:brightstones": {
+      "bMaxTransfer": 100.0,
+      "gMaxTransfer": 100.0,
+      "minLuxThreshold": 0.0,
+      "rMaxTransfer": 100.0
+    },
+    "magialucis:crystallized_redstone": {
+      "bMaxTransfer": 94.1176526248455,
+      "gMaxTransfer": 94.1176526248455,
+      "minLuxThreshold": 400.0,
+      "rMaxTransfer": 1094.117671251297
+    },
+    "magialucis:jet": {
+      "bMaxTransfer": 1254.90203499794,
+      "gMaxTransfer": 1254.90203499794,
+      "minLuxThreshold": 950.0,
+      "rMaxTransfer": 1254.90203499794
+    },
+    "magialucis:moonstone": {
+      "bMaxTransfer": 20000.0,
+      "gMaxTransfer": 17254.902124404907,
+      "minLuxThreshold": 1500.0,
+      "rMaxTransfer": 11921.569108963013
+    },
+    "magialucis:obsidian": {
+      "bMaxTransfer": 279.41177040338516,
+      "gMaxTransfer": 47.05882631242275,
+      "minLuxThreshold": 30.0,
+      "rMaxTransfer": 147.05882593989372
+    },
+    "magialucis:pearl": {
+      "bMaxTransfer": 700.0,
+      "gMaxTransfer": 603.9215743541718,
+      "minLuxThreshold": 80.0,
+      "rMaxTransfer": 700.0
+    },
+    "magialucis:polished_lapis_lazuli": {
+      "bMaxTransfer": 1715.686321258545,
+      "gMaxTransfer": 490.1960864663124,
+      "minLuxThreshold": 300.0,
+      "rMaxTransfer": 490.1960864663124
+    },
+    "magialucis:purified_quartz": {
+      "bMaxTransfer": 1000.0,
+      "gMaxTransfer": 1000.0,
+      "minLuxThreshold": 100.0,
+      "rMaxTransfer": 1000.0
+    },
+    "magialucis:soul_brightstone": {
+      "bMaxTransfer": 6.2745101749897,
+      "gMaxTransfer": 6.2745101749897,
+      "minLuxThreshold": 0.0,
+      "rMaxTransfer": 19.607843458652496
+    },
+    "minecraft:ender_pearl": {
+      "bMaxTransfer": 186.27451360225677,
+      "gMaxTransfer": 164.70588743686676,
+      "minLuxThreshold": 40.0,
+      "rMaxTransfer": 98.03921729326248
+    }
+  }
+}

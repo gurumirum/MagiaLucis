@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.capability.GemStats;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -10,39 +9,36 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 
 public enum GemItems implements ItemLike {
-	BRIGHTSTONE(GemStats.BRIGHTSTONE),
-	RED_BRIGHTSTONE(GemStats.BRIGHTSTONE),
-	ICY_BRIGHTSTONE(GemStats.BRIGHTSTONE),
-	SOUL_BRIGHTSTONE(GemStats.SOUL_BRIGHTSTONE),
+	BRIGHTSTONE(Gem.BRIGHTSTONE),
+	RED_BRIGHTSTONE(Gem.BRIGHTSTONE),
+	ICY_BRIGHTSTONE(Gem.BRIGHTSTONE),
+	SOUL_BRIGHTSTONE(Gem.SOUL_BRIGHTSTONE),
 
-	AMBER(GemStats.AMBER),
-	CITRINE(GemStats.CITRINE),
-	IOLITE(GemStats.IOLITE),
-	AQUAMARINE(GemStats.AQUAMARINE),
-	PEARL(GemStats.PEARL),
+	AMBER(Gem.AMBER),
+	CITRINE(Gem.CITRINE),
+	IOLITE(Gem.IOLITE),
+	AQUAMARINE(Gem.AQUAMARINE),
+	PEARL(Gem.PEARL),
+	OBSIDIAN(Gem.OBSIDIAN),
 
-	PURIFIED_QUARTZ(GemStats.PURIFIED_QUARTZ),
-	CRYSTALLIZED_REDSTONE(GemStats.CRYSTALLIZED_REDSTONE),
-	POLISHED_LAPIS_LAZULI(GemStats.POLISHED_LAPIS_LAZULI),
-	OBSIDIAN(GemStats.OBSIDIAN),
+	PURIFIED_QUARTZ(Gem.PURIFIED_QUARTZ),
+	CRYSTALLIZED_REDSTONE(Gem.CRYSTALLIZED_REDSTONE),
+	POLISHED_LAPIS_LAZULI(Gem.POLISHED_LAPIS_LAZULI),
 
-	// diamond
-	RUBY(GemStats.RUBY),
-	// emerald
-	SAPPHIRE(GemStats.SAPPHIRE),
+	RUBY(Gem.RUBY),
+	SAPPHIRE(Gem.SAPPHIRE),
 
-	// amethyst
-	TOPAZ(GemStats.TOPAZ),
-	MOONSTONE(GemStats.MOONSTONE),
-	JET(GemStats.JET);
+	TOPAZ(Gem.TOPAZ),
+	MOONSTONE(Gem.MOONSTONE),
+	JET(Gem.JET);
 
-	public final GemStats gem;
+	public final Gem gem;
 	private final DeferredItem<Item> item;
 
-	GemItems(GemStats gem) {
+	GemItems(Gem gem) {
 		this(gem, ItemProfile.item());
 	}
-	GemItems(GemStats gem, @NotNull ItemProfile<Item> itemProfile) {
+	GemItems(Gem gem, @NotNull ItemProfile<Item> itemProfile) {
 		this.gem = gem;
 		this.item = itemProfile.create(name().toLowerCase(Locale.ROOT));
 	}

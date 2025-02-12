@@ -1,6 +1,6 @@
-package gurumirum.magialucis.capability;
+package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.contents.GemItems;
+import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.impl.RGB332;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 import java.util.function.Consumer;
 
-public enum GemStats implements LuxStat {
+public enum Gem implements LuxStat {
 	// TIER 0
 
 	BRIGHTSTONE(RGB332.WHITE, 0, 100, false),
@@ -62,15 +62,15 @@ public enum GemStats implements LuxStat {
 
 	private @Nullable TagKey<Item> tag;
 
-	GemStats(byte color, double minLuxThreshold, double maxLuxThreshold) {
+	Gem(byte color, double minLuxThreshold, double maxLuxThreshold) {
 		this(color, minLuxThreshold, maxLuxThreshold, true, false);
 	}
 
-	GemStats(byte color, double minLuxThreshold, double maxLuxThreshold, boolean hasTag) {
+	Gem(byte color, double minLuxThreshold, double maxLuxThreshold, boolean hasTag) {
 		this(color, minLuxThreshold, maxLuxThreshold, hasTag, false);
 	}
 
-	GemStats(byte color, double minLuxThreshold, double maxLuxThreshold, boolean hasTag, boolean vanilla) {
+	Gem(byte color, double minLuxThreshold, double maxLuxThreshold, boolean hasTag, boolean vanilla) {
 		this.vanilla = vanilla;
 		if (minLuxThreshold < 0) throw new IllegalArgumentException("minLuxThreshold < 0");
 		if (maxLuxThreshold < 0) throw new IllegalArgumentException("maxLuxThreshold < 0");
@@ -102,7 +102,7 @@ public enum GemStats implements LuxStat {
 	}
 
 	public void forEachItem(Consumer<Item> consumer){
-		if (this == GemStats.BRIGHTSTONE) {
+		if (this == Gem.BRIGHTSTONE) {
 			consumer.accept(GemItems.BRIGHTSTONE.asItem());
 			consumer.accept(GemItems.RED_BRIGHTSTONE.asItem());
 			consumer.accept(GemItems.ICY_BRIGHTSTONE.asItem());
@@ -137,10 +137,10 @@ public enum GemStats implements LuxStat {
 		};
 	}
 
-	@Override
 	public byte color() {
 		return this.color;
 	}
+
 	@Override
 	public double minLuxThreshold() {
 		return this.minLuxThreshold;

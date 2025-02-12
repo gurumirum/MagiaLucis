@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.capability.GemStats;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.contents.block.AmberLanternBlock;
 import gurumirum.magialucis.contents.block.AmberLightBlock;
@@ -122,7 +121,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.lightLevel(state -> state.getValue(BlockStateProperties.ENABLED) ? 15 : 0))),
 
 	LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
-			GemStats.BRIGHTSTONE, 10), Properties.of().strength(2.5f))),
+			Gem.BRIGHTSTONE, 10), Properties.of().strength(2.5f))),
 	LUX_SOURCE_2(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
 			LuxStat.simple(RGB332.WHITE, 0, 100000), 100000), Properties.of().strength(2.5f))),
 
@@ -168,7 +167,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 		switch (this) {
 			case RELAY, SPLITTER, CONNECTOR -> {
 				o.accept(this);
-				for (GemStats g : GemStats.values()) {
+				for (Gem g : Gem.values()) {
 					g.forEachItem(item -> {
 						ItemStack stack = new ItemStack(this);
 						stack.set(ModDataComponents.GEM_ITEM, new GemItemData(new ItemStack(item)));

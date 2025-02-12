@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.recipe;
 
-import gurumirum.magialucis.capability.GemStats;
+import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModItemTags;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -60,8 +60,8 @@ public abstract class WandRecipes extends SharedRecipeLogic {
 				.pattern(" 11")
 				.pattern("1  ")
 				.define('1', ItemTags.LOGS)
-				.define('2', gem(GemStats.AMBER))
-				.unlockedBy("has_amber", hasGem(GemStats.AMBER))
+				.define('2', gem(Gem.AMBER))
+				.unlockedBy("has_amber", hasGem(Gem.AMBER))
 				.save(out);
 
 		shaped(COMBAT, LESSER_ICE_STAFF)
@@ -79,7 +79,7 @@ public abstract class WandRecipes extends SharedRecipeLogic {
 				.pattern("14 ")
 				.define('C', LUMINOUS_RESONATOR)
 				.define('1', ModItemTags.ROSE_GOLD_INGOTS)
-				.define('2', gem(GemStats.AQUAMARINE))
+				.define('2', gem(Gem.AQUAMARINE))
 				.define('3', Tags.Items.LEATHERS)
 				.define('4', Tags.Items.DYES_RED)
 				.processTicks(WAND_RECIPE_TICKS)
@@ -92,7 +92,7 @@ public abstract class WandRecipes extends SharedRecipeLogic {
 				.pattern("1  ")
 				.define('C', LUMINOUS_RESONATOR)
 				.define('1', Tags.Items.INGOTS_GOLD)
-				.define('2', gem(GemStats.PEARL))
+				.define('2', gem(Gem.PEARL))
 				.processTicks(WAND_RECIPE_TICKS)
 				.luxInput(b -> b.minR(60).minG(50).minB(60))
 				.save(out);
@@ -103,7 +103,7 @@ public abstract class WandRecipes extends SharedRecipeLogic {
 				.pattern("1  ")
 				.define('C', LUMINOUS_RESONATOR)
 				.define('1', ModItemTags.SILVER_INGOTS)
-				.define('2', gem(GemStats.ENDER_PEARL))
+				.define('2', gem(Gem.ENDER_PEARL))
 				.processTicks(WAND_RECIPE_TICKS)
 				.luxInput(b -> b.minG(30).minB(15))
 				.save(out);
@@ -125,7 +125,7 @@ public abstract class WandRecipes extends SharedRecipeLogic {
 				.pattern("1  ")
 				.define('C', LUMINOUS_RESONATOR)
 				.define('1', Tags.Items.INGOTS_IRON)
-				.define('2', gem(GemStats.DIAMOND))
+				.define('2', gem(Gem.DIAMOND))
 				.processTicks(WAND_RECIPE_TICKS)
 				.luxInput(b -> b.minSum(2000))
 				.save(out);
