@@ -5,14 +5,19 @@ import gurumirum.magialucis.contents.recipe.ancientlight.AncientLightRecipe;
 import gurumirum.magialucis.contents.recipe.ancientlight.SimpleAncientLightRecipe;
 import gurumirum.magialucis.contents.recipe.artisanry.ArtisanryRecipe;
 import gurumirum.magialucis.contents.recipe.artisanry.SimpleArtisanryRecipe;
+import gurumirum.magialucis.contents.recipe.crafting.RelayGemSwapRecipe;
 import gurumirum.magialucis.contents.recipe.transfusion.LightBasinRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public final class ModRecipes {
 	private ModRecipes() {}
+
+	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<RelayGemSwapRecipe>> RELAY_GEM_SWAP_SERIALIZER =
+			serializer("relay_gem_swap", new SimpleCraftingRecipeSerializer<>(RelayGemSwapRecipe::new));
 
 	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<SimpleAncientLightRecipe>> ANCIENT_LIGHT_SERIALIZER =
 			serializer("ancient_light", new SimpleAncientLightRecipe.Serializer());

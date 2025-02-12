@@ -3,6 +3,7 @@ package gurumirum.magialucis.datagen.recipe;
 import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModItemTags;
+import gurumirum.magialucis.contents.recipe.crafting.RelayGemSwapRecipe;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
+import static gurumirum.magialucis.MagiaLucisMod.id;
 import static gurumirum.magialucis.contents.Accessories.*;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.LAPIS_MANALIS_BRICK_SLAB;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.LAPIS_MANALIS_SLAB;
@@ -18,6 +20,7 @@ import static net.minecraft.data.recipes.RecipeCategory.MISC;
 import static net.minecraft.data.recipes.RecipeCategory.TOOLS;
 import static net.minecraft.data.recipes.ShapedRecipeBuilder.shaped;
 import static net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless;
+import static net.minecraft.data.recipes.SpecialRecipeBuilder.special;
 
 public abstract class CraftingRecipes extends SharedRecipeLogic {
 	public static void add(@NotNull RecipeOutput out) {
@@ -241,5 +244,7 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.define('2', ItemTags.SMALL_FLOWERS)
 				.unlockedBy("has_amber", hasGem(Gem.AMBER))
 				.save(out);
+
+		special(RelayGemSwapRecipe::new).save(out, id("relay_gem_swap"));
 	}
 }
