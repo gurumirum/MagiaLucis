@@ -230,6 +230,149 @@ public final class RenderShapes {
 				color, reverseCull);
 	}
 
+	// epic method name
+	public static void drawRhombicuboctahedronDome(PoseStack poseStack, VertexConsumer vc, int color, boolean reverseCull) {
+		float a1 = 6 / 16f, a2 = 1 - a1;
+		float b1 = 2 / 16f + 0.01f, b2 = 1 - b1;
+
+		// orthogonal faces
+		positionColorNormalQuad(poseStack, vc,
+				a2, b2, a1,
+				a1, b2, a1,
+				a1, b2, a2,
+				a2, b2, a2,
+				0, 1, 0,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				b1, a2, a1,
+				b1, a1, a1,
+				b1, a1, a2,
+				b1, a2, a2,
+				-1, 0, 0,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				b2, a1, a1,
+				b2, a2, a1,
+				b2, a2, a2,
+				b2, a1, a2,
+				1, 0, 0,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				a2, a1, b1,
+				a1, a1, b1,
+				a1, a2, b1,
+				a2, a2, b1,
+				0, 0, -1,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				a1, a1, b2,
+				a2, a1, b2,
+				a2, a2, b2,
+				a1, a2, b2,
+				0, 0, 1,
+				color, reverseCull);
+
+		// diagonal faces ("edge" faces (idk the exact mathematical term (honestly idgaf (sorry math nerds))))
+
+		positionColorNormalQuad(poseStack, vc,
+				a1, a1, b1,
+				b1, a1, a1,
+				b1, a2, a1,
+				a1, a2, b1,
+				-1, 0, -1,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				b2, a1, a1,
+				a2, a1, b1,
+				a2, a2, b1,
+				b2, a2, a1,
+				1, 0, -1,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				b1, a1, a2,
+				a1, a1, b2,
+				a1, a2, b2,
+				b1, a2, a2,
+				-1, 0, 1,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				a2, a1, b2,
+				b2, a1, a2,
+				b2, a2, a2,
+				a2, a2, b2,
+				1, 0, 1,
+				color, reverseCull);
+
+		// top edge faces
+		positionColorNormalQuad(poseStack, vc,
+				a1, b2, a1,
+				b1, a2, a1,
+				b1, a2, a2,
+				a1, b2, a2,
+				-1, 1, 0,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				a2, b2, a2,
+				b2, a2, a2,
+				b2, a2, a1,
+				a2, b2, a1,
+				1, 1, 0,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				a1, a2, b1,
+				a1, b2, a1,
+				a2, b2, a1,
+				a2, a2, b1,
+				0, 1, -1,
+				color, reverseCull);
+
+		positionColorNormalQuad(poseStack, vc,
+				a2, a2, b2,
+				a2, b2, a2,
+				a1, b2, a2,
+				a1, a2, b2,
+				0, 1, 1,
+				color, reverseCull);
+
+		// tri faces ("vertex" faces (ok this sounds fackin ridiculous))
+		positionColorNormalTri(poseStack, vc,
+				a1, b2, a1,
+				a1, a2, b1,
+				b1, a2, a1,
+				-1, 1, -1,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				a2, b2, a1,
+				b2, a2, a1,
+				a2, a2, b1,
+				1, 1, -1,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				a1, b2, a2,
+				b1, a2, a2,
+				a1, a2, b2,
+				-1, 1, 1,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				a2, b2, a2,
+				a2, a2, b2,
+				b2, a2, a2,
+				1, 1, 1,
+				color, reverseCull);
+	}
+
 	private static void positionColorNormalQuad(PoseStack poseStack, VertexConsumer vc,
 	                                            float x1, float y1, float z1,
 	                                            float x2, float y2, float z2,
@@ -261,13 +404,15 @@ public final class RenderShapes {
 		PoseStack.Pose pose = poseStack.last();
 
 		if (reverseCull) {
-			vc.addVertex(pose, x1, y1, z1).setColor(color).setNormal(pose, -normalX, -normalY, -normalZ);
-			vc.addVertex(pose, x3, y3, z3).setColor(color).setNormal(pose, -normalX, -normalY, -normalZ);
-			vc.addVertex(pose, x2, y2, z2).setColor(color).setNormal(pose, -normalX, -normalY, -normalZ);
+			Vector3f n = pose.transformNormal(-normalX, -normalY, -normalZ, new Vector3f());
+			vc.addVertex(pose, x1, y1, z1).setColor(color).setNormal(n.x, n.y, n.z);
+			vc.addVertex(pose, x3, y3, z3).setColor(color).setNormal(n.x, n.y, n.z);
+			vc.addVertex(pose, x2, y2, z2).setColor(color).setNormal(n.x, n.y, n.z);
 		} else {
-			vc.addVertex(pose, x1, y1, z1).setColor(color).setNormal(pose, normalX, normalY, normalZ);
-			vc.addVertex(pose, x2, y2, z2).setColor(color).setNormal(pose, normalX, normalY, normalZ);
-			vc.addVertex(pose, x3, y3, z3).setColor(color).setNormal(pose, normalX, normalY, normalZ);
+			Vector3f n = pose.transformNormal(normalX, normalY, normalZ, new Vector3f());
+			vc.addVertex(pose, x1, y1, z1).setColor(color).setNormal(n.x, n.y, n.z);
+			vc.addVertex(pose, x2, y2, z2).setColor(color).setNormal(n.x, n.y, n.z);
+			vc.addVertex(pose, x3, y3, z3).setColor(color).setNormal(n.x, n.y, n.z);
 		}
 	}
 

@@ -69,13 +69,16 @@ public class BlockStateGen extends BlockStateProvider {
 		s(STERLING_SILVER_BLOCK);
 		s(LUMINOUS_ALLOY_BLOCK);
 
-		simpleBlock(AMBER_LIGHT.block(), new ModelFile.UncheckedModelFile(AMBER_LIGHT.id().withPrefix("block/")));
+		simpleBlock(AMBER_LIGHT.block(), defaultModel(AMBER_LIGHT.id()));
 		models().getBuilder(AMBER_LIGHT.id().getPath()).texture("particle", "block/empty");
 
 		directionalBlock(RELAY.block(), models().getExistingFile(id("block/relay")));
 
-		directionalBlock(SPLITTER.block(), new ModelFile.UncheckedModelFile(SPLITTER.id().withPrefix("block/")));
+		directionalBlock(SPLITTER.block(), defaultModel(SPLITTER.id()));
 		itemModels().withExistingParent(SPLITTER.id().getPath(), id("item/block_entity"));
+
+		directionalBlock(CONNECTOR.block(), defaultModel(CONNECTOR.id()));
+		itemModels().withExistingParent(CONNECTOR.id().getPath(), id("item/block_entity"));
 
 		for (Direction side : Direction.values()) {
 			for (byte apertureLevel = 0; apertureLevel < SplitterBlockEntity.APERTURE_LEVELS; apertureLevel++) {
@@ -110,17 +113,17 @@ public class BlockStateGen extends BlockStateProvider {
 				.build());
 		simpleBlockItem(AMBER_CORE.block(), amberCore);
 
-		simpleBlock(LIGHT_BASIN.block(), new ModelFile.UncheckedModelFile(LIGHT_BASIN.id().withPrefix("block/")));
+		simpleBlock(LIGHT_BASIN.block(), defaultModel(LIGHT_BASIN.id()));
 		itemModels().simpleBlockItem(LIGHT_BASIN.block());
 
-		directionalBlock(SUNLIGHT_CORE.block(), new ModelFile.UncheckedModelFile(SUNLIGHT_CORE.id().withPrefix("block/")));
+		directionalBlock(SUNLIGHT_CORE.block(), defaultModel(SUNLIGHT_CORE.id()));
 		itemModels().withExistingParent(SUNLIGHT_CORE.id().getPath(), id("item/block_entity"));
 
-		directionalBlock(MOONLIGHT_CORE.block(), new ModelFile.UncheckedModelFile(MOONLIGHT_CORE.id().withPrefix("block/")));
+		directionalBlock(MOONLIGHT_CORE.block(), defaultModel(MOONLIGHT_CORE.id()));
 		itemModels().withExistingParent(MOONLIGHT_CORE.id().getPath(), id("item/block_entity"));
 
-		models().getBuilder(SUNLIGHT_FOCUS.id().getPath()).texture("particle", "block/sunlight_focus_mirror_top_center");
-		simpleBlock(SUNLIGHT_FOCUS.block(), new ModelFile.UncheckedModelFile(SUNLIGHT_FOCUS.id().withPrefix("block/")));
+		simpleBlock(SUNLIGHT_FOCUS.block(), models().getBuilder(SUNLIGHT_FOCUS.id().getPath())
+				.texture("particle", "block/sunlight_focus_mirror_top_center"));
 
 		var artisanryTableLeft = new ModelFile.UncheckedModelFile(id("block/artisanry_table_left"));
 		var artisanryTableRight = new ModelFile.UncheckedModelFile(id("block/artisanry_table_right"));
@@ -259,5 +262,9 @@ public class BlockStateGen extends BlockStateProvider {
 		Block b = blockProvider.block();
 		simpleBlock(b);
 		itemModels().simpleBlockItem(b);
+	}
+
+	private ModelFile defaultModel(ResourceLocation id) {
+		return new ModelFile.UncheckedModelFile(id.withPrefix("block/"));
 	}
 }

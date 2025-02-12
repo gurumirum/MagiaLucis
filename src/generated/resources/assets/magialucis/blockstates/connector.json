@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "magialucis:block/connector",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "magialucis:block/connector",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "magialucis:block/connector",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "magialucis:block/connector",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "magialucis:block/connector"
+    },
+    "facing=west": {
+      "model": "magialucis:block/connector",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

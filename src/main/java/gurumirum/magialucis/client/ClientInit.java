@@ -6,6 +6,7 @@ import gurumirum.magialucis.contents.*;
 import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableScreen;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.lux.connector.ConnectorBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlockEntityRenderer;
@@ -116,6 +117,7 @@ public final class ClientInit {
 				.map(Wands::asItem).toArray(Item[]::new));
 		event.registerItem(customRenderItem(RelayBlockEntityRenderer::renderByItem), ModBlocks.RELAY.asItem());
 		event.registerItem(customRenderItem(SplitterBlockEntityRenderer::renderByItem), ModBlocks.SPLITTER.asItem());
+		event.registerItem(customRenderItem(ConnectorBlockEntityRenderer::renderByItem), ModBlocks.CONNECTOR.asItem());
 		event.registerItem(new SunlightCoreItemExtension(), ModBlocks.SUNLIGHT_CORE.blockItem());
 		event.registerItem(new MoonlightCoreItemExtension(), ModBlocks.MOONLIGHT_CORE.blockItem());
 		event.registerItem(customRenderItem(SunlightFocusBlockEntityRenderer::renderByItem), ModBlocks.SUNLIGHT_FOCUS.blockItem());
@@ -148,6 +150,7 @@ public final class ClientInit {
 
 		event.registerBlockEntityRenderer(ModBlockEntities.RELAY.get(), RelayBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.SPLITTER.get(), SplitterBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.CONNECTOR.get(), ConnectorBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.AMBER_CHARGER.get(), ChargerBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUMINOUS_CHARGER.get(), ChargerBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.LUX_SOURCE.get(), BasicRelayBlockEntityRenderer::new);

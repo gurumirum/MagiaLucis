@@ -10,6 +10,7 @@ import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlock;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlock;
 import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlock;
+import gurumirum.magialucis.contents.block.lux.connector.ConnectorBlock;
 import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlock;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBaseBlock;
@@ -55,6 +56,11 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.sound(SoundType.GLASS))),
 
 	SPLITTER(BlockProfile.customBlock(SplitterBlock::new, Properties.of()
+			.noOcclusion()
+			.strength(2.5f)
+			.sound(SoundType.WOOD))),
+
+	CONNECTOR(BlockProfile.customBlock(ConnectorBlock::new, Properties.of()
 			.noOcclusion()
 			.strength(2.5f)
 			.sound(SoundType.WOOD))),
@@ -151,7 +157,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 
 	public void addItem(CreativeModeTab.Output o) {
 		switch (this) {
-			case RELAY, SPLITTER -> {
+			case RELAY, SPLITTER, CONNECTOR -> {
 				o.accept(this);
 				for (GemStats g : GemStats.values()) {
 					g.forEachItem(item -> {
