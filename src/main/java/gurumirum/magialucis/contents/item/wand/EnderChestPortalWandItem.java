@@ -60,6 +60,11 @@ public class EnderChestPortalWandItem extends LuxContainerItem {
 			prevPortal.kill();
 		}
 
+		Vec3 pos = portal.getPosition(0);
+		if (!portal.isFree(pos.x, pos.y, pos.z)) {
+			portal.setPos(player.blockPosition().getX() + 0.5, player.blockPosition().getY() + player.getEyeHeight(), player.blockPosition().getZ() + 0.5);
+		}
+
 		if (level.addFreshEntity(portal)) {
 			stack.set(ModDataComponents.PORTAL_UUID, portal.getUUID());
 		}
