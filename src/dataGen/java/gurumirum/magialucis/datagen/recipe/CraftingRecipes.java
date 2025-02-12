@@ -16,6 +16,7 @@ import static gurumirum.magialucis.contents.Accessories.*;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.LAPIS_MANALIS_BRICK_SLAB;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.LAPIS_MANALIS_SLAB;
 import static gurumirum.magialucis.contents.ModItems.*;
+import static gurumirum.magialucis.datagen.builder.ShapedRelayCraftingRecipeBuilder.shapedRelayCrafting;
 import static net.minecraft.data.recipes.RecipeCategory.MISC;
 import static net.minecraft.data.recipes.RecipeCategory.TOOLS;
 import static net.minecraft.data.recipes.ShapedRecipeBuilder.shaped;
@@ -92,6 +93,27 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.define('2', Tags.Items.NUGGETS_GOLD)
 				.define('3', ItemTags.WOODEN_SLABS)
 				.unlockedBy("has_brightstones", hasGem(Gem.BRIGHTSTONE))
+				.save(out);
+
+		shapedRelayCrafting(MISC, ModBlocks.SPLITTER)
+				.pattern("121")
+				.pattern("232")
+				.pattern("141")
+				.define('1', ItemTags.LOGS)
+				.define('2', Tags.Items.NUGGETS_GOLD)
+				.define('3', MECHANICAL_COMPONENT)
+				.define('4', ModBlocks.RELAY)
+				.unlockedBy("has_brightstones", hasGem(Gem.BRIGHTSTONE))
+				.save(out);
+
+		shapedRelayCrafting(MISC, ModBlocks.CONNECTOR)
+				.pattern("131")
+				.pattern("242")
+				.define('1', ItemTags.LOGS)
+				.define('2', Tags.Items.NUGGETS_GOLD)
+				.define('3', ModBlocks.RELAY)
+				.define('4', LUMINOUS_RESONATOR)
+				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
 
 		shaped(MISC, ModBlocks.AMBER_CORE)

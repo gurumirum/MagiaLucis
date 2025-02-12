@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents.recipe.crafting;
 
-import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
@@ -50,7 +49,7 @@ public class RelayGemSwapRecipe implements CraftingRecipe {
 			if (stack.isEmpty()) continue;
 
 			if (relayItem == null) {
-				if (isRelayItem(stack)) {
+				if (CraftingLogic.isRelayItem(stack)) {
 					relayItem = stack;
 					continue;
 				}
@@ -84,19 +83,13 @@ public class RelayGemSwapRecipe implements CraftingRecipe {
 		};
 	}
 
-	private static boolean isRelayItem(ItemStack stack) {
-		return stack.is(ModBlocks.RELAY.asItem()) ||
-				stack.is(ModBlocks.SPLITTER.asItem()) ||
-				stack.is(ModBlocks.CONNECTOR.asItem());
-	}
-
 	@Override
 	public @NotNull NonNullList<ItemStack> getRemainingItems(@NotNull CraftingInput input) {
 		NonNullList<ItemStack> list = NonNullList.withSize(input.size(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); i++) {
 			ItemStack stack = input.getItem(i);
-			if (isRelayItem(stack)) {
+			if (CraftingLogic.isRelayItem(stack)) {
 				GemItemData gemItemData = stack.get(ModDataComponents.GEM_ITEM);
 				if (gemItemData != null) {
 					list.set(i, gemItemData.stack().copy());
