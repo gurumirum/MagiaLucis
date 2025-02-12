@@ -15,11 +15,13 @@ public interface RenderEffect {
 
 		protected abstract @Nullable Level getLevel();
 
-		@Override public boolean isEffectValid() {
+		@Override
+		public boolean isEffectValid() {
 			return !this.unloaded;
 		}
 
-		@Override public void onLevelUnload(LevelAccessor level) {
+		@Override
+		public void onLevelUnload(LevelAccessor level) {
 			if (level == getLevel()) this.unloaded = true;
 		}
 	}
@@ -35,7 +37,8 @@ public interface RenderEffect {
 			return this.blockEntity.getLevel();
 		}
 
-		@Override public boolean isEffectValid() {
+		@Override
+		public boolean isEffectValid() {
 			return super.isEffectValid() && !this.blockEntity.isRemoved();
 		}
 	}

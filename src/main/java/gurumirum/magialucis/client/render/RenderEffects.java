@@ -1,6 +1,8 @@
 package gurumirum.magialucis.client.render;
 
 import gurumirum.magialucis.client.render.beam.BeamRender;
+import gurumirum.magialucis.client.render.generic.GenericRenderEffect;
+import gurumirum.magialucis.client.render.generic.GenericRenderEffectRender;
 import gurumirum.magialucis.client.render.light.LightEffectProvider;
 import gurumirum.magialucis.client.render.light.LightEffectRender;
 import gurumirum.magialucis.client.render.prism.PrismEffect;
@@ -28,6 +30,7 @@ public final class RenderEffects {
 
 	private static final List<RenderEffectManager<?>> effectManagers = new ArrayList<>();
 
+	public static final RenderEffectManager<GenericRenderEffect> cutout = create();
 	public static final RenderEffectManager<LightEffectProvider> light = create();
 	public static final RenderEffectManager<PrismEffect> prism = create();
 
@@ -39,7 +42,9 @@ public final class RenderEffects {
 
 	@SubscribeEvent
 	public static void onRender(RenderLevelStageEvent event) {
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) {
+		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_CUTOUT_BLOCKS) {
+			GenericRenderEffectRender.render(event, cutout);
+		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) {
 			MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
 
 			bufferSource.endBatch(ModRenderTypes.positionTextureColor(InventoryMenu.BLOCK_ATLAS));

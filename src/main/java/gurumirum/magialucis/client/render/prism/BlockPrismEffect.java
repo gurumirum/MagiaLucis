@@ -16,21 +16,25 @@ public abstract class BlockPrismEffect<BE extends BlockEntity>
 		super(blockEntity);
 	}
 
-	@Override public boolean shouldRender(@NotNull Frustum frustum) {
+	@Override
+	public boolean shouldRender(@NotNull Frustum frustum) {
 		return frustum.isVisible(new AABB(this.blockEntity.getBlockPos()));
 	}
 
-	@Override public void transform(@NotNull PoseStack poseStack) {
+	@Override
+	public void transform(@NotNull PoseStack poseStack) {
 		poseStack.pushPose();
 		BlockPos pos = this.blockEntity.getBlockPos();
 		poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	@Override public void undoTransform(@NotNull PoseStack poseStack) {
+	@Override
+	public void undoTransform(@NotNull PoseStack poseStack) {
 		poseStack.popPose();
 	}
 
-	@Override public double getDistance(@NotNull Camera camera) {
+	@Override
+	public double getDistance(@NotNull Camera camera) {
 		BlockPos pos = this.blockEntity.getBlockPos();
 		return camera.getPosition().distanceToSqr(
 				pos.getX() + 0.5,

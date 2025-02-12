@@ -3,7 +3,6 @@ package gurumirum.magialucis.contents.block.lux.splitter;
 import com.mojang.blaze3d.vertex.PoseStack;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.contents.block.RelativeDirection;
 import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
@@ -14,15 +13,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
@@ -34,33 +28,7 @@ public class SplitterBlockEntityRenderer implements BlockEntityRenderer<Splitter
 	@Override
 	public void render(@NotNull SplitterBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack,
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		Minecraft mc = Minecraft.getInstance();
 		Direction facing = blockEntity.getBlockState().getValue(BlockStateProperties.FACING);
-
-		Level level = blockEntity.getLevel();
-		if (level != null) {
-			BlockState state = blockEntity.getBlockState();
-			BlockPos pos = blockEntity.getBlockPos();
-
-			long seed = state.getSeed(pos);
-			RandomSource randomSource = RandomSource.create(seed);
-
-			for (Direction side : Direction.values()) {
-				if (side == facing.getOpposite()) continue;
-
-				BakedModel model = mc.getModelManager().getModel(SplitterBlockModels
-						.sideModel(side, blockEntity.apertureLevel(RelativeDirection.getRelativeDirection(facing, side))));
-
-				for (RenderType renderType : model.getRenderTypes(state, randomSource, ModelData.EMPTY)) {
-					Minecraft.getInstance().getBlockRenderer().getModelRenderer().tesselateBlock(
-							level, model, state, pos,
-							poseStack, bufferSource.getBuffer(renderType),
-							false, randomSource,
-							state.getSeed(pos), packedOverlay,
-							ModelData.EMPTY, renderType);
-				}
-			}
-		}
 
 		boolean transformed = false;
 
