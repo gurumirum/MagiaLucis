@@ -10,6 +10,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -75,10 +76,39 @@ public class BlockStateGen extends BlockStateProvider {
 		directionalBlock(RELAY.block(), models().getExistingFile(id("block/relay")));
 
 		directionalBlock(SPLITTER.block(), defaultModel(SPLITTER.id()));
-		itemModels().withExistingParent(SPLITTER.id().getPath(), id("item/block_entity"));
+		itemModels().withExistingParent(SPLITTER.id().getPath(), id("item/block_entity"))
+				.transforms()
+				.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
+				.rotation(0, 225, 0)
+				.translation(0, 4, 0)
+				.scale(0.4f)
+				.end()
+				.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
+				.rotation(0, 45, 0)
+				.translation(0, 4, 0)
+				.scale(0.4f)
+				.end()
+				.end();
 
 		directionalBlock(CONNECTOR.block(), defaultModel(CONNECTOR.id()));
-		itemModels().withExistingParent(CONNECTOR.id().getPath(), id("item/block_entity"));
+		itemModels().withExistingParent(CONNECTOR.id().getPath(), id("item/block_entity"))
+				.transforms()
+				.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
+				.rotation(0, 225, 0)
+				.translation(0, 4, 0)
+				.scale(0.4f)
+				.end()
+				.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
+				.rotation(0, 45, 0)
+				.translation(0, 4, 0)
+				.scale(0.4f)
+				.end()
+				.transform(ItemDisplayContext.GUI)
+				.rotation(30, 225, 0)
+				.translation(0, 1.5f, 0)
+				.scale(0.625f)
+				.end()
+				.end();
 
 		for (Direction side : Direction.values()) {
 			for (byte apertureLevel = 0; apertureLevel < SplitterBlockEntity.APERTURE_LEVELS; apertureLevel++) {
