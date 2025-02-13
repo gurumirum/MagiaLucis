@@ -25,4 +25,8 @@ public interface PrismEffect extends RenderEffect {
 	void undoTransform(@NotNull PoseStack poseStack);
 
 	double getDistance(@NotNull Camera camera);
+
+	static int defaultColor(boolean reverseCull) {
+		return reverseCull ? -1 : 0xffd2ecf6;
+	}
 }

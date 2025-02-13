@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.client.render.RenderShapes;
 import gurumirum.magialucis.client.render.prism.BlockPrismEffect;
+import gurumirum.magialucis.client.render.prism.PrismEffect;
 import org.jetbrains.annotations.NotNull;
 
 public class SunlightCoreBlockPrismEffect extends BlockPrismEffect<BaseSunlightCoreBlockEntity<?>> {
@@ -21,6 +22,6 @@ public class SunlightCoreBlockPrismEffect extends BlockPrismEffect<BaseSunlightC
 
 	@Override
 	public void draw(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, boolean reverseCull) {
-		RenderShapes.drawTruncatedCube(poseStack, vertexConsumer, reverseCull ? -1 : 0xffd2ecf6, reverseCull);
+		RenderShapes.drawTruncatedCube(poseStack, vertexConsumer, PrismEffect.defaultColor(reverseCull), reverseCull);
 	}
 }

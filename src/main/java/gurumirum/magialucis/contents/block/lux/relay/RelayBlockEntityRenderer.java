@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
+import gurumirum.magialucis.client.render.prism.PrismEffect;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.AprilFoolsUtils;
@@ -145,8 +146,8 @@ public class RelayBlockEntityRenderer implements BlockEntityRenderer<RelayBlockE
 			poseStack.popPose();
 		} else {
 			VertexConsumer vc = buffer.getBuffer(ModRenderTypes.PRISM_ITEM_ENTITY);
-			RenderShapes.drawOctahedron(poseStack, vc, 0xffd2ecf6, false);
-			RenderShapes.drawOctahedron(poseStack, vc, -1, true);
+			RenderShapes.drawOctahedron(poseStack, vc, PrismEffect.defaultColor(false), false);
+			RenderShapes.drawOctahedron(poseStack, vc, PrismEffect.defaultColor(true), true);
 		}
 	}
 }

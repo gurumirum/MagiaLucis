@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
+import gurumirum.magialucis.client.render.prism.PrismEffect;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
@@ -80,7 +81,7 @@ public class ConnectorBlockEntityRenderer implements BlockEntityRenderer<Connect
 
 
 		VertexConsumer vc = buffer.getBuffer(ModRenderTypes.PRISM_ITEM_ENTITY);
-		RenderShapes.drawRhombicuboctahedronDome(poseStack, vc, 0xffd2ecf6, false);
-		RenderShapes.drawRhombicuboctahedronDome(poseStack, vc, -1, true);
+		RenderShapes.drawRhombicuboctahedronDome(poseStack, vc, PrismEffect.defaultColor(false), false);
+		RenderShapes.drawRhombicuboctahedronDome(poseStack, vc, PrismEffect.defaultColor(true), true);
 	}
 }

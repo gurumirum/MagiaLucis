@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.client.render.RenderShapes;
 import gurumirum.magialucis.client.render.prism.BlockPrismEffect;
+import gurumirum.magialucis.client.render.prism.PrismEffect;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -30,7 +31,7 @@ public class ConnectorBlockPrismEffect extends BlockPrismEffect<ConnectorBlockEn
 			}
 		}
 
-		RenderShapes.drawRhombicuboctahedronDome(poseStack, vertexConsumer, reverseCull ? -1 : 0xffd2ecf6, reverseCull);
+		RenderShapes.drawRhombicuboctahedronDome(poseStack, vertexConsumer, PrismEffect.defaultColor(reverseCull), reverseCull);
 
 		if (transformed) poseStack.popPose();
 	}

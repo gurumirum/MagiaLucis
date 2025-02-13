@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.client.render.RenderShapes;
 import gurumirum.magialucis.client.render.prism.BlockPrismEffect;
+import gurumirum.magialucis.client.render.prism.PrismEffect;
 import org.jetbrains.annotations.NotNull;
 
 public class SplitterBlockPrismEffect extends BlockPrismEffect<SplitterBlockEntity> {
@@ -13,6 +14,6 @@ public class SplitterBlockPrismEffect extends BlockPrismEffect<SplitterBlockEnti
 
 	@Override
 	public void draw(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, boolean reverseCull) {
-		RenderShapes.drawTetrakisHexahedron(poseStack, vertexConsumer, reverseCull ? -1 : 0xffd2ecf6, reverseCull);
+		RenderShapes.drawTetrakisHexahedron(poseStack, vertexConsumer, PrismEffect.defaultColor(reverseCull), reverseCull);
 	}
 }

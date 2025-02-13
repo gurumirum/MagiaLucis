@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
+import gurumirum.magialucis.client.render.prism.PrismEffect;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
@@ -74,7 +75,7 @@ public class SplitterBlockEntityRenderer implements BlockEntityRenderer<Splitter
 		}
 
 		VertexConsumer vc = buffer.getBuffer(ModRenderTypes.PRISM_ITEM_ENTITY);
-		RenderShapes.drawTetrakisHexahedron(poseStack, vc, 0xffd2ecf6, false);
-		RenderShapes.drawTetrakisHexahedron(poseStack, vc, -1, true);
+		RenderShapes.drawTetrakisHexahedron(poseStack, vc, PrismEffect.defaultColor(false), false);
+		RenderShapes.drawTetrakisHexahedron(poseStack, vc, PrismEffect.defaultColor(true), true);
 	}
 }

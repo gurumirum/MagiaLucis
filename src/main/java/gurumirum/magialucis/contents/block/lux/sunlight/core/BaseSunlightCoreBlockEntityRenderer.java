@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
+import gurumirum.magialucis.client.render.prism.PrismEffect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -71,7 +72,7 @@ public abstract class BaseSunlightCoreBlockEntityRenderer<BE extends BaseSunligh
 		poseStack.translate(-.5f, -.5f, -.5f);
 
 		VertexConsumer vc = buffer.getBuffer(ModRenderTypes.PRISM_ITEM_ENTITY);
-		RenderShapes.drawTruncatedCube(poseStack, vc, -1, true);
-		RenderShapes.drawTruncatedCube(poseStack, vc, 0xffd2ecf6, false);
+		RenderShapes.drawTruncatedCube(poseStack, vc, PrismEffect.defaultColor(false), false);
+		RenderShapes.drawTruncatedCube(poseStack, vc, PrismEffect.defaultColor(true), true);
 	}
 }
