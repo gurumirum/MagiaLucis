@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents.block.lux.splitter;
 
 import gurumirum.magialucis.contents.block.GemContainerBlock;
 import gurumirum.magialucis.contents.block.RelativeDirection;
+import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -9,6 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -19,13 +21,156 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumMap;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
 public class SplitterBlock extends GemContainerBlock implements SimpleWaterloggedBlock {
+	private static final EnumMap<Direction, VoxelShape> SHAPES = new EnumMap<>(Direction.class);
+	private static final VoxelShape SHAPE_LUX_NET_COLLISION = Shapes.block();
+
+	static {
+		SHAPES.put(Direction.DOWN, Shapes.or(
+				box(0, 11, 11, 5, 12, 16),
+				box(0, 11, 0, 5, 12, 5),
+				box(0, 12, 0, 5, 16, 16),
+				box(5, 12, 0, 11, 16, 5),
+				box(5, 12, 11, 11, 16, 16),
+				box(11, 12, 0, 16, 16, 16),
+				box(11, 11, 11, 16, 12, 16),
+				box(11, 11, 0, 16, 12, 5),
+				box(0, 5, 12, 4, 11, 16),
+				box(0, 5, 0, 4, 11, 4),
+				box(12, 5, 0, 16, 11, 4),
+				box(12, 5, 12, 16, 11, 16),
+				box(0, 0, 11, 5, 5, 16),
+				box(5, 0, 12, 11, 4, 16),
+				box(5, 0, 0, 11, 4, 4),
+				box(0, 0, 0, 5, 5, 5),
+				box(0, 0, 5, 4, 4, 11),
+				box(12, 0, 5, 16, 4, 11),
+				box(11, 0, 11, 16, 5, 16),
+				box(11, 0, 0, 16, 5, 5),
+				box(1, 1, 1, 15, 15, 15)));
+		SHAPES.put(Direction.UP, Shapes.or(
+				box(0, 4, 0, 5, 5, 5),
+				box(0, 4, 11, 5, 5, 16),
+				box(0, 0, 0, 5, 4, 16),
+				box(5, 0, 11, 11, 4, 16),
+				box(5, 0, 0, 11, 4, 5),
+				box(11, 0, 0, 16, 4, 16),
+				box(11, 4, 0, 16, 5, 5),
+				box(11, 4, 11, 16, 5, 16),
+				box(0, 5, 0, 4, 11, 4),
+				box(0, 5, 12, 4, 11, 16),
+				box(12, 5, 12, 16, 11, 16),
+				box(12, 5, 0, 16, 11, 4),
+				box(0, 11, 0, 5, 16, 5),
+				box(5, 12, 0, 11, 16, 4),
+				box(5, 12, 12, 11, 16, 16),
+				box(0, 11, 11, 5, 16, 16),
+				box(0, 12, 5, 4, 16, 11),
+				box(12, 12, 5, 16, 16, 11),
+				box(11, 11, 0, 16, 16, 5),
+				box(11, 11, 11, 16, 16, 16),
+				box(1, 1, 1, 15, 15, 15)));
+		SHAPES.put(Direction.NORTH, Shapes.or(
+				box(11, 11, 11, 16, 16, 12),
+				box(11, 0, 11, 16, 5, 12),
+				box(11, 0, 12, 16, 16, 16),
+				box(5, 0, 12, 11, 5, 16),
+				box(5, 11, 12, 11, 16, 16),
+				box(0, 0, 12, 5, 16, 16),
+				box(0, 11, 11, 5, 16, 12),
+				box(0, 0, 11, 5, 5, 12),
+				box(12, 12, 5, 16, 16, 11),
+				box(12, 0, 5, 16, 4, 11),
+				box(0, 0, 5, 4, 4, 11),
+				box(0, 12, 5, 4, 16, 11),
+				box(11, 11, 0, 16, 16, 5),
+				box(5, 12, 0, 11, 16, 4),
+				box(5, 0, 0, 11, 4, 4),
+				box(11, 0, 0, 16, 5, 5),
+				box(12, 5, 0, 16, 11, 4),
+				box(0, 5, 0, 4, 11, 4),
+				box(0, 11, 0, 5, 16, 5),
+				box(0, 0, 0, 5, 5, 5),
+				box(1, 1, 1, 15, 15, 15)));
+		SHAPES.put(Direction.SOUTH, Shapes.or(
+				box(0, 11, 4, 5, 16, 5),
+				box(0, 0, 4, 5, 5, 5),
+				box(0, 0, 0, 5, 16, 4),
+				box(5, 0, 0, 11, 5, 4),
+				box(5, 11, 0, 11, 16, 4),
+				box(11, 0, 0, 16, 16, 4),
+				box(11, 11, 4, 16, 16, 5),
+				box(11, 0, 4, 16, 5, 5),
+				box(0, 12, 5, 4, 16, 11),
+				box(0, 0, 5, 4, 4, 11),
+				box(12, 0, 5, 16, 4, 11),
+				box(12, 12, 5, 16, 16, 11),
+				box(0, 11, 11, 5, 16, 16),
+				box(5, 12, 12, 11, 16, 16),
+				box(5, 0, 12, 11, 4, 16),
+				box(0, 0, 11, 5, 5, 16),
+				box(0, 5, 12, 4, 11, 16),
+				box(12, 5, 12, 16, 11, 16),
+				box(11, 11, 11, 16, 16, 16),
+				box(11, 0, 11, 16, 5, 16),
+				box(1, 1, 1, 15, 15, 15)));
+		SHAPES.put(Direction.WEST, Shapes.or(
+				box(11, 11, 0, 12, 16, 5),
+				box(11, 0, 0, 12, 5, 5),
+				box(12, 0, 0, 16, 16, 5),
+				box(12, 0, 5, 16, 5, 11),
+				box(12, 11, 5, 16, 16, 11),
+				box(12, 0, 11, 16, 16, 16),
+				box(11, 11, 11, 12, 16, 16),
+				box(11, 0, 11, 12, 5, 16),
+				box(5, 12, 0, 11, 16, 4),
+				box(5, 0, 0, 11, 4, 4),
+				box(5, 0, 12, 11, 4, 16),
+				box(5, 12, 12, 11, 16, 16),
+				box(0, 11, 0, 5, 16, 5),
+				box(0, 12, 5, 4, 16, 11),
+				box(0, 0, 5, 4, 4, 11),
+				box(0, 0, 0, 5, 5, 5),
+				box(0, 5, 0, 4, 11, 4),
+				box(0, 5, 12, 4, 11, 16),
+				box(0, 11, 11, 5, 16, 16),
+				box(0, 0, 11, 5, 5, 16),
+				box(1, 1, 1, 15, 15, 15)));
+		SHAPES.put(Direction.EAST, Shapes.or(
+				box(4, 11, 11, 5, 16, 16),
+				box(4, 0, 11, 5, 5, 16),
+				box(0, 0, 11, 4, 16, 16),
+				box(0, 0, 5, 4, 5, 11),
+				box(0, 11, 5, 4, 16, 11),
+				box(0, 0, 0, 4, 16, 5),
+				box(4, 11, 0, 5, 16, 5),
+				box(4, 0, 0, 5, 5, 5),
+				box(5, 12, 12, 11, 16, 16),
+				box(5, 0, 12, 11, 4, 16),
+				box(5, 0, 0, 11, 4, 4),
+				box(5, 12, 0, 11, 16, 4),
+				box(11, 11, 11, 16, 16, 16),
+				box(12, 12, 5, 16, 16, 11),
+				box(12, 0, 5, 16, 4, 11),
+				box(11, 0, 11, 16, 5, 16),
+				box(12, 5, 12, 16, 11, 16),
+				box(12, 5, 0, 16, 11, 4),
+				box(11, 11, 0, 16, 16, 5),
+				box(11, 0, 0, 16, 5, 5),
+				box(1, 1, 1, 15, 15, 15)));
+	}
+
 	public SplitterBlock(Properties properties) {
 		super(properties);
 
@@ -52,6 +197,18 @@ public class SplitterBlock extends GemContainerBlock implements SimpleWaterlogge
 		return defaultBlockState()
 				.setValue(FACING, context.getNearestLookingDirection().getOpposite())
 				.setValue(WATERLOGGED, fluidState.is(Fluids.WATER));
+	}
+
+	@Override
+	protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level,
+	                                       @NotNull BlockPos pos, @NotNull CollisionContext context) {
+		return SHAPES.get(state.getValue(FACING));
+	}
+
+	@Override
+	protected @NotNull VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level,
+	                                             @NotNull BlockPos pos, @NotNull CollisionContext context) {
+		return context instanceof LuxNetCollisionContext ? SHAPE_LUX_NET_COLLISION : getShape(state, level, pos, context);
 	}
 
 	@Override

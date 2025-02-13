@@ -1,7 +1,9 @@
 package gurumirum.magialucis.contents.block.lux.splitter;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.client.render.ModRenderTypes;
+import gurumirum.magialucis.client.render.RenderShapes;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
@@ -16,7 +18,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
@@ -28,18 +29,6 @@ public class SplitterBlockEntityRenderer implements BlockEntityRenderer<Splitter
 	@Override
 	public void render(@NotNull SplitterBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack,
 	                   @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		Direction facing = blockEntity.getBlockState().getValue(BlockStateProperties.FACING);
-
-		boolean transformed = false;
-
-		if (facing != Direction.UP) {
-			transformed = true;
-			poseStack.pushPose();
-			poseStack.translate(.5f, .5f, .5f);
-			poseStack.mulPose(facing.getRotation());
-			poseStack.translate(-.5f, -.5f, -.5f);
-		}
-
 		ItemStack stack = blockEntity.stack();
 		if (!stack.isEmpty()) {
 			blockEntity.luxFlow(this.luxFlow);
@@ -49,8 +38,6 @@ public class SplitterBlockEntityRenderer implements BlockEntityRenderer<Splitter
 					ModRenderTypes.STUB_BUFFER, stack, sum >= 1 ? LightTexture.FULL_BRIGHT : packedLight, packedOverlay);
 			ModRenderTypes.STUB_BUFFER.endBatch();
 		}
-
-		if (transformed) poseStack.popPose();
 	}
 
 	public static void renderByItem(@NotNull ItemStack stack, @NotNull ItemDisplayContext displayContext,
@@ -85,5 +72,9 @@ public class SplitterBlockEntityRenderer implements BlockEntityRenderer<Splitter
 			RelayBlockEntityRenderer.drawGemItem(mc.level, partialTicks, poseStack, buffer, relayItem,
 					packedLight, packedOverlay);
 		}
+
+		VertexConsumer vc = buffer.getBuffer(ModRenderTypes.PRISM_ITEM_ENTITY);
+		RenderShapes.drawTetrakisHexahedron(poseStack, vc, 0xffd2ecf6, false);
+		RenderShapes.drawTetrakisHexahedron(poseStack, vc, -1, true);
 	}
 }

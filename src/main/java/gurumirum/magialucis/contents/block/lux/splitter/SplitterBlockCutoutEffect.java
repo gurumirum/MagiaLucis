@@ -17,8 +17,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 
-public class SplitterCutoutEffect extends BlockGenericRenderEffect<SplitterBlockEntity> {
-	public SplitterCutoutEffect(SplitterBlockEntity blockEntity) {
+public class SplitterBlockCutoutEffect extends BlockGenericRenderEffect<SplitterBlockEntity> {
+	public SplitterBlockCutoutEffect(SplitterBlockEntity blockEntity) {
 		super(blockEntity);
 	}
 

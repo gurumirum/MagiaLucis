@@ -3,6 +3,7 @@
     "particle": "magialucis:block/splitter",
     "splitter": "magialucis:block/splitter",
     "splitter_inner": "magialucis:block/splitter_inner",
+    "splitter_inner_bottom": "magialucis:block/splitter_inner_bottom",
     "splitter_input": "magialucis:block/splitter_input",
     "splitter_input_inner": "magialucis:block/splitter_input_inner"
   },
@@ -34,7 +35,7 @@
       "to": [5, 4, 16],
       "faces": {
         "north": {"uv": [11, 12, 16, 16], "texture": "#splitter"},
-        "east": {"uv": [0, 12, 16, 16], "texture": "#splitter_inner"},
+        "east": {"uv": [0, 12, 16, 16], "texture": "#splitter_inner_bottom"},
         "south": {"uv": [0, 12, 5, 16], "texture": "#splitter"},
         "west": {"uv": [0, 12, 16, 16], "texture": "#splitter"},
         "up": {"uv": [0, 0, 5, 16], "texture": "#splitter_input_inner"},
@@ -45,7 +46,7 @@
       "from": [5, 0, 11],
       "to": [11, 4, 16],
       "faces": {
-        "north": {"uv": [5, 12, 11, 16], "texture": "#splitter_inner"},
+        "north": {"uv": [5, 12, 11, 16], "texture": "#splitter_inner_bottom"},
         "south": {"uv": [5, 12, 11, 16], "texture": "#splitter"},
         "up": {"uv": [5, 11, 11, 16], "texture": "#splitter_input_inner"},
         "down": {"uv": [5, 0, 11, 5], "texture": "#splitter_input"}
@@ -56,7 +57,7 @@
       "to": [11, 4, 5],
       "faces": {
         "north": {"uv": [5, 12, 11, 16], "texture": "#splitter"},
-        "south": {"uv": [5, 12, 11, 16], "texture": "#splitter_inner"},
+        "south": {"uv": [5, 12, 11, 16], "texture": "#splitter_inner_bottom"},
         "up": {"uv": [5, 0, 11, 5], "texture": "#splitter_input_inner"},
         "down": {"uv": [5, 11, 11, 16], "texture": "#splitter_input"}
       }
@@ -68,7 +69,7 @@
         "north": {"uv": [0, 12, 5, 16], "texture": "#splitter"},
         "east": {"uv": [0, 12, 16, 16], "texture": "#splitter"},
         "south": {"uv": [11, 12, 16, 16], "texture": "#splitter"},
-        "west": {"uv": [0, 12, 16, 16], "texture": "#splitter_inner"},
+        "west": {"uv": [0, 12, 16, 16], "texture": "#splitter_inner_bottom"},
         "up": {"uv": [11, 0, 16, 16], "texture": "#splitter_input_inner"},
         "down": {"uv": [11, 0, 16, 16], "texture": "#splitter_input"}
       }

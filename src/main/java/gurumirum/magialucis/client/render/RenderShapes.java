@@ -6,6 +6,7 @@ import gurumirum.magialucis.MagiaLucisMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import org.jetbrains.annotations.NotNull;
@@ -227,6 +228,75 @@ public final class RenderShapes {
 				0.5f, 0.0f, 0.0f,
 				0.0f, 0.0f, 0.5f,
 				-1, -1, -1,
+				color, reverseCull);
+	}
+
+	public static void drawTetrakisHexahedron(PoseStack poseStack, VertexConsumer vc, int color, boolean reverseCull) {
+		drawTetrakisHexahedronSide(poseStack, vc, Direction.DOWN, Direction.WEST, Direction.SOUTH, color, reverseCull);
+		drawTetrakisHexahedronSide(poseStack, vc, Direction.UP, Direction.EAST, Direction.SOUTH, color, reverseCull);
+		drawTetrakisHexahedronSide(poseStack, vc, Direction.NORTH, Direction.UP, Direction.WEST, color, reverseCull);
+		drawTetrakisHexahedronSide(poseStack, vc, Direction.SOUTH, Direction.UP, Direction.EAST, color, reverseCull);
+		drawTetrakisHexahedronSide(poseStack, vc, Direction.WEST, Direction.UP, Direction.SOUTH, color, reverseCull);
+		drawTetrakisHexahedronSide(poseStack, vc, Direction.EAST, Direction.UP, Direction.NORTH, color, reverseCull);
+	}
+
+	private static void drawTetrakisHexahedronSide(PoseStack poseStack, VertexConsumer vc,
+	                                               Direction side, Direction left, Direction front,
+	                                               int color, boolean reverseCull) {
+		float x1 = 0.5f + side.getStepX() * (6 / 16f);
+		float y1 = 0.5f + side.getStepY() * (6 / 16f);
+		float z1 = 0.5f + side.getStepZ() * (6 / 16f);
+
+		float x2 = 0.5f + side.getStepX() * (4 / 16f);
+		float y2 = 0.5f + side.getStepY() * (4 / 16f);
+		float z2 = 0.5f + side.getStepZ() * (4 / 16f);
+
+		float xl = left.getStepX() * (4 / 16f);
+		float yl = left.getStepY() * (4 / 16f);
+		float zl = left.getStepZ() * (4 / 16f);
+
+		float xf = front.getStepX() * (4 / 16f);
+		float yf = front.getStepY() * (4 / 16f);
+		float zf = front.getStepZ() * (4 / 16f);
+
+		float xn = side.getStepX();
+		float yn = side.getStepY();
+		float zn = side.getStepZ();
+
+		float xln = left.getStepX() / 2f;
+		float yln = left.getStepY() / 2f;
+		float zln = left.getStepZ() / 2f;
+
+		float xfn = front.getStepX() / 2f;
+		float yfn = front.getStepY() / 2f;
+		float zfn = front.getStepZ() / 2f;
+
+		positionColorNormalTri(poseStack, vc,
+				x1, y1, z1,
+				x2 - xl - xf, y2 - yl - yf, z2 - zl - zf,
+				x2 - xl + xf, y2 - yl + yf, z2 - zl + zf,
+				xn - xln, yn - yln, zn - zln,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				x1, y1, z1,
+				x2 + xl + xf, y2 + yl + yf, z2 + zl + zf,
+				x2 + xl - xf, y2 + yl - yf, z2 + zl - zf,
+				xn + xln, yn + yln, zn + zln,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				x1, y1, z1,
+				x2 + xl - xf, y2 + yl - yf, z2 + zl - zf,
+				x2 - xl - xf, y2 - yl - yf, z2 - zl - zf,
+				xn - xfn, yn - yfn, zn - zfn,
+				color, reverseCull);
+
+		positionColorNormalTri(poseStack, vc,
+				x1, y1, z1,
+				x2 - xl + xf, y2 - yl + yf, z2 - zl + zf,
+				x2 + xl + xf, y2 + yl + yf, z2 + zl + zf,
+				xn + xfn, yn + yfn, zn + zfn,
 				color, reverseCull);
 	}
 
