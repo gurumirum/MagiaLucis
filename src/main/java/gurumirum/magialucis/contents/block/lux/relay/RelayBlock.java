@@ -116,10 +116,8 @@ public class RelayBlock extends GemContainerBlock implements SimpleWaterloggedBl
 	@Override
 	protected void addDescription(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
 	                              @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.0"));
-		tooltip.add(Component.translatable("item.magialucis.tooltip.link_source"));
-		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.1"));
-		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.2"));
-		tooltip.add(Component.translatable("block.magialucis.relay.tooltip.3"));
+		tooltip.add(Component.translatable("block.magialucis.tooltip.lux_transmitter"));
+		tooltip.add(Component.translatable("block.magialucis.tooltip.link_source"));
+		super.addDescription(stack, context, tooltip, flag);
 	}
 }

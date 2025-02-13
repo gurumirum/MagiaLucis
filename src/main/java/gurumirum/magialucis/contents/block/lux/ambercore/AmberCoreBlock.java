@@ -59,9 +59,9 @@ public class AmberCoreBlock extends Block implements EntityBlock {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
+		tooltip.add(Component.translatable("block.magialucis.tooltip.connects_to_attached"));
 		tooltip.add(Component.translatable("block.magialucis.amber_core.tooltip.0"));
 		tooltip.add(Component.translatable("block.magialucis.amber_core.tooltip.1"));
-		tooltip.add(Component.translatable("block.magialucis.amber_core.tooltip.2"));
 		tooltip.add(Component.translatable("item.magialucis.tooltip.interference_threshold",
 				NumberFormats.dec(Fields.AMBER_CORE.interferenceThreshold(), ChatFormatting.YELLOW)));
 

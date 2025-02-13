@@ -3,6 +3,10 @@ package gurumirum.magialucis.contents.block.lux.connector;
 import gurumirum.magialucis.contents.block.GemContainerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -16,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
+import java.util.List;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
@@ -91,5 +96,13 @@ public class ConnectorBlock extends GemContainerBlock {
 	protected @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter level,
 	                                       @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return SHAPES.get(state.getValue(FACING));
+	}
+
+	@Override
+	protected void addDescription(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
+	                              @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+		tooltip.add(Component.translatable("block.magialucis.tooltip.direct_lux_transmitter"));
+		tooltip.add(Component.translatable("block.magialucis.connector.tooltip.0"));
+		super.addDescription(stack, context, tooltip, flag);
 	}
 }

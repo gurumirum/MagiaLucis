@@ -95,15 +95,22 @@ public abstract class GemContainerBlock extends Block implements EntityBlock {
 
 		addDescription(stack, context, tooltip, flag);
 
-		GemStat gemStat = GemStatLogic.get(stack);
-		if (gemStat != null) {
-			LuxStatTooltip.formatStat(gemStat, tooltip, LuxStatTooltip.Type.GEM);
-			LuxStatTooltip.skipAutoTooltipFor(stack);
+		GemItemData gemItemData = stack.get(ModDataComponents.GEM_ITEM);
+		if (gemItemData != null) {
+			GemStat gemStat = GemStatLogic.get(gemItemData.stack());
+			if (gemStat != null) {
+				LuxStatTooltip.formatStat(gemStat, tooltip, LuxStatTooltip.Type.GEM);
+				LuxStatTooltip.skipAutoTooltipFor(stack);
+			}
 		}
 	}
 
 	protected void addDescription(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
-	                              @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {}
+	                              @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+		tooltip.add(Component.translatable("block.magialucis.tooltip.gem_container.0"));
+		tooltip.add(Component.translatable("block.magialucis.tooltip.gem_container.1"));
+		tooltip.add(Component.translatable("block.magialucis.tooltip.gem_container.2"));
+	}
 
 	public interface GemContainer {
 		@NotNull ItemStack stack();
