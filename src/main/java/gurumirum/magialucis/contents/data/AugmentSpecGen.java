@@ -4,6 +4,7 @@ import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.utils.AugmentProvider;
+import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.DataMapProvider;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 public final class AugmentSpecGen {
 	private AugmentSpecGen() {}
@@ -55,8 +55,10 @@ public final class AugmentSpecGen {
 		List<AugmentProvider> list = new ArrayList<>();
 		builder.accept(list, t);
 		if (list.isEmpty()) return;
-		register.accept(list.stream()
-				.map(AugmentProvider::augment)
-				.collect(Collectors.toSet()), t);
+
+		ObjectLinkedOpenHashSet<Holder<Augment>> set = new ObjectLinkedOpenHashSet<>();
+		for (AugmentProvider p : list) set.add(p.augment());
+
+		register.accept(set, t);
 	}
 }
