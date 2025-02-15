@@ -2,6 +2,7 @@ package gurumirum.magialucis.client;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.client.particle.LightParticle;
+import gurumirum.magialucis.client.render.WandEffectLayer;
 import gurumirum.magialucis.contents.*;
 import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableScreen;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;

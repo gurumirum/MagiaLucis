@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.item.wand;
 
-import gurumirum.magialucis.client.WandEffect;
+import gurumirum.magialucis.client.render.WandEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModMobEffects;
 import gurumirum.magialucis.contents.item.LuxContainerItem;

@@ -1,8 +1,8 @@
-package gurumirum.magialucis.client;
+package gurumirum.magialucis.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import gurumirum.magialucis.client.render.ModRenderTypes;
+import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.contents.item.WandEffectSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

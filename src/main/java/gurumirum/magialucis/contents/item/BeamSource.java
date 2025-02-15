@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item;
 
 import gurumirum.magialucis.client.RotationLogic;
-import gurumirum.magialucis.client.WandEffect;
+import gurumirum.magialucis.client.render.WandEffect;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
