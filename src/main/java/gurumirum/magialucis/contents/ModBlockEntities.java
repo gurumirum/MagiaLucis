@@ -5,6 +5,7 @@ import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableBlockEnt
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlockEntity;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntity;
+import gurumirum.magialucis.contents.block.lux.charger.ChargerTier;
 import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlockEntity;
 import gurumirum.magialucis.contents.block.lux.connector.ConnectorBlockEntity;
 import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlockEntity;

@@ -1,7 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
 import gurumirum.magialucis.capability.LuxStat;
-import gurumirum.magialucis.contents.ChargerTier;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;

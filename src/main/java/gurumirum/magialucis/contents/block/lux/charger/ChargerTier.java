@@ -1,11 +1,10 @@
-package gurumirum.magialucis.contents;
+package gurumirum.magialucis.contents.block.lux.charger;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.contents.Gem;
+import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
-import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntity;
-import gurumirum.magialucis.contents.block.lux.charger.ChargerBehavior;
-import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlockEntity;
 import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.jetbrains.annotations.NotNull;

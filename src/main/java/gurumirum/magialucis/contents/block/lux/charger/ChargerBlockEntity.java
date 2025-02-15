@@ -5,7 +5,6 @@ import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.contents.Accessories;
-import gurumirum.magialucis.contents.ChargerTier;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.impl.luxnet.LinkContext;

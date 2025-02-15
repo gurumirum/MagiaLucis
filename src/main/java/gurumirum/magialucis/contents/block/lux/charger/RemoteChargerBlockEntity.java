@@ -4,7 +4,6 @@ import gurumirum.magialucis.capability.DirectLinkDestination;
 import gurumirum.magialucis.capability.LinkDestination;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
-import gurumirum.magialucis.contents.ChargerTier;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.impl.luxnet.LinkContext;

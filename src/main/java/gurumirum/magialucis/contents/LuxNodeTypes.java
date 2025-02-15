@@ -1,6 +1,7 @@
 package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBehavior;
+import gurumirum.magialucis.contents.block.lux.charger.ChargerTier;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBehavior;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBehavior;

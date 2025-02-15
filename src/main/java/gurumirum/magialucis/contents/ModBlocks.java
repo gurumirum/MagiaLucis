@@ -8,6 +8,7 @@ import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableBlock;
 import gurumirum.magialucis.contents.block.fieldmonitor.FieldMonitorBlock;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlock;
+import gurumirum.magialucis.contents.block.lux.charger.ChargerTier;
 import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlock;
 import gurumirum.magialucis.contents.block.lux.connector.ConnectorBlock;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;

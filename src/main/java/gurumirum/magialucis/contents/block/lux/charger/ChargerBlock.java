@@ -1,6 +1,5 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
-import gurumirum.magialucis.contents.ChargerTier;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
