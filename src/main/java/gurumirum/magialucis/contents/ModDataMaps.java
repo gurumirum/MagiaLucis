@@ -32,16 +32,17 @@ public final class ModDataMaps {
 	private ModDataMaps() {}
 
 	public static final Codec<Holder<Augment>> AUGMENT_CODEC = RegistryFixedCodec.create(Contents.AUGMENT_REGISTRY_KEY);
-	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Augment>> AUGMENT_STREAM_CODEC =
-			ByteBufCodecs.holderRegistry(Contents.AUGMENT_REGISTRY_KEY);
+	public static final Codec<HolderSet<Augment>> AUGMENT_SET_CODEC = HolderSetCodec
+			.create(Contents.AUGMENT_REGISTRY_KEY, Codec.lazyInitialized(() -> Contents.augmentRegistry().holderByNameCodec()), false);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Augment>> AUGMENT_STREAM_CODEC = ByteBufCodecs.holderRegistry(Contents.AUGMENT_REGISTRY_KEY);
+	public static final StreamCodec<RegistryFriendlyByteBuf, HolderSet<Augment>> AUGMENT_SET_STREAM_CODEC = ByteBufCodecs.holderSet(Contents.AUGMENT_REGISTRY_KEY);
 
 	public static final AdvancedDataMapType<Item, @Unmodifiable Set<Holder<Augment>>, SetRemover<Holder<Augment>>> AUGMENT_SPEC;
 	public static final DataMapType<Item, GemStat> GEM_STAT;
 
 	static {
 		@SuppressWarnings("unchecked")
-		Codec<@Unmodifiable Set<Holder<Augment>>> augmentSetCodec = HolderSetCodec
-				.create(Contents.AUGMENT_REGISTRY_KEY, Codec.lazyInitialized(() -> Contents.augmentRegistry().holderByNameCodec()), false)
+		Codec<@Unmodifiable Set<Holder<Augment>>> augmentSetCodec = AUGMENT_SET_CODEC
 				.xmap(holders -> holders.stream().collect(Collectors.toUnmodifiableSet()),
 						set -> HolderSet.direct(set.toArray(Holder[]::new)));
 

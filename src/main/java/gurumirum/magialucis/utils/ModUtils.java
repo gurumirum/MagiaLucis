@@ -1,6 +1,10 @@
 package gurumirum.magialucis.utils;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamDecoder;
+import net.minecraft.network.codec.StreamEncoder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -12,7 +16,10 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.IntFunction;
 
 public final class ModUtils {
 	private ModUtils() {}
@@ -73,6 +80,25 @@ public final class ModUtils {
 			addSlot.accept(slotFactory.createSlot(inventory, i,
 					inventoryX + 8 + i * 18, inventoryY + 66));
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> void writeCollection(
+			RegistryFriendlyByteBuf buffer, Collection<T> collection,
+			StreamEncoder<RegistryFriendlyByteBuf, T> elementWriter) {
+		buffer.writeCollection(collection, (StreamEncoder<? super FriendlyByteBuf, T>)(Object)elementWriter);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T, C extends Collection<T>> C readCollection(
+			RegistryFriendlyByteBuf buffer, IntFunction<C> collectionFactory,
+			StreamDecoder<RegistryFriendlyByteBuf, T> elementReader) {
+		return buffer.readCollection(collectionFactory, (StreamDecoder<? super FriendlyByteBuf, T>)(Object)elementReader);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> readList(RegistryFriendlyByteBuf buffer, StreamDecoder<RegistryFriendlyByteBuf, T> elementReader) {
+		return buffer.readList((StreamDecoder<? super FriendlyByteBuf, T>)(Object)elementReader);
 	}
 
 	@FunctionalInterface

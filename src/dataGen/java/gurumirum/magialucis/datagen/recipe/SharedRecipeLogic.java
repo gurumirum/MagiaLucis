@@ -3,14 +3,11 @@ package gurumirum.magialucis.datagen.recipe;
 import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.ModItemTags;
 import gurumirum.magialucis.contents.Ore;
-import gurumirum.magialucis.contents.data.Augment;
 import gurumirum.magialucis.datagen.builder.AncientLightRecipeBuilder;
 import gurumirum.magialucis.datagen.builder.ArtisanryRecipeBuilder;
 import gurumirum.magialucis.datagen.builder.AugmentRecipeBuilder;
 import gurumirum.magialucis.datagen.builder.LightBasinRecipeBuilder;
-import gurumirum.magialucis.utils.AugmentProvider;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.core.Holder;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -129,11 +126,7 @@ public abstract class SharedRecipeLogic extends RecipeProvider {
 		return new ArtisanryRecipeBuilder(stack);
 	}
 
-	protected static AugmentRecipeBuilder augment(AugmentProvider augment) {
-		return augment(augment.augment());
-	}
-
-	protected static AugmentRecipeBuilder augment(Holder<Augment> augment) {
-		return new AugmentRecipeBuilder(augment);
+	protected static AugmentRecipeBuilder augment() {
+		return new AugmentRecipeBuilder();
 	}
 }

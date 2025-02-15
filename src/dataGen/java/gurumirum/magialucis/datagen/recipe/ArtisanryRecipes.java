@@ -1,6 +1,5 @@
 package gurumirum.magialucis.datagen.recipe;
 
-import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModItemTags;
@@ -10,6 +9,7 @@ import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import static gurumirum.magialucis.contents.Accessories.*;
+import static gurumirum.magialucis.contents.Augments.*;
 import static gurumirum.magialucis.contents.ModItems.LUMINOUS_RESONATOR;
 
 public abstract class ArtisanryRecipes extends SharedRecipeLogic {
@@ -68,31 +68,41 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.luxInput(b -> b.minB(300))
 				.save(out);
 
-		augment(Augments.LUX_CAPACITY_1)
+		augment()
+				.addAugment(LUX_CAPACITY_1)
+				.incompatible(LUX_CAPACITY_2, LUX_CAPACITY_3)
 				.pattern(" 1 ")
 				.pattern("   ")
 				.pattern("   ")
 				.define('1', gem(Gem.CITRINE))
 				.processTicks(0)
-				.save(out);
+				.save(out, "lux_capacity_1");
 
-		augment(Augments.LUX_CAPACITY_2)
+		augment()
+				.addAugment(LUX_CAPACITY_2)
+				.removeAugment(LUX_CAPACITY_1)
+				.precursor(LUX_CAPACITY_1)
+				.incompatible(LUX_CAPACITY_3)
 				.pattern(" 1 ")
 				.pattern("   ")
 				.pattern("   ")
 				.define('1', gem(Gem.CITRINE))
 				.processTicks(0)
-				.save(out);
+				.save(out, "lux_capacity_2");
 
-		augment(Augments.LUX_CAPACITY_3)
+		augment()
+				.addAugment(LUX_CAPACITY_3)
+				.removeAugment(LUX_CAPACITY_2)
+				.precursor(LUX_CAPACITY_2)
 				.pattern(" 1 ")
 				.pattern("   ")
 				.pattern("   ")
 				.define('1', gem(Gem.CITRINE))
 				.processTicks(0)
-				.save(out);
+				.save(out, "lux_capacity_3");
 
-		augment(Augments.IDK)
+		augment()
+				.addAugment(IDK)
 				.pattern(" 1 ")
 				.pattern("   ")
 				.pattern("   ")

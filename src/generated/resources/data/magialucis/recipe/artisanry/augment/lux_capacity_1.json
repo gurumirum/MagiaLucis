@@ -1,6 +1,12 @@
 {
   "type": "magialucis:artisanry_augment",
-  "augment": "magialucis:lux_capacity_1",
+  "augments": [
+    "magialucis:lux_capacity_1"
+  ],
+  "incompatible": [
+    "magialucis:lux_capacity_2",
+    "magialucis:lux_capacity_3"
+  ],
   "pattern": {
     "key": {
       "1": {

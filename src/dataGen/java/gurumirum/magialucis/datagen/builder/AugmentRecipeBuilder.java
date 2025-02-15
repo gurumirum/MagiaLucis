@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gurumirum.magialucis.contents.data.Augment;
 import gurumirum.magialucis.contents.recipe.artisanry.AugmentRecipe;
+import gurumirum.magialucis.utils.AugmentProvider;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -14,21 +16,20 @@ import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 public class AugmentRecipeBuilder extends ModRecipeBuilder<AugmentRecipe> {
-	private final Holder<Augment> augment;
 	private final List<String> rows = Lists.newArrayList();
 	private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
-	protected int processTicks = -1;
-	protected final LuxInputConditionBuilder luxInput = new LuxInputConditionBuilder();
-
-	public AugmentRecipeBuilder(Holder<Augment> augment) {
-		this.augment = Objects.requireNonNull(augment);
-	}
+	private final List<AugmentRecipe.AugmentOp> augments = new ArrayList<>();
+	private HolderSet<Augment> precursor = HolderSet.empty();
+	private HolderSet<Augment> incompatible = HolderSet.empty();
+	private int processTicks = -1;
+	private final LuxInputConditionBuilder luxInput = new LuxInputConditionBuilder();
 
 	public AugmentRecipeBuilder define(Character symbol, TagKey<Item> tag) {
 		return this.define(symbol, Ingredient.of(tag));
@@ -58,6 +59,68 @@ public class AugmentRecipeBuilder extends ModRecipeBuilder<AugmentRecipe> {
 		}
 	}
 
+	public AugmentRecipeBuilder addAugment(AugmentProvider augmentProvider) {
+		return addAugment(augmentProvider.augment());
+	}
+
+	public AugmentRecipeBuilder addAugment(Holder<Augment> augment) {
+		return addAugment(augment, false);
+	}
+
+	public AugmentRecipeBuilder addAugment(AugmentProvider augmentProvider, boolean optional) {
+		return addAugment(augmentProvider.augment(), optional);
+	}
+
+	public AugmentRecipeBuilder addAugment(Holder<Augment> augment, boolean optional) {
+		this.augments.add(new AugmentRecipe.AugmentOp(augment, false, optional));
+		return this;
+	}
+
+	public AugmentRecipeBuilder removeAugment(AugmentProvider augmentProvider) {
+		return removeAugment(augmentProvider.augment());
+	}
+
+	public AugmentRecipeBuilder removeAugment(Holder<Augment> augment) {
+		return removeAugment(augment, false);
+	}
+
+	public AugmentRecipeBuilder removeAugment(AugmentProvider augmentProvider, boolean optional) {
+		return removeAugment(augmentProvider.augment(), optional);
+	}
+
+	public AugmentRecipeBuilder removeAugment(Holder<Augment> augment, boolean optional) {
+		this.augments.add(new AugmentRecipe.AugmentOp(augment, true, optional));
+		return this;
+	}
+
+	public AugmentRecipeBuilder precursor(AugmentProvider... augmentProviders) {
+		return precursor(HolderSet.direct(AugmentProvider::augment, augmentProviders));
+	}
+
+	@SafeVarargs
+	public final AugmentRecipeBuilder precursor(Holder<Augment>... augments) {
+		return precursor(HolderSet.direct(augments));
+	}
+
+	public AugmentRecipeBuilder precursor(HolderSet<Augment> precursor) {
+		this.precursor = precursor;
+		return this;
+	}
+
+	public AugmentRecipeBuilder incompatible(AugmentProvider... augmentProviders) {
+		return incompatible(HolderSet.direct(AugmentProvider::augment, augmentProviders));
+	}
+
+	@SafeVarargs
+	public final AugmentRecipeBuilder incompatible(Holder<Augment>... augments) {
+		return incompatible(HolderSet.direct(augments));
+	}
+
+	public AugmentRecipeBuilder incompatible(HolderSet<Augment> incompatible) {
+		this.incompatible = incompatible;
+		return this;
+	}
+
 	public AugmentRecipeBuilder instant() {
 		this.processTicks = 0;
 		return this;
@@ -76,13 +139,19 @@ public class AugmentRecipeBuilder extends ModRecipeBuilder<AugmentRecipe> {
 	@Override
 	protected AugmentRecipe createRecipeInstance() {
 		return new AugmentRecipe(
-				ShapedRecipePattern.of(this.key, this.rows), this.augment,
+				ShapedRecipePattern.of(this.key, this.rows), this.augments,
+				this.precursor, this.incompatible,
 				this.processTicks, this.luxInput.build());
 	}
 
 	@Override
 	protected @Nullable ResourceLocation defaultRecipeId() {
-		return Objects.requireNonNull(this.augment.getKey()).location().withPrefix(defaultRecipePrefix());
+		if (this.augments.size() == 1) {
+			AugmentRecipe.AugmentOp op = this.augments.getFirst();
+			if (!op.remove() && !op.optional())
+				return Objects.requireNonNull(op.augment().getKey()).location().withPrefix(defaultRecipePrefix());
+		}
+		return null;
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 {
   "type": "magialucis:artisanry_augment",
-  "augment": "magialucis:idk",
+  "augments": [
+    "magialucis:idk"
+  ],
   "pattern": {
     "key": {
       "1": {

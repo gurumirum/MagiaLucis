@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public final class ItemAugment {
 	public static final Codec<ItemAugment> CODEC = RegistryFixedCodec.create(Contents.AUGMENT_REGISTRY_KEY).listOf()
@@ -31,7 +32,7 @@ public final class ItemAugment {
 	}
 
 	public static ItemAugment of(@NotNull Collection<@NotNull Holder<Augment>> augments) {
-		return new ItemAugment(new ObjectLinkedOpenHashSet<>(augments));
+		return new ItemAugment(augments);
 	}
 
 	private final Set<Holder<Augment>> set;
@@ -40,8 +41,8 @@ public final class ItemAugment {
 		this.set = Set.of();
 	}
 
-	private ItemAugment(ObjectLinkedOpenHashSet<@NotNull Holder<Augment>> augments) {
-		this.set = ObjectSets.unmodifiable(augments);
+	private ItemAugment(Collection<@NotNull Holder<Augment>> augments) {
+		this.set = ObjectSets.unmodifiable(new ObjectLinkedOpenHashSet<>(augments));
 	}
 
 	public @NotNull @Unmodifiable Set<Holder<Augment>> set() {
@@ -56,9 +57,9 @@ public final class ItemAugment {
 		return this.set.contains(augment);
 	}
 
-	public ItemAugment with(Holder<Augment> augment) {
-		ObjectLinkedOpenHashSet<Holder<Augment>> set = new ObjectLinkedOpenHashSet<>(this.set);
-		set.add(augment);
+	public ItemAugment with(Consumer<Set<Holder<Augment>>> change) {
+		@NotNull ObjectLinkedOpenHashSet<Holder<Augment>> set = new ObjectLinkedOpenHashSet<>(this.set);
+		change.accept(set);
 		return new ItemAugment(set);
 	}
 
