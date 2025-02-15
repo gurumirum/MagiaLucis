@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents;
 
+import gurumirum.magialucis.contents.profile.ItemProfile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;

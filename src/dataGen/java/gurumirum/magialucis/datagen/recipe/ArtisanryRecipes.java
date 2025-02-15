@@ -1,9 +1,11 @@
 package gurumirum.magialucis.datagen.recipe;
 
+import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModItemTags;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,6 +66,38 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.define('3', LUMINOUS_RESONATOR)
 				.processTicks(NECKLACE_RECIPE_TICKS)
 				.luxInput(b -> b.minB(300))
+				.save(out);
+
+		augment(Augments.LUX_CAPACITY_1)
+				.pattern(" 1 ")
+				.pattern("   ")
+				.pattern("   ")
+				.define('1', gem(Gem.CITRINE))
+				.processTicks(0)
+				.save(out);
+
+		augment(Augments.LUX_CAPACITY_2)
+				.pattern(" 1 ")
+				.pattern("   ")
+				.pattern("   ")
+				.define('1', gem(Gem.CITRINE))
+				.processTicks(0)
+				.save(out);
+
+		augment(Augments.LUX_CAPACITY_3)
+				.pattern(" 1 ")
+				.pattern("   ")
+				.pattern("   ")
+				.define('1', gem(Gem.CITRINE))
+				.processTicks(0)
+				.save(out);
+
+		augment(Augments.IDK)
+				.pattern(" 1 ")
+				.pattern("   ")
+				.pattern("   ")
+				.define('1', Items.STONE_BRICKS)
+				.processTicks(0)
 				.save(out);
 	}
 }

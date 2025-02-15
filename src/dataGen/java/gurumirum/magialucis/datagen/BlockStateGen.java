@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.contents.BlockProvider;
+import gurumirum.magialucis.utils.BlockProvider;
 import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.Ore;
 import gurumirum.magialucis.contents.block.ModBlockStates;

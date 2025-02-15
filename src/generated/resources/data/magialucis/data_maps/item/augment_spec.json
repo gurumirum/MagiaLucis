@@ -1,0 +1,60 @@
+{
+  "values": {
+    "magialucis:amber_torch": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:lux_capacity_3"
+    ],
+    "magialucis:diamond_mace": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:lux_capacity_3"
+    ],
+    "magialucis:druid_wreath": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:lux_capacity_3"
+    ],
+    "magialucis:dryad_wreath": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:lux_capacity_3"
+    ],
+    "magialucis:ender_wand": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:idk",
+      "magialucis:lux_capacity_3"
+    ],
+    "magialucis:heal_wand": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:lux_capacity_3"
+    ],
+    "magialucis:lapis_shield": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:lux_capacity_3"
+    ],
+    "magialucis:obsidian_bracelet": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:lux_capacity_3"
+    ],
+    "magialucis:recall_staff": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:lux_capacity_3"
+    ],
+    "magialucis:shield_necklace": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:lux_capacity_3"
+    ],
+    "magialucis:speed_ring": [
+      "magialucis:lux_capacity_2",
+      "magialucis:lux_capacity_1",
+      "magialucis:lux_capacity_3"
+    ]
+  }
+}

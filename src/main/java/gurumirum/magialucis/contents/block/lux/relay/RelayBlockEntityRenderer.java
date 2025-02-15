@@ -8,6 +8,7 @@ import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
 import gurumirum.magialucis.client.render.prism.PrismEffect;
 import gurumirum.magialucis.contents.ModBlocks;
+import gurumirum.magialucis.contents.data.GemItemData;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.AprilFoolsUtils;
 import net.minecraft.client.GraphicsStatus;

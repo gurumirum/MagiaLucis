@@ -6,7 +6,7 @@ import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
 import gurumirum.magialucis.client.render.prism.PrismEffect;
 import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
+import gurumirum.magialucis.contents.data.GemItemData;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.client.Minecraft;

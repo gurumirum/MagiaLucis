@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents;
+package gurumirum.magialucis.contents.profile;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;

@@ -1,6 +1,7 @@
 package gurumirum.magialucis.contents;
 
 import com.mojang.datafixers.util.Pair;
+import gurumirum.magialucis.contents.profile.BlockProfile;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;

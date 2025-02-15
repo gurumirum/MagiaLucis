@@ -82,7 +82,7 @@ public final class ModCapabilities {
 	}
 
 	private static void luxContainer(RegisterCapabilitiesEvent event, LuxContainerStat stat, ItemLike... items) {
-		event.registerItem(LUX_CONTAINER_STAT, (s, v) -> stat, items);
+		event.registerItem(LUX_CONTAINER_STAT, (s, v) -> new ItemStackLuxAcceptor(s, stat), items);
 		event.registerItem(LUX_ACCEPTOR, (s, v) -> new ItemStackLuxAcceptor(s, stat), items);
 	}
 

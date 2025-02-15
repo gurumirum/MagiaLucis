@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.builder;
 
-import gurumirum.magialucis.contents.BlockProvider;
+import gurumirum.magialucis.utils.BlockProvider;
 import gurumirum.magialucis.contents.recipe.ancientlight.SimpleAncientLightRecipe;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;

@@ -1,7 +1,8 @@
 {
   "package": "gurumirum.magialucis.mixin",
   "mixins": [
-    "PlayerMixin",
-    "AbstractContainerMenuInvoker"
+    "AbstractContainerMenuInvoker",
+    "ItemStackMixin",
+    "PlayerMixin"
   ]
 }

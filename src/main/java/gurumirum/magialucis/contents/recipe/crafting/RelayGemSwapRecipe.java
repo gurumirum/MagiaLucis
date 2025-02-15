@@ -2,8 +2,8 @@ package gurumirum.magialucis.contents.recipe.crafting;
 
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModRecipes;
-import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
-import gurumirum.magialucis.impl.GemStatLogic;
+import gurumirum.magialucis.contents.data.GemItemData;
+import gurumirum.magialucis.contents.data.GemStatLogic;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;

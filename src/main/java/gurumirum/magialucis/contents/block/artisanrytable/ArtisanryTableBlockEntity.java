@@ -34,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 import java.util.AbstractList;
-import java.util.List;
 import java.util.Objects;
 
 import static gurumirum.magialucis.contents.block.ModBlockStates.WORKING;
@@ -245,15 +244,6 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 	}
 
 	private final class ArtisanryTableInventory extends FixedItemStackHandler implements ArtisanryRecipeInput {
-		private final List<ItemStack> list = new AbstractList<>() {
-			@Override public int size() {
-				return ArtisanryTableInventory.this.size();
-			}
-			@Override public ItemStack get(int i) {
-				return ArtisanryTableInventory.this.getItem(i);
-			}
-		};
-
 		public ArtisanryTableInventory() {
 			super(SLOTS);
 		}
@@ -267,8 +257,32 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 		}
 
 		@Override
+		public @NotNull ItemStack getCenterStack() {
+			return getItem(4);
+		}
+
+		@Override
 		public @NotNull CraftingInput asCraftingInput() {
-			return CraftingInput.of(3, 3, this.list);
+			return CraftingInput.of(3, 3, new AbstractList<>() {
+				@Override public int size() {
+					return ArtisanryTableInventory.this.size();
+				}
+				@Override public ItemStack get(int i) {
+					return ArtisanryTableInventory.this.getItem(i);
+				}
+			});
+		}
+
+		@Override
+		public @NotNull CraftingInput asAugmentInput() {
+			return new CraftingInput(3, 3, new AbstractList<>() {
+				@Override public int size() {
+					return ArtisanryTableInventory.this.size();
+				}
+				@Override public ItemStack get(int i) {
+					return i == 4 ? ItemStack.EMPTY : ArtisanryTableInventory.this.getItem(i);
+				}
+			});
 		}
 
 		@Override

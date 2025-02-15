@@ -3,6 +3,7 @@ package gurumirum.magialucis.contents;
 import gurumirum.magialucis.capability.LuxContainerStat;
 import gurumirum.magialucis.contents.item.accessory.*;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
+import gurumirum.magialucis.contents.profile.ItemProfile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;

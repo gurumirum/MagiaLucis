@@ -1,4 +1,4 @@
-package gurumirum.magialucis.utils;
+package gurumirum.magialucis.impl;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;

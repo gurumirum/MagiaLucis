@@ -1,0 +1,16 @@
+{
+  "type": "magialucis:artisanry_augment",
+  "augment": "magialucis:idk",
+  "pattern": {
+    "key": {
+      "1": {
+        "item": "minecraft:stone_bricks"
+      }
+    },
+    "pattern": [
+      " 1 ",
+      "   ",
+      "   "
+    ]
+  }
+}

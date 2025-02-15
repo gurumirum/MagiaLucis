@@ -1,9 +1,8 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.contents.Contents;
-import gurumirum.magialucis.contents.Gem;
-import gurumirum.magialucis.contents.ModItemTags;
-import gurumirum.magialucis.impl.GemStat;
+import gurumirum.magialucis.contents.*;
+import gurumirum.magialucis.contents.data.AugmentSpecGen;
+import gurumirum.magialucis.contents.data.GemStat;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -19,16 +18,17 @@ public class DataMapGen extends DataMapProvider {
 
 	@Override
 	protected void gather() {
-		Builder<GemStat, Item> gemStatData = builder(Contents.GEM_STAT_DATA_MAP_TYPE);
-
+		Builder<GemStat, Item> b = builder(ModDataMaps.GEM_STAT);
 		for (Gem gem : Gem.values()) {
 			if (gem == Gem.BRIGHTSTONE) {
-				gemStatData.add(ModItemTags.BRIGHTSTONES, new GemStat(gem), false);
+				b.add(ModItemTags.BRIGHTSTONES, new GemStat(gem), false);
 			} else if (gem.hasTag()) {
-				gemStatData.add(gem.tag(), new GemStat(gem), false);
+				b.add(gem.tag(), new GemStat(gem), false);
 			} else {
-				gem.forEachItem(i -> gemStatData.add(BuiltInRegistries.ITEM.wrapAsHolder(i), new GemStat(gem), false));
+				gem.forEachItem(i -> b.add(BuiltInRegistries.ITEM.wrapAsHolder(i), new GemStat(gem), false));
 			}
 		}
+
+		AugmentSpecGen.add(builder(ModDataMaps.AUGMENT_SPEC));
 	}
 }

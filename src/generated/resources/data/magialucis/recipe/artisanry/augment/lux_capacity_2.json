@@ -1,0 +1,16 @@
+{
+  "type": "magialucis:artisanry_augment",
+  "augment": "magialucis:lux_capacity_2",
+  "pattern": {
+    "key": {
+      "1": {
+        "tag": "c:gems/citrine"
+      }
+    },
+    "pattern": [
+      " 1 ",
+      "   ",
+      "   "
+    ]
+  }
+}

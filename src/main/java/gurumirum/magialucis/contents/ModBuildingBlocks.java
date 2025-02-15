@@ -1,6 +1,8 @@
 package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.contents.block.PillarOrnamentBlock;
+import gurumirum.magialucis.contents.profile.BlockProfile;
+import gurumirum.magialucis.utils.BlockProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;

@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block.lux.relay;
+package gurumirum.magialucis.contents.data;
 
 import gurumirum.magialucis.contents.ModDataComponents;
 import net.minecraft.core.component.DataComponentHolder;

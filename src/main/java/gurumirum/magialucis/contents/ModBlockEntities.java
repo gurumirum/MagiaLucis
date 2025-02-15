@@ -16,6 +16,7 @@ import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntity;
+import gurumirum.magialucis.utils.BlockProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;

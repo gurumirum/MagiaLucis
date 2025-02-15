@@ -9,7 +9,7 @@ import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.field.Fields;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
-import gurumirum.magialucis.utils.ServerTickQueue;
+import gurumirum.magialucis.impl.ServerTickQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;

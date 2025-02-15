@@ -1,4 +1,4 @@
-package gurumirum.magialucis.impl;
+package gurumirum.magialucis.contents.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

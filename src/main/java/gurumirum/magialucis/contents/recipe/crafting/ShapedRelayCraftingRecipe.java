@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents.recipe.crafting;
 import com.mojang.serialization.MapCodec;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModRecipes;
-import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
+import gurumirum.magialucis.contents.data.GemItemData;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

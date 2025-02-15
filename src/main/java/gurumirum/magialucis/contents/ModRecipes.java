@@ -4,6 +4,7 @@ import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.contents.recipe.ancientlight.AncientLightRecipe;
 import gurumirum.magialucis.contents.recipe.ancientlight.SimpleAncientLightRecipe;
 import gurumirum.magialucis.contents.recipe.artisanry.ArtisanryRecipe;
+import gurumirum.magialucis.contents.recipe.artisanry.AugmentRecipe;
 import gurumirum.magialucis.contents.recipe.artisanry.SimpleArtisanryRecipe;
 import gurumirum.magialucis.contents.recipe.crafting.RelayGemSwapRecipe;
 import gurumirum.magialucis.contents.recipe.crafting.ShapedRelayCraftingRecipe;
@@ -31,6 +32,9 @@ public final class ModRecipes {
 
 	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<SimpleArtisanryRecipe>> ARTISANRY_SERIALIZER =
 			serializer("artisanry", new SimpleArtisanryRecipe.Serializer());
+
+	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<AugmentRecipe>> AUGMENT_SERIALIZER =
+			serializer("artisanry_augment", new AugmentRecipe.Serializer());
 
 	public static final DeferredHolder<RecipeType<?>, RecipeType<AncientLightRecipe>> ANCIENT_LIGHT_TYPE = type("ancient_light");
 	public static final DeferredHolder<RecipeType<?>, RecipeType<LightBasinRecipe>> LIGHT_BASIN_TYPE = type("light_basin");

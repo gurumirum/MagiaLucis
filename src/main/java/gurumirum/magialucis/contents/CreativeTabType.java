@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
+import gurumirum.magialucis.contents.data.GemItemData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;

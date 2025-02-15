@@ -1,9 +1,9 @@
 package gurumirum.magialucis.contents.block;
 
 import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.contents.block.lux.relay.GemItemData;
-import gurumirum.magialucis.impl.GemStat;
-import gurumirum.magialucis.impl.GemStatLogic;
+import gurumirum.magialucis.contents.data.GemItemData;
+import gurumirum.magialucis.contents.data.GemStat;
+import gurumirum.magialucis.contents.data.GemStatLogic;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.utils.ModUtils;
 import net.minecraft.ChatFormatting;

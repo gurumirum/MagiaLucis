@@ -1,5 +1,6 @@
-package gurumirum.magialucis.contents;
+package gurumirum.magialucis.contents.profile;
 
+import gurumirum.magialucis.contents.Contents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static gurumirum.magialucis.contents.ProfileInternals.defaultBlockFactory;
+import static gurumirum.magialucis.contents.profile.ProfileInternals.defaultBlockFactory;
 
 @FunctionalInterface
 public interface BlockProfile<B extends Block, I extends BlockItem> {

@@ -4,6 +4,8 @@ import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.capability.LuxContainerStat;
 import gurumirum.magialucis.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.contents.data.GemStat;
+import gurumirum.magialucis.contents.data.GemStatLogic;
 import gurumirum.magialucis.utils.NumberFormats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

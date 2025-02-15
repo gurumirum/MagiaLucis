@@ -1,5 +1,6 @@
-package gurumirum.magialucis.contents;
+package gurumirum.magialucis.contents.profile;
 
+import gurumirum.magialucis.contents.Contents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -12,8 +13,8 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static gurumirum.magialucis.contents.ProfileInternals.defaultBlockItemFactory;
-import static gurumirum.magialucis.contents.ProfileInternals.defaultItemFactory;
+import static gurumirum.magialucis.contents.profile.ProfileInternals.defaultBlockItemFactory;
+import static gurumirum.magialucis.contents.profile.ProfileInternals.defaultItemFactory;
 
 @FunctionalInterface
 public interface ItemProfile<I extends Item> {

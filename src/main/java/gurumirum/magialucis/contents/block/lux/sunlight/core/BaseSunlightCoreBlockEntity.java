@@ -14,7 +14,7 @@ import gurumirum.magialucis.impl.luxnet.LinkContext;
 import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.Orientation;
-import gurumirum.magialucis.utils.ServerTickQueue;
+import gurumirum.magialucis.impl.ServerTickQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
