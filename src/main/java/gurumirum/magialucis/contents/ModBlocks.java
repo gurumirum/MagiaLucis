@@ -1,6 +1,7 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.api.capability.LuxStat;
+import gurumirum.magialucis.api.field.Field;
+import gurumirum.magialucis.api.field.FieldRegistry;
 import gurumirum.magialucis.contents.block.AmberLanternBlock;
 import gurumirum.magialucis.contents.block.AmberLightBlock;
 import gurumirum.magialucis.contents.block.BaseLanternBlock;
@@ -15,16 +16,14 @@ import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBaseBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlock;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
-import gurumirum.magialucis.contents.data.GemItemData;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlock;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlock;
 import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlock;
+import gurumirum.magialucis.contents.data.GemItemData;
 import gurumirum.magialucis.contents.profile.BlockProfile;
-import gurumirum.magialucis.api.field.Field;
-import gurumirum.magialucis.api.field.FieldRegistry;
 import gurumirum.magialucis.utils.BlockProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -59,12 +58,12 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 	SPLITTER(BlockProfile.customBlock(SplitterBlock::new, Properties.of()
 			.noOcclusion()
 			.strength(2.5f)
-			.sound(SoundType.WOOD)), CreativeTabType.TRANSMITTERS),
+			.sound(SoundType.GLASS)), CreativeTabType.TRANSMITTERS),
 
 	CONNECTOR(BlockProfile.customBlock(ConnectorBlock::new, Properties.of()
 			.noOcclusion()
 			.strength(2.5f)
-			.sound(SoundType.WOOD)), CreativeTabType.TRANSMITTERS),
+			.sound(SoundType.GLASS)), CreativeTabType.TRANSMITTERS),
 
 	AMBER_CORE(BlockProfile.customBlock(AmberCoreBlock::new, Properties.of()
 			.strength(2.5f)
@@ -122,10 +121,16 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			.strength(2.5f)
 			.lightLevel(state -> state.getValue(BlockStateProperties.ENABLED) ? 15 : 0))),
 
-	LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
-			Gem.BRIGHTSTONE, 10), Properties.of().strength(2.5f))),
-	LUX_SOURCE_2(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
-			LuxStat.simple(0, 100000, 100000, 100000), 100000), Properties.of().strength(2.5f))),
+	PRIMITIVE_LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p, 10),
+			Properties.of().strength(2.5f).sound(SoundType.WOOD))),
+	LUMINOUS_LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p, 100),
+			Properties.of().requiresCorrectToolForDrops().strength(2.5f))),
+	LUSTROUS_LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p, 1000),
+			Properties.of().requiresCorrectToolForDrops().strength(2.5f))),
+	IRRADIANT_LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p, 10000),
+			Properties.of().requiresCorrectToolForDrops().strength(2.5f))),
+	EXUBERANT_LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p, 100000),
+			Properties.of().requiresCorrectToolForDrops().strength(2.5f))),
 
 	FIELD_MONITOR(BlockProfile.customBlock(FieldMonitorBlock::new, Properties.of().strength(1)));
 
@@ -148,6 +153,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 		return this.block.getId();
 	}
 
+	@Override
 	public @NotNull Block block() {
 		return this.block.get();
 	}

@@ -81,12 +81,17 @@ public class BlockTagGen extends BlockTagsProvider {
 				LUMINOUS_RESONANCE_LANTERN.block(),
 				LUSTROUS_RESONANCE_LANTERN.block(),
 				RELAY.block(),
+				SPLITTER.block(),
+				CONNECTOR.block(),
 				LIGHT_BASIN.block(),
 				SUNLIGHT_CORE.block(),
 				MOONLIGHT_CORE.block(),
 				SUNLIGHT_FOCUS.block(),
-				LUX_SOURCE.block(),
-				LUX_SOURCE_2.block(),
+				LUMINOUS_LUX_SOURCE.block(),
+				LUSTROUS_LUX_SOURCE.block(),
+				IRRADIANT_LUX_SOURCE.block(),
+				EXUBERANT_LUX_SOURCE.block(),
+				LUMINOUS_LUX_SOURCE.block(),
 				FIELD_MONITOR.block(),
 
 				LAPIS_MANALIS.block(),
@@ -116,7 +121,8 @@ public class BlockTagGen extends BlockTagsProvider {
 				AMBER_CHARGER.block(),
 				AMBER_CORE.block(),
 				AMBER_LANTERN.block(),
-				ARTISANRY_TABLE.block());
+				ARTISANRY_TABLE.block(),
+				PRIMITIVE_LUX_SOURCE.block());
 
 		tag(BlockTags.NEEDS_STONE_TOOL).add(
 				SILVER_BLOCK.block(),

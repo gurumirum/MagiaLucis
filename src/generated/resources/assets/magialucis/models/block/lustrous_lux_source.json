@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "magialucis:block/lustrous_lux_source"
+  }
+}

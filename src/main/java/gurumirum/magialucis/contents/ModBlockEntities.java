@@ -8,12 +8,12 @@ import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntity;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerTier;
 import gurumirum.magialucis.contents.block.lux.charger.RemoteChargerBlockEntity;
 import gurumirum.magialucis.contents.block.lux.connector.ConnectorBlockEntity;
-import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlockEntity;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntity;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlockEntity;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntity;
 import gurumirum.magialucis.contents.block.lux.source.LuxSourceBlockEntity;
+import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntity;
@@ -82,7 +82,8 @@ public final class ModBlockEntities {
 			remoteCharger("lustrous_remote_charger", ChargerTier.LUSTROUS, ModBlocks.LUSTROUS_RESONANCE_LANTERN);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LuxSourceBlockEntity>> LUX_SOURCE =
-			blockEntity("lux_source", LuxSourceBlockEntity::new, ModBlocks.LUX_SOURCE, ModBlocks.LUX_SOURCE_2);
+			blockEntity("lux_source", LuxSourceBlockEntity::new, ModBlocks.PRIMITIVE_LUX_SOURCE, ModBlocks.LUMINOUS_LUX_SOURCE,
+					ModBlocks.LUSTROUS_LUX_SOURCE, ModBlocks.IRRADIANT_LUX_SOURCE, ModBlocks.EXUBERANT_LUX_SOURCE);
 
 	private static DeferredHolder<BlockEntityType<?>, BlockEntityType<LightLoomBlockEntity>> lightLoom(
 			String name, LightLoomType type, BlockProvider... validBlocks

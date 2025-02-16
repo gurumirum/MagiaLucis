@@ -1,11 +1,11 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.utils.BlockProvider;
 import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.Ore;
 import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlockEntity;
+import gurumirum.magialucis.utils.BlockProvider;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
@@ -173,6 +173,12 @@ public class BlockStateGen extends BlockStateProvider {
 			horizontalBlock(type.block(), lightloom);
 			simpleBlockItem(type.block(), lightloomItem);
 		}
+
+		s(PRIMITIVE_LUX_SOURCE);
+		s(LUMINOUS_LUX_SOURCE);
+		s(LUSTROUS_LUX_SOURCE);
+		s(IRRADIANT_LUX_SOURCE);
+		s(EXUBERANT_LUX_SOURCE);
 
 		for (Ore ore : Ore.values()) ore.allOreBlocks().forEach(this::simpleBlock);
 	}
