@@ -60,6 +60,7 @@ public enum ModBuildingBlocks implements ItemLike, BlockProvider {
 		return this.block.getId();
 	}
 
+	@Override
 	public @NotNull Block block() {
 		return this.block.get();
 	}
