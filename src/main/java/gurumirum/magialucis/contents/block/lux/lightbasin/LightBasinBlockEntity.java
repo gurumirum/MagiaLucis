@@ -5,7 +5,7 @@ import gurumirum.magialucis.api.capability.LinkDestination;
 import gurumirum.magialucis.api.luxnet.LinkContext;
 import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
-import gurumirum.magialucis.capability.impl.FixedItemStackHandler;
+import gurumirum.magialucis.capability.FixedItemStackHandler;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModRecipes;

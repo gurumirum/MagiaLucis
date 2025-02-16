@@ -1,4 +1,4 @@
-package gurumirum.magialucis.capability.impl;
+package gurumirum.magialucis.capability;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;

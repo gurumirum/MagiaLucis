@@ -1,4 +1,4 @@
-package gurumirum.magialucis.capability.impl;
+package gurumirum.magialucis.capability;
 
 import gurumirum.magialucis.api.capability.LuxAcceptor;
 import gurumirum.magialucis.api.capability.LuxContainerStat;

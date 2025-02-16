@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.artisanrytable;
 
 import com.mojang.datafixers.util.Pair;
-import gurumirum.magialucis.capability.impl.FixedItemStackHandler;
+import gurumirum.magialucis.capability.FixedItemStackHandler;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.block.BlockEntityBase;

@@ -7,7 +7,7 @@ import gurumirum.magialucis.api.capability.DirectLinkDestination;
 import gurumirum.magialucis.api.capability.LinkDestination;
 import gurumirum.magialucis.api.capability.LinkSource;
 import gurumirum.magialucis.api.capability.LuxContainerStat;
-import gurumirum.magialucis.capability.impl.ItemStackLuxAcceptor;
+import gurumirum.magialucis.capability.ItemStackLuxAcceptor;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.Contents;
 import gurumirum.magialucis.contents.ModBlockEntities;
