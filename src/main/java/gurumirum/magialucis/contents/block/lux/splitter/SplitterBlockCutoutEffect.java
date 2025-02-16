@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.block.lux.splitter;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import gurumirum.magialucis.client.render.generic.BlockGenericRenderEffect;
-import gurumirum.magialucis.contents.block.RelativeDirection;
+import gurumirum.magialucis.utils.RelativeDirection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

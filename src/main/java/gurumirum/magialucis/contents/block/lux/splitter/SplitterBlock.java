@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.block.lux.splitter;
 
 import gurumirum.magialucis.api.luxnet.LuxNetCollisionContext;
 import gurumirum.magialucis.contents.block.GemContainerBlock;
-import gurumirum.magialucis.contents.block.RelativeDirection;
+import gurumirum.magialucis.utils.RelativeDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;

@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.block;
+package gurumirum.magialucis.utils;
 
 import net.minecraft.core.Direction;
 
