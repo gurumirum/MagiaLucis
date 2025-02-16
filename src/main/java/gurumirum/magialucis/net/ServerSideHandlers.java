@@ -1,7 +1,7 @@
 package gurumirum.magialucis.net;
 
 import gurumirum.magialucis.api.capability.LinkSource;
-import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.api.capability.MagiaLucisCaps;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.item.wand.ConfigurationWandItem;
 import gurumirum.magialucis.contents.item.wandbelt.WandBelt;
@@ -61,7 +61,7 @@ public final class ServerSideHandlers {
 		if (!player.level().isLoaded(pos) ||
 				Math.sqrt(msg.pos().distToCenterSqr(player.position())) >= ConfigurationWandItem.MAX_DISTANCE) return;
 
-		LinkSource linkSource = player.level().getCapability(ModCapabilities.LINK_SOURCE, msg.pos());
+		LinkSource linkSource = player.level().getCapability(MagiaLucisCaps.LINK_SOURCE, msg.pos());
 		if (linkSource != null) {
 			linkSource.setLink(msg.index(), msg.orientation());
 		}

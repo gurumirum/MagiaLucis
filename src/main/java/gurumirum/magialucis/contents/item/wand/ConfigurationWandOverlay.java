@@ -9,7 +9,7 @@ import gurumirum.magialucis.api.luxnet.InWorldLinkInfo;
 import gurumirum.magialucis.api.luxnet.InWorldLinkState;
 import gurumirum.magialucis.api.luxnet.LinkContext;
 import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
-import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.api.capability.MagiaLucisCaps;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
 import gurumirum.magialucis.contents.ModDataComponents;
@@ -147,7 +147,7 @@ public final class ConfigurationWandOverlay {
 				linkSourcePos.dimension().equals(level.dimension()) &&
 				level.isLoaded(linkSourcePos.pos())) {
 
-			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos.pos());
+			LinkSource linkSource = level.getCapability(MagiaLucisCaps.LINK_SOURCE, linkSourcePos.pos());
 			if (linkSource == null) {
 				visualData.boxes.add(new Box(linkSourcePos.pos(), TINT_MISSING));
 				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.missing_link",
@@ -172,7 +172,7 @@ public final class ConfigurationWandOverlay {
 		}
 
 		if (cursor != null) {
-			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, cursor.getBlockPos());
+			LinkSource linkSource = level.getCapability(MagiaLucisCaps.LINK_SOURCE, cursor.getBlockPos());
 			addAllConnections(level, cursor.getBlockPos(), linkSource, player.isSecondaryUseActive());
 			if (linkSource != null) {
 				visualData.overlayText.add(Component.translatable("gui.magialucis.configuration_wand.start_link.1"));

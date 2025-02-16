@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item;
 
 import gurumirum.magialucis.api.capability.LuxContainerStat;
-import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.api.capability.MagiaLucisCaps;
 import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.client.render.light.LightEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
@@ -24,7 +24,7 @@ public class LuxContainerItem extends Item {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat luxContainerStat = stack.getCapability(MagiaLucisCaps.LUX_CONTAINER_STAT);
 		if (luxContainerStat == null) return;
 
 		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
@@ -37,13 +37,13 @@ public class LuxContainerItem extends Item {
 
 	@Override
 	public boolean isBarVisible(@NotNull ItemStack stack) {
-		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat luxContainerStat = stack.getCapability(MagiaLucisCaps.LUX_CONTAINER_STAT);
 		return luxContainerStat != null;
 	}
 
 	@Override
 	public int getBarWidth(@NotNull ItemStack stack) {
-		LuxContainerStat luxContainerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat luxContainerStat = stack.getCapability(MagiaLucisCaps.LUX_CONTAINER_STAT);
 		if (luxContainerStat == null) return 0;
 
 		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
@@ -52,7 +52,7 @@ public class LuxContainerItem extends Item {
 
 	@Override
 	public int getBarColor(@NotNull ItemStack stack) {
-		LuxContainerStat stat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat stat = stack.getCapability(MagiaLucisCaps.LUX_CONTAINER_STAT);
 		if (stat == null) return 0;
 
 		double rotation = RotationLogic.staticRotation(System.currentTimeMillis(), 1000 * 3);

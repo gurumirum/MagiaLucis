@@ -4,7 +4,7 @@ import gurumirum.magialucis.api.capability.DirectLinkDestination;
 import gurumirum.magialucis.api.luxnet.LinkContext;
 import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
-import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.api.capability.MagiaLucisCaps;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.contents.Accessories;
@@ -154,7 +154,7 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 		public boolean isItemValid(int slot, ItemStack stack) {
 			return stack.isEmpty() ||
 					stack.is(Accessories.WAND_BELT.asItem()) ||
-					stack.getCapability(ModCapabilities.LUX_ACCEPTOR) != null;
+					stack.getCapability(MagiaLucisCaps.LUX_ACCEPTOR) != null;
 		}
 
 		@Override

@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.block.lux.charger;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.api.capability.LuxAcceptor;
-import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.api.capability.MagiaLucisCaps;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.world.item.ItemStack;
@@ -31,7 +31,7 @@ public final class ChargeLogic {
 			return success;
 		}
 
-		LuxAcceptor luxAcceptor = stack.getCapability(ModCapabilities.LUX_ACCEPTOR);
+		LuxAcceptor luxAcceptor = stack.getCapability(MagiaLucisCaps.LUX_ACCEPTOR);
 
 		if (luxAcceptor != null) {
 			Vector3d accepted = new Vector3d();

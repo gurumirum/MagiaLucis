@@ -7,7 +7,7 @@ import gurumirum.magialucis.api.luxnet.LinkContext;
 import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
 import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.ServerSideLinkContext;
-import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.api.capability.MagiaLucisCaps;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.contents.ModBlockEntities;
@@ -84,7 +84,7 @@ public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavi
 	                                                       @Nullable ServerSideLinkContext context,
 	                                                       @NotNull BlockHitResult hitResult) {
 		return testLinkDirection(hitResult.getLocation()) ?
-				level.getCapability(ModCapabilities.LINK_DESTINATION, hitResult.getBlockPos(), hitResult.getDirection()) :
+				level.getCapability(MagiaLucisCaps.LINK_DESTINATION, hitResult.getBlockPos(), hitResult.getDirection()) :
 				null;
 	}
 

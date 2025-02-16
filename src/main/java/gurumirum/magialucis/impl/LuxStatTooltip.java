@@ -3,7 +3,7 @@ package gurumirum.magialucis.impl;
 import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.api.capability.LuxContainerStat;
 import gurumirum.magialucis.api.capability.LuxStat;
-import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.api.capability.MagiaLucisCaps;
 import gurumirum.magialucis.contents.data.GemStat;
 import gurumirum.magialucis.contents.data.GemStatLogic;
 import gurumirum.magialucis.utils.NumberFormats;
@@ -43,7 +43,7 @@ public final class LuxStatTooltip {
 			if (stack == skipped) return;
 		}
 
-		LuxContainerStat containerStat = stack.getCapability(ModCapabilities.LUX_CONTAINER_STAT);
+		LuxContainerStat containerStat = stack.getCapability(MagiaLucisCaps.LUX_CONTAINER_STAT);
 		if (containerStat != null) {
 			formatInternal(containerStat, event.getToolTip(), 1, expandedMode(ClientTooltipFlag.of(event.getFlags())), Type.CONTAINER);
 			return;

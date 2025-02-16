@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.api.capability.LinkSource;
-import gurumirum.magialucis.capability.ModCapabilities;
+import gurumirum.magialucis.api.capability.MagiaLucisCaps;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.net.msgs.SetLinkMsg;
@@ -57,7 +57,7 @@ public class ConfigurationWandItem extends Item {
 		if (linkSourcePos != null &&
 				linkSourcePos.dimension().equals(level.dimension()) &&
 				level.isLoaded(linkSourcePos.pos())) {
-			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos.pos());
+			LinkSource linkSource = level.getCapability(MagiaLucisCaps.LINK_SOURCE, linkSourcePos.pos());
 			if (linkSource != null) {
 				if (level.isClientSide) {
 					SetLinkMsg msg = ClientLogic.calculateLink(level, player, linkSourcePos.pos(), linkSource,
@@ -83,14 +83,14 @@ public class ConfigurationWandItem extends Item {
 				level.isLoaded(linkSourcePos.pos())) {
 			if (context.getClickedPos().equals(linkSourcePos.pos())) {
 				if (context.isSecondaryUseActive()) {
-					LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos.pos());
+					LinkSource linkSource = level.getCapability(MagiaLucisCaps.LINK_SOURCE, linkSourcePos.pos());
 					if (linkSource != null) linkSource.unlinkAll();
 				}
 				stack.remove(ModDataComponents.LINK_SOURCE.get());
 				return InteractionResult.SUCCESS;
 			}
 
-			LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, linkSourcePos.pos());
+			LinkSource linkSource = level.getCapability(MagiaLucisCaps.LINK_SOURCE, linkSourcePos.pos());
 			if (linkSource != null) {
 				if (level.isClientSide) {
 					SetLinkMsg msg = ClientLogic.calculateLink(level, context.getPlayer(), linkSourcePos.pos(),
@@ -103,7 +103,7 @@ public class ConfigurationWandItem extends Item {
 			}
 		}
 
-		LinkSource linkSource = level.getCapability(ModCapabilities.LINK_SOURCE, context.getClickedPos());
+		LinkSource linkSource = level.getCapability(MagiaLucisCaps.LINK_SOURCE, context.getClickedPos());
 		if (linkSource != null) {
 			if (!level.isClientSide) {
 				if (context.isSecondaryUseActive()) {
