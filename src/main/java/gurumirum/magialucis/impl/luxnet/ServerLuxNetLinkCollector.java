@@ -3,7 +3,7 @@ package gurumirum.magialucis.impl.luxnet;
 import gurumirum.magialucis.api.capability.DirectLinkDestination;
 import gurumirum.magialucis.api.capability.LinkDestination;
 import gurumirum.magialucis.api.luxnet.*;
-import gurumirum.magialucis.utils.Orientation;
+import gurumirum.magialucis.api.Orientation;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;

@@ -1,5 +1,8 @@
 package gurumirum.magialucis.contents;
 
+import gurumirum.magialucis.api.luxnet.behavior.DefaultLuxNodeBehavior;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBehavior;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerTier;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBehavior;
@@ -8,10 +11,7 @@ import gurumirum.magialucis.contents.block.lux.source.LuxSourceBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBehavior;
-import gurumirum.magialucis.api.luxnet.behavior.DefaultLuxNodeBehavior;
 import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
-import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
-import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -24,9 +24,6 @@ import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 public final class LuxNodeTypes {
 	private LuxNodeTypes() {}
-
-	public static final LuxNodeType<DefaultLuxNodeBehavior> DEFAULT = type("default",
-			DefaultLuxNodeBehavior.class, LuxNodeBehavior::none);
 
 	public static final LuxNodeType<DynamicLuxNodeBehavior> DYNAMIC = type("dynamic",
 			DynamicLuxNodeBehavior.class, DynamicLuxNodeBehavior::save, DynamicLuxNodeBehavior::new);
@@ -50,6 +47,8 @@ public final class LuxNodeTypes {
 			LuxSourceBehavior.class, LuxSourceBehavior::new);
 
 	static {
+		Contents.LUX_NODE_TYPES.register("default", () -> DefaultLuxNodeBehavior.TYPE);
+
 		for (ChargerTier chargerTier : ChargerTier.values()) {
 			Contents.LUX_NODE_TYPES.register(
 					chargerTier.chargerBehaviorType(false).id().getPath(),

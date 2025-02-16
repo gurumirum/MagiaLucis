@@ -43,7 +43,7 @@ public class ConnectorBlockEntity extends LuxNodeBlockEntity<DynamicLuxNodeBehav
 	@Override
 	public void setStack(@NotNull ItemStack stack) {
 		this.stack = stack;
-		if (luxNodeId() != NO_ID) {
+		if (luxNodeId() != LuxNet.NO_ID) {
 			nodeBehavior().setStats(GemStatLogic.getOrDefault(stack));
 		}
 		setChanged();

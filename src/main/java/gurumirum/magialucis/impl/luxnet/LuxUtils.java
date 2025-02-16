@@ -1,23 +1,16 @@
 package gurumirum.magialucis.impl.luxnet;
 
-import gurumirum.magialucis.api.capability.DirectLinkDestination;
-import gurumirum.magialucis.api.capability.LinkDestination;
-import gurumirum.magialucis.api.luxnet.DirectLinkDestinationSelector;
-import gurumirum.magialucis.api.luxnet.LinkContext;
-import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
 import gurumirum.magialucis.api.luxnet.LuxNetCollisionContext;
 import gurumirum.magialucis.contents.ModParticles;
-import gurumirum.magialucis.utils.Orientation;
+import gurumirum.magialucis.api.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

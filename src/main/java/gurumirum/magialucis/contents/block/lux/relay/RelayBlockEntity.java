@@ -3,6 +3,10 @@ package gurumirum.magialucis.contents.block.lux.relay;
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.api.capability.DirectLinkDestination;
 import gurumirum.magialucis.api.capability.LinkDestination;
+import gurumirum.magialucis.api.luxnet.LinkContext;
+import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.ServerSideLinkContext;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
@@ -12,9 +16,6 @@ import gurumirum.magialucis.contents.block.GemContainerBlock;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
 import gurumirum.magialucis.contents.data.GemItemData;
 import gurumirum.magialucis.contents.data.GemStatLogic;
-import gurumirum.magialucis.api.luxnet.LinkContext;
-import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
-import gurumirum.magialucis.api.luxnet.ServerSideLinkContext;
 import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,7 +53,7 @@ public class RelayBlockEntity extends BasicRelayBlockEntity<DynamicLuxNodeBehavi
 	@Override
 	public void setStack(@NotNull ItemStack stack) {
 		this.stack = stack;
-		if (luxNodeId() != NO_ID) {
+		if (luxNodeId() != LuxNet.NO_ID) {
 			nodeBehavior().setStats(GemStatLogic.getOrDefault(stack));
 		}
 		setChanged();

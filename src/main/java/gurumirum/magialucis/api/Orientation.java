@@ -1,4 +1,4 @@
-package gurumirum.magialucis.utils;
+package gurumirum.magialucis.api;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

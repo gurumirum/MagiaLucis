@@ -3,7 +3,7 @@ package gurumirum.magialucis.api.capability;
 import gurumirum.magialucis.api.luxnet.InWorldLinkState;
 import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
 import gurumirum.magialucis.api.luxnet.LuxNodeInterface;
-import gurumirum.magialucis.utils.Orientation;
+import gurumirum.magialucis.api.Orientation;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

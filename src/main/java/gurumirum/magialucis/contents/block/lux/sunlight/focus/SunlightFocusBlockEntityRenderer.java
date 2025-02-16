@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import gurumirum.magialucis.utils.Orientation;
+import gurumirum.magialucis.api.Orientation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

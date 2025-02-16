@@ -7,7 +7,7 @@ import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
 import gurumirum.magialucis.impl.luxnet.ServerLuxNet;
-import gurumirum.magialucis.utils.Orientation;
+import gurumirum.magialucis.api.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

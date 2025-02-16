@@ -16,7 +16,7 @@ import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.data.GemItemData;
 import gurumirum.magialucis.contents.data.GemStatLogic;
 import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
-import gurumirum.magialucis.utils.Orientation;
+import gurumirum.magialucis.api.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -50,7 +50,7 @@ public class SplitterBlockEntity extends LuxNodeBlockEntity<DynamicLuxNodeBehavi
 	@Override
 	public void setStack(@NotNull ItemStack stack) {
 		this.stack = stack;
-		if (luxNodeId() != NO_ID) {
+		if (luxNodeId() != LuxNet.NO_ID) {
 			nodeBehavior().setStats(GemStatLogic.getOrDefault(stack));
 		}
 		setChanged();

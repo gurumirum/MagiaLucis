@@ -97,7 +97,7 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 	protected void onUnregister(@NotNull ServerLevel serverLevel, @NotNull UnregisterContext context) {
 		if (context.isRemoved()) {
 			ServerLuxNet.unregister(serverLevel, this.nodeId);
-			this.nodeId = NO_ID;
+			this.nodeId = LuxNet.NO_ID;
 		} else {
 			ServerLuxNet.unbindInterface(serverLevel, this.nodeId);
 		}

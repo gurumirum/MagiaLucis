@@ -1,17 +1,22 @@
 package gurumirum.magialucis.api.luxnet.behavior;
 
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.api.capability.LuxStat;
-import gurumirum.magialucis.contents.LuxNodeTypes;
 import org.jetbrains.annotations.NotNull;
 
 public final class DefaultLuxNodeBehavior implements LuxNodeBehavior {
 	public static final DefaultLuxNodeBehavior INSTANCE = new DefaultLuxNodeBehavior();
 
+	public static final LuxNodeType<DefaultLuxNodeBehavior> TYPE = new LuxNodeType.Simple<>(
+			MagiaLucisApi.id("default"),
+			DefaultLuxNodeBehavior.class,
+			() -> INSTANCE);
+
 	private DefaultLuxNodeBehavior() {}
 
 	@Override
 	public @NotNull LuxNodeType<?> type() {
-		return LuxNodeTypes.DEFAULT;
+		return TYPE;
 	}
 
 	@Override

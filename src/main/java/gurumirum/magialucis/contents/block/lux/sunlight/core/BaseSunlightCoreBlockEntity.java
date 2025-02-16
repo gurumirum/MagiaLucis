@@ -15,7 +15,7 @@ import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldListener;
 import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
-import gurumirum.magialucis.utils.Orientation;
+import gurumirum.magialucis.api.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
