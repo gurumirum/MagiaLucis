@@ -13,6 +13,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 
 public enum ModItems implements ItemLike {
+	INSCRIPTION_LUX_CAPACITY,
+	INSCRIPTION_IDK,
+
 	ANCIENT_CORE,
 	MECHANICAL_COMPONENT,
 	LUMINOUS_MECHANICAL_COMPONENT,

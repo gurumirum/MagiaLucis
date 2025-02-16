@@ -6,6 +6,8 @@ import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableScreen;
+import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
+import gurumirum.magialucis.contents.recipe.artisanry.AugmentRecipe;
 import gurumirum.magialucis.contents.recipe.artisanry.SimpleArtisanryRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -34,7 +36,8 @@ public class MagiaLucisJeiPlugin implements IModPlugin {
 		registration.addRecipeCategories(
 				new AncientLightRecipeCategory(guiHelper),
 				new LightBasinRecipeCategory(guiHelper),
-				new ArtisanryRecipeCategory(guiHelper)
+				new ArtisanryRecipeCategory(guiHelper),
+				new AugmentRecipeCategory(guiHelper)
 		);
 	}
 
@@ -55,7 +58,14 @@ public class MagiaLucisJeiPlugin implements IModPlugin {
 		registration.addRecipes(ArtisanryRecipeCategory.RECIPE_TYPE, recipeManager
 				.getAllRecipesFor(ModRecipes.ARTISANRY_TYPE.get()).stream()
 				.map(RecipeHolder::value)
-				.map(r -> r instanceof SimpleArtisanryRecipe s ? s : null)
+				.map(r -> r instanceof SimpleArtisanryRecipe r_ ? r_ : null)
+				.filter(Objects::nonNull)
+				.toList());
+
+		registration.addRecipes(AugmentRecipeCategory.RECIPE_TYPE, recipeManager
+				.getAllRecipesFor(ModRecipes.ARTISANRY_TYPE.get()).stream()
+				.map(RecipeHolder::value)
+				.map(r -> r instanceof AugmentRecipe r_ ? r_ : null)
 				.filter(Objects::nonNull)
 				.toList());
 	}
@@ -64,7 +74,10 @@ public class MagiaLucisJeiPlugin implements IModPlugin {
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		registration.addRecipeCatalyst(Wands.ANCIENT_LIGHT, AncientLightRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(ModBlocks.LIGHT_BASIN, LightBasinRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(ModBlocks.ARTISANRY_TABLE, ArtisanryRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(ModBlocks.ARTISANRY_TABLE, ArtisanryRecipeCategory.RECIPE_TYPE, AugmentRecipeCategory.RECIPE_TYPE);
+		for (LightLoomType lightLoomType : LightLoomType.values()) {
+			registration.addRecipeCatalyst(lightLoomType.item(), AugmentRecipeCategory.RECIPE_TYPE);
+		}
 	}
 
 	@Override
@@ -84,11 +97,12 @@ public class MagiaLucisJeiPlugin implements IModPlugin {
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
 		registration.addRecipeClickArea(ArtisanryTableScreen.class, 140, 66, 26, 16,
-				ArtisanryRecipeCategory.RECIPE_TYPE);
+				ArtisanryRecipeCategory.RECIPE_TYPE, AugmentRecipeCategory.RECIPE_TYPE);
 	}
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
 		registration.addRecipeTransferHandler(new ArtisanryRecipeTransferInfo<>(ArtisanryRecipeCategory.RECIPE_TYPE));
+		registration.addRecipeTransferHandler(new ArtisanryRecipeTransferInfo<>(AugmentRecipeCategory.RECIPE_TYPE));
 	}
 }

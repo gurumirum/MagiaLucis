@@ -10,13 +10,28 @@
   "pattern": {
     "key": {
       "1": {
-        "tag": "c:gems/citrine"
+        "count": 0,
+        "ingredient": {
+          "item": "magialucis:inscription_lux_capacity"
+        }
+      },
+      "2": {
+        "count": 2,
+        "ingredient": {
+          "item": "magialucis:luminous_resonance_core"
+        }
+      },
+      "3": {
+        "count": 64,
+        "ingredient": {
+          "item": "minecraft:bedrock"
+        }
       }
     },
     "pattern": [
       " 1 ",
-      "   ",
-      "   "
+      "2 2",
+      " 3 "
     ]
   },
   "precursor": "magialucis:lux_capacity_2"

@@ -3,6 +3,7 @@ package gurumirum.magialucis.datagen.recipe;
 import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModItemTags;
+import gurumirum.magialucis.contents.ModItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static gurumirum.magialucis.contents.Accessories.*;
 import static gurumirum.magialucis.contents.Augments.*;
-import static gurumirum.magialucis.contents.ModItems.LUMINOUS_RESONATOR;
+import static gurumirum.magialucis.contents.ModItems.*;
 
 public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 	public static final int RING_RECIPE_TICKS = 200;
@@ -72,9 +73,11 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.addAugment(LUX_CAPACITY_1)
 				.incompatible(LUX_CAPACITY_2, LUX_CAPACITY_3)
 				.pattern(" 1 ")
-				.pattern("   ")
-				.pattern("   ")
-				.define('1', gem(Gem.CITRINE))
+				.pattern("2 2")
+				.pattern(" 3 ")
+				.define('1', INSCRIPTION_LUX_CAPACITY, 0)
+				.define('2', LUMINOUS_RESONATOR)
+				.define('3', gem(Gem.BRIGHTSTONE))
 				.processTicks(0)
 				.save(out, "lux_capacity_1");
 
@@ -84,9 +87,11 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.precursor(LUX_CAPACITY_1)
 				.incompatible(LUX_CAPACITY_3)
 				.pattern(" 1 ")
-				.pattern("   ")
-				.pattern("   ")
-				.define('1', gem(Gem.CITRINE))
+				.pattern("2 2")
+				.pattern(" 3 ")
+				.define('1', INSCRIPTION_LUX_CAPACITY, 0)
+				.define('2', LUMINOUS_RESONANCE_CORE)
+				.define('3', gem(Gem.PURIFIED_QUARTZ))
 				.processTicks(0)
 				.save(out, "lux_capacity_2");
 
@@ -95,9 +100,11 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.removeAugment(LUX_CAPACITY_2)
 				.precursor(LUX_CAPACITY_2)
 				.pattern(" 1 ")
-				.pattern("   ")
-				.pattern("   ")
-				.define('1', gem(Gem.CITRINE))
+				.pattern("2 2")
+				.pattern(" 3 ")
+				.define('1', INSCRIPTION_LUX_CAPACITY, 0)
+				.define('2', LUMINOUS_RESONANCE_CORE, 2)
+				.define('3', Items.BEDROCK, 64)
 				.processTicks(0)
 				.save(out, "lux_capacity_3");
 
@@ -106,7 +113,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.pattern(" 1 ")
 				.pattern("   ")
 				.pattern("   ")
-				.define('1', Items.STONE_BRICKS)
+				.define('1', ModItems.INSCRIPTION_IDK, 0)
 				.processTicks(0)
 				.save(out);
 	}

@@ -6,7 +6,10 @@
   "pattern": {
     "key": {
       "1": {
-        "item": "minecraft:stone_bricks"
+        "count": 0,
+        "ingredient": {
+          "item": "magialucis:inscription_idk"
+        }
       }
     },
     "pattern": [

@@ -10,13 +10,22 @@
   "pattern": {
     "key": {
       "1": {
-        "tag": "c:gems/citrine"
+        "count": 0,
+        "ingredient": {
+          "item": "magialucis:inscription_lux_capacity"
+        }
+      },
+      "2": {
+        "item": "magialucis:luminous_resonator"
+      },
+      "3": {
+        "tag": "magialucis:brightstones"
       }
     },
     "pattern": [
       " 1 ",
-      "   ",
-      "   "
+      "2 2",
+      " 3 "
     ]
   }
 }

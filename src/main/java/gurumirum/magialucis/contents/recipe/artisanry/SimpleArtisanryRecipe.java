@@ -27,13 +27,16 @@ public class SimpleArtisanryRecipe implements ArtisanryRecipe {
 		this.luxInputCondition = luxInputCondition;
 	}
 
-	public InputPattern<IngredientStack> pattern() {
+	@Override
+	public @NotNull InputPattern<IngredientStack> pattern() {
 		return this.pattern;
 	}
+	@Override
 	public int processTicks() {
 		return this.processTicks;
 	}
-	public LuxInputCondition luxInputCondition() {
+	@Override
+	public @NotNull LuxInputCondition luxInputCondition() {
 		return this.luxInputCondition;
 	}
 

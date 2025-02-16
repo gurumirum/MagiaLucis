@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 import java.util.Set;
@@ -41,29 +42,32 @@ public class AugmentRecipe implements ArtisanryRecipe {
 	                     HolderSet<Augment> precursor, HolderSet<Augment> incompatible,
 	                     int processTicks, LuxInputCondition luxInputCondition) {
 		this.pattern = pattern;
-		this.augments = augments;
+		this.augments = List.copyOf(augments);
 		this.precursor = precursor;
 		this.incompatible = incompatible;
 		this.processTicks = processTicks;
 		this.luxInputCondition = luxInputCondition;
 	}
 
-	public InputPattern<IngredientStack> pattern() {
+	@Override
+	public @NotNull InputPattern<IngredientStack> pattern() {
 		return this.pattern;
 	}
-	public List<AugmentOp> augments() {
+	public @NotNull @Unmodifiable List<AugmentOp> augments() {
 		return this.augments;
 	}
-	public HolderSet<Augment> precursor() {
+	public @NotNull HolderSet<Augment> precursor() {
 		return this.precursor;
 	}
-	public HolderSet<Augment> incompatible() {
+	public @NotNull HolderSet<Augment> incompatible() {
 		return this.incompatible;
 	}
+	@Override
 	public int processTicks() {
 		return this.processTicks;
 	}
-	public LuxInputCondition luxInputCondition() {
+	@Override
+	public @NotNull LuxInputCondition luxInputCondition() {
 		return this.luxInputCondition;
 	}
 
@@ -74,7 +78,7 @@ public class AugmentRecipe implements ArtisanryRecipe {
 
 		Set<Holder<Augment>> spec = AugmentLogic.getSpec(stack);
 		for (AugmentOp op : this.augments) {
-			if (!op.optional && !spec.contains(op.augment)) return LuxRecipeEvaluation.fail();
+			if (!op.remove && !op.optional && !spec.contains(op.augment)) return LuxRecipeEvaluation.fail();
 		}
 
 		ItemAugment itemAugment = AugmentLogic.getAugments(stack);

@@ -1,9 +1,7 @@
 package gurumirum.magialucis.contents.recipe.artisanry;
 
 import gurumirum.magialucis.contents.ModRecipes;
-import gurumirum.magialucis.contents.recipe.IngredientStack;
-import gurumirum.magialucis.contents.recipe.InputPatternSpec;
-import gurumirum.magialucis.contents.recipe.LuxRecipeEvaluation;
+import gurumirum.magialucis.contents.recipe.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +18,10 @@ public interface ArtisanryRecipe extends Recipe<ArtisanryRecipeInput> {
 	InputPatternSpec<RegistryFriendlyByteBuf, IngredientStack> GRID_UNOPTIMIZED_SPEC = new InputPatternSpec<>(
 			3, 3, IngredientStack.EMPTY, false,
 			() -> IngredientStack.CODEC, () -> IngredientStack.STREAM_CODEC);
+
+	@NotNull InputPattern<IngredientStack> pattern();
+	int processTicks();
+	@NotNull LuxInputCondition luxInputCondition();
 
 	@NotNull LuxRecipeEvaluation evaluate(@NotNull ArtisanryRecipeInput input);
 
