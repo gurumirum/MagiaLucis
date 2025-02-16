@@ -126,7 +126,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 	LUX_SOURCE(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
 			Gem.BRIGHTSTONE, 10), Properties.of().strength(2.5f))),
 	LUX_SOURCE_2(BlockProfile.customBlock(p -> new LuxSourceBlock(p,
-			LuxStat.simple(RGB332.WHITE, 0, 100000), 100000), Properties.of().strength(2.5f))),
+			LuxStat.simple(0, 100000, 100000, 100000), 100000), Properties.of().strength(2.5f))),
 
 	FIELD_MONITOR(BlockProfile.customBlock(FieldMonitorBlock::new, Properties.of().strength(1)));
 

@@ -1,6 +1,5 @@
 package gurumirum.magialucis.api.capability;
 
-import gurumirum.magialucis.impl.RGB332;
 import org.joml.Vector3d;
 
 public interface LuxStat {
@@ -14,13 +13,6 @@ public interface LuxStat {
 
 	default Vector3d maxTransfer(Vector3d dest) {
 		return dest.set(rMaxTransfer(), gMaxTransfer(), bMaxTransfer());
-	}
-
-	static Simple simple(byte color, double minLuxThreshold, double maxLuxThreshold) {
-		return new Simple(minLuxThreshold,
-				maxLuxThreshold * RGB332.rBrightness(color),
-				maxLuxThreshold * RGB332.gBrightness(color),
-				maxLuxThreshold * RGB332.bBrightness(color));
 	}
 
 	static Simple simple(double minLuxThreshold, double rMaxTransfer, double gMaxTransfer, double bMaxTransfer) {
