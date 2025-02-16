@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.ambercore;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.impl.field.Fields;

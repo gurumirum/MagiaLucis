@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 
 public record GemStat(
 		double minLuxThreshold,

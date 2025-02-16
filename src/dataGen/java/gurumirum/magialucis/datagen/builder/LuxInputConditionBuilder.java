@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.builder;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.recipe.LuxInputCondition;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;

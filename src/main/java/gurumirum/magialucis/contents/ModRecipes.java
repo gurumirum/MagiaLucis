@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.recipe.ancientlight.AncientLightRecipe;
 import gurumirum.magialucis.contents.recipe.ancientlight.SimpleAncientLightRecipe;
 import gurumirum.magialucis.contents.recipe.artisanry.ArtisanryRecipe;
@@ -45,7 +45,7 @@ public final class ModRecipes {
 	}
 
 	private static <R extends Recipe<?>> DeferredHolder<RecipeType<?>, RecipeType<R>> type(String name) {
-		return Contents.RECIPE_TYPES.register(name, () -> RecipeType.simple(MagiaLucisMod.id(name)));
+		return Contents.RECIPE_TYPES.register(name, () -> RecipeType.simple(MagiaLucisApi.id(name)));
 	}
 
 	public static void init() {}

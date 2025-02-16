@@ -1,6 +1,6 @@
 package gurumirum.magialucis.jei;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.recipe.LuxInputCondition;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.utils.NumberFormats;
@@ -24,8 +24,8 @@ public class LuxInputWidget implements IRecipeWidget {
 	public static final int WIDTH = 14;
 	public static final int HEIGHT = 14;
 
-	public static final ResourceLocation ICON = MagiaLucisMod.id("textures/gui/jei_light_icon.png");
-	public static final ResourceLocation ICON_BG = MagiaLucisMod.id("textures/gui/jei_light_icon_bg.png");
+	public static final ResourceLocation ICON = MagiaLucisApi.id("textures/gui/jei_light_icon.png");
+	public static final ResourceLocation ICON_BG = MagiaLucisApi.id("textures/gui/jei_light_icon_bg.png");
 
 	private final LuxInputCondition luxInputCondition;
 	private final int x;

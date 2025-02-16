@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -13,12 +13,12 @@ import java.util.concurrent.CompletableFuture;
 public class AtlasGen extends SpriteSourceProvider {
 	public AtlasGen(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
 	                ExistingFileHelper existingFileHelper) {
-		super(output, lookupProvider, MagiaLucisMod.MODID, existingFileHelper);
+		super(output, lookupProvider, MagiaLucisApi.MODID, existingFileHelper);
 	}
 
 	@Override
 	protected void gather() {
 		atlas(InventoryMenu.BLOCK_ATLAS)
-				.addSource(new NamespacedDirectoryLister(MagiaLucisMod.MODID, "block/matrix", ""));
+				.addSource(new NamespacedDirectoryLister(MagiaLucisApi.MODID, "block/matrix", ""));
 	}
 }

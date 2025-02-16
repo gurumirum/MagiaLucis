@@ -1,6 +1,6 @@
-package gurumirum.magialucis.impl.luxnet;
+package gurumirum.magialucis.api.luxnet;
 
-import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.api.capability.LinkDestination;
 import gurumirum.magialucis.capability.ModCapabilities;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;

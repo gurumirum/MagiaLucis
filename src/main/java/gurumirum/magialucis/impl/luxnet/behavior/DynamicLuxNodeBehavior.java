@@ -1,6 +1,8 @@
 package gurumirum.magialucis.impl.luxnet.behavior;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.contents.LuxNodeTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

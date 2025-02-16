@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.item.wandbelt;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.client.ModKeyMappings;
 import gurumirum.magialucis.contents.ModItemTags;
 import gurumirum.magialucis.net.msgs.SetWandBeltSelectedIndexMsg;
@@ -15,7 +15,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = MagiaLucisApi.MODID, value = Dist.CLIENT)
 public final class WandBeltClientEvents {
 	private WandBeltClientEvents() {}
 

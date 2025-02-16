@@ -1,8 +1,8 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
+import gurumirum.magialucis.api.luxnet.LuxNetCollisionContext;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
-import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -97,7 +97,7 @@ public class ChargerBlock extends Block implements EntityBlock {
 	@Override
 	protected @NotNull VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level,
 	                                             @NotNull BlockPos pos, @NotNull CollisionContext context) {
-		return context instanceof LuxNetCollisionContext ? SHAPE_LUX_NET_COLLISION : SHAPE;
+		return LuxNetCollisionContext.is(context) ? SHAPE_LUX_NET_COLLISION : SHAPE;
 	}
 
 	@Override

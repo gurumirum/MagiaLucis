@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.impl.field.Fields;

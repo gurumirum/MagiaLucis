@@ -1,7 +1,7 @@
-package gurumirum.magialucis.impl.luxnet.behavior;
+package gurumirum.magialucis.api.luxnet.behavior;
 
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxNode;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNode;
 import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;

@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.block.AmberLanternBlock;
 import gurumirum.magialucis.contents.block.AmberLightBlock;
 import gurumirum.magialucis.contents.block.BaseLanternBlock;

@@ -5,7 +5,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 public final class ModItemTags {
 	private ModItemTags() {}

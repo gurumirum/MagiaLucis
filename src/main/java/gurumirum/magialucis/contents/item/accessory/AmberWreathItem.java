@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.accessory;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModMobEffects;
 import gurumirum.magialucis.utils.NumberFormats;
@@ -70,9 +70,9 @@ public class AmberWreathItem extends LuxContainerCurioItem {
 	public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
 		if (stack.getOrDefault(ModDataComponents.ACTIVE, false)) {
 			if (attribute == null) attribute = ImmutableMultimap.of(
-					Attributes.MOVEMENT_SPEED, new AttributeModifier(MagiaLucisMod.id("amber_wreath_attack_damage"),
+					Attributes.MOVEMENT_SPEED, new AttributeModifier(MagiaLucisApi.id("amber_wreath_attack_damage"),
 							MOVEMENT_SPEED_INCREASE_AMOUNT, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
-					Attributes.ATTACK_DAMAGE, new AttributeModifier(MagiaLucisMod.id("amber_wreath_attack_damage"),
+					Attributes.ATTACK_DAMAGE, new AttributeModifier(MagiaLucisApi.id("amber_wreath_attack_damage"),
 							ATTACK_DAMAGE_INCREASE_AMOUNT, AttributeModifier.Operation.ADD_VALUE));
 			return attribute;
 		}

@@ -1,12 +1,12 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNode;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.contents.LuxNodeTypes;
 import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.Fields;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxNode;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

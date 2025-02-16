@@ -1,13 +1,16 @@
 package gurumirum.magialucis.impl.luxnet;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxConsumerNodeBehavior;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxGeneratorNodeBehavior;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxSpecialNodeBehavior;
+import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.luxnet.InWorldLinkState;
+import gurumirum.magialucis.api.luxnet.LinkInfo;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNodeInterface;
+import gurumirum.magialucis.api.luxnet.behavior.LuxConsumerNodeBehavior;
+import gurumirum.magialucis.api.luxnet.behavior.LuxGeneratorNodeBehavior;
+import gurumirum.magialucis.api.luxnet.behavior.LuxSpecialNodeBehavior;
 import it.unimi.dsi.fastutil.ints.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -15,28 +18,29 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import org.joml.Vector3d;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-public final class LuxNet extends SavedData {
-	public static final int NO_ID = 0;
-
+public final class ServerLuxNet extends SavedData implements LuxNet {
 	private static final int SYNC_DELAY = 20;
 	private static final int UPDATE_CONNECTION_CYCLE = 20;
-	private static final String NAME = MagiaLucisMod.MODID + "_lux_net";
+	private static final String NAME = MagiaLucisApi.MODID + "_lux_net";
 
-	public static @Nullable LuxNet tryGet(@Nullable Level level) {
+	public static @Nullable ServerLuxNet tryGet(@Nullable Level level) {
 		return level instanceof ServerLevel serverLevel ? get(serverLevel) : null;
 	}
 
-	public static @NotNull LuxNet get(@NotNull ServerLevel level) {
-		return level.getDataStorage().computeIfAbsent(new Factory<>(LuxNet::new,
-				(tag, provider) -> new LuxNet(level, tag, provider)), NAME);
+	public static @NotNull ServerLuxNet get(@NotNull ServerLevel level) {
+		return level.getDataStorage().computeIfAbsent(new Factory<>(
+				() -> new ServerLuxNet(level),
+				(tag, provider) -> new ServerLuxNet(level, tag, provider)), NAME);
 	}
 
 	public static int tryRegister(@Nullable Level level, @NotNull LuxNodeInterface iface, int existingId) {
@@ -44,7 +48,7 @@ public final class LuxNet extends SavedData {
 	}
 
 	public static int register(@NotNull ServerLevel level, @NotNull LuxNodeInterface iface, int existingId) {
-		return get(level).register0(level, iface, existingId);
+		return get(level).register(iface, existingId);
 	}
 
 	public static void tryUnregister(@Nullable Level level, int id) {
@@ -52,7 +56,7 @@ public final class LuxNet extends SavedData {
 	}
 
 	public static void unregister(@NotNull ServerLevel level, int id) {
-		get(level).unregister0(level, id);
+		get(level).unregister(id);
 	}
 
 	public static void tryUnbindInterface(@Nullable Level level, int id) {
@@ -60,36 +64,40 @@ public final class LuxNet extends SavedData {
 	}
 
 	public static void unbindInterface(@NotNull ServerLevel level, int id) {
-		get(level).unbindInterface0(level, id);
+		get(level).unbindInterface(id);
 	}
 
-	private final Int2ObjectMap<LuxNode> nodes = new Int2ObjectOpenHashMap<>();
+	private final ServerLevel level;
+	private final Int2ObjectMap<ServerLuxNode> nodes = new Int2ObjectOpenHashMap<>();
 
-	private final Map<LuxNode, OutboundLink> srcToDst = new Object2ObjectOpenHashMap<>();
-	private final Map<LuxNode, InboundLink> dstToSrc = new Object2ObjectOpenHashMap<>();
+	private final Int2ObjectMap<ServerOutboundLink> srcToDst = new Int2ObjectOpenHashMap<>();
+	private final Int2ObjectMap<ServerInboundLink> dstToSrc = new Int2ObjectOpenHashMap<>();
 
-	private final Map<LuxNode, NodeFlowRecord> loadedNodes = new Object2ObjectOpenHashMap<>();
+	private final Map<ServerLuxNode, NodeFlowRecord> loadedNodes = new Object2ObjectOpenHashMap<>();
 
-	private final Map<LuxNode, LuxGeneratorNodeBehavior> generatorBehaviors = new Object2ObjectOpenHashMap<>();
-	private final Map<LuxNode, LuxConsumerNodeBehavior> consumerBehaviors = new Object2ObjectOpenHashMap<>();
+	private final Map<ServerLuxNode, LuxGeneratorNodeBehavior> generatorBehaviors = new Object2ObjectOpenHashMap<>();
+	private final Map<ServerLuxNode, LuxConsumerNodeBehavior> consumerBehaviors = new Object2ObjectOpenHashMap<>();
 
 	private final IntSet queuedLinkUpdates = new IntOpenHashSet();
 	private final IntSet queuedLuxFlowSyncs = new IntOpenHashSet();
 	private final IntSet queuedConnectionSyncs = new IntOpenHashSet();
 
 	private final IntSet updateCacheSet = new IntOpenHashSet();
-	private final List<LuxNode> nodeCache = new ArrayList<>();
+	private final List<ServerLuxNode> nodeCache = new ArrayList<>();
 	private final Vector3d luxCache = new Vector3d();
 
-	private final LinkCollector linkCollector = new LinkCollector();
+	private final ServerLuxNetLinkCollector linkCollector = new ServerLuxNetLinkCollector(this);
 
 	private int idIncrement;
 
-	private LuxNet() {}
+	private ServerLuxNet(@NotNull ServerLevel level) {
+		this.level = level;
+	}
 
-	private int register0(@NotNull ServerLevel level, @NotNull LuxNodeInterface iface, int existingId) {
+	@Override
+	public int register(@NotNull LuxNodeInterface iface, int existingId) {
 		if (existingId != NO_ID) {
-			if (doRegister(level, iface, existingId, true)) return existingId;
+			if (doRegister(iface, existingId, true)) return existingId;
 		}
 
 		int id;
@@ -98,7 +106,7 @@ public final class LuxNet extends SavedData {
 			do {
 				id = ++this.idIncrement;
 			} while (id == NO_ID);
-		} while (!doRegister(level, iface, id, false));
+		} while (!doRegister(iface, id, false));
 
 		if (existingId != NO_ID) {
 			MagiaLucisMod.LOGGER.warn("""
@@ -109,19 +117,19 @@ public final class LuxNet extends SavedData {
 		return id;
 	}
 
-	private boolean doRegister(@NotNull ServerLevel level, @NotNull LuxNodeInterface iface, int id, boolean existing) {
+	private boolean doRegister(@NotNull LuxNodeInterface iface, int id, boolean existing) {
 		if (id == NO_ID) throw new IllegalArgumentException("Cannot register node of ID 0");
 
-		LuxNode node;
+		ServerLuxNode node;
 
 		if (existing) {
 			node = this.nodes.get(id);
 			if (node == null) return false;
 		} else {
-			node = this.nodes.computeIfAbsent(id, LuxNode::new);
+			node = this.nodes.computeIfAbsent(id, ServerLuxNode::new);
 		}
 
-		return switch (node.bindInterface(level, this, iface)) {
+		return switch (node.bindInterface(this.level, this, iface)) {
 			case SUCCESS -> {
 				queueConnectionSync(id);
 
@@ -138,7 +146,7 @@ public final class LuxNet extends SavedData {
 		};
 	}
 
-	private void updateBehaviorCache(LuxNode node) {
+	private void updateBehaviorCache(ServerLuxNode node) {
 		if (node.behavior() instanceof LuxGeneratorNodeBehavior generatorBehavior) {
 			this.generatorBehaviors.put(node, generatorBehavior);
 		} else {
@@ -152,10 +160,11 @@ public final class LuxNet extends SavedData {
 		}
 	}
 
-	private void unregister0(@NotNull ServerLevel level, int id) {
-		LuxNode node = get(id);
+	@Override
+	public void unregister(int id) {
+		ServerLuxNode node = get(id);
 		if (node == null) return;
-		node.bindInterface(level, this, null);
+		node.bindInterface(this.level, this, null);
 		this.nodes.remove(id);
 		unlinkAll(node);
 
@@ -164,90 +173,121 @@ public final class LuxNet extends SavedData {
 		this.consumerBehaviors.remove(node);
 	}
 
-	private void unbindInterface0(@NotNull ServerLevel level, int id) {
-		LuxNode node = get(id);
+	@Override
+	public void unbindInterface(int id) {
+		ServerLuxNode node = get(id);
 		if (node == null) return;
-		if (node.bindInterface(level, this, null) != LuxNode.BindInterfaceResult.SUCCESS) return;
+		if (node.bindInterface(this.level, this, null) != ServerLuxNode.BindInterfaceResult.SUCCESS) return;
 
 		this.loadedNodes.remove(node);
 	}
 
-	public @NotNull @UnmodifiableView Int2ObjectMap<LuxNode> nodes() {
+	@Override
+	public @NotNull @UnmodifiableView Int2ObjectMap<ServerLuxNode> nodes() {
 		return Int2ObjectMaps.unmodifiable(this.nodes);
 	}
 
-	public @Nullable LuxNode get(int id) {
-		return id == NO_ID ? null : this.nodes.get(id);
+	@Override
+	public @Nullable ServerLuxNode get(int nodeId) {
+		return nodeId == NO_ID ? null : this.nodes.get(nodeId);
 	}
 
-	public boolean hasOutboundLink(@NotNull LuxNode node) {
-		var m = this.srcToDst.get(node);
+	@Override
+	public boolean hasOutboundLink(int nodeId) {
+		var m = this.srcToDst.get(nodeId);
 		return m != null && !m.links.isEmpty();
 	}
 
-	public boolean hasInboundLink(@NotNull LuxNode node) {
-		var m = this.dstToSrc.get(node);
+	@Override
+	public boolean hasInboundLink(int nodeId) {
+		var m = this.dstToSrc.get(nodeId);
 		return m != null && !m.links.isEmpty();
 	}
 
-	public @NotNull OutboundLink outboundLinks(@NotNull LuxNode node) {
-		return this.srcToDst.computeIfAbsent(Objects.requireNonNull(node), OutboundLink::new);
+	@Override
+	public @Nullable ServerOutboundLink outboundLinks(int nodeId) {
+		ServerOutboundLink outboundLink = this.srcToDst.get(nodeId);
+		if (outboundLink != null) return outboundLink;
+
+		ServerLuxNode node = this.nodes.get(nodeId);
+		if (node == null) return null;
+
+		this.srcToDst.put(nodeId, outboundLink = new ServerOutboundLink(node));
+		return outboundLink;
 	}
 
-	public @NotNull InboundLink inboundLinks(@NotNull LuxNode node) {
-		return this.dstToSrc.computeIfAbsent(Objects.requireNonNull(node), InboundLink::new);
+	@Override
+	public @Nullable ServerInboundLink inboundLinks(int nodeId) {
+		ServerInboundLink inboundLink = this.dstToSrc.get(nodeId);
+		if (inboundLink != null) return inboundLink;
+
+		ServerLuxNode node = this.nodes.get(nodeId);
+		if (node == null) return null;
+
+		this.dstToSrc.put(nodeId, inboundLink = new ServerInboundLink(node));
+		return inboundLink;
 	}
 
-	public @NotNull @UnmodifiableView Set<LuxNode> nodesWithOutboundLink() {
-		return Collections.unmodifiableSet(this.srcToDst.keySet());
+	private @NotNull ServerOutboundLink outboundLinks(ServerLuxNode node) {
+		return this.srcToDst.computeIfAbsent(node.id(), id -> new ServerOutboundLink(node));
 	}
 
-	public @NotNull @UnmodifiableView Set<LuxNode> nodesWithInboundLink() {
-		return Collections.unmodifiableSet(this.dstToSrc.keySet());
+	private @NotNull ServerInboundLink inboundLinks(ServerLuxNode node) {
+		return this.dstToSrc.computeIfAbsent(node.id(), id -> new ServerInboundLink(node));
 	}
 
-	private void unlinkAll(@NotNull LuxNode node) {
-		if (hasOutboundLink(node)) {
-			this.nodeCache.addAll(outboundLinks(node).links.keySet());
+	@Override
+	public @NotNull @UnmodifiableView IntSet nodesWithOutboundLink() {
+		return IntSets.unmodifiable(this.srcToDst.keySet());
+	}
+
+	@Override
+	public @NotNull @UnmodifiableView IntSet nodesWithInboundLink() {
+		return IntSets.unmodifiable(this.dstToSrc.keySet());
+	}
+
+	private void unlinkAll(@NotNull ServerLuxNode node) {
+		if (hasOutboundLink(node.id())) {
+			this.nodeCache.addAll(Objects.requireNonNull(outboundLinks(node.id())).links.keySet());
 			for (var n : this.nodeCache) removeLink(node, n);
 			this.nodeCache.clear();
 		}
-		if (hasInboundLink(node)) {
-			this.nodeCache.addAll(inboundLinks(node).links.keySet());
+		if (hasInboundLink(node.id())) {
+			this.nodeCache.addAll(Objects.requireNonNull(inboundLinks(node.id())).links.keySet());
 			for (var n : this.nodeCache) removeLink(n, node);
 			this.nodeCache.clear();
 		}
 	}
 
-	private boolean removeLink(@NotNull LuxNode src, @NotNull LuxNode dst) {
+	private boolean removeLink(@NotNull ServerLuxNode src, @NotNull ServerLuxNode dst) {
 		Objects.requireNonNull(src);
 		Objects.requireNonNull(dst);
 
-		OutboundLink outboundLinks = this.srcToDst.get(src);
+		ServerOutboundLink outboundLinks = this.srcToDst.get(src.id());
 		if (outboundLinks == null) return false;
 
 		LinkInfo removed = outboundLinks.links.remove(dst);
 		if (removed == null) return false;
 
-		outboundLinks.totalLinkWeight -= removed.weight();
+		outboundLinks.setTotalLinkWeight(outboundLinks.totalLinkWeight() - removed.weight());
 
-		InboundLink inboundLinks = this.dstToSrc.get(dst);
+		ServerInboundLink inboundLinks = this.dstToSrc.get(dst.id());
 		if (inboundLinks != null) inboundLinks.links.remove(src);
 
-		if (src.iface() != null) queueConnectionSync(src.id);
-		if (dst.iface() != null) queueConnectionSync(dst.id);
+		if (src.iface() != null) queueConnectionSync(src.id());
+		if (dst.iface() != null) queueConnectionSync(dst.id());
 
 		return true;
 	}
 
-	private boolean addLink(@NotNull LuxNode src, @NotNull LuxNode dst, @NotNull LinkInfo linkInfo) {
+	private boolean addLink(@NotNull ServerLuxNode src, @NotNull ServerLuxNode dst, @NotNull LinkInfo linkInfo) {
 		Objects.requireNonNull(src);
 		Objects.requireNonNull(dst);
 		Objects.requireNonNull(linkInfo);
 
 		if (src == dst) return false; // disallow self connection
 
-		OutboundLink outboundLinks = outboundLinks(src);
+		ServerOutboundLink outboundLinks = outboundLinks(src);
 
 		@Nullable LinkInfo prev = null;
 		if (outboundLinks.links.containsKey(dst)) {
@@ -258,26 +298,31 @@ public final class LuxNet extends SavedData {
 		}
 
 		outboundLinks.links.put(dst, linkInfo);
-		outboundLinks.totalLinkWeight += prev != null ? linkInfo.weight() - prev.weight() : linkInfo.weight();
+
+		outboundLinks.setTotalLinkWeight(outboundLinks.totalLinkWeight() +
+				(prev != null ? linkInfo.weight() - prev.weight() : linkInfo.weight()));
 
 		inboundLinks(dst).links.put(src, linkInfo);
 
-		if (src.iface() != null) queueConnectionSync(src.id);
-		if (dst.iface() != null) queueConnectionSync(dst.id);
+		if (src.iface() != null) queueConnectionSync(src.id());
+		if (dst.iface() != null) queueConnectionSync(dst.id());
 
 		return true;
 	}
 
+	@Override
 	public void queueLinkUpdate(int nodeId) {
 		if (nodeId == NO_ID) return;
 		this.queuedLinkUpdates.add(nodeId);
 	}
 
+	@Override
 	public void queueLuxFlowSync(int nodeId) {
 		if (nodeId == NO_ID) return;
 		this.queuedLuxFlowSyncs.add(nodeId);
 	}
 
+	@Override
 	public void queueConnectionSync(int nodeId) {
 		if (nodeId == NO_ID) return;
 		this.queuedConnectionSyncs.add(nodeId);
@@ -292,7 +337,7 @@ public final class LuxNet extends SavedData {
 		} else {
 			if (!this.queuedLinkUpdates.isEmpty()) {
 				updateWithQueue(this.queuedLinkUpdates, id -> {
-					LuxNode node = get(id);
+					ServerLuxNode node = get(id);
 					if (node != null) updateLink(node);
 				});
 			}
@@ -300,7 +345,7 @@ public final class LuxNet extends SavedData {
 
 		if (!this.queuedLuxFlowSyncs.isEmpty()) {
 			updateWithQueue(this.queuedLuxFlowSyncs, id -> {
-				LuxNode node = get(id);
+				ServerLuxNode node = get(id);
 				if (node == null) return;
 				NodeFlowRecord record = this.loadedNodes.get(node);
 				if (record != null) {
@@ -312,7 +357,7 @@ public final class LuxNet extends SavedData {
 
 		if (!this.queuedConnectionSyncs.isEmpty()) {
 			updateWithQueue(this.queuedConnectionSyncs, id -> {
-				LuxNode node = get(id);
+				ServerLuxNode node = get(id);
 				if (node == null) return;
 				LuxNodeInterface iface = node.iface();
 				if (iface != null) {
@@ -344,38 +389,38 @@ public final class LuxNet extends SavedData {
 		this.updateCacheSet.clear();
 	}
 
-	private void updateLink(LuxNode node) {
+	private void updateLink(ServerLuxNode node) {
 		LuxNodeInterface iface = node.iface();
 		if (iface == null) return;
 
 		this.linkCollector.init(node);
 		iface.updateLink(this, this.linkCollector);
 
-		OutboundLink outboundLink = outboundLinks(node);
+		ServerOutboundLink outboundLink = outboundLinks(node);
 		this.linkCollector.nodeCache.addAll(outboundLink.links.keySet());
 
 		int voidLinkWeight = this.linkCollector.voidLinkWeight;
 
-		for (LinkCollector.Link l : this.linkCollector.links) {
-			if (l.linkIndex != -1 && l.info != null) {
-				this.linkCollector.linkIndexToState.put(l.linkIndex, new InWorldLinkState(l.linked, l.weight, l.info));
+		for (ServerLuxNetLinkCollector.Link l : this.linkCollector.links) {
+			if (l.linkIndex() != -1 && l.info() != null) {
+				this.linkCollector.linkIndexToState.put(l.linkIndex(), new InWorldLinkState(l.linked(), l.weight(), l.info()));
 			}
 
-			if (!l.linked) {
-				voidLinkWeight += l.weight;
+			if (!l.linked()) {
+				voidLinkWeight += l.weight();
 				continue;
 			}
 
-			LuxNode dest = get(l.destId);
+			ServerLuxNode dest = get(l.destId());
 			if (dest != null) {
-				addLink(node, dest, new LinkInfo(l.weight, l.info));
+				addLink(node, dest, new LinkInfo(l.weight(), l.info()));
 				this.linkCollector.nodeCache.remove(dest);
 			}
 		}
 
 		outboundLink.setVoidLinkWeight(voidLinkWeight);
 
-		for (LuxNode n : this.linkCollector.nodeCache) {
+		for (ServerLuxNode n : this.linkCollector.nodeCache) {
 			if (n.iface() != null) removeLink(node, n);
 		}
 
@@ -388,7 +433,7 @@ public final class LuxNet extends SavedData {
 
 	private void generateLux(ServerLevel level) {
 		for (var e : this.generatorBehaviors.entrySet()) {
-			LuxNode node = e.getKey();
+			ServerLuxNode node = e.getKey();
 			LuxGeneratorNodeBehavior generatorBehavior = e.getValue();
 
 			generatorBehavior.generateLux(level, this, node, this.luxTransferCache);
@@ -398,20 +443,20 @@ public final class LuxNet extends SavedData {
 				node.trimColorCharge();
 			} else {
 				MagiaLucisMod.LOGGER.warn("Lux generator node {} (behavior type: {}) returned an invalid value!",
-						node.id, node.behavior().type());
+						node.id(), node.behavior().type());
 			}
 			this.luxTransferCache.zero();
 		}
 	}
 
 	private void transferLux(ServerLevel level) {
-		for (LuxNode node : this.nodes.values()) {
-			OutboundLink outboundLink = this.srcToDst.get(node);
+		for (ServerLuxNode node : this.nodes.values()) {
+			ServerOutboundLink outboundLink = this.srcToDst.get(node.id());
 			if (outboundLink != null) {
 				NodeFlowRecord record = this.loadedNodes.get(node);
 				if (record != null) record.luxFlowSum.add(node.charge);
 				for (var e : outboundLink.links.entrySet()) {
-					double m = (double)e.getValue().weight() / outboundLink.totalLinkWeight;
+					double m = (double)e.getValue().weight() / outboundLink.totalLinkWeight();
 					e.getKey().incomingChargeCache.add(this.luxCache
 							.set(node.charge).mul(m));
 				}
@@ -419,7 +464,7 @@ public final class LuxNet extends SavedData {
 			}
 		}
 
-		for (LuxNode node : this.nodes.values()) {
+		for (ServerLuxNode node : this.nodes.values()) {
 			if (node.behavior() instanceof LuxSpecialNodeBehavior specialNodeBehavior) {
 				specialNodeBehavior.alterIncomingLux(level, this, node, node.incomingChargeCache);
 			}
@@ -433,7 +478,7 @@ public final class LuxNet extends SavedData {
 
 	private void consumeLux(ServerLevel level) {
 		for (var e : this.consumerBehaviors.entrySet()) {
-			LuxNode node = e.getKey();
+			ServerLuxNode node = e.getKey();
 			LuxConsumerNodeBehavior consumerBehavior = e.getValue();
 
 			consumerBehavior.consumeLux(level, this, node, this.luxTransferCache.set(node.charge));
@@ -452,21 +497,21 @@ public final class LuxNet extends SavedData {
 				node.trimColorCharge();
 			} else {
 				MagiaLucisMod.LOGGER.warn("Lux consumer node {} (behavior type: {}) returned an invalid value!",
-						node.id, node.behavior().type());
+						node.id(), node.behavior().type());
 			}
 		}
 	}
 
 	private void checkForSync() {
 		for (var e : this.loadedNodes.entrySet()) {
-			LuxNode node = e.getKey();
+			ServerLuxNode node = e.getKey();
 			NodeFlowRecord record = e.getValue();
 
 			record.recordedTicks++;
 
 			LuxNodeInterface iface = node.iface();
 			if (iface == null) {
-				MagiaLucisMod.LOGGER.warn("Lux node {} is unloaded but still in loaded node list!", node.id);
+				MagiaLucisMod.LOGGER.warn("Lux node {} is unloaded but still in loaded node list!", node.id());
 				continue;
 			}
 
@@ -494,22 +539,22 @@ public final class LuxNet extends SavedData {
 			tag.put("nodes", list);
 
 			list = new ListTag();
-			for (OutboundLink outboundLink : this.srcToDst.values()) {
+			for (ServerOutboundLink outboundLink : this.srcToDst.values()) {
 				for (var e : outboundLink.links.entrySet()) {
-					LuxNode dst = e.getKey();
+					ServerLuxNode dst = e.getKey();
 					LinkInfo linkInfo = e.getValue();
 
 					CompoundTag tag2 = new CompoundTag();
 					linkInfo.save(tag2);
-					tag2.putInt("src", outboundLink.src.id);
-					tag2.putInt("dst", dst.id);
+					tag2.putInt("src", outboundLink.src().id());
+					tag2.putInt("dst", dst.id());
 					list.add(tag2);
 					links++;
 				}
-				if (outboundLink.voidLinkWeight > 0) {
+				if (outboundLink.voidLinkWeight() > 0) {
 					CompoundTag tag2 = new CompoundTag();
-					tag2.putInt("src", outboundLink.src.id);
-					tag2.putInt("weight", outboundLink.voidLinkWeight);
+					tag2.putInt("src", outboundLink.src().id());
+					tag2.putInt("weight", outboundLink.voidLinkWeight());
 					list.add(tag2);
 				}
 			}
@@ -521,7 +566,8 @@ public final class LuxNet extends SavedData {
 		return tag;
 	}
 
-	private LuxNet(ServerLevel level, CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	private ServerLuxNet(ServerLevel level, CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		this.level = level;
 		this.idIncrement = tag.getInt("id");
 
 		int nodes = 0, links = 0;
@@ -532,7 +578,7 @@ public final class LuxNet extends SavedData {
 				CompoundTag tag2 = list.getCompound(i);
 				int id = tag2.getInt("id");
 				if (id != NO_ID && !this.nodes.containsKey(id)) {
-					LuxNode node = new LuxNode(id, tag2, lookupProvider);
+					ServerLuxNode node = new ServerLuxNode(id, tag2, lookupProvider);
 					this.nodes.put(id, node);
 					updateBehaviorCache(node);
 					nodes++;
@@ -546,7 +592,7 @@ public final class LuxNet extends SavedData {
 				CompoundTag tag2 = list.getCompound(i);
 
 				int srcId = tag2.getInt("src");
-				LuxNode src = get(srcId);
+				ServerLuxNode src = get(srcId);
 				if (src == null) {
 					MagiaLucisMod.LOGGER.warn("Cannot restore link of {}: invalid source node", srcId);
 					continue;
@@ -558,7 +604,7 @@ public final class LuxNet extends SavedData {
 				}
 
 				int dstId = tag2.getInt("dst");
-				LuxNode dst = get(dstId);
+				ServerLuxNode dst = get(dstId);
 
 				if (dst == null) {
 					MagiaLucisMod.LOGGER.warn("Cannot restore link of {} -> {}: invalid destination node", srcId, dstId);
@@ -574,14 +620,15 @@ public final class LuxNet extends SavedData {
 		}
 
 		if (nodes > 0) {
-			for (LuxNode n : this.nodes.values()) {
+			for (ServerLuxNode n : this.nodes.values()) {
 				n.initBehavior(level, this);
 			}
 			MagiaLucisMod.LOGGER.debug("LuxNet: Restored {} nodes, {} links", nodes, links);
 		}
 	}
 
-	public void clear(ClearMode clearMode) {
+	@Override
+	public void clear(@NotNull ClearMode clearMode) {
 		switch (clearMode) {
 			case ALL -> {
 				this.nodes.clear();
@@ -602,7 +649,7 @@ public final class LuxNet extends SavedData {
 				this.idIncrement = 0;
 			}
 			case UNLOADED -> this.nodes.int2ObjectEntrySet().removeIf(e -> {
-				LuxNode node = e.getValue();
+				ServerLuxNode node = e.getValue();
 				if (node.iface() != null) return false;
 				unlinkAll(node);
 				this.loadedNodes.remove(node);
@@ -615,142 +662,6 @@ public final class LuxNet extends SavedData {
 		setDirty();
 	}
 
-	public static abstract sealed class LinkCollectionBase {
-		protected final Map<LuxNode, LinkInfo> links = new Object2ObjectOpenHashMap<>();
-
-		public @NotNull @UnmodifiableView Map<LuxNode, LinkInfo> links() {
-			return Collections.unmodifiableMap(this.links);
-		}
-	}
-
-	public static final class OutboundLink extends LinkCollectionBase {
-		private final LuxNode src;
-		private int voidLinkWeight;
-		private int totalLinkWeight;
-
-		public OutboundLink(LuxNode src) {
-			this.src = src;
-		}
-
-		public @NotNull LuxNode src() {
-			return this.src;
-		}
-
-		public int voidLinkWeight() {
-			return this.voidLinkWeight;
-		}
-
-		public int totalLinkWeight() {
-			return this.totalLinkWeight;
-		}
-
-		void setVoidLinkWeight(int newValue) {
-			if (newValue < 0) throw new IllegalArgumentException("newValue < 0");
-
-			if (this.voidLinkWeight != newValue) {
-				int diff = newValue - this.voidLinkWeight;
-				this.voidLinkWeight = newValue;
-				this.totalLinkWeight += diff;
-			}
-		}
-	}
-
-	public static final class InboundLink extends LinkCollectionBase {
-		private final LuxNode dst;
-
-		public InboundLink(LuxNode dst) {
-			this.dst = dst;
-		}
-
-		public @NotNull LuxNode dst() {
-			return dst;
-		}
-	}
-
-	public final class LinkCollector implements ServerSideLinkContext {
-		private final List<Link> links = new ArrayList<>();
-		private final Int2ObjectMap<InWorldLinkState> linkIndexToState = new Int2ObjectOpenHashMap<>();
-		private final Set<LuxNode> nodeCache = new ObjectOpenHashSet<>();
-		private @Nullable LuxNode node;
-		private int voidLinkWeight;
-
-		private void init(@NotNull LuxNode node) {
-			this.node = node;
-		}
-
-		@Override
-		public @NotNull LuxNet luxNet() {
-			return LuxNet.this;
-		}
-
-		@Override
-		public @NotNull LuxNode luxNode() {
-			if (this.node == null) throw new IllegalStateException();
-			return this.node;
-		}
-
-		public void implicitLink(int nodeId, int linkWeight) {
-			if (this.node == null) throw new IllegalStateException();
-			if (linkWeight < 0) throw new IllegalArgumentException("linkWeight < 0");
-
-			if (nodeId == NO_ID || this.node.id == nodeId ||
-					!LuxNet.this.nodes.containsKey(nodeId))
-				return; // disallow null source and self connection
-
-			this.links.add(new Link(nodeId, true, -1, linkWeight, null));
-		}
-
-		public boolean inWorldLink(int linkIndex, int nodeId, @NotNull BlockPos origin,
-		                           @NotNull BlockPos linkPos, @NotNull Vec3 linkLocation,
-		                           int linkWeight, boolean registerLinkFail, int failedLinkWeight) {
-			if (this.node == null) throw new IllegalStateException();
-			if (linkIndex < 0) throw new IllegalArgumentException("linkIndex < 0");
-			if (linkWeight < 0) throw new IllegalArgumentException("linkWeight < 0");
-			if (failedLinkWeight < 0) throw new IllegalArgumentException("failedLinkWeight < 0");
-
-			// disallow null source and self connection
-			boolean connected = nodeId != NO_ID && this.node.id != nodeId && LuxNet.this.nodes.containsKey(nodeId);
-
-			if (connected || registerLinkFail) {
-				this.links.add(new Link(nodeId, connected, linkIndex, connected ? linkWeight : failedLinkWeight,
-						new InWorldLinkInfo(origin.immutable(), linkPos.immutable(), Objects.requireNonNull(linkLocation))));
-			}
-
-			return connected;
-		}
-
-		public void inWorldLinkFail(int linkIndex, @NotNull BlockPos origin, @NotNull BlockPos linkPos,
-		                            @NotNull Vec3 linkLocation, int linkWeight) {
-			if (this.node == null) throw new IllegalStateException();
-			if (linkIndex < 0) throw new IllegalArgumentException("linkIndex < 0");
-			if (linkWeight < 0) throw new IllegalArgumentException("linkWeight < 0");
-
-			this.links.add(new Link(-1, false, linkIndex, linkWeight,
-					new InWorldLinkInfo(origin.immutable(), linkPos.immutable(), Objects.requireNonNull(linkLocation))));
-		}
-
-		public void voidLink(int linkWeight) {
-			if (this.node == null) throw new IllegalStateException();
-			if (linkWeight < 0) throw new IllegalArgumentException("linkWeight < 0");
-			this.voidLinkWeight += linkWeight;
-		}
-
-		private void reset() {
-			this.links.clear();
-			this.linkIndexToState.clear();
-			this.node = null;
-			this.voidLinkWeight = 0;
-		}
-
-		public record Link(
-				int destId,
-				boolean linked,
-				int linkIndex,
-				int weight,
-				@Nullable InWorldLinkInfo info
-		) {}
-	}
-
 	public static final class NodeFlowRecord {
 		public final Vector3d luxFlowSum = new Vector3d();
 		public int recordedTicks;
@@ -761,10 +672,5 @@ public final class LuxNet extends SavedData {
 			this.recordedTicks = 0;
 			this.syncNow = false;
 		}
-	}
-
-	public enum ClearMode {
-		ALL,
-		UNLOADED
 	}
 }

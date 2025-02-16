@@ -1,11 +1,11 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
-import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.lux.ambercore.AmberCoreBlock;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,11 +26,11 @@ public enum ChargerTier {
 
 		String name = name().toLowerCase(Locale.ROOT);
 		this.chargerBehaviorType = new LuxNodeType.Simple<>(
-				MagiaLucisMod.id(name + "_charger"),
+				MagiaLucisApi.id(name + "_charger"),
 				ChargerBehavior.class,
 				() -> new ChargerBehavior(this, false));
 		this.remoteChargerBehaviorType = new LuxNodeType.Simple<>(
-				MagiaLucisMod.id(name + "_remote_charger"),
+				MagiaLucisApi.id(name + "_remote_charger"),
 				ChargerBehavior.class,
 				() -> new ChargerBehavior(this, true));
 	}

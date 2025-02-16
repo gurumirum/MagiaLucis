@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.contents.data.Augment;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleType;
@@ -25,8 +25,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 public final class Contents {
 	private Contents() {}

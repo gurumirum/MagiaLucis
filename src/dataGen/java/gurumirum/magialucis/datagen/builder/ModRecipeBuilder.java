@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.builder;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +23,7 @@ public abstract class ModRecipeBuilder<R extends Recipe<?>> {
 	}
 
 	public void save(@NotNull RecipeOutput recipeOutput, @NotNull String id) {
-		save(recipeOutput, MagiaLucisMod.id(defaultRecipePrefix() + id));
+		save(recipeOutput, MagiaLucisApi.id(defaultRecipePrefix() + id));
 	}
 
 	public void save(@NotNull RecipeOutput recipeOutput, @NotNull ResourceLocation id) {

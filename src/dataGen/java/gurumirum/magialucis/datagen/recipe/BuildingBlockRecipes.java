@@ -5,7 +5,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.*;
 import static net.minecraft.data.recipes.RecipeCategory.BUILDING_BLOCKS;
 import static net.minecraft.data.recipes.ShapedRecipeBuilder.shaped;

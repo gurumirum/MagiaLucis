@@ -1,7 +1,11 @@
 package gurumirum.magialucis.impl.luxnet;
 
-import gurumirum.magialucis.capability.DirectLinkDestination;
-import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.api.capability.DirectLinkDestination;
+import gurumirum.magialucis.api.capability.LinkDestination;
+import gurumirum.magialucis.api.luxnet.DirectLinkDestinationSelector;
+import gurumirum.magialucis.api.luxnet.LinkContext;
+import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
+import gurumirum.magialucis.api.luxnet.LuxNetCollisionContext;
 import gurumirum.magialucis.contents.ModParticles;
 import gurumirum.magialucis.utils.Orientation;
 import net.minecraft.core.BlockPos;
@@ -89,88 +93,6 @@ public final class LuxUtils {
 						ClipContext.Block.VISUAL, ClipContext.Fluid.NONE,
 						LuxNetCollisionContext.EMPTY),
 				linkOriginPos);
-	}
-
-	public static boolean linkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
-	                                        Orientation orientation, Vec3 linkOrigin, double linkDistance,
-	                                        int linkIndex, @Nullable LinkDestinationSelector selector,
-	                                        int linkWeight, boolean registerLinkFail) {
-		return linkToInWorldNode(blockEntity, linkCollector, orientation, linkOrigin, linkDistance, linkIndex, selector,
-				linkWeight, registerLinkFail, linkWeight);
-	}
-
-	public static boolean linkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
-	                                        Orientation orientation, Vec3 linkOrigin, double linkDistance,
-	                                        int linkIndex, @Nullable LinkDestinationSelector selector,
-	                                        int linkWeight, boolean registerLinkFail, int failedLinkWeight) {
-		Level level = blockEntity.getLevel();
-		if (level == null) return false;
-
-		BlockPos pos = blockEntity.getBlockPos();
-		BlockHitResult hitResult = traceConnection(level, orientation,
-				pos, linkOrigin, linkDistance);
-
-		if (hitResult.getType() == HitResult.Type.BLOCK && !hitResult.getBlockPos().equals(pos)) {
-			if (selector == null) selector = LinkDestinationSelector.DEFAULT;
-			LinkDestination dest = selector.chooseLinkDestination(level, linkCollector, hitResult);
-			if (dest != null) {
-				LinkContext context = new LinkContext(level, linkCollector.luxNet(), linkCollector.luxNode(), hitResult);
-				return linkCollector.inWorldLink(linkIndex,
-						dest.linkWithSource(context).nodeId(),
-						pos, hitResult.getBlockPos(), hitResult.getLocation(),
-						linkWeight, registerLinkFail, failedLinkWeight);
-			}
-		}
-		if (registerLinkFail) {
-			linkCollector.inWorldLinkFail(linkIndex, pos, hitResult.getBlockPos(), hitResult.getLocation(), failedLinkWeight);
-		}
-		return false;
-	}
-
-	public static boolean directLinkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
-	                                              BlockPos linkDestPos, Direction side,
-	                                              int linkIndex, @Nullable DirectLinkDestinationSelector selector,
-	                                              int linkWeight, boolean registerLinkFail) {
-		return directLinkToInWorldNode(blockEntity, linkCollector, linkDestPos, side, linkIndex, selector,
-				linkWeight, registerLinkFail, linkWeight);
-	}
-
-
-	public static boolean directLinkToInWorldNode(BlockEntity blockEntity, LuxNet.LinkCollector linkCollector,
-	                                              BlockPos linkDestPos, Direction side,
-	                                              int linkIndex, @Nullable DirectLinkDestinationSelector selector,
-	                                              int linkWeight, boolean registerLinkFail, int failedLinkWeight) {
-		Level level = blockEntity.getLevel();
-		if (level == null) return false;
-
-		BlockPos pos = blockEntity.getBlockPos();
-
-		if (level.isLoaded(linkDestPos)) {
-			if (selector == null) selector = DirectLinkDestinationSelector.DEFAULT;
-			DirectLinkDestination dest = selector.chooseDirectLinkDestination(level, linkCollector,
-					linkDestPos, side);
-
-			if (dest != null) {
-				LinkContext context = new LinkContext(level, linkCollector.luxNet(), linkCollector.luxNode(),
-						side, null);
-				return linkCollector.inWorldLink(linkIndex,
-						dest.directLinkWithSource(context).nodeId(),
-						pos, linkDestPos.immutable(), Vec3.atLowerCornerOf(side.getNormal())
-								.add(1, 1, 1)
-								.scale(0.5)
-								.add(Vec3.atLowerCornerOf(linkDestPos)),
-						linkWeight, registerLinkFail, failedLinkWeight);
-			}
-		}
-		if (registerLinkFail) {
-			linkCollector.inWorldLinkFail(linkIndex, pos, linkDestPos.immutable(),
-					Vec3.atLowerCornerOf(side.getNormal())
-							.add(1, 1, 1)
-							.scale(0.5)
-							.add(Vec3.atLowerCornerOf(linkDestPos)),
-					failedLinkWeight);
-		}
-		return false;
 	}
 
 	/**

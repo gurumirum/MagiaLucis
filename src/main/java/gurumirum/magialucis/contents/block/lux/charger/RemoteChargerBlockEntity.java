@@ -1,13 +1,14 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
-import gurumirum.magialucis.capability.DirectLinkDestination;
-import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.api.capability.DirectLinkDestination;
+import gurumirum.magialucis.api.capability.LinkDestination;
+import gurumirum.magialucis.api.luxnet.LinkContext;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
-import gurumirum.magialucis.impl.luxnet.LinkContext;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;
@@ -95,7 +96,7 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior
 	}
 
 	@Override
-	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {}
+	public void updateLink(LuxNet luxNet, LuxNetLinkCollector linkCollector) {}
 
 	@Override
 	public @NotNull LinkTestResult linkWithSource(@NotNull LinkContext context) {

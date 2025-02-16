@@ -1,13 +1,13 @@
 package gurumirum.magialucis.contents.block.lux.lightloom;
 
-import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.client.Textures;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlock;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
@@ -28,7 +28,7 @@ public enum LightLoomType {
 
 		String name = name().toLowerCase(Locale.ROOT);
 		this.behaviorType = new LuxNodeType.Simple<>(
-				MagiaLucisMod.id(name + "_lightloom"),
+				MagiaLucisApi.id(name + "_lightloom"),
 				LightLoomBehavior.class,
 				() -> new LightLoomBehavior(this));
 	}

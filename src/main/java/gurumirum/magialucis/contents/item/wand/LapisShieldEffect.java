@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.item.wand;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.client.render.WandEffect;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +15,7 @@ public class LapisShieldEffect extends WandEffect.SpinningTipEffect {
 
 	static {
 		for (int i = 0; i < TEXTURES.length; i++) {
-			TEXTURES[i] = MagiaLucisMod.id("textures/wand_effect/shield_" + i + ".png");
+			TEXTURES[i] = MagiaLucisApi.id("textures/wand_effect/shield_" + i + ".png");
 		}
 	}
 

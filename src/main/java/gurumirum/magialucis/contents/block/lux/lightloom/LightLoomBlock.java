@@ -1,10 +1,10 @@
 package gurumirum.magialucis.contents.block.lux.lightloom;
 
+import gurumirum.magialucis.api.luxnet.LuxNetCollisionContext;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
-import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -63,7 +63,7 @@ public class LightLoomBlock extends LightLoomBaseBlock implements EntityBlock {
 	@Override
 	protected @NotNull VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level,
 	                                             @NotNull BlockPos pos, @NotNull CollisionContext context) {
-		return context instanceof LuxNetCollisionContext ? SHAPE_LUX_NET_COLLISION : getShape(state, level, pos, context);
+		return LuxNetCollisionContext.is(context) ? SHAPE_LUX_NET_COLLISION : getShape(state, level, pos, context);
 	}
 
 	@Override

@@ -1,10 +1,14 @@
 package gurumirum.magialucis.impl.luxnet;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.capability.LuxStat;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNode;
+import gurumirum.magialucis.api.luxnet.LuxNodeInterface;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.contents.Contents;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -18,8 +22,8 @@ import org.joml.Vector3d;
 
 import java.util.Objects;
 
-public final class LuxNode {
-	public final int id;
+public final class ServerLuxNode implements LuxNode {
+	private final int id;
 
 	private @Nullable LuxNodeInterface iface;
 	private LuxNodeBehavior behavior = LuxNodeBehavior.none();
@@ -29,26 +33,36 @@ public final class LuxNode {
 	final Vector3d charge = new Vector3d();
 	final Vector3d incomingChargeCache = new Vector3d();
 
-	public LuxNode(int id) {
+	public ServerLuxNode(int id) {
 		this.id = id;
 	}
 
+	@Override
+	public int id() {
+		return this.id;
+	}
+
+	@Override
 	public @Nullable LuxNodeInterface iface() {
 		return this.iface;
 	}
 
+	@Override
 	public @NotNull LuxNodeBehavior behavior() {
 		return this.behavior;
 	}
 
+	@Override
 	public @Nullable BlockPos lastBlockPos() {
 		return this.iface != null ? this.iface.nodeBlockPos() : this.lastBlockPos;
 	}
 
+	@Override
 	public boolean isLoaded() {
 		return this.iface != null;
 	}
 
+	@Override
 	public boolean isUnloaded() {
 		return this.iface == null;
 	}
@@ -119,7 +133,7 @@ public final class LuxNode {
 		return tag;
 	}
 
-	LuxNode(int id, CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	ServerLuxNode(int id, CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		this(id);
 
 		this.charge.x = tag.getDouble("chargeR");
@@ -163,7 +177,7 @@ public final class LuxNode {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof LuxNode luxNode)) return false;
+		if (!(o instanceof ServerLuxNode luxNode)) return false;
 		return this.id == luxNode.id;
 	}
 
@@ -182,7 +196,7 @@ public final class LuxNode {
 		stb.append(": ");
 
 		ResourceLocation id = behavior().type().id();
-		stb.append(id.getNamespace().equals(MagiaLucisMod.MODID) ? id.getPath() : id.toString());
+		stb.append(id.getNamespace().equals(MagiaLucisApi.MODID) ? id.getPath() : id.toString());
 
 		stb.append(loaded ? ']' : ')');
 		return stb.toString();

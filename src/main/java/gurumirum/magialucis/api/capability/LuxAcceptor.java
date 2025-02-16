@@ -1,4 +1,4 @@
-package gurumirum.magialucis.capability;
+package gurumirum.magialucis.api.capability;
 
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;

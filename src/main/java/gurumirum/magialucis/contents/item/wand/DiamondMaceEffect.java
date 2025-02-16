@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 public class DiamondMaceEffect extends WandEffect.SpinningTipEffect {
 	public static final DiamondMaceEffect INSTANCE = new DiamondMaceEffect();

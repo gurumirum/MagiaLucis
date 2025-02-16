@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.builder;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.recipe.IngredientStack;
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipe;
 import net.minecraft.resources.ResourceLocation;

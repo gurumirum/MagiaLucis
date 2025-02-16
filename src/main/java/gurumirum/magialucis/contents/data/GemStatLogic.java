@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.data;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.ModDataMaps;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;

@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.joml.Vector3f;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 public class AncientLightWandEffect extends WandEffect.SpinningTipEffect {
 	public static final AncientLightWandEffect INSTANCE = new AncientLightWandEffect();

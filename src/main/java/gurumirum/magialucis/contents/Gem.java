@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.impl.RGB332;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;

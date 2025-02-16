@@ -1,6 +1,6 @@
 package gurumirum.magialucis.jei;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.recipe.LuxInputCondition;
 import gurumirum.magialucis.contents.recipe.transfusion.LightBasinRecipe;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class LightBasinRecipeCategory implements IRecipeCategory<LightBasinRecipe> {
-	public static final RecipeType<LightBasinRecipe> RECIPE_TYPE = new RecipeType<>(MagiaLucisMod.id("light_basin"), LightBasinRecipe.class);
+	public static final RecipeType<LightBasinRecipe> RECIPE_TYPE = new RecipeType<>(MagiaLucisApi.id("light_basin"), LightBasinRecipe.class);
 
 	private final IDrawable icon;
 

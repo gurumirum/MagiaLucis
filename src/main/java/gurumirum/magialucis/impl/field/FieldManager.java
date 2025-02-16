@@ -1,6 +1,7 @@
 package gurumirum.magialucis.impl.field;
 
 import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 public class FieldManager extends SavedData {
 	private static final SavedData.Factory<FieldManager> FACTORY = new Factory<>(FieldManager::new, FieldManager::new);
-	private static final String NAME = MagiaLucisMod.MODID + "_fields";
+	private static final String NAME = MagiaLucisApi.MODID + "_fields";
 
 	public static @Nullable FieldManager tryGet(@Nullable Level level) {
 		return level instanceof ServerLevel serverLevel ? get(serverLevel) : null;

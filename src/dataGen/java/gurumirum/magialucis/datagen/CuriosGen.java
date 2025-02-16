@@ -7,8 +7,8 @@ import top.theillusivec4.curios.api.CuriosDataProvider;
 
 import java.util.concurrent.CompletableFuture;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 import static gurumirum.magialucis.contents.ModCurioSlots.*;
 
 public class CuriosGen extends CuriosDataProvider {

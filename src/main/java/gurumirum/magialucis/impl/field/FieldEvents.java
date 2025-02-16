@@ -1,12 +1,12 @@
 package gurumirum.magialucis.impl.field;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID)
+@EventBusSubscriber(modid = MagiaLucisApi.MODID)
 public final class FieldEvents {
 	private FieldEvents() {}
 

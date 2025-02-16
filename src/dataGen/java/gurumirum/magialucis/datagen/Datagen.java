@@ -12,7 +12,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
 
 @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD)
 public class Datagen {

@@ -1,4 +1,4 @@
-package gurumirum.magialucis.impl.luxnet;
+package gurumirum.magialucis.api.luxnet;
 
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.Nullable;

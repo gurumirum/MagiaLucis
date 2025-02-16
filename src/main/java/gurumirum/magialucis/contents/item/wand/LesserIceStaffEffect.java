@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.item.wand;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.client.render.WandEffect;
 import net.minecraft.resources.ResourceLocation;
@@ -11,9 +11,9 @@ import org.joml.Quaternionf;
 public class LesserIceStaffEffect extends WandEffect.SpinningTipEffect {
 	public static final LesserIceStaffEffect INSTANCE = new LesserIceStaffEffect();
 
-	private static final ResourceLocation TEXTURE_CHARGING = MagiaLucisMod.id("textures/wand_effect/lesser_ice_charging.png");
-	private static final ResourceLocation TEXTURE_CHARGED_BLINKING = MagiaLucisMod.id("textures/wand_effect/lesser_ice_charged_blinking.png");
-	private static final ResourceLocation TEXTURE_CHARGED = MagiaLucisMod.id("textures/wand_effect/lesser_ice_charged.png");
+	private static final ResourceLocation TEXTURE_CHARGING = MagiaLucisApi.id("textures/wand_effect/lesser_ice_charging.png");
+	private static final ResourceLocation TEXTURE_CHARGED_BLINKING = MagiaLucisApi.id("textures/wand_effect/lesser_ice_charged_blinking.png");
+	private static final ResourceLocation TEXTURE_CHARGED = MagiaLucisApi.id("textures/wand_effect/lesser_ice_charged.png");
 
 	private static final long CHARGING_ROTATION_PERIOD = 10;
 	private static final long CHARGED_ROTATION_PERIOD = 15;

@@ -1,8 +1,8 @@
 package gurumirum.magialucis.contents.block.lux.splitter;
 
+import gurumirum.magialucis.api.luxnet.LuxNetCollisionContext;
 import gurumirum.magialucis.contents.block.GemContainerBlock;
 import gurumirum.magialucis.contents.block.RelativeDirection;
-import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -213,7 +213,7 @@ public class SplitterBlock extends GemContainerBlock implements SimpleWaterlogge
 	@Override
 	protected @NotNull VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level,
 	                                             @NotNull BlockPos pos, @NotNull CollisionContext context) {
-		return context instanceof LuxNetCollisionContext ? SHAPE_LUX_NET_COLLISION : getShape(state, level, pos, context);
+		return LuxNetCollisionContext.is(context) ? SHAPE_LUX_NET_COLLISION : getShape(state, level, pos, context);
 	}
 
 	@Override

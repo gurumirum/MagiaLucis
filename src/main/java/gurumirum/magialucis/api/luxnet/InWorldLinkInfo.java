@@ -1,4 +1,4 @@
-package gurumirum.magialucis.impl.luxnet;
+package gurumirum.magialucis.api.luxnet;
 
 import gurumirum.magialucis.utils.TagUtils;
 import net.minecraft.core.BlockPos;

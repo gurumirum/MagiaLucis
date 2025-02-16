@@ -1,9 +1,9 @@
 package gurumirum.magialucis.contents.block.lux.source;
 
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,7 +27,7 @@ public class LuxSourceBlockEntity extends BasicRelayBlockEntity<LuxSourceBehavio
 	}
 
 	@Override
-	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {
+	public void updateLink(LuxNet luxNet, LuxNetLinkCollector linkCollector) {
 		super.updateLink(luxNet, linkCollector);
 		if (this.level == null) return;
 		if (this.mpos == null) this.mpos = new BlockPos.MutableBlockPos();
@@ -37,7 +37,7 @@ public class LuxSourceBlockEntity extends BasicRelayBlockEntity<LuxSourceBehavio
 
 		for (Direction dir : Direction.values()) {
 			this.mpos.set(pos).move(dir);
-			if (LuxUtils.directLinkToInWorldNode(this, linkCollector, this.mpos, dir.getOpposite(),
+			if (linkCollector.directLinkToInWorldNode(this, this.mpos, dir.getOpposite(),
 					i, null, 1, false)) {
 				i++;
 			}

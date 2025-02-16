@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.data.GemItemData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -114,7 +114,7 @@ public enum CreativeTabType {
 	CreativeTabType() {
 		String name = name().toLowerCase(Locale.ROOT);
 		this.holder = Contents.CREATIVE_MODE_TABS.register(name, () -> CreativeModeTab.builder()
-				.title(Component.translatable("itemGroup." + MagiaLucisMod.MODID + "." + name))
+				.title(Component.translatable("itemGroup." + MagiaLucisApi.MODID + "." + name))
 				.icon(this::icon)
 				.withTabsBefore(getTabsBefore())
 				.displayItems(this::generate)

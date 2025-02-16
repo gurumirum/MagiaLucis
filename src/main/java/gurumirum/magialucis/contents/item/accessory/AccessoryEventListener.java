@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.item.accessory;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ModDataComponents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,7 +30,7 @@ import java.util.function.Predicate;
 
 import static gurumirum.magialucis.contents.ModDataComponents.*;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID)
+@EventBusSubscriber(modid = MagiaLucisApi.MODID)
 public final class AccessoryEventListener {
 
 	@SubscribeEvent(priority = EventPriority.HIGH)

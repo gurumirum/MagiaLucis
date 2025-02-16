@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.accessory;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.utils.NumberFormats;
 import net.minecraft.ChatFormatting;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class SoulCrownItem extends BaseCurioItem {
 	private static final double ATTACK_INCREASE_PER_DEBUFF = 0.25;
-	private static final ResourceLocation ATTACK_INCREASE_ID = MagiaLucisMod.id("soul_crown");
+	private static final ResourceLocation ATTACK_INCREASE_ID = MagiaLucisApi.id("soul_crown");
 
 	public SoulCrownItem(Properties properties) {
 		super(properties);

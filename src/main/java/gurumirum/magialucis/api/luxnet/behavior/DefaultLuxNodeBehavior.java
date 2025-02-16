@@ -1,6 +1,6 @@
-package gurumirum.magialucis.impl.luxnet.behavior;
+package gurumirum.magialucis.api.luxnet.behavior;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.LuxNodeTypes;
 import org.jetbrains.annotations.NotNull;
 

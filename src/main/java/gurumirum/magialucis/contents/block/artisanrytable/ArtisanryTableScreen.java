@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.block.artisanrytable;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.client.BaseScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
@@ -18,11 +18,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ArtisanryTableScreen extends BaseScreen<ArtisanryTableMenu> {
-	private static final ResourceLocation TEXTURE = MagiaLucisMod.id("textures/gui/artisanry_table.png");
-	private static final ResourceLocation BUTTON = MagiaLucisMod.id("artisanry_table_button");
-	private static final ResourceLocation BUTTON_PRESSED = MagiaLucisMod.id("artisanry_table_button_pressed");
-	private static final ResourceLocation BUTTON_JEI = MagiaLucisMod.id("artisanry_table_button_jei");
-	private static final ResourceLocation PROGRESS = MagiaLucisMod.id("textures/gui/artisanry_table_progress.png");
+	private static final ResourceLocation TEXTURE = MagiaLucisApi.id("textures/gui/artisanry_table.png");
+	private static final ResourceLocation BUTTON = MagiaLucisApi.id("artisanry_table_button");
+	private static final ResourceLocation BUTTON_PRESSED = MagiaLucisApi.id("artisanry_table_button_pressed");
+	private static final ResourceLocation BUTTON_JEI = MagiaLucisApi.id("artisanry_table_button_jei");
+	private static final ResourceLocation PROGRESS = MagiaLucisApi.id("textures/gui/artisanry_table_progress.png");
 
 	private static final WidgetSprites BUTTON_SPRITES = new WidgetSprites(BUTTON, BUTTON_PRESSED, BUTTON, BUTTON_PRESSED);
 

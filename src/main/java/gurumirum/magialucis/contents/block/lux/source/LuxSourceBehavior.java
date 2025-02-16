@@ -1,12 +1,12 @@
 package gurumirum.magialucis.contents.block.lux.source;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNode;
+import gurumirum.magialucis.api.luxnet.behavior.LuxGeneratorNodeBehavior;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.contents.LuxNodeTypes;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxNode;
 import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxGeneratorNodeBehavior;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

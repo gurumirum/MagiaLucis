@@ -3,8 +3,12 @@ package gurumirum.magialucis.contents.item.wand;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import gurumirum.magialucis.capability.LinkDestination;
-import gurumirum.magialucis.capability.LinkSource;
+import gurumirum.magialucis.api.capability.LinkDestination;
+import gurumirum.magialucis.api.capability.LinkSource;
+import gurumirum.magialucis.api.luxnet.InWorldLinkInfo;
+import gurumirum.magialucis.api.luxnet.InWorldLinkState;
+import gurumirum.magialucis.api.luxnet.LinkContext;
+import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
@@ -33,7 +37,7 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 public final class ConfigurationWandOverlay {
 	private ConfigurationWandOverlay() {}

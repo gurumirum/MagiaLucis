@@ -9,7 +9,7 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.*;
 import static gurumirum.magialucis.contents.ModItems.*;
 import static net.minecraft.data.recipes.RecipeCategory.BUILDING_BLOCKS;

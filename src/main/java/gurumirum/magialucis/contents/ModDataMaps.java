@@ -24,8 +24,8 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class ModDataMaps {

@@ -1,6 +1,6 @@
-package gurumirum.magialucis.capability;
+package gurumirum.magialucis.api.capability;
 
-import gurumirum.magialucis.impl.luxnet.LinkContext;
+import gurumirum.magialucis.api.luxnet.LinkContext;
 import org.jetbrains.annotations.NotNull;
 
 public interface DirectLinkDestination {

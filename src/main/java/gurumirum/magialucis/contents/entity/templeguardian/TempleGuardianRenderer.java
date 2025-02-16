@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents.entity.templeguardian;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -22,7 +22,7 @@ import static gurumirum.magialucis.contents.entity.templeguardian.TempleGuardian
 import static gurumirum.magialucis.contents.entity.templeguardian.TempleGuardianModel.TEX_WIDTH;
 
 public class TempleGuardianRenderer extends MobRenderer<TempleGuardian, TempleGuardianModel<TempleGuardian>> {
-	private static final ResourceLocation TEXTURE = MagiaLucisMod.id("textures/entity/temple_guardian.png");
+	private static final ResourceLocation TEXTURE = MagiaLucisApi.id("textures/entity/temple_guardian.png");
 
 	public TempleGuardianRenderer(EntityRendererProvider.Context context) {
 		super(context, new TempleGuardianModel<>(context.bakeLayer(TempleGuardianModel.LAYER)), 0.5f);
@@ -210,7 +210,7 @@ public class TempleGuardianRenderer extends MobRenderer<TempleGuardian, TempleGu
 	}
 
 	public static class EmissiveLayer extends EyesLayer<TempleGuardian, TempleGuardianModel<TempleGuardian>> {
-		private static final RenderType renderType = RenderType.eyes(MagiaLucisMod.id("textures/entity/temple_guardian_emissive.png"));
+		private static final RenderType renderType = RenderType.eyes(MagiaLucisApi.id("textures/entity/temple_guardian_emissive.png"));
 
 		public EmissiveLayer(RenderLayerParent<TempleGuardian, TempleGuardianModel<TempleGuardian>> renderer) {
 			super(renderer);

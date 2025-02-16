@@ -1,6 +1,6 @@
 package gurumirum.magialucis.jei;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.contents.recipe.ancientlight.AncientLightRecipe;
 import it.unimi.dsi.fastutil.Hash;
@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class AncientLightRecipeCategory implements IRecipeCategory<AncientLightRecipe> {
 	public static final RecipeType<AncientLightRecipe> RECIPE_TYPE = new RecipeType<>(
-			MagiaLucisMod.id("ancient_light"), AncientLightRecipe.class);
+			MagiaLucisApi.id("ancient_light"), AncientLightRecipe.class);
 
 	private static final Hash.Strategy<ItemStack> ITEM_STACK_STRATEGY = new Hash.Strategy<>() {
 		@Override public int hashCode(ItemStack stack) {

@@ -1,8 +1,8 @@
-package gurumirum.magialucis.capability;
+package gurumirum.magialucis.api.capability;
 
-import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
-import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
-import gurumirum.magialucis.impl.luxnet.LuxNodeInterface;
+import gurumirum.magialucis.api.luxnet.InWorldLinkState;
+import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
+import gurumirum.magialucis.api.luxnet.LuxNodeInterface;
 import gurumirum.magialucis.utils.Orientation;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;

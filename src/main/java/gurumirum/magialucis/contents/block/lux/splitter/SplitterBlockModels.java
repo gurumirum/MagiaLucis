@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.splitter;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -12,7 +12,7 @@ import net.neoforged.neoforge.client.event.ModelEvent;
 
 import java.util.Objects;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = MagiaLucisApi.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class SplitterBlockModels {
 	private SplitterBlockModels() {}
 
@@ -22,7 +22,7 @@ public class SplitterBlockModels {
 		for (Direction side : Direction.values()) {
 			for (byte apertureLevel = 0; apertureLevel < SplitterBlockEntity.APERTURE_LEVELS; apertureLevel++) {
 				sideModels.put(pack(side, apertureLevel), new ModelResourceLocation(
-						MagiaLucisMod.id("block/splitter/aperture_" + side + "_" + apertureLevel),
+						MagiaLucisApi.id("block/splitter/aperture_" + side + "_" + apertureLevel),
 						ModelResourceLocation.STANDALONE_VARIANT));
 			}
 		}

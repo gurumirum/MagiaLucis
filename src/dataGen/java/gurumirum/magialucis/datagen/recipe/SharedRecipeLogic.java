@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
 import static gurumirum.magialucis.contents.ModItems.RAW_SILVER;
 
 public abstract class SharedRecipeLogic extends RecipeProvider {

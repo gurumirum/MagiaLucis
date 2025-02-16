@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.entity.EnderChestPortal;
 import gurumirum.magialucis.contents.entity.LesserIceProjectile;
 import gurumirum.magialucis.contents.entity.templeguardian.TempleGuardian;
@@ -11,7 +11,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MagiaLucisApi.MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class ModEntities {
 	private ModEntities() {}
 

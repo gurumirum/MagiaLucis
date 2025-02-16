@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.datagen.recipe.*;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.advancements.Advancement;
@@ -72,7 +72,7 @@ public class RecipeGen extends RecipeProvider {
 		@Override
 		public void accept(@NotNull ResourceLocation id, @NotNull Recipe<?> recipe,
 		                   @Nullable AdvancementHolder advancement, ICondition @NotNull ... conditions) {
-			if (!id.getNamespace().equals(MagiaLucisMod.MODID)) {
+			if (!id.getNamespace().equals(MagiaLucisApi.MODID)) {
 				RecipeGen.this.mismatchingNamespaceRecipes.add(id);
 			}
 			this.delegate.accept(id, recipe, advancement, conditions);

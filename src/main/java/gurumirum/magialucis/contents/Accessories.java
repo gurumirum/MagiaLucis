@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.capability.LuxContainerStat;
+import gurumirum.magialucis.api.capability.LuxContainerStat;
 import gurumirum.magialucis.contents.item.accessory.*;
 import gurumirum.magialucis.contents.item.wandbelt.WandBeltItem;
 import gurumirum.magialucis.contents.profile.ItemProfile;

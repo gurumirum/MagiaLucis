@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block;
 
-import gurumirum.magialucis.impl.luxnet.LuxNetCollisionContext;
+import gurumirum.magialucis.api.luxnet.LuxNetCollisionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -94,7 +94,7 @@ public abstract class BaseLanternBlock extends Block {
 	@Override
 	protected @NotNull VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level,
 	                                             @NotNull BlockPos pos, @NotNull CollisionContext context) {
-		return (context instanceof LuxNetCollisionContext ? LUX_NODE_SHAPE : SHAPE).get(state.getValue(FACING));
+		return (LuxNetCollisionContext.is(context) ? LUX_NODE_SHAPE : SHAPE).get(state.getValue(FACING));
 	}
 
 	@Override

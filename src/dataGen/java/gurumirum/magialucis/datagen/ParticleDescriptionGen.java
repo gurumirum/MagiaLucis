@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.ModParticles;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -13,7 +13,7 @@ public class ParticleDescriptionGen extends ParticleDescriptionProvider {
 
 	@Override protected void addDescriptions() {
 		spriteSet(ModParticles.LIGHT.get(),
-				MagiaLucisMod.id("light_0"),
-				MagiaLucisMod.id("light_1"));
+				MagiaLucisApi.id("light_0"),
+				MagiaLucisApi.id("light_1"));
 	}
 }

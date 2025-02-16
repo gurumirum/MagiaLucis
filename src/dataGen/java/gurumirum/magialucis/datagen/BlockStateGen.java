@@ -25,8 +25,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 import static gurumirum.magialucis.contents.ModBlocks.*;
 import static gurumirum.magialucis.contents.ModBuildingBlocks.*;
 

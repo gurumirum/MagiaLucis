@@ -1,6 +1,6 @@
-package gurumirum.magialucis.impl.luxnet;
+package gurumirum.magialucis.api.luxnet;
 
-import gurumirum.magialucis.capability.DirectLinkDestination;
+import gurumirum.magialucis.api.capability.DirectLinkDestination;
 import gurumirum.magialucis.capability.ModCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

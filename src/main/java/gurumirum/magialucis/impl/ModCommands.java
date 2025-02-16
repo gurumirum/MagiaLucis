@@ -1,16 +1,17 @@
 package gurumirum.magialucis.impl;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.luxnet.LinkInfo;
+import gurumirum.magialucis.api.luxnet.LuxNodeInterface;
 import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.field.FieldRegistry;
-import gurumirum.magialucis.impl.luxnet.LinkInfo;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxNode;
-import gurumirum.magialucis.impl.luxnet.LuxNodeInterface;
+import gurumirum.magialucis.impl.luxnet.ServerLuxNet;
+import gurumirum.magialucis.impl.luxnet.ServerLuxNode;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.DimensionArgument;
@@ -28,18 +29,18 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID)
+@EventBusSubscriber(modid = MagiaLucisApi.MODID)
 public final class ModCommands {
 	private ModCommands() {}
 
 	@SubscribeEvent
 	public static void registerCommands(RegisterCommandsEvent event) {
-		event.getDispatcher().register(literal(MagiaLucisMod.MODID)
+		event.getDispatcher().register(literal(MagiaLucisApi.MODID)
 				.then(literal("luxnet")
 						.then(literal("print")
 								.requires(stack -> stack.hasPermission(Commands.LEVEL_GAMEMASTERS))
@@ -87,21 +88,21 @@ public final class ModCommands {
 								.requires(stack -> stack.hasPermission(Commands.LEVEL_GAMEMASTERS))
 								.then(literal("all")
 										.executes(context ->
-												clearLuxNet(context.getSource(), context.getSource().getLevel(), LuxNet.ClearMode.ALL)
+												clearLuxNet(context.getSource(), context.getSource().getLevel(), ServerLuxNet.ClearMode.ALL)
 										).then(argument("dimension", DimensionArgument.dimension())
 												.executes(context ->
 														clearLuxNet(context.getSource(),
 																DimensionArgument.getDimension(context, "dimension"),
-																LuxNet.ClearMode.ALL))
+																ServerLuxNet.ClearMode.ALL))
 										)
 								).then(literal("unloaded")
 										.executes(context ->
-												clearLuxNet(context.getSource(), context.getSource().getLevel(), LuxNet.ClearMode.UNLOADED)
+												clearLuxNet(context.getSource(), context.getSource().getLevel(), ServerLuxNet.ClearMode.UNLOADED)
 										).then(argument("dimension", DimensionArgument.dimension())
 												.executes(context ->
 														clearLuxNet(context.getSource(),
 																DimensionArgument.getDimension(context, "dimension"),
-																LuxNet.ClearMode.UNLOADED))
+																ServerLuxNet.ClearMode.UNLOADED))
 										)
 								)
 						)
@@ -126,9 +127,9 @@ public final class ModCommands {
 	}
 
 	private static int printLuxNetNodes(CommandSourceStack source, ServerLevel level) {
-		LuxNet luxNet = LuxNet.get(level);
+		ServerLuxNet luxNet = ServerLuxNet.get(level);
 
-		Int2ObjectMap<LuxNode> nodes = luxNet.nodes();
+		Int2ObjectMap<ServerLuxNode> nodes = luxNet.nodes();
 
 		source.sendSuccess(() -> Component.literal("Luxnet of dimension " + level.dimension().location() + ": " +
 				nodes.size() + " nodes"), false);
@@ -151,8 +152,8 @@ public final class ModCommands {
 	}
 
 	private static int printLuxNetNode(CommandSourceStack source, ServerLevel level, int nodeId) {
-		LuxNet luxNet = LuxNet.get(level);
-		LuxNode node = luxNet.get(nodeId);
+		ServerLuxNet luxNet = ServerLuxNet.get(level);
+		ServerLuxNode node = luxNet.get(nodeId);
 		if (node == null) {
 			source.sendFailure(Component.literal("No luxnet node with ID " + nodeId));
 			return 0;
@@ -171,21 +172,21 @@ public final class ModCommands {
 		}
 	}
 
-	private static MutableComponent node(LuxNet luxNet, LuxNode node) {
+	private static MutableComponent node(ServerLuxNet luxNet, ServerLuxNode node) {
 		return Component.literal(node.toString()).withStyle(nodeTooltip(luxNet, node));
 	}
 
-	private static Style nodeTooltip(LuxNet luxNet, LuxNode node) {
+	private static Style nodeTooltip(ServerLuxNet luxNet, ServerLuxNode node) {
 		return Style.EMPTY.withHoverEvent(
 				new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(
 						String.join("\n", nodeDescription(luxNet, node)))));
 	}
 
-	private static List<String> nodeDescription(LuxNet luxNet, LuxNode node) {
+	private static List<String> nodeDescription(ServerLuxNet luxNet, ServerLuxNode node) {
 		List<String> tooltips = new ArrayList<>();
 
 		ResourceLocation id = node.behavior().type().id();
-		tooltips.add("Node #" + node.id + ": " + (id.getNamespace().equals(MagiaLucisMod.MODID) ? id.getPath() : id.toString()));
+		tooltips.add("Node #" + node.id() + ": " + (id.getNamespace().equals(MagiaLucisApi.MODID) ? id.getPath() : id.toString()));
 
 		BlockPos pos = node.lastBlockPos();
 		tooltips.add("Block Position: " + (pos == null ? "N/A" :
@@ -196,9 +197,9 @@ public final class ModCommands {
 			tooltips.add("Interface: " + iface.getClass().getSimpleName() + " " + Integer.toHexString(System.identityHashCode(iface)));
 		}
 
-		if (luxNet.hasInboundLink(node)) {
+		if (luxNet.hasInboundLink(node.id())) {
 			tooltips.add("Inbound Links:");
-			for (var e2 : luxNet.inboundLinks(node).links().entrySet()) {
+			for (var e2 : Objects.requireNonNull(luxNet.inboundLinks(node.id())).links().entrySet()) {
 				LinkInfo info = e2.getValue();
 				String str = " " + e2.getKey();
 				if (info.inWorld() == null) str += " implicit";
@@ -206,9 +207,9 @@ public final class ModCommands {
 			}
 		}
 
-		if (luxNet.hasOutboundLink(node)) {
+		if (luxNet.hasOutboundLink(node.id())) {
 			tooltips.add("Outbound Links:");
-			for (var e2 : luxNet.outboundLinks(node).links().entrySet()) {
+			for (var e2 : Objects.requireNonNull(luxNet.outboundLinks(node.id())).links().entrySet()) {
 				LinkInfo info = e2.getValue();
 				String str = " " + e2.getKey();
 				if (info.inWorld() == null) str += " implicit";
@@ -220,19 +221,21 @@ public final class ModCommands {
 	}
 
 	private static int printLuxNetLinks(CommandSourceStack source, ServerLevel level, boolean outbound) {
-		LuxNet luxNet = LuxNet.get(level);
-		Set<LuxNode> nodesWithLink = outbound ? luxNet.nodesWithOutboundLink() : luxNet.nodesWithInboundLink();
-		int links = nodesWithLink.stream()
-				.mapToInt(n -> (outbound ? luxNet.outboundLinks(n) : luxNet.inboundLinks(n)).links().size())
+		ServerLuxNet luxNet = ServerLuxNet.get(level);
+		IntSet nodesWithLink = outbound ? luxNet.nodesWithOutboundLink() : luxNet.nodesWithInboundLink();
+		int links = nodesWithLink.intStream()
+				.map(n -> (Objects.requireNonNull(outbound ? luxNet.outboundLinks(n) : luxNet.inboundLinks(n)))
+						.links().size())
 				.sum();
 
 		source.sendSuccess(() -> Component.literal("LuxNet of dimension " + level.dimension().location() + ": " +
 				links + " links"), false);
 
 		if (links > 0) {
-			for (LuxNode node : nodesWithLink) {
-				var map = outbound ? luxNet.outboundLinks(node) : luxNet.inboundLinks(node);
-				if (map.links().isEmpty()) continue;
+			nodesWithLink.forEach(id -> {
+				ServerLuxNode node = Objects.requireNonNull(luxNet.get(id));
+				var map = Objects.requireNonNull(outbound ? luxNet.outboundLinks(id) : luxNet.inboundLinks(id));
+				if (map.links().isEmpty()) return;
 
 				MutableComponent nodeText = node(luxNet, node);
 				MutableComponent things = Component.empty();
@@ -255,14 +258,14 @@ public final class ModCommands {
 				source.sendSuccess(() -> outbound ?
 						Component.empty().append(nodeText).append(things) :
 						Component.empty().append(things).append(nodeText), false);
-			}
+			});
 		}
 
 		return 1;
 	}
 
-	private static int clearLuxNet(CommandSourceStack source, ServerLevel level, LuxNet.ClearMode clearMode) {
-		LuxNet.get(level).clear(clearMode);
+	private static int clearLuxNet(CommandSourceStack source, ServerLevel level, ServerLuxNet.ClearMode clearMode) {
+		ServerLuxNet.get(level).clear(clearMode);
 		source.sendSuccess(() -> Component.literal("Cleared lux network configuration in " + level.dimension().location() + "."), true); // TODO localize
 		return 1;
 	}

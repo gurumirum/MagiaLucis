@@ -44,8 +44,8 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 
 import java.util.Arrays;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 import static gurumirum.magialucis.client.render.CustomRenderItemExtension.customRenderItem;
 
 @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

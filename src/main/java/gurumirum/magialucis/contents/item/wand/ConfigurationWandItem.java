@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.item.wand;
 
-import gurumirum.magialucis.capability.LinkSource;
+import gurumirum.magialucis.api.capability.LinkSource;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;

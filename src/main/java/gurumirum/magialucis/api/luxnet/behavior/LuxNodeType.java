@@ -1,4 +1,4 @@
-package gurumirum.magialucis.impl.luxnet.behavior;
+package gurumirum.magialucis.api.luxnet.behavior;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

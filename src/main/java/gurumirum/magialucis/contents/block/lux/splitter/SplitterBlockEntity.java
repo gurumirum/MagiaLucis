@@ -2,7 +2,10 @@ package gurumirum.magialucis.contents.block.lux.splitter;
 
 import com.google.common.math.IntMath;
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.LinkSource;
+import gurumirum.magialucis.api.capability.LinkSource;
+import gurumirum.magialucis.api.luxnet.LinkContext;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.contents.ModBlockEntities;
@@ -12,9 +15,6 @@ import gurumirum.magialucis.contents.block.RelativeDirection;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.data.GemItemData;
 import gurumirum.magialucis.contents.data.GemStatLogic;
-import gurumirum.magialucis.impl.luxnet.LinkContext;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
 import gurumirum.magialucis.utils.Orientation;
 import net.minecraft.core.BlockPos;
@@ -85,7 +85,7 @@ public class SplitterBlockEntity extends LuxNodeBlockEntity<DynamicLuxNodeBehavi
 	}
 
 	@Override
-	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {
+	public void updateLink(LuxNet luxNet, LuxNetLinkCollector linkCollector) {
 		Direction facing = getBlockState().getValue(BlockStateProperties.FACING);
 		int i = 0;
 
@@ -97,11 +97,11 @@ public class SplitterBlockEntity extends LuxNodeBlockEntity<DynamicLuxNodeBehavi
 			int weight = IntMath.pow(3, l - 1);
 			Direction side = RelativeDirection.getSide(facing, dir);
 
-			if (!LuxUtils.directLinkToInWorldNode(this, linkCollector,
+			if (!linkCollector.directLinkToInWorldNode(this,
 					getBlockPos().relative(side), side.getOpposite(), i, null,
 					weight, false)) {
 
-				LuxUtils.linkToInWorldNode(this, linkCollector, Orientation.of(side),
+				linkCollector.linkToInWorldNode(this, Orientation.of(side),
 						Vec3.atCenterOf(getBlockPos()), LinkSource.DEFAULT_LINK_DISTANCE, i, null,
 						weight, true);
 			}

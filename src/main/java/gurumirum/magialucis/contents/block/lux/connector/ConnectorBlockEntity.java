@@ -1,6 +1,9 @@
 package gurumirum.magialucis.contents.block.lux.connector;
 
 import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.luxnet.LinkContext;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.contents.ModBlockEntities;
@@ -9,9 +12,6 @@ import gurumirum.magialucis.contents.block.GemContainerBlock;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.data.GemItemData;
 import gurumirum.magialucis.contents.data.GemStatLogic;
-import gurumirum.magialucis.impl.luxnet.LinkContext;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -64,7 +64,7 @@ public class ConnectorBlockEntity extends LuxNodeBlockEntity<DynamicLuxNodeBehav
 	}
 
 	@Override
-	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {
+	public void updateLink(LuxNet luxNet, LuxNetLinkCollector linkCollector) {
 		Level level = getLevel();
 		if (level == null) return;
 
@@ -74,11 +74,11 @@ public class ConnectorBlockEntity extends LuxNodeBlockEntity<DynamicLuxNodeBehav
 		BlockState state = level.getBlockState(facingPos);
 		boolean extendedReach = state.isCollisionShapeFullBlock(level, facingPos);
 
-		if (!LuxUtils.directLinkToInWorldNode(this, linkCollector,
+		if (!linkCollector.directLinkToInWorldNode(this,
 				facingPos, facing.getOpposite(), 0, null,
 				1, !extendedReach)) {
 			if (extendedReach) {
-				LuxUtils.directLinkToInWorldNode(this, linkCollector,
+				linkCollector.directLinkToInWorldNode(this,
 						getBlockPos().relative(facing, 2), facing.getOpposite(), 0, null,
 						1, true);
 			}

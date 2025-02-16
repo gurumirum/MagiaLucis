@@ -1,6 +1,6 @@
 package gurumirum.magialucis.impl.ancientlight;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.net.msgs.SyncAncientLightProgressMsg;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID)
+@EventBusSubscriber(modid = MagiaLucisApi.MODID)
 public final class AncientLightCrafting {
 	private AncientLightCrafting() {}
 

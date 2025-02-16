@@ -1,11 +1,12 @@
 package gurumirum.magialucis.contents.block.lux.lightloom;
 
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -87,5 +88,5 @@ public class LightLoomBlockEntity extends LuxNodeBlockEntity<LightLoomBehavior>
 	}
 
 	@Override
-	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {}
+	public void updateLink(LuxNet luxNet, LuxNetLinkCollector linkCollector) {}
 }

@@ -22,7 +22,7 @@ import net.neoforged.neoforge.event.level.LevelEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
 
 @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
 public final class RenderEffects {

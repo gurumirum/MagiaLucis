@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.item.wand;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModMobEffects;
 import gurumirum.magialucis.contents.Wands;
@@ -19,7 +19,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID)
+@EventBusSubscriber(modid = MagiaLucisApi.MODID)
 public final class WandEventListener {
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onLivingShieldBlock(LivingShieldBlockEvent event) {

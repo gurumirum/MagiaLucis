@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.item;
 
-import gurumirum.magialucis.capability.LuxContainerStat;
+import gurumirum.magialucis.api.capability.LuxContainerStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.RotationLogic;
 import gurumirum.magialucis.client.render.light.LightEffect;

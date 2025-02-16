@@ -1,8 +1,8 @@
 package gurumirum.magialucis.contents.block.lux.relay;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.DirectLinkDestination;
-import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.api.capability.DirectLinkDestination;
+import gurumirum.magialucis.api.capability.LinkDestination;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
@@ -12,9 +12,9 @@ import gurumirum.magialucis.contents.block.GemContainerBlock;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntity;
 import gurumirum.magialucis.contents.data.GemItemData;
 import gurumirum.magialucis.contents.data.GemStatLogic;
-import gurumirum.magialucis.impl.luxnet.LinkContext;
-import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
-import gurumirum.magialucis.impl.luxnet.ServerSideLinkContext;
+import gurumirum.magialucis.api.luxnet.LinkContext;
+import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
+import gurumirum.magialucis.api.luxnet.ServerSideLinkContext;
 import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

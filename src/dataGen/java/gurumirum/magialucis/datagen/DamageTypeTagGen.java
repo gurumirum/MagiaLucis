@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
@@ -19,7 +19,7 @@ import static gurumirum.magialucis.contents.ModDamageTypes.LESSER_ICE_PROJECTILE
 
 public class DamageTypeTagGen extends DamageTypeTagsProvider {
 	public DamageTypeTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-		super(output, lookupProvider, MagiaLucisMod.MODID, existingFileHelper);
+		super(output, lookupProvider, MagiaLucisApi.MODID, existingFileHelper);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -15,7 +15,7 @@ import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 import static net.minecraft.core.registries.Registries.LOOT_TABLE;
 
 public class LootModifierGen extends GlobalLootModifierProvider {
@@ -29,7 +29,7 @@ public class LootModifierGen extends GlobalLootModifierProvider {
 	public static final ResourceKey<LootTable> SAPPHIRE_IN_CHEST = ResourceKey.create(LOOT_TABLE, id("sapphire_in_chest"));
 
 	public LootModifierGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-		super(output, registries, MagiaLucisMod.MODID);
+		super(output, registries, MagiaLucisApi.MODID);
 	}
 
 	@Override

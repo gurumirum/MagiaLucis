@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class BiomeTagGen extends BiomeTagsProvider {
 	public BiomeTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
-		super(output, provider, MagiaLucisMod.MODID, existingFileHelper);
+		super(output, provider, MagiaLucisApi.MODID, existingFileHelper);
 	}
 
 	@SuppressWarnings("unchecked")

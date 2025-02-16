@@ -10,7 +10,7 @@ public class LuxNetEvents {
 	@SubscribeEvent
 	public static void onLevelTick(LevelTickEvent.Post event) {
 		if (event.getLevel() instanceof ServerLevel serverLevel) {
-			LuxNet.get(serverLevel).update(serverLevel);
+			ServerLuxNet.get(serverLevel).update(serverLevel);
 		}
 	}
 }

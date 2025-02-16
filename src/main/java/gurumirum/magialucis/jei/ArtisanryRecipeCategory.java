@@ -1,6 +1,6 @@
 package gurumirum.magialucis.jei;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.recipe.LuxInputCondition;
 import gurumirum.magialucis.contents.recipe.artisanry.SimpleArtisanryRecipe;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ArtisanryRecipeCategory implements IRecipeCategory<SimpleArtisanryRecipe> {
 	public static final RecipeType<SimpleArtisanryRecipe> RECIPE_TYPE = new RecipeType<>(
-			MagiaLucisMod.id("artisanry"), SimpleArtisanryRecipe.class);
+			MagiaLucisApi.id("artisanry"), SimpleArtisanryRecipe.class);
 
 	private final IDrawable icon;
 	private final ICraftingGridHelper craftingGridHelper;

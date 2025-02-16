@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.structure;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.ModBuildingBlocks;
 import gurumirum.magialucis.contents.ModEntities;
 import gurumirum.magialucis.contents.ModStructures;
@@ -29,7 +29,7 @@ import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
 
 public class TemplePiece extends TemplateStructurePiece {
-	private static final ResourceLocation STRUCTURE = MagiaLucisMod.id("temple");
+	private static final ResourceLocation STRUCTURE = MagiaLucisApi.id("temple");
 	private static final BlockPos PIVOT = new BlockPos(9 / 2, 11 / 2, 13 / 2);
 
 	private static final int BASE_FILL_HEIGHT = 20;

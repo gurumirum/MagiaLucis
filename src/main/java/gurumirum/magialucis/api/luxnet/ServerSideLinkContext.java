@@ -1,4 +1,4 @@
-package gurumirum.magialucis.impl.luxnet;
+package gurumirum.magialucis.api.luxnet;
 
 import org.jetbrains.annotations.NotNull;
 

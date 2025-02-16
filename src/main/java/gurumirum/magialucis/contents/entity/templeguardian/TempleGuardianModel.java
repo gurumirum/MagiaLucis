@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.*;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 public class TempleGuardianModel<T extends TempleGuardian> extends EntityModel<T> {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(id("temple_guardian"), "main");

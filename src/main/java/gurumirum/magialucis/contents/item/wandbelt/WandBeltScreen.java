@@ -3,7 +3,7 @@ package gurumirum.magialucis.contents.item.wandbelt;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.client.BaseScreen;
 import gurumirum.magialucis.client.SharedGUI;
 import net.minecraft.client.gui.GuiGraphics;
@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class WandBeltScreen extends BaseScreen<WandBeltMenu> {
-	public static final ResourceLocation TEXTURE = MagiaLucisMod.id("textures/gui/wand_belt.png");
-	public static final ResourceLocation EMPTY_SLOT_TEXTURE = MagiaLucisMod.id("textures/slot/empty_slot_wand.png");
+	public static final ResourceLocation TEXTURE = MagiaLucisApi.id("textures/gui/wand_belt.png");
+	public static final ResourceLocation EMPTY_SLOT_TEXTURE = MagiaLucisApi.id("textures/slot/empty_slot_wand.png");
 
 	private final Inventory playerInventory;
 

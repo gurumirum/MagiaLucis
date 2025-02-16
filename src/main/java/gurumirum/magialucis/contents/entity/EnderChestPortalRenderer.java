@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class EnderChestPortalRenderer extends EntityRenderer<EnderChestPortal> {
-	private static final ResourceLocation TEXTURE = MagiaLucisMod.id("textures/entity/ender_chest_portal.png");
+	private static final ResourceLocation TEXTURE = MagiaLucisApi.id("textures/entity/ender_chest_portal.png");
 
 	public EnderChestPortalRenderer(EntityRendererProvider.Context context) {
 		super(context);

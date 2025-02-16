@@ -1,10 +1,11 @@
 package gurumirum.magialucis.contents.block.lux;
 
-import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.api.capability.LinkDestination;
+import gurumirum.magialucis.api.luxnet.*;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
 import gurumirum.magialucis.contents.block.RegisteredBlockEntity;
-import gurumirum.magialucis.impl.luxnet.*;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
+import gurumirum.magialucis.impl.luxnet.ServerLuxNet;
 import gurumirum.magialucis.utils.NumberFormats;
 import gurumirum.magialucis.utils.TagUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -71,8 +72,8 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 		return this.totalLinkWeight;
 	}
 
-	protected final @Nullable LuxNet getLuxNet() {
-		return LuxNet.tryGet(this.level);
+	protected final @Nullable ServerLuxNet getLuxNet() {
+		return ServerLuxNet.tryGet(this.level);
 	}
 
 	protected @Nullable InWorldLinkState getLinkState(int index) {
@@ -88,17 +89,17 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 	@Override
 	protected void onRegister(@NotNull ServerLevel serverLevel) {
 		int prevId = this.nodeId;
-		this.nodeId = LuxNet.register(serverLevel, this, prevId);
+		this.nodeId = ServerLuxNet.register(serverLevel, this, prevId);
 		if (prevId != this.nodeId) syncToClient();
 	}
 
 	@Override
 	protected void onUnregister(@NotNull ServerLevel serverLevel, @NotNull UnregisterContext context) {
 		if (context.isRemoved()) {
-			LuxNet.unregister(serverLevel, this.nodeId);
+			ServerLuxNet.unregister(serverLevel, this.nodeId);
 			this.nodeId = NO_ID;
 		} else {
-			LuxNet.unbindInterface(serverLevel, this.nodeId);
+			ServerLuxNet.unbindInterface(serverLevel, this.nodeId);
 		}
 	}
 
@@ -129,21 +130,21 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 	}
 
 	@Override
-	public void syncConnection(LuxNet.OutboundLink outboundLinks, LuxNet.InboundLink inboundLinks) {
+	public void syncConnection(OutboundLink outboundLinks, InboundLink inboundLinks) {
 		boolean changed = false;
 
 		if (!equals(this.outboundLinks, outboundLinks.links())) {
 			changed = true;
 			this.outboundLinks.clear();
 			for (var e : outboundLinks.links().entrySet()) {
-				this.outboundLinks.put(e.getKey().id, e.getValue());
+				this.outboundLinks.put(e.getKey().id(), e.getValue());
 			}
 		}
 		if (!equals(this.inboundLinks, inboundLinks.links())) {
 			changed = true;
 			this.inboundLinks.clear();
 			for (var e : inboundLinks.links().entrySet()) {
-				this.inboundLinks.put(e.getKey().id, e.getValue());
+				this.inboundLinks.put(e.getKey().id(), e.getValue());
 			}
 		}
 		if (this.totalLinkWeight != outboundLinks.totalLinkWeight()) {
@@ -256,10 +257,10 @@ public abstract class LuxNodeBlockEntity<B extends LuxNodeBehavior> extends Regi
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	private static boolean equals(Int2ObjectMap<LinkInfo> m1, Map<LuxNode, LinkInfo> m2) {
+	private static boolean equals(Int2ObjectMap<LinkInfo> m1, Map<? extends LuxNode, LinkInfo> m2) {
 		if (m1.size() != m2.size()) return false;
 		for (var e : m2.entrySet()) {
-			LinkInfo linkInfo = m1.get(e.getKey().id);
+			LinkInfo linkInfo = m1.get(e.getKey().id());
 			if (!Objects.equals(linkInfo, e.getValue())) return false;
 		}
 		return true;

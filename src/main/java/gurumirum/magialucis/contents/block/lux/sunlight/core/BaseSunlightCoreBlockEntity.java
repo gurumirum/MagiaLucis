@@ -1,20 +1,21 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
-import gurumirum.magialucis.capability.LinkDestination;
+import gurumirum.magialucis.api.capability.LinkDestination;
+import gurumirum.magialucis.api.luxnet.LinkContext;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntity;
+import gurumirum.magialucis.impl.ServerTickQueue;
 import gurumirum.magialucis.impl.field.Field;
 import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldListener;
 import gurumirum.magialucis.impl.field.FieldManager;
-import gurumirum.magialucis.impl.luxnet.LinkContext;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import gurumirum.magialucis.utils.Orientation;
-import gurumirum.magialucis.impl.ServerTickQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -114,9 +115,9 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 	protected abstract double maxLuxInput();
 
 	@Override
-	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {
+	public void updateLink(LuxNet luxNet, LuxNetLinkCollector linkCollector) {
 		Orientation o = Orientation.of(getBlockState().getValue(BlockStateProperties.FACING));
-		LuxUtils.linkToInWorldNode(this, linkCollector, o,
+		linkCollector.linkToInWorldNode(this, o,
 				Vec3.atCenterOf(getBlockPos()), LINK_DISTANCE, 0, null, 1, true);
 	}
 

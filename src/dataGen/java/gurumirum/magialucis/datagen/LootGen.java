@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.*;
 import gurumirum.magialucis.contents.block.ModBlockStates;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
@@ -116,7 +116,7 @@ public class LootGen extends LootTableProvider {
 		protected @NotNull Iterable<Block> getKnownBlocks() {
 			return () -> BuiltInRegistries.BLOCK.stream().filter(b -> {
 				ResourceLocation key = BuiltInRegistries.BLOCK.getKey(b);
-				return key != null && key.getNamespace().equals(MagiaLucisMod.MODID);
+				return key != null && key.getNamespace().equals(MagiaLucisApi.MODID);
 			}).iterator();
 		}
 
@@ -143,7 +143,7 @@ public class LootGen extends LootTableProvider {
 		@Override
 		protected @NotNull Stream<EntityType<?>> getKnownEntityTypes() {
 			return BuiltInRegistries.ENTITY_TYPE.stream().filter(b ->
-					BuiltInRegistries.ENTITY_TYPE.getKey(b).getNamespace().equals(MagiaLucisMod.MODID));
+					BuiltInRegistries.ENTITY_TYPE.getKey(b).getNamespace().equals(MagiaLucisApi.MODID));
 		}
 	}
 

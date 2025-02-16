@@ -8,10 +8,10 @@ import gurumirum.magialucis.contents.block.lux.source.LuxSourceBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBehavior;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBehavior;
-import gurumirum.magialucis.impl.luxnet.behavior.DefaultLuxNodeBehavior;
+import gurumirum.magialucis.api.luxnet.behavior.DefaultLuxNodeBehavior;
 import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 public final class LuxNodeTypes {
 	private LuxNodeTypes() {}

@@ -1,6 +1,6 @@
 package gurumirum.magialucis.impl;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.block.RegisteredBlockEntity;
 import gurumirum.magialucis.contents.block.RegisteredBlockEntity.UnregisterContext;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID)
+@EventBusSubscriber(modid = MagiaLucisApi.MODID)
 public final class BlockEntityTracker {
 	private static final Map<ServerLevel, BlockEntityTracker> trackers = new Object2ObjectOpenHashMap<>();
 

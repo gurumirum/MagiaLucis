@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.sunlight.SunlightLogic;
 import gurumirum.magialucis.impl.LuxStatTooltip;

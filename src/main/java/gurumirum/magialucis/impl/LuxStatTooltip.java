@@ -1,8 +1,8 @@
 package gurumirum.magialucis.impl;
 
-import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.LuxContainerStat;
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.capability.LuxContainerStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.data.GemStat;
 import gurumirum.magialucis.contents.data.GemStatLogic;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = MagiaLucisMod.MODID)
+@EventBusSubscriber(modid = MagiaLucisApi.MODID)
 public final class LuxStatTooltip {
 	private LuxStatTooltip() {}
 

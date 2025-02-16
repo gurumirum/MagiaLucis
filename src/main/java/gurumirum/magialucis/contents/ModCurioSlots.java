@@ -1,6 +1,6 @@
 package gurumirum.magialucis.contents;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
 
 public final class ModCurioSlots {
 	private ModCurioSlots() {}

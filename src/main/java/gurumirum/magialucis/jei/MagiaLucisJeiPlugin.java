@@ -1,6 +1,6 @@
 package gurumirum.magialucis.jei;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModRecipes;
@@ -23,7 +23,7 @@ import java.util.Objects;
 public class MagiaLucisJeiPlugin implements IModPlugin {
 	@Override
 	public @NotNull ResourceLocation getPluginUid() {
-		return MagiaLucisMod.id("jei_plugin");
+		return MagiaLucisApi.id("jei_plugin");
 	}
 
 	@Override

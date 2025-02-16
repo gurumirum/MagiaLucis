@@ -1,11 +1,11 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
-import gurumirum.magialucis.capability.LuxStat;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxNode;
+import gurumirum.magialucis.api.capability.LuxStat;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNode;
+import gurumirum.magialucis.api.luxnet.behavior.LuxConsumerNodeBehavior;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxConsumerNodeBehavior;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.utils.LuxSampler;
 import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;

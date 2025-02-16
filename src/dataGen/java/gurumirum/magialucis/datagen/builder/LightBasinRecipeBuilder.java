@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen.builder;
 
-import gurumirum.magialucis.capability.LuxStat;
+import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlock;
 import gurumirum.magialucis.contents.recipe.transfusion.LightBasinRecipe;
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipe;

@@ -25,7 +25,7 @@ import net.neoforged.neoforge.common.world.BiomeModifiers;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 import static gurumirum.magialucis.contents.Ore.*;
 import static gurumirum.magialucis.contents.Ore.TOPAZ;
 import static net.minecraft.core.registries.Registries.*;

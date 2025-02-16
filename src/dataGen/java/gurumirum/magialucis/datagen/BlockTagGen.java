@@ -1,6 +1,6 @@
 package gurumirum.magialucis.datagen;
 
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.ModBlockTags;
 import gurumirum.magialucis.contents.Ore;
 import gurumirum.magialucis.contents.OreType;
@@ -23,7 +23,7 @@ import static gurumirum.magialucis.contents.ModBuildingBlocks.*;
 
 public class BlockTagGen extends BlockTagsProvider {
 	public BlockTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-		super(output, lookupProvider, MagiaLucisMod.MODID, existingFileHelper);
+		super(output, lookupProvider, MagiaLucisApi.MODID, existingFileHelper);
 	}
 
 	@SuppressWarnings("unchecked")

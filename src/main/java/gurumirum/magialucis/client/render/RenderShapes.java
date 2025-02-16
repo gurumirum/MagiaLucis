@@ -2,7 +2,7 @@ package gurumirum.magialucis.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,8 +19,8 @@ import org.joml.Vector3f;
 public final class RenderShapes {
 	private RenderShapes() {}
 
-	public static final ResourceLocation NO_FABULOUS_TEXTURE = MagiaLucisMod.id("textures/effect/no_fabulous.png");
-	public static final ResourceLocation NO_FABULOUS_TEXTURE_JOKE = MagiaLucisMod.id("textures/effect/install_cs_source.png");
+	public static final ResourceLocation NO_FABULOUS_TEXTURE = MagiaLucisApi.id("textures/effect/no_fabulous.png");
+	public static final ResourceLocation NO_FABULOUS_TEXTURE_JOKE = MagiaLucisApi.id("textures/effect/install_cs_source.png");
 
 	private static final double NO_FABULOUS_RADIUS = 0.7; // diameter of a circle equal in size with unit square
 	private static final int NO_FABULOUS_SEGMENTS = 16;

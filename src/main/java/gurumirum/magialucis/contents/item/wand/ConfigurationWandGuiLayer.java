@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigurationWandGuiLayer implements LayeredDraw.Layer {
-	public static final ResourceLocation BORDER = MagiaLucisMod.id("textures/gui/config_wand_overlay_border.png");
+	public static final ResourceLocation BORDER = MagiaLucisApi.id("textures/gui/config_wand_overlay_border.png");
 
 	private final List<String> textList = new ArrayList<>();
 

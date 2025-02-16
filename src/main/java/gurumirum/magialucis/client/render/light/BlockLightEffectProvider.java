@@ -2,8 +2,8 @@ package gurumirum.magialucis.client.render.light;
 
 import gurumirum.magialucis.client.render.RenderEffect;
 import gurumirum.magialucis.contents.block.lux.LuxNodeSyncPropertyAccess;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
-import gurumirum.magialucis.impl.luxnet.LinkInfo;
+import gurumirum.magialucis.api.luxnet.InWorldLinkState;
+import gurumirum.magialucis.api.luxnet.LinkInfo;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;

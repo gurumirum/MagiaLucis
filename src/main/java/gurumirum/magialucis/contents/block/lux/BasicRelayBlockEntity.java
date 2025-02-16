@@ -1,11 +1,12 @@
 package gurumirum.magialucis.contents.block.lux;
 
-import gurumirum.magialucis.capability.LinkSource;
-import gurumirum.magialucis.impl.luxnet.InWorldLinkState;
-import gurumirum.magialucis.impl.luxnet.LinkDestinationSelector;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxUtils;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxNodeBehavior;
+import gurumirum.magialucis.api.capability.LinkSource;
+import gurumirum.magialucis.api.luxnet.InWorldLinkState;
+import gurumirum.magialucis.api.luxnet.LinkDestinationSelector;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
+import gurumirum.magialucis.impl.luxnet.ServerLuxNet;
 import gurumirum.magialucis.utils.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -40,12 +41,12 @@ public abstract class BasicRelayBlockEntity<B extends LuxNodeBehavior> extends L
 	}
 
 	@Override
-	public void updateLink(LuxNet luxNet, LuxNet.LinkCollector linkCollector) {
+	public void updateLink(LuxNet luxNet, LuxNetLinkCollector linkCollector) {
 		if (this.links.isEmpty()) return;
 		for (int i = 0; i < this.links.size(); i++) {
 			Orientation o = this.links.get(i);
 			if (o != null) {
-				LuxUtils.linkToInWorldNode(this, linkCollector, o,
+				linkCollector.linkToInWorldNode(this, o,
 						linkOrigin(), linkDistance(), i, linkDestinationSelector(), 1, true);
 			}
 		}
@@ -83,7 +84,7 @@ public abstract class BasicRelayBlockEntity<B extends LuxNodeBehavior> extends L
 		while (index >= this.links.size()) this.links.add(null);
 		this.links.set(index, orientation);
 
-		LuxNet luxNet = getLuxNet();
+		ServerLuxNet luxNet = getLuxNet();
 		if (luxNet != null) luxNet.queueLinkUpdate(luxNodeId());
 
 		setChanged();

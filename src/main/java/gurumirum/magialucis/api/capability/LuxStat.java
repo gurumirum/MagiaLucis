@@ -1,4 +1,4 @@
-package gurumirum.magialucis.capability;
+package gurumirum.magialucis.api.capability;
 
 import gurumirum.magialucis.impl.RGB332;
 import org.joml.Vector3d;

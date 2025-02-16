@@ -2,7 +2,7 @@ package gurumirum.magialucis.impl.field;
 
 import gurumirum.magialucis.contents.block.AmberLanternBlock;
 
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 import static gurumirum.magialucis.impl.field.FieldRegistry.register;
 
 public final class Fields {

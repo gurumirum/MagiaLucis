@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
 import gurumirum.magialucis.MagiaLucisMod;
-import gurumirum.magialucis.capability.LuxAcceptor;
+import gurumirum.magialucis.api.capability.LuxAcceptor;
 import gurumirum.magialucis.capability.ModCapabilities;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;

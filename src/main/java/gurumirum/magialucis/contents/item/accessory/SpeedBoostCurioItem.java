@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.item.accessory;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import gurumirum.magialucis.MagiaLucisMod;
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.utils.NumberFormats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -21,7 +21,7 @@ import top.theillusivec4.curios.api.SlotContext;
 import java.util.List;
 
 public class SpeedBoostCurioItem extends AttributeCurioItem.Unique {
-	private static final ResourceLocation SPEED_BOOST_ID = MagiaLucisMod.id("speed_boost");
+	private static final ResourceLocation SPEED_BOOST_ID = MagiaLucisApi.id("speed_boost");
 
 	public final double speedBoostAmount;
 

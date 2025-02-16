@@ -1,8 +1,8 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
-import gurumirum.magialucis.impl.luxnet.LuxNet;
-import gurumirum.magialucis.impl.luxnet.LuxNode;
-import gurumirum.magialucis.impl.luxnet.behavior.LuxSpecialNodeBehavior;
+import gurumirum.magialucis.api.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LuxNode;
+import gurumirum.magialucis.api.luxnet.behavior.LuxSpecialNodeBehavior;
 import gurumirum.magialucis.impl.luxnet.behavior.SingleFieldLuxNodeBehavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

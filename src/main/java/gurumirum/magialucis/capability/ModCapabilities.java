@@ -1,5 +1,6 @@
 package gurumirum.magialucis.capability;
 
+import gurumirum.magialucis.api.capability.*;
 import gurumirum.magialucis.capability.impl.ItemStackLuxAcceptor;
 import gurumirum.magialucis.contents.Accessories;
 import gurumirum.magialucis.contents.ModBlockEntities;
@@ -17,8 +18,8 @@ import net.neoforged.neoforge.capabilities.Capabilities.ItemHandler;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
-import static gurumirum.magialucis.MagiaLucisMod.id;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class ModCapabilities {

@@ -9,7 +9,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import net.neoforged.neoforge.client.settings.KeyModifier;
 
-import static gurumirum.magialucis.MagiaLucisMod.MODID;
+import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
 
 @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ModKeyMappings {

@@ -1,11 +1,11 @@
-package gurumirum.magialucis.capability;
+package gurumirum.magialucis.api.capability;
 
-import gurumirum.magialucis.impl.luxnet.LinkContext;
-import gurumirum.magialucis.impl.luxnet.LuxNet;
+import gurumirum.magialucis.api.luxnet.LinkContext;
+import gurumirum.magialucis.impl.luxnet.ServerLuxNet;
 import org.jetbrains.annotations.NotNull;
 
 public interface LinkDestination {
-	int NO_ID = LuxNet.NO_ID;
+	int NO_ID = ServerLuxNet.NO_ID;
 
 	@NotNull LinkTestResult linkWithSource(@NotNull LinkContext context);
 
