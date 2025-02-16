@@ -83,7 +83,7 @@ public class LootGen extends LootTableProvider {
 			Block block = modBlock.block();
 			if (block.getLootTable() == BuiltInLootTables.EMPTY) return;
 			switch (modBlock) {
-				case RELAY -> add(block, b -> lootTable().withPool(
+				case RELAY, SPLITTER, CONNECTOR -> add(block, b -> lootTable().withPool(
 						applyExplosionCondition(b, lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(b)
@@ -95,7 +95,7 @@ public class LootGen extends LootTableProvider {
 				));
 				case ARTISANRY_TABLE -> add(block, b -> lootTable().withPool(
 						applyExplosionCondition(block, lootPool()
-								.setRolls(ConstantValue.exactly(1.0F))
+								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(block)
 										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
 												.setProperties(StatePropertiesPredicate.Builder.properties()
