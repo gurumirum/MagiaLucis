@@ -74,7 +74,7 @@ public class SplitterBlockEntity extends LuxNodeBlockEntity<DynamicLuxNodeBehavi
 		super.onLoad();
 		if (this.level != null && this.level.isClientSide) {
 			RenderEffects.cutout.register(new SplitterBlockCutoutEffect(this));
-			RenderEffects.light.register(new BlockLightEffectProvider<>(this));
+			RenderEffects.light.register(new BlockLightEffectProvider<>(this).sphereSize(0));
 			RenderEffects.prism.register(new SplitterBlockPrismEffect(this));
 		}
 	}
