@@ -6,10 +6,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public record InWorldLinkState(boolean linked, int weight, @NotNull InWorldLinkInfo info) {
-	public InWorldLinkState(boolean linked, int weight, @NotNull BlockPos origin, @NotNull BlockPos linkPos, @NotNull Vec3 linkLocation) {
-		this(linked, weight, new InWorldLinkInfo(origin, linkPos, linkLocation));
-	}
-
 	public InWorldLinkState(CompoundTag tag) {
 		this(tag.getBoolean("linked"),
 				tag.contains("weight", CompoundTag.TAG_INT) ? Math.max(0, tag.getInt("weight")) : 1,
