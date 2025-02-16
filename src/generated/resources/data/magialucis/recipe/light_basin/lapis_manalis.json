@@ -1,17 +1,14 @@
 {
   "type": "magialucis:light_basin",
   "ingredients": [
-    {
-      "count": 1,
-      "ingredient": [
-        {
-          "item": "minecraft:stone"
-        },
-        {
-          "item": "minecraft:deepslate"
-        }
-      ]
-    }
+    [
+      {
+        "item": "minecraft:stone"
+      },
+      {
+        "item": "minecraft:deepslate"
+      }
+    ]
   ],
   "luxInput": {
     "minSum": 50.0

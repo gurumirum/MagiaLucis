@@ -2,13 +2,14 @@ package gurumirum.magialucis.datagen.builder;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import gurumirum.magialucis.contents.recipe.IngredientStack;
+import gurumirum.magialucis.contents.recipe.artisanry.ArtisanryRecipe;
 import gurumirum.magialucis.contents.recipe.artisanry.SimpleArtisanryRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +21,7 @@ import java.util.function.Consumer;
 public class ArtisanryRecipeBuilder extends ModRecipeBuilder<SimpleArtisanryRecipe> {
 	private final ItemStack result;
 	private final List<String> rows = Lists.newArrayList();
-	private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
+	private final Map<Character, IngredientStack> key = Maps.newLinkedHashMap();
 	protected int processTicks = -1;
 	protected final LuxInputConditionBuilder luxInput = new LuxInputConditionBuilder();
 
@@ -29,20 +30,32 @@ public class ArtisanryRecipeBuilder extends ModRecipeBuilder<SimpleArtisanryReci
 	}
 
 	public ArtisanryRecipeBuilder define(Character symbol, TagKey<Item> tag) {
-		return this.define(symbol, Ingredient.of(tag));
+		return define(symbol, tag, 1);
 	}
 
 	public ArtisanryRecipeBuilder define(Character symbol, ItemLike item) {
-		return this.define(symbol, Ingredient.of(item));
+		return define(symbol, item, 1);
 	}
 
 	public ArtisanryRecipeBuilder define(Character symbol, Ingredient ingredient) {
+		return define(symbol, ingredient, 1);
+	}
+
+	public ArtisanryRecipeBuilder define(Character symbol, TagKey<Item> tag, int count) {
+		return define(symbol, Ingredient.of(tag), count);
+	}
+
+	public ArtisanryRecipeBuilder define(Character symbol, ItemLike item, int count) {
+		return define(symbol, Ingredient.of(item), count);
+	}
+
+	public ArtisanryRecipeBuilder define(Character symbol, Ingredient ingredient, int count) {
 		if (this.key.containsKey(symbol)) {
 			throw new IllegalArgumentException("Symbol '" + symbol + "' is already defined!");
 		} else if (symbol == ' ') {
 			throw new IllegalArgumentException("Symbol ' ' (whitespace) is reserved and cannot be defined");
 		} else {
-			this.key.put(symbol, ingredient);
+			this.key.put(symbol, new IngredientStack(ingredient, count));
 			return this;
 		}
 	}
@@ -74,7 +87,7 @@ public class ArtisanryRecipeBuilder extends ModRecipeBuilder<SimpleArtisanryReci
 	@Override
 	protected SimpleArtisanryRecipe createRecipeInstance() {
 		return new SimpleArtisanryRecipe(
-				ShapedRecipePattern.of(this.key, this.rows), this.result,
+				ArtisanryRecipe.GRID_SPEC.unpack(this.key, this.rows), this.result,
 				this.processTicks, this.luxInput.build());
 	}
 

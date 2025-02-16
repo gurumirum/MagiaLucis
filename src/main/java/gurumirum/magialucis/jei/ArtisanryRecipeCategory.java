@@ -2,8 +2,11 @@ package gurumirum.magialucis.jei;
 
 import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.ModBlocks;
+import gurumirum.magialucis.contents.recipe.IngredientStack;
+import gurumirum.magialucis.contents.recipe.InputPattern;
 import gurumirum.magialucis.contents.recipe.LuxInputCondition;
 import gurumirum.magialucis.contents.recipe.artisanry.SimpleArtisanryRecipe;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
@@ -63,7 +66,10 @@ public class ArtisanryRecipeCategory implements IRecipeCategory<SimpleArtisanryR
 		ClientLevel level = minecraft.level;
 		if (level == null) throw new NullPointerException("level must not be null.");
 		this.craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem(level.registryAccess())));
-		this.craftingGridHelper.createAndSetIngredients(builder, recipe.getIngredients(), 3, 3);
+		InputPattern<IngredientStack> pattern = recipe.pattern();
+		this.craftingGridHelper.createAndSetInputs(builder, VanillaTypes.ITEM_STACK, pattern.inputs().stream()
+				.map(IngredientStack::toItemList)
+				.toList(), 3, 3);
 	}
 
 	@Override

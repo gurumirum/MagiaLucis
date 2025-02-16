@@ -3,6 +3,8 @@ package gurumirum.magialucis.datagen.builder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gurumirum.magialucis.contents.data.Augment;
+import gurumirum.magialucis.contents.recipe.IngredientStack;
+import gurumirum.magialucis.contents.recipe.artisanry.ArtisanryRecipe;
 import gurumirum.magialucis.contents.recipe.artisanry.AugmentRecipe;
 import gurumirum.magialucis.utils.AugmentProvider;
 import net.minecraft.core.Holder;
@@ -11,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +25,7 @@ import java.util.function.Consumer;
 
 public class AugmentRecipeBuilder extends ModRecipeBuilder<AugmentRecipe> {
 	private final List<String> rows = Lists.newArrayList();
-	private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
+	private final Map<Character, IngredientStack> key = Maps.newLinkedHashMap();
 	private final List<AugmentRecipe.AugmentOp> augments = new ArrayList<>();
 	private HolderSet<Augment> precursor = HolderSet.empty();
 	private HolderSet<Augment> incompatible = HolderSet.empty();
@@ -32,20 +33,32 @@ public class AugmentRecipeBuilder extends ModRecipeBuilder<AugmentRecipe> {
 	private final LuxInputConditionBuilder luxInput = new LuxInputConditionBuilder();
 
 	public AugmentRecipeBuilder define(Character symbol, TagKey<Item> tag) {
-		return this.define(symbol, Ingredient.of(tag));
+		return define(symbol, tag, 1);
 	}
 
 	public AugmentRecipeBuilder define(Character symbol, ItemLike item) {
-		return this.define(symbol, Ingredient.of(item));
+		return define(symbol, item, 1);
 	}
 
 	public AugmentRecipeBuilder define(Character symbol, Ingredient ingredient) {
+		return define(symbol, ingredient, 1);
+	}
+
+	public AugmentRecipeBuilder define(Character symbol, TagKey<Item> tag, int count) {
+		return define(symbol, Ingredient.of(tag), count);
+	}
+
+	public AugmentRecipeBuilder define(Character symbol, ItemLike item, int count) {
+		return define(symbol, Ingredient.of(item), count);
+	}
+
+	public AugmentRecipeBuilder define(Character symbol, Ingredient ingredient, int count) {
 		if (this.key.containsKey(symbol)) {
 			throw new IllegalArgumentException("Symbol '" + symbol + "' is already defined!");
 		} else if (symbol == ' ') {
 			throw new IllegalArgumentException("Symbol ' ' (whitespace) is reserved and cannot be defined");
 		} else {
-			this.key.put(symbol, ingredient);
+			this.key.put(symbol, new IngredientStack(ingredient, count));
 			return this;
 		}
 	}
@@ -139,7 +152,7 @@ public class AugmentRecipeBuilder extends ModRecipeBuilder<AugmentRecipe> {
 	@Override
 	protected AugmentRecipe createRecipeInstance() {
 		return new AugmentRecipe(
-				ShapedRecipePattern.of(this.key, this.rows), this.augments,
+				ArtisanryRecipe.GRID_UNOPTIMIZED_SPEC.unpack(this.key, this.rows), this.augments,
 				this.precursor, this.incompatible,
 				this.processTicks, this.luxInput.build());
 	}

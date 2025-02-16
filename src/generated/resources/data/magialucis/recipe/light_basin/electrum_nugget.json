@@ -2,16 +2,10 @@
   "type": "magialucis:light_basin",
   "ingredients": [
     {
-      "count": 1,
-      "ingredient": {
-        "tag": "c:nuggets/gold"
-      }
+      "tag": "c:nuggets/gold"
     },
     {
-      "count": 1,
-      "ingredient": {
-        "tag": "c:nuggets/silver"
-      }
+      "tag": "c:nuggets/silver"
     }
   ],
   "luxInput": {

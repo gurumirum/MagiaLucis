@@ -11,9 +11,7 @@ import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.data.Augment;
 import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.contents.data.ItemAugment;
-import gurumirum.magialucis.contents.recipe.ConsumptionRecord;
-import gurumirum.magialucis.contents.recipe.LuxInputCondition;
-import gurumirum.magialucis.contents.recipe.LuxRecipeEvaluation;
+import gurumirum.magialucis.contents.recipe.*;
 import gurumirum.magialucis.contents.recipe.crafting.CraftingLogic;
 import gurumirum.magialucis.utils.ModUtils;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
@@ -24,7 +22,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,14 +30,14 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class AugmentRecipe implements ArtisanryRecipe {
-	private final ShapedRecipePattern pattern;
+	private final InputPattern<IngredientStack> pattern;
 	private final List<AugmentOp> augments;
 	private final HolderSet<Augment> precursor;
 	private final HolderSet<Augment> incompatible;
 	private final int processTicks;
 	private final LuxInputCondition luxInputCondition;
 
-	public AugmentRecipe(ShapedRecipePattern pattern, List<AugmentOp> augments,
+	public AugmentRecipe(InputPattern<IngredientStack> pattern, List<AugmentOp> augments,
 	                     HolderSet<Augment> precursor, HolderSet<Augment> incompatible,
 	                     int processTicks, LuxInputCondition luxInputCondition) {
 		this.pattern = pattern;
@@ -51,7 +48,7 @@ public class AugmentRecipe implements ArtisanryRecipe {
 		this.luxInputCondition = luxInputCondition;
 	}
 
-	public ShapedRecipePattern pattern() {
+	public InputPattern<IngredientStack> pattern() {
 		return this.pattern;
 	}
 	public List<AugmentOp> augments() {
@@ -94,7 +91,8 @@ public class AugmentRecipe implements ArtisanryRecipe {
 			if (itemAugment.has(h)) return LuxRecipeEvaluation.fail();
 		}
 
-		if (!this.pattern.matches(input.asAugmentInput())) return LuxRecipeEvaluation.fail();
+		ConsumptionRecord consumptions = CraftingLogic.test(this.pattern, input.asAugmentInput());
+		if (consumptions == null) return LuxRecipeEvaluation.fail();
 
 		return new LuxRecipeEvaluation(
 				() -> {
@@ -115,7 +113,7 @@ public class AugmentRecipe implements ArtisanryRecipe {
 					return copy;
 				},
 				this.processTicks,
-				ConsumptionRecord.consumeAllByOne(input),
+				consumptions,
 				this.luxInputCondition
 		);
 	}
@@ -188,7 +186,7 @@ public class AugmentRecipe implements ArtisanryRecipe {
 
 	public static final class Serializer implements RecipeSerializer<AugmentRecipe> {
 		private static final MapCodec<AugmentRecipe> CODEC = RecordCodecBuilder.mapCodec(b -> b.group(
-				CraftingLogic.UNOPTIMIZED_PATTERN_CODEC.fieldOf("pattern").forGetter(r -> r.pattern),
+				ArtisanryRecipe.GRID_UNOPTIMIZED_SPEC.codec().fieldOf("pattern").forGetter(r -> r.pattern),
 				AugmentOp.CODEC.listOf().validate(list -> {
 					Supplier<String> errorMessage = validateAugmentList(list);
 					return errorMessage != null ? DataResult.error(errorMessage) : DataResult.success(list);
@@ -201,14 +199,14 @@ public class AugmentRecipe implements ArtisanryRecipe {
 
 		private static final StreamCodec<RegistryFriendlyByteBuf, AugmentRecipe> STREAM_CODEC = StreamCodec.of(
 				(buffer, recipe) -> {
-					ShapedRecipePattern.STREAM_CODEC.encode(buffer, recipe.pattern);
+					ArtisanryRecipe.GRID_UNOPTIMIZED_SPEC.streamCodec().encode(buffer, recipe.pattern);
 					ModUtils.writeCollection(buffer, recipe.augments, AugmentOp.STREAM_CODEC);
 					ModDataMaps.AUGMENT_SET_STREAM_CODEC.encode(buffer, recipe.precursor);
 					ModDataMaps.AUGMENT_SET_STREAM_CODEC.encode(buffer, recipe.incompatible);
 					buffer.writeVarInt(recipe.processTicks);
 					LuxInputCondition.STREAM_CODEC.encode(buffer, recipe.luxInputCondition);
 				}, buffer -> {
-					ShapedRecipePattern pattern = ShapedRecipePattern.STREAM_CODEC.decode(buffer);
+					InputPattern<IngredientStack> pattern = ArtisanryRecipe.GRID_UNOPTIMIZED_SPEC.streamCodec().decode(buffer);
 					List<AugmentOp> augments = ModUtils.readList(buffer, AugmentOp.STREAM_CODEC);
 					HolderSet<Augment> precursor = ModDataMaps.AUGMENT_SET_STREAM_CODEC.decode(buffer);
 					HolderSet<Augment> incompatible = ModDataMaps.AUGMENT_SET_STREAM_CODEC.decode(buffer);

@@ -2,16 +2,10 @@
   "type": "magialucis:light_basin",
   "ingredients": [
     {
-      "count": 1,
-      "ingredient": {
-        "item": "minecraft:blaze_powder"
-      }
+      "item": "minecraft:blaze_powder"
     },
     {
-      "count": 1,
-      "ingredient": {
-        "tag": "c:gems/citrine"
-      }
+      "tag": "c:gems/citrine"
     }
   ],
   "luxInput": {

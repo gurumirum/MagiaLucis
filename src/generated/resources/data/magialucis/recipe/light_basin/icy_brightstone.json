@@ -2,10 +2,7 @@
   "type": "magialucis:light_basin",
   "ingredients": [
     {
-      "count": 1,
-      "ingredient": {
-        "item": "minecraft:ice"
-      }
+      "item": "minecraft:ice"
     }
   ],
   "luxInput": {

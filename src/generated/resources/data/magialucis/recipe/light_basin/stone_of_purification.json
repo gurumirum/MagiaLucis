@@ -2,16 +2,10 @@
   "type": "magialucis:light_basin",
   "ingredients": [
     {
-      "count": 1,
-      "ingredient": {
-        "item": "magialucis:sunlight_infused_powder"
-      }
+      "item": "magialucis:sunlight_infused_powder"
     },
     {
-      "count": 1,
-      "ingredient": {
-        "item": "magialucis:moonlight_infused_powder"
-      }
+      "item": "magialucis:moonlight_infused_powder"
     }
   ],
   "luxInput": {

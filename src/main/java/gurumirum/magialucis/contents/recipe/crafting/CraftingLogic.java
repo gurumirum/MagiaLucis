@@ -3,12 +3,17 @@ package gurumirum.magialucis.contents.recipe.crafting;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import gurumirum.magialucis.contents.ModBlocks;
+import gurumirum.magialucis.contents.recipe.ConsumptionRecord;
+import gurumirum.magialucis.contents.recipe.IngredientStack;
+import gurumirum.magialucis.contents.recipe.InputPattern;
 import it.unimi.dsi.fastutil.chars.CharArraySet;
 import it.unimi.dsi.fastutil.chars.CharSet;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -56,5 +61,44 @@ public final class CraftingLogic {
 		return stack.is(ModBlocks.RELAY.asItem()) ||
 				stack.is(ModBlocks.SPLITTER.asItem()) ||
 				stack.is(ModBlocks.CONNECTOR.asItem());
+	}
+
+	public static @Nullable ConsumptionRecord test(InputPattern<IngredientStack> pattern, CraftingInput input) {
+		if (input.width() == pattern.width() && input.height() == pattern.height()) {
+			if (!pattern.symmetrical()) {
+				ConsumptionRecord r = test(pattern, input, true);
+				if (r != null) return r;
+			}
+
+			return test(pattern, input, false);
+		}
+
+		return null;
+	}
+
+	private static @Nullable ConsumptionRecord test(InputPattern<IngredientStack> pattern, CraftingInput input,
+	                                                boolean mirrored) {
+		for (int y = 0; y < pattern.height(); y++) {
+			for (int x = 0; x < pattern.width(); x++) {
+				IngredientStack ingredient = pattern.get(x, y, mirrored);
+
+				ItemStack stack = input.getItem(x, y);
+				if (!ingredient.ingredient().test(stack) || ingredient.count() > stack.getCount()) {
+					return null;
+				}
+			}
+		}
+
+		ConsumptionRecord.Mutable consumptionRecord = new ConsumptionRecord.Mutable();
+
+		for (int y = 0; y < pattern.height(); y++) {
+			for (int x = 0; x < pattern.width(); x++) {
+				IngredientStack ingredient = pattern.get(x, y, mirrored);
+
+				consumptionRecord.add(pattern.getIndex(x, y, mirrored), ingredient.count());
+			}
+		}
+
+		return consumptionRecord;
 	}
 }

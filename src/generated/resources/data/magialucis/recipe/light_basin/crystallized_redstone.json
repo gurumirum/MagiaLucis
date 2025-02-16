@@ -2,16 +2,10 @@
   "type": "magialucis:light_basin",
   "ingredients": [
     {
-      "count": 1,
-      "ingredient": {
-        "item": "magialucis:stone_of_purification"
-      }
+      "item": "magialucis:stone_of_purification"
     },
     {
-      "count": 1,
-      "ingredient": {
-        "item": "minecraft:redstone_block"
-      }
+      "item": "minecraft:redstone_block"
     }
   ],
   "luxInput": {

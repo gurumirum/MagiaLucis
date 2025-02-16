@@ -2,10 +2,7 @@
   "type": "magialucis:light_basin",
   "ingredients": [
     {
-      "count": 1,
-      "ingredient": {
-        "item": "minecraft:soul_sand"
-      }
+      "item": "minecraft:soul_sand"
     }
   ],
   "luxInput": {

@@ -2,28 +2,16 @@
   "type": "magialucis:light_basin",
   "ingredients": [
     {
-      "count": 1,
-      "ingredient": {
-        "tag": "c:nuggets/electrum"
-      }
+      "tag": "c:nuggets/electrum"
     },
     {
-      "count": 1,
-      "ingredient": {
-        "tag": "c:nuggets/rose_gold"
-      }
+      "tag": "c:nuggets/rose_gold"
     },
     {
-      "count": 1,
-      "ingredient": {
-        "tag": "c:nuggets/sterling_silver"
-      }
+      "tag": "c:nuggets/sterling_silver"
     },
     {
-      "count": 1,
-      "ingredient": {
-        "tag": "c:nuggets/iron"
-      }
+      "tag": "c:nuggets/iron"
     }
   ],
   "luxInput": {
