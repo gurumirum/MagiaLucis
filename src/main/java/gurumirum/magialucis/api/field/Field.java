@@ -1,6 +1,5 @@
-package gurumirum.magialucis.impl.field;
+package gurumirum.magialucis.api.field;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,12 +36,12 @@ import java.util.Objects;
  * phenomena nor an attempt to make you cringe. Although for the latter I sincerely apologize. For those who are still
  * cringing, let me quickly remind you this is a mod to a block game. You use LIGHT ENERGY to fire BEAMS and shit.
  */
-public class Field {
+public final class Field {
 	public static final double DEFAULT_RADIUS = 64;
 	public static final double DEFAULT_DIMINISH_POWER = 1;
 	public static final int DEFAULT_INTERFERENCE_THRESHOLD = 0;
 
-	public final ResourceLocation id;
+	private final ResourceLocation id;
 
 	private final double forceRange;
 	private final double forceRangeSquared;
@@ -65,47 +64,43 @@ public class Field {
 		this.forceRangeSquared = this.forceRange * this.forceRange;
 	}
 
-	public final double forceRange() {
+	public @NotNull ResourceLocation id() {
+		return id;
+	}
+
+	public double forceRange() {
 		return this.forceRange;
 	}
 
-	public final double forceDiminishPower() {
+	public double forceDiminishPower() {
 		return this.forceDiminishPower;
 	}
 
-	public final int interferenceThreshold() {
+	public int interferenceThreshold() {
 		return this.interferenceThreshold;
 	}
 
-	public final boolean hasInterference() {
+	public boolean hasInterference() {
 		return this.interferenceThreshold > 0;
 	}
 
-	public final double forceRangeSquared() {
+	public double forceRangeSquared() {
 		return this.forceRangeSquared;
-	}
-
-	public @NotNull FieldInstance createInstance() {
-		return new FieldInstance(this);
-	}
-
-	public @NotNull FieldInstance createInstance(@NotNull CompoundTag tag){
-		return new FieldInstance(this, tag);
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Field field)) return false;
-		return Objects.equals(this.id, field.id);
+		return Objects.equals(this.id(), field.id());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(this.id);
+		return Objects.hashCode(this.id());
 	}
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [" + id + ']';
+		return getClass().getSimpleName() + " [" + id() + ']';
 	}
 }

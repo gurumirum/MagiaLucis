@@ -1,11 +1,14 @@
 package gurumirum.magialucis.impl.field;
 
+import gurumirum.magialucis.api.field.Field;
+import gurumirum.magialucis.api.field.FieldElement;
+import gurumirum.magialucis.api.field.FieldInstance;
+import gurumirum.magialucis.api.field.FieldMath;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -13,10 +16,11 @@ import org.jetbrains.annotations.UnmodifiableView;
 import java.util.*;
 import java.util.function.DoubleConsumer;
 
-public class FieldInstance {
+public final class ServerFieldInstance implements FieldInstance {
 	private final Field field;
+	private final @Nullable FieldManager manager;
 
-	private final Map<BlockPos, FieldElement> elements = new Object2ObjectOpenHashMap<>();
+	private final Map<BlockPos, ServerFieldElement> elements = new Object2ObjectOpenHashMap<>();
 	private final Map<BlockPos, FieldElement> elementsView = Collections.unmodifiableMap(this.elements);
 
 	private final List<FieldChangedListener> fieldChanged = new ArrayList<>();
@@ -27,31 +31,34 @@ public class FieldInstance {
 
 	private boolean dirty;
 
-	@Nullable FieldManager manager;
-
-	public FieldInstance(@NotNull Field field) {
+	ServerFieldInstance(@NotNull Field field, @Nullable FieldManager manager) {
 		this.field = Objects.requireNonNull(field);
+		this.manager = manager;
 	}
 
+	@Override
 	public @NotNull Field field() {
 		return this.field;
 	}
 
+	@Override
 	public @NotNull @UnmodifiableView Map<BlockPos, FieldElement> elements() {
 		return this.elementsView;
 	}
 
+	@Override
 	public @NotNull FieldElement add(@NotNull BlockPos pos) {
 		return this.elements.computeIfAbsent(pos.immutable(), p -> {
-			FieldElement element = new FieldElement(this, p);
+			ServerFieldElement element = new ServerFieldElement(this, p);
 			setDirty();
 			dispatchFieldChanged(p, element, false);
 			return element;
 		});
 	}
 
+	@Override
 	public void remove(@NotNull BlockPos pos) {
-		FieldElement element = this.elements.remove(pos);
+		ServerFieldElement element = this.elements.remove(pos);
 		if (element == null) return;
 
 		setDirty();
@@ -59,17 +66,12 @@ public class FieldInstance {
 		dispatchPowerChange(pos, 0);
 	}
 
+	@Override
 	public @Nullable FieldElement elementAt(@NotNull BlockPos pos) {
 		return this.elements.get(pos);
 	}
 
-	public double value(@NotNull BlockPos pos) {
-		return value(pos.getX(), pos.getY(), pos.getZ());
-	}
-	public double value(double x, double y, double z) {
-		return value(Mth.floor(x), Mth.floor(y), Mth.floor(z));
-	}
-
+	@Override
 	public double value(int x, int y, int z) {
 		double sum = 0;
 		for (FieldElement e : this.elements.values()) {
@@ -78,13 +80,7 @@ public class FieldInstance {
 		return sum;
 	}
 
-	public double influenceSum(@NotNull BlockPos pos) {
-		return influenceSum(pos.getX(), pos.getY(), pos.getZ());
-	}
-	public double influenceSum(double x, double y, double z) {
-		return influenceSum(Mth.floor(x), Mth.floor(y), Mth.floor(z));
-	}
-
+	@Override
 	public double influenceSum(int x, int y, int z) {
 		double sum = 0;
 		for (FieldElement e : this.elements.values()) {
@@ -93,13 +89,7 @@ public class FieldInstance {
 		return sum;
 	}
 
-	public boolean hasInfluence(@NotNull BlockPos pos) {
-		return hasInfluence(pos.getX(), pos.getY(), pos.getZ());
-	}
-	public boolean hasInfluence(double x, double y, double z) {
-		return hasInfluence(Mth.floor(x), Mth.floor(y), Mth.floor(z));
-	}
-
+	@Override
 	public boolean hasInfluence(int x, int y, int z) {
 		for (FieldElement e : this.elements.values()) {
 			if (FieldMath.getInfluence(e, x, y, z) > 0) return true;
@@ -107,6 +97,7 @@ public class FieldInstance {
 		return false;
 	}
 
+	@Override
 	public boolean isEmpty() {
 		return this.elements.isEmpty();
 	}
@@ -154,7 +145,7 @@ public class FieldInstance {
 		this.powerChangedInvalidated.clear();
 
 		if (this.field.hasInterference()) {
-			for (FieldElement e : this.elements.values()) {
+			for (ServerFieldElement e : this.elements.values()) {
 				double prevSum = e.influenceSumCache;
 				double newSum = influenceSum(e.pos());
 				if (prevSum == newSum) continue;
@@ -166,7 +157,7 @@ public class FieldInstance {
 		}
 	}
 
-	private void dispatchFieldChanged(@NotNull BlockPos pos, @NotNull FieldElement element, boolean removed) {
+	private void dispatchFieldChanged(@NotNull BlockPos pos, @NotNull ServerFieldElement element, boolean removed) {
 		for (FieldChangedListener l : this.fieldChanged) {
 			if (l.isValid()) l.changed.onFieldChanged(pos, element, removed);
 		}
@@ -181,7 +172,7 @@ public class FieldInstance {
 		}
 	}
 
-	public void setDirty() {
+	void setDirty() {
 		this.dirty = true;
 		if (this.manager != null) {
 			this.manager.setDirty();
@@ -200,14 +191,14 @@ public class FieldInstance {
 		tag.put("elements", list);
 	}
 
-	public FieldInstance(@NotNull Field field, @NotNull CompoundTag tag) {
-		this(field);
+	ServerFieldInstance(@NotNull Field field, @Nullable FieldManager manager, @NotNull CompoundTag tag) {
+		this(field, manager);
 
 		ListTag list = tag.getList("elements", ListTag.TAG_COMPOUND);
 		for (int i = 0; i < list.size(); i++) {
 			CompoundTag tag2 = list.getCompound(i);
 			BlockPos pos = new BlockPos(tag2.getInt("x"), tag2.getInt("y"), tag2.getInt("z"));
-			this.elements.put(pos, new FieldElement(this, pos, tag2));
+			this.elements.put(pos, new ServerFieldElement(this, pos, tag2));
 		}
 	}
 

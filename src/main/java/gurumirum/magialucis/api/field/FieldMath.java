@@ -1,4 +1,4 @@
-package gurumirum.magialucis.impl.field;
+package gurumirum.magialucis.api.field;
 
 import org.jetbrains.annotations.NotNull;
 

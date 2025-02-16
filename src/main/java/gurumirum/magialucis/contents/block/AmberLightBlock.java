@@ -2,9 +2,9 @@ package gurumirum.magialucis.contents.block;
 
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.Wands;
-import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.field.Fields;
+import gurumirum.magialucis.impl.field.ServerFieldInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -67,7 +67,7 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 	protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level,
 	                          @NotNull BlockPos pos, @NotNull RandomSource random) {
 		FieldManager manager = FieldManager.get(level);
-		FieldInstance inst = manager.get(Fields.AMBER_LANTERN);
+		ServerFieldInstance inst = manager.get(Fields.AMBER_LANTERN);
 		if (inst == null || !inst.hasInfluence(pos)) {
 			level.setBlock(pos, state.getValue(WATERLOGGED) ?
 					Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState(), 2);

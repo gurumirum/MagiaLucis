@@ -2,6 +2,8 @@ package gurumirum.magialucis.impl.field;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.field.Field;
+import gurumirum.magialucis.api.field.FieldRegistry;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -28,30 +30,26 @@ public class FieldManager extends SavedData {
 		return level.getDataStorage().computeIfAbsent(FACTORY, NAME);
 	}
 
-	public static @Nullable FieldInstance tryGetField(@Nullable Level level, @NotNull Field field) {
+	public static @Nullable ServerFieldInstance tryGetField(@Nullable Level level, @NotNull Field field) {
 		return tryGetField(level, field, true);
 	}
 
-	public static @Nullable FieldInstance tryGetField(@Nullable Level level, @NotNull Field field, boolean create) {
+	public static @Nullable ServerFieldInstance tryGetField(@Nullable Level level, @NotNull Field field, boolean create) {
 		FieldManager manager = tryGet(level);
 		if (manager == null) return null;
 		return create ? manager.getOrCreate(field) : manager.get(field);
 	}
 
-	private final Map<Field, FieldInstance> fields = new Object2ObjectOpenHashMap<>();
+	private final Map<Field, ServerFieldInstance> fields = new Object2ObjectOpenHashMap<>();
 
 	private FieldManager() {}
 
-	public @Nullable FieldInstance get(Field field) {
+	public @Nullable ServerFieldInstance get(Field field) {
 		return this.fields.get(field);
 	}
 
-	public @NotNull FieldInstance getOrCreate(Field field) {
-		return this.fields.computeIfAbsent(field, f -> {
-			FieldInstance inst = f.createInstance();
-			inst.manager = this;
-			return inst;
-		});
+	public @NotNull ServerFieldInstance getOrCreate(Field field) {
+		return this.fields.computeIfAbsent(field, f -> new ServerFieldInstance(f, this));
 	}
 
 	@Override
@@ -61,7 +59,7 @@ public class FieldManager extends SavedData {
 			if (e.getValue().isEmpty()) continue;
 			CompoundTag tag2 = new CompoundTag();
 			e.getValue().save(tag2);
-			tag2.putString("id", e.getKey().id.toString());
+			tag2.putString("id", e.getKey().id().toString());
 			list.add(tag2);
 		}
 		tag.put("fields", list);
@@ -87,13 +85,11 @@ public class FieldManager extends SavedData {
 				continue;
 			}
 
-			FieldInstance inst = field.createInstance(tag2);
-			inst.manager = this;
-			this.fields.put(field, inst);
+			this.fields.put(field, new ServerFieldInstance(field, this, tag2));
 		}
 	}
 
-	void update() {
-		this.fields.values().forEach(FieldInstance::update);
+	public void update() {
+		this.fields.values().forEach(ServerFieldInstance::update);
 	}
 }

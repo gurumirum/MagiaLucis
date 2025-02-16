@@ -1,12 +1,12 @@
 package gurumirum.magialucis.impl.luxnet.behavior;
 
+import gurumirum.magialucis.api.field.Field;
+import gurumirum.magialucis.api.field.FieldElement;
 import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNode;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
-import gurumirum.magialucis.impl.field.Field;
-import gurumirum.magialucis.impl.field.FieldElement;
-import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldManager;
+import gurumirum.magialucis.impl.field.ServerFieldInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -36,12 +36,12 @@ public abstract class SingleFieldLuxNodeBehavior implements LuxNodeBehavior {
 	}
 
 	protected void registerField(@NotNull FieldManager fieldManager) {
-		FieldInstance inst = fieldManager.getOrCreate(field());
+		ServerFieldInstance inst = fieldManager.getOrCreate(field());
 		this.fieldElement = inst.add(this.pos);
 	}
 
 	protected void unregisterField(@NotNull FieldManager fieldManager) {
-		FieldInstance inst = fieldManager.get(field());
+		ServerFieldInstance inst = fieldManager.get(field());
 		if (inst != null) inst.remove(this.pos);
 		this.fieldElement = null;
 	}

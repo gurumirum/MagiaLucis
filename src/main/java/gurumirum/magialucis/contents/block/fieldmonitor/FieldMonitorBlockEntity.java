@@ -1,10 +1,13 @@
 package gurumirum.magialucis.contents.block.fieldmonitor;
 
+import gurumirum.magialucis.api.field.*;
 import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.DebugTextProvider;
 import gurumirum.magialucis.contents.block.RegisteredBlockEntity;
-import gurumirum.magialucis.impl.field.*;
+import gurumirum.magialucis.impl.field.FieldListener;
+import gurumirum.magialucis.impl.field.FieldManager;
+import gurumirum.magialucis.impl.field.ServerFieldInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
@@ -56,7 +59,7 @@ public class FieldMonitorBlockEntity extends RegisteredBlockEntity implements De
 		Field f = FieldRegistry.fields().get(this.fieldId);
 		if (f == null) return;
 
-		FieldInstance inst = FieldManager.tryGetField(this.level, f);
+		ServerFieldInstance inst = FieldManager.tryGetField(this.level, f);
 		if (inst == null) return;
 
 		this.listener = inst.listener().fieldChanged((pos, element, removed) -> {
@@ -70,7 +73,7 @@ public class FieldMonitorBlockEntity extends RegisteredBlockEntity implements De
 		this.listener.invalidate();
 	}
 
-	private void update(FieldInstance fieldInstance) {
+	private void update(ServerFieldInstance fieldInstance) {
 		double newInfluenceSum = fieldInstance.influenceSum(getBlockPos());
 		if (this.influenceSum != newInfluenceSum) {
 			this.influenceSum = newInfluenceSum;

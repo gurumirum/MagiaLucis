@@ -6,11 +6,10 @@ import gurumirum.magialucis.contents.ModBlockEntities;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.impl.ServerTickQueue;
-import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldListener;
 import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.field.Fields;
-import gurumirum.magialucis.impl.luxnet.LuxUtils;
+import gurumirum.magialucis.impl.field.ServerFieldInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -49,7 +48,7 @@ public class AmberCoreBlockEntity extends LuxNodeBlockEntity<AmberCoreBehavior> 
 
 		super.onRegister(serverLevel);
 
-		FieldInstance inst = FieldManager.get(serverLevel).getOrCreate(Fields.AMBER_CORE);
+		ServerFieldInstance inst = FieldManager.get(serverLevel).getOrCreate(Fields.AMBER_CORE);
 		this.listener = inst.listener()
 				.powerChanged(getBlockPos(), power -> {
 					ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);

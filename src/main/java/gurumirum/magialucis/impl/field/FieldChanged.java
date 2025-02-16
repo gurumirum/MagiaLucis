@@ -5,5 +5,5 @@ import org.jetbrains.annotations.NotNull;
 
 @FunctionalInterface
 public interface FieldChanged {
-	void onFieldChanged(@NotNull BlockPos pos, @NotNull FieldElement element, boolean removed);
+	void onFieldChanged(@NotNull BlockPos pos, @NotNull ServerFieldElement element, boolean removed);
 }

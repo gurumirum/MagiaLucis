@@ -2,12 +2,12 @@ package gurumirum.magialucis.impl;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.field.Field;
+import gurumirum.magialucis.api.field.FieldRegistry;
 import gurumirum.magialucis.api.luxnet.LinkInfo;
 import gurumirum.magialucis.api.luxnet.LuxNodeInterface;
-import gurumirum.magialucis.impl.field.Field;
-import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldManager;
-import gurumirum.magialucis.impl.field.FieldRegistry;
+import gurumirum.magialucis.impl.field.ServerFieldInstance;
 import gurumirum.magialucis.impl.luxnet.ServerLuxNet;
 import gurumirum.magialucis.impl.luxnet.ServerLuxNode;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -278,7 +278,7 @@ public final class ModCommands {
 		}
 
 		FieldManager manager = FieldManager.get(level);
-		FieldInstance fieldInstance = manager.get(field);
+		ServerFieldInstance fieldInstance = manager.get(field);
 		if (fieldInstance == null) {
 			source.sendSuccess(() -> Component.literal("Field " + fieldId + ": not initialized"), false);
 		} else {

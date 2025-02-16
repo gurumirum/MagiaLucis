@@ -1,9 +1,9 @@
 package gurumirum.magialucis.contents.block;
 
 import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldManager;
 import gurumirum.magialucis.impl.field.Fields;
+import gurumirum.magialucis.impl.field.ServerFieldInstance;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
@@ -115,7 +115,7 @@ public class AmberLanternBlock extends BaseLanternBlock.Stateless implements Ent
 	@Override
 	protected void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
 	                        @NotNull BlockState newState, boolean movedByPiston) {
-		FieldInstance inst = FieldManager.tryGetField(level, Fields.AMBER_LANTERN, false);
+		ServerFieldInstance inst = FieldManager.tryGetField(level, Fields.AMBER_LANTERN, false);
 		if (inst == null) return;
 		inst.remove(pos);
 	}

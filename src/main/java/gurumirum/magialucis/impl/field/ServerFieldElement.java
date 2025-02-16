@@ -1,5 +1,7 @@
 package gurumirum.magialucis.impl.field;
 
+import gurumirum.magialucis.api.field.Field;
+import gurumirum.magialucis.api.field.FieldElement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -7,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public final class FieldElement {
-	private final FieldInstance fieldInstance;
+public final class ServerFieldElement implements FieldElement {
+	private final ServerFieldInstance fieldInstance;
 	private final BlockPos pos;
 
 	private double range;
@@ -19,7 +21,7 @@ public final class FieldElement {
 
 	double influenceSumCache = 0;
 
-	FieldElement(@NotNull FieldInstance fieldInstance, @NotNull BlockPos pos) {
+	public ServerFieldElement(@NotNull ServerFieldInstance fieldInstance, @NotNull BlockPos pos) {
 		this.fieldInstance = Objects.requireNonNull(fieldInstance);
 		this.pos = Objects.requireNonNull(pos);
 
@@ -29,41 +31,47 @@ public final class FieldElement {
 		this.diminishPower = f.forceDiminishPower();
 	}
 
-	public @NotNull FieldInstance fieldInstance() {
+	@Override
+	public @NotNull ServerFieldInstance fieldInstance() {
 		return this.fieldInstance;
 	}
 
+	@Override
 	public @NotNull BlockPos pos() {
 		return this.pos;
 	}
 
+	@Override
 	public double range() {
 		return this.range;
 	}
 
+	@Override
 	public double rangeSq() {
 		return this.rangeSq;
 	}
 
+	@Override
 	public double diminishPower() {
 		return this.diminishPower;
 	}
 
+	@Override
 	public double power() {
 		return this.power;
 	}
 
-	public FieldElement setRange(double range) {
+	@Override
+	public void setRange(double range) {
 		this.range = range;
 		this.rangeSq = range * range;
 		this.fieldInstance.setDirty();
-		return this;
 	}
 
-	public FieldElement setDiminishPower(double diminishPower) {
+	@Override
+	public void setDiminishPower(double diminishPower) {
 		this.diminishPower = diminishPower;
 		this.fieldInstance.setDirty();
-		return this;
 	}
 
 	void setPower(double power) {
@@ -76,7 +84,7 @@ public final class FieldElement {
 		if (this.diminishPower != f.forceDiminishPower()) tag.putDouble("diminishPower", this.diminishPower);
 	}
 
-	public FieldElement(@NotNull FieldInstance fieldInstance, @NotNull BlockPos pos, @NotNull CompoundTag tag) {
+	public ServerFieldElement(@NotNull ServerFieldInstance fieldInstance, @NotNull BlockPos pos, @NotNull CompoundTag tag) {
 		this(fieldInstance, pos);
 
 		if (tag.contains("range", Tag.TAG_DOUBLE)) {

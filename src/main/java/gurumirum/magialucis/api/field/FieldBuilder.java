@@ -1,4 +1,4 @@
-package gurumirum.magialucis.impl.field;
+package gurumirum.magialucis.api.field;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;

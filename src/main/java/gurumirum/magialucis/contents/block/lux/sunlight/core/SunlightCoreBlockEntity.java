@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import gurumirum.magialucis.contents.ModBlockEntities;
-import gurumirum.magialucis.impl.field.Field;
+import gurumirum.magialucis.api.field.Field;
 import gurumirum.magialucis.impl.field.Fields;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;

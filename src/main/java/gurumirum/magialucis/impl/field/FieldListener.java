@@ -16,14 +16,14 @@ public final class FieldListener {
 		return invalid;
 	}
 
-	private @Nullable FieldInstance fieldInstance;
+	private @Nullable ServerFieldInstance fieldInstance;
 
 	private boolean fieldChanged;
 	private @Nullable Set<BlockPos> powerChanged;
 
 	private FieldListener() {}
 
-	FieldListener(@NotNull FieldInstance fieldInstance) {
+	public FieldListener(@NotNull ServerFieldInstance fieldInstance) {
 		this.fieldInstance = Objects.requireNonNull(fieldInstance);
 	}
 
@@ -53,7 +53,7 @@ public final class FieldListener {
 		return this;
 	}
 
-	private @NotNull FieldInstance checkFieldInstance() {
+	private @NotNull ServerFieldInstance checkFieldInstance() {
 		if (this.fieldInstance == null) {
 			throw new IllegalStateException("Invalid listener");
 		}

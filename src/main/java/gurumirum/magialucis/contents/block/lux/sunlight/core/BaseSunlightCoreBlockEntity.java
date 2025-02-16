@@ -1,6 +1,8 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
+import gurumirum.magialucis.api.Orientation;
 import gurumirum.magialucis.api.capability.LinkDestination;
+import gurumirum.magialucis.api.field.Field;
 import gurumirum.magialucis.api.luxnet.LinkContext;
 import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
@@ -10,12 +12,10 @@ import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlockEntity;
 import gurumirum.magialucis.impl.ServerTickQueue;
-import gurumirum.magialucis.impl.field.Field;
-import gurumirum.magialucis.impl.field.FieldInstance;
 import gurumirum.magialucis.impl.field.FieldListener;
 import gurumirum.magialucis.impl.field.FieldManager;
+import gurumirum.magialucis.impl.field.ServerFieldInstance;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
-import gurumirum.magialucis.api.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -72,7 +72,7 @@ public abstract class BaseSunlightCoreBlockEntity<B extends BaseSunlightCoreNode
 		Field field = field();
 		if (field == null) return;
 
-		FieldInstance inst = FieldManager.get(serverLevel).getOrCreate(field);
+		ServerFieldInstance inst = FieldManager.get(serverLevel).getOrCreate(field);
 		this.listener = inst.listener()
 				.powerChanged(getBlockPos(), power -> {
 					ServerTickQueue.tryEnqueue(this.level, this::updateOversaturatedProperty);

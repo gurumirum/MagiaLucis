@@ -23,9 +23,8 @@ import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlock;
 import gurumirum.magialucis.contents.block.lux.sunlight.focus.SunlightFocusBlock;
 import gurumirum.magialucis.contents.profile.BlockProfile;
-import gurumirum.magialucis.impl.RGB332;
-import gurumirum.magialucis.impl.field.Field;
-import gurumirum.magialucis.impl.field.FieldRegistry;
+import gurumirum.magialucis.api.field.Field;
+import gurumirum.magialucis.api.field.FieldRegistry;
 import gurumirum.magialucis.utils.BlockProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -181,7 +180,7 @@ public enum ModBlocks implements ItemLike, BlockProvider {
 			case FIELD_MONITOR -> {
 				for (Field f : FieldRegistry.fields().values()) {
 					ItemStack stack = new ItemStack(this);
-					stack.set(ModDataComponents.FIELD_ID, f.id);
+					stack.set(ModDataComponents.FIELD_ID, f.id());
 					o.accept(stack);
 				}
 			}

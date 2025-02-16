@@ -5,7 +5,7 @@ import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNode;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.contents.LuxNodeTypes;
-import gurumirum.magialucis.impl.field.Field;
+import gurumirum.magialucis.api.field.Field;
 import gurumirum.magialucis.impl.field.Fields;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

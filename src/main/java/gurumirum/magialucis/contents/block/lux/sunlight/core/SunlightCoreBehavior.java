@@ -2,7 +2,7 @@ package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
 import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.LuxNodeTypes;
-import gurumirum.magialucis.impl.field.Field;
+import gurumirum.magialucis.api.field.Field;
 import gurumirum.magialucis.impl.field.Fields;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import net.minecraft.core.BlockPos;
