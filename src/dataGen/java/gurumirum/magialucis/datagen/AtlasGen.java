@@ -1,10 +1,10 @@
 package gurumirum.magialucis.datagen;
 
 import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.client.Textures;
+import net.minecraft.client.renderer.texture.atlas.sources.DirectoryLister;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.neoforged.neoforge.client.textures.NamespacedDirectoryLister;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SpriteSourceProvider;
 
@@ -18,7 +18,7 @@ public class AtlasGen extends SpriteSourceProvider {
 
 	@Override
 	protected void gather() {
-		atlas(InventoryMenu.BLOCK_ATLAS)
-				.addSource(new NamespacedDirectoryLister(MagiaLucisApi.MODID, "block/matrix", ""));
+		atlas(Textures.AUGMENT_ATLAS_INFO)
+		 		.addSource(new DirectoryLister("effect/magialucis_augments", ""));
 	}
 }

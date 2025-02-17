@@ -1,7 +1,8 @@
 package gurumirum.magialucis.contents;
 
 import com.mojang.serialization.Codec;
-import gurumirum.magialucis.contents.data.Augment;
+import gurumirum.magialucis.api.MagiaLucisRegistries;
+import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.contents.data.GemStat;
 import gurumirum.magialucis.contents.data.SetRemover;
 import net.minecraft.core.Holder;
@@ -31,11 +32,11 @@ import static gurumirum.magialucis.api.MagiaLucisApi.id;
 public final class ModDataMaps {
 	private ModDataMaps() {}
 
-	public static final Codec<Holder<Augment>> AUGMENT_CODEC = RegistryFixedCodec.create(Contents.AUGMENT_REGISTRY_KEY);
+	public static final Codec<Holder<Augment>> AUGMENT_CODEC = RegistryFixedCodec.create(MagiaLucisRegistries.AUGMENT);
 	public static final Codec<HolderSet<Augment>> AUGMENT_SET_CODEC = HolderSetCodec
-			.create(Contents.AUGMENT_REGISTRY_KEY, Codec.lazyInitialized(() -> Contents.augmentRegistry().holderByNameCodec()), false);
-	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Augment>> AUGMENT_STREAM_CODEC = ByteBufCodecs.holderRegistry(Contents.AUGMENT_REGISTRY_KEY);
-	public static final StreamCodec<RegistryFriendlyByteBuf, HolderSet<Augment>> AUGMENT_SET_STREAM_CODEC = ByteBufCodecs.holderSet(Contents.AUGMENT_REGISTRY_KEY);
+			.create(MagiaLucisRegistries.AUGMENT, Codec.lazyInitialized(() -> MagiaLucisRegistries.augmentRegistry().holderByNameCodec()), false);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Augment>> AUGMENT_STREAM_CODEC = ByteBufCodecs.holderRegistry(MagiaLucisRegistries.AUGMENT);
+	public static final StreamCodec<RegistryFriendlyByteBuf, HolderSet<Augment>> AUGMENT_SET_STREAM_CODEC = ByteBufCodecs.holderSet(MagiaLucisRegistries.AUGMENT);
 
 	public static final AdvancedDataMapType<Item, @Unmodifiable Set<Holder<Augment>>, SetRemover<Holder<Augment>>> AUGMENT_SPEC;
 	public static final DataMapType<Item, GemStat> GEM_STAT;

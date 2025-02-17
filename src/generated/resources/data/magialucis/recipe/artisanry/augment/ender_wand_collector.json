@@ -1,0 +1,27 @@
+{
+  "type": "magialucis:artisanry_augment",
+  "augments": [
+    "magialucis:ender_wand_collector"
+  ],
+  "pattern": {
+    "key": {
+      "1": {
+        "count": 0,
+        "ingredient": {
+          "item": "magialucis:inscription_spatial"
+        }
+      },
+      "2": {
+        "item": "minecraft:ender_pearl"
+      },
+      "3": {
+        "item": "magialucis:luminous_resonance_core"
+      }
+    },
+    "pattern": [
+      " 1 ",
+      "2 2",
+      " 3 "
+    ]
+  }
+}

@@ -1,12 +1,11 @@
 package gurumirum.magialucis.contents;
 
-import gurumirum.magialucis.contents.data.Augment;
+import gurumirum.magialucis.api.MagiaLucisRegistries;
+import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
@@ -20,25 +19,17 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
-import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
 public final class Contents {
 	private Contents() {}
-
-	public static final ResourceKey<Registry<Augment>> AUGMENT_REGISTRY_KEY = ResourceKey.createRegistryKey(id("augment"));
-	public static final ResourceKey<Registry<LuxNodeType<?>>> LUX_NODE_TYPE_REGISTRY_KEY = ResourceKey.createRegistryKey(id("lux_node_type"));
 
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 	public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, MODID);
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
-	public static final DeferredRegister<Augment> AUGMENTS = DeferredRegister.create(AUGMENT_REGISTRY_KEY, MODID);
+	public static final DeferredRegister<Augment> AUGMENTS = DeferredRegister.create(MagiaLucisRegistries.AUGMENT, MODID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
@@ -50,23 +41,14 @@ public final class Contents {
 	public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registries.STRUCTURE_PIECE, MODID);
 	public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, MODID);
 
-	public static final DeferredRegister<LuxNodeType<?>> LUX_NODE_TYPES = DeferredRegister.create(LUX_NODE_TYPE_REGISTRY_KEY, MODID);
-
-	private static @Nullable Registry<Augment> augmentRegistry;
-	private static @Nullable Registry<LuxNodeType<?>> luxNodeTypeRegistry;
-
-	public static @NotNull Registry<Augment> augmentRegistry() {
-		return Objects.requireNonNull(augmentRegistry, "Registry not initialized");
-	}
-
-	public static @NotNull Registry<LuxNodeType<?>> luxNodeTypeRegistry() {
-		return Objects.requireNonNull(luxNodeTypeRegistry, "Registry not initialized");
-	}
+	public static final DeferredRegister<LuxNodeType<?>> LUX_NODE_TYPES = DeferredRegister.create(MagiaLucisRegistries.LUX_NODE_TYPE, MODID);
 
 	public static void init(IEventBus eventBus) {
 		eventBus.addListener((NewRegistryEvent event) -> {
-			augmentRegistry = event.create(new RegistryBuilder<>(Contents.AUGMENT_REGISTRY_KEY).sync(true));
-			luxNodeTypeRegistry = event.create(new RegistryBuilder<>(Contents.LUX_NODE_TYPE_REGISTRY_KEY));
+			var augmentRegistry = event.create(new RegistryBuilder<>(MagiaLucisRegistries.AUGMENT).sync(true));
+			var luxNodeTypeRegistry = event.create(new RegistryBuilder<>(MagiaLucisRegistries.LUX_NODE_TYPE));
+
+			MagiaLucisRegistries.init(augmentRegistry, luxNodeTypeRegistry);
 		});
 
 		ITEMS.register(eventBus);

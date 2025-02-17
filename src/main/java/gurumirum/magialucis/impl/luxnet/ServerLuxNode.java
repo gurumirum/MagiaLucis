@@ -2,13 +2,13 @@ package gurumirum.magialucis.impl.luxnet;
 
 import gurumirum.magialucis.MagiaLucisMod;
 import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.MagiaLucisRegistries;
 import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNode;
 import gurumirum.magialucis.api.luxnet.LuxNodeInterface;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
-import gurumirum.magialucis.contents.Contents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -151,7 +151,7 @@ public final class ServerLuxNode implements LuxNode {
 	private static @NotNull LuxNodeBehavior readBehavior(int id, CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ResourceLocation behaviorTypeId = ResourceLocation.tryParse(tag.getString("behaviorType"));
 		if (behaviorTypeId != null) {
-			LuxNodeType<?> type = Contents.luxNodeTypeRegistry().get(behaviorTypeId);
+			LuxNodeType<?> type = MagiaLucisRegistries.luxNodeTypeRegistry().get(behaviorTypeId);
 			if (type != null) {
 				try {
 					CompoundTag tag2 = tag.contains("behavior", Tag.TAG_COMPOUND) ? tag.getCompound("behavior") : null;

@@ -1,7 +1,7 @@
 package gurumirum.magialucis.mixin;
 
+import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.contents.data.Augment;
 import gurumirum.magialucis.contents.data.ItemAugment;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 @Mixin(ItemStack.class)
-public class ItemStackMixin {
+public abstract class ItemStackMixin {
 	@Inject(method = "getTooltipLines",
 			at = @At(shift = At.Shift.AFTER, value = "INVOKE", target = "appendHoverText"),
 			locals = LocalCapture.CAPTURE_FAILSOFT)
@@ -31,10 +31,8 @@ public class ItemStackMixin {
 
 		ItemAugment itemAugment = self.get(ModDataComponents.AUGMENTS);
 		if (itemAugment != null) {
-			for (Holder<Augment> h : itemAugment.set()) {
-				Augment augment = h.value();
-				list.add(augment.name());
-				list.addAll(augment.description());
+			for (Holder<Augment> h : itemAugment) {
+				h.value().appendHoverText(tooltipContext, player, self, list, tooltipFlag);
 			}
 		}
 	}

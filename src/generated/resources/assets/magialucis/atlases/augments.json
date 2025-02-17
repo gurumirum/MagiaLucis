@@ -1,0 +1,9 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:directory",
+      "prefix": "",
+      "source": "effect/magialucis_augments"
+    }
+  ]
+}

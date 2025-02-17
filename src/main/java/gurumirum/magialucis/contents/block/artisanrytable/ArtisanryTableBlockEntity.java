@@ -274,13 +274,13 @@ public class ArtisanryTableBlockEntity extends BlockEntityBase implements Ticker
 		}
 
 		@Override
-		public @NotNull CraftingInput asAugmentInput() {
+		public @NotNull CraftingInput asAugmentInput(boolean includeCenter) {
 			return new CraftingInput(3, 3, new AbstractList<>() {
 				@Override public int size() {
 					return ArtisanryTableInventory.this.size();
 				}
 				@Override public ItemStack get(int i) {
-					return i == 4 ? ItemStack.EMPTY : ArtisanryTableInventory.this.getItem(i);
+					return !includeCenter && i == 4 ? ItemStack.EMPTY : ArtisanryTableInventory.this.getItem(i);
 				}
 			});
 		}

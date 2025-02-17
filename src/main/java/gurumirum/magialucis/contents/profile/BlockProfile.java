@@ -12,8 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static gurumirum.magialucis.contents.profile.ProfileInternals.defaultBlockFactory;
-
 @FunctionalInterface
 public interface BlockProfile<B extends Block, I extends BlockItem> {
 	static BlockProfile<Block, BlockItem> block(@NotNull Properties properties) {
@@ -21,7 +19,7 @@ public interface BlockProfile<B extends Block, I extends BlockItem> {
 	}
 
 	static BlockProfile<Block, BlockItem> block(@NotNull Supplier<Properties> properties) {
-		return customBlock(defaultBlockFactory, properties);
+		return customBlock(ProfileInternals.defaultBlockFactory, properties);
 	}
 
 	static <B extends Block> BlockProfile<B, BlockItem> customBlock(

@@ -5,10 +5,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModDataMaps;
 import gurumirum.magialucis.contents.ModRecipes;
-import gurumirum.magialucis.contents.data.Augment;
 import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.contents.data.ItemAugment;
 import gurumirum.magialucis.contents.recipe.*;
@@ -95,8 +95,11 @@ public class AugmentRecipe implements ArtisanryRecipe {
 			if (itemAugment.has(h)) return LuxRecipeEvaluation.fail();
 		}
 
-		ConsumptionRecord consumptions = CraftingLogic.test(this.pattern, input.asAugmentInput());
+		boolean includeCenter = !this.pattern.inputs().get(4).ingredient().isEmpty();
+		ConsumptionRecord.Mutable consumptions = CraftingLogic.test(this.pattern, input.asAugmentInput(includeCenter));
 		if (consumptions == null) return LuxRecipeEvaluation.fail();
+
+		if (!includeCenter) consumptions.add(4, 1);
 
 		return new LuxRecipeEvaluation(
 				() -> {
@@ -190,7 +193,10 @@ public class AugmentRecipe implements ArtisanryRecipe {
 
 	public static final class Serializer implements RecipeSerializer<AugmentRecipe> {
 		private static final MapCodec<AugmentRecipe> CODEC = RecordCodecBuilder.mapCodec(b -> b.group(
-				ArtisanryRecipe.GRID_UNOPTIMIZED_SPEC.codec().fieldOf("pattern").forGetter(r -> r.pattern),
+				ArtisanryRecipe.GRID_UNOPTIMIZED_SPEC.codec().validate(p -> {
+					if (p.width() == 3 && p.height() == 3) return DataResult.success(p);
+					return DataResult.error(() -> "Augment recipes can only have 3x3 patterns");
+				}).fieldOf("pattern").forGetter(r -> r.pattern),
 				AugmentOp.CODEC.listOf().validate(list -> {
 					Supplier<String> errorMessage = validateAugmentList(list);
 					return errorMessage != null ? DataResult.error(errorMessage) : DataResult.success(list);

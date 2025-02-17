@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents.data;
 
+import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModDataMaps;
 import net.minecraft.core.Holder;

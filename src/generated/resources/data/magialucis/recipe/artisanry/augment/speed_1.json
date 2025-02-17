@@ -1,0 +1,27 @@
+{
+  "type": "magialucis:artisanry_augment",
+  "augments": [
+    "magialucis:speed_1"
+  ],
+  "pattern": {
+    "key": {
+      "1": {
+        "count": 0,
+        "ingredient": {
+          "item": "magialucis:inscription_speed"
+        }
+      },
+      "2": {
+        "tag": "c:gems/citrine"
+      },
+      "3": {
+        "item": "magialucis:luminous_resonance_core"
+      }
+    },
+    "pattern": [
+      " 1 ",
+      "2 2",
+      " 3 "
+    ]
+  }
+}

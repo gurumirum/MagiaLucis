@@ -13,8 +13,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 
 public enum ModItems implements ItemLike {
-	INSCRIPTION_LUX_CAPACITY,
-	INSCRIPTION_IDK,
+	INSCRIPTION_LUX_CAPACITY(ItemProfile.item(p -> p.stacksTo(1))),
+	INSCRIPTION_SPEED(ItemProfile.item(p -> p.stacksTo(1))),
+	INSCRIPTION_CASTING_SPEED(ItemProfile.item(p -> p.stacksTo(1))),
+	INSCRIPTION_CONFIGURATION(ItemProfile.item(p -> p.stacksTo(1))),
+	INSCRIPTION_CONCEALMENT(ItemProfile.item(p -> p.stacksTo(1))),
+	INSCRIPTION_SPATIAL(ItemProfile.item(p -> p.stacksTo(1))),
 
 	ANCIENT_CORE,
 	MECHANICAL_COMPONENT,

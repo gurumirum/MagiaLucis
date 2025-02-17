@@ -1,7 +1,7 @@
 package gurumirum.magialucis.contents.data;
 
+import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.contents.Accessories;
-import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.Wands;
 import gurumirum.magialucis.utils.AugmentProvider;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
+
+import static gurumirum.magialucis.contents.Augments.*;
 
 public final class AugmentSpecGen {
 	private AugmentSpecGen() {}
@@ -29,36 +31,44 @@ public final class AugmentSpecGen {
 		}
 	}
 
-	private static void addWandAugment(List<AugmentProvider> augments, Wands wand) {
-		if (wand.luxContainerStat() != null) {
-			augments.add(Augments.LUX_CAPACITY_1);
-			augments.add(Augments.LUX_CAPACITY_2);
-			augments.add(Augments.LUX_CAPACITY_3);
-		}
+	private static void addWandAugment(Collector c, Wands wand) {
+		if (wand.luxContainerStat() != null) c.add(LUX_CAPACITY_1, LUX_CAPACITY_2, LUX_CAPACITY_3);
 
 		switch (wand) {
-			case ENDER_WAND -> augments.add(Augments.IDK);
+			case ANCIENT_LIGHT -> c.add(SPEED_1);
+			case CONFIGURATION_WAND, RED_CONFIGURATION_WAND, ICY_CONFIGURATION_WAND ->
+					c.add(CONFIGURATION_WAND_DEBUG_VIEW);
+			case AMBER_TORCH -> c.add(AMBER_WAND_INVISIBLE_FLAME);
+			case LESSER_ICE_STAFF -> c.add(CASTING_SPEED_1);
+			case RECALL_STAFF -> c.add(CASTING_SPEED_1, CASTING_SPEED_2);
+			case HEAL_WAND -> c.add(CASTING_SPEED_1, CASTING_SPEED_2);
+			case ENDER_WAND -> c
+					.add(STORAGE_1, STORAGE_2, STORAGE_3)
+					.add(ENDER_WAND_COLLECTOR);
 		}
 	}
 
-	private static void addAccessoryAugment(List<AugmentProvider> augments, Accessories acc) {
-		if (acc.luxContainerStat() != null) {
-			augments.add(Augments.LUX_CAPACITY_1);
-			augments.add(Augments.LUX_CAPACITY_2);
-			augments.add(Augments.LUX_CAPACITY_3);
-		}
+	private static void addAccessoryAugment(Collector c, Accessories acc) {
+		if (acc.luxContainerStat() != null) c.add(LUX_CAPACITY_1, LUX_CAPACITY_2, LUX_CAPACITY_3);
 	}
 
 	private static <T> void collect(T t,
-	                                BiConsumer<List<AugmentProvider>, T> builder,
+	                                BiConsumer<Collector, T> builder,
 	                                BiConsumer<Set<Holder<Augment>>, T> register) {
-		List<AugmentProvider> list = new ArrayList<>();
-		builder.accept(list, t);
-		if (list.isEmpty()) return;
+		Collector collector = new Collector(new ArrayList<>());
+		builder.accept(collector, t);
+		if (collector.augments.isEmpty()) return;
 
 		ObjectLinkedOpenHashSet<Holder<Augment>> set = new ObjectLinkedOpenHashSet<>();
-		for (AugmentProvider p : list) set.add(p.augment());
+		for (AugmentProvider p : collector.augments) set.add(p.augment());
 
 		register.accept(set, t);
+	}
+
+	private record Collector(List<AugmentProvider> augments) {
+		public Collector add(AugmentProvider... augments) {
+			this.augments.addAll(List.of(augments));
+			return this;
+		}
 	}
 }

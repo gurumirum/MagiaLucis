@@ -1,0 +1,21 @@
+{
+  "type": "magialucis:artisanry_augment",
+  "augments": [
+    "magialucis:amber_wand_invisible_flame"
+  ],
+  "pattern": {
+    "key": {
+      "1": {
+        "count": 0,
+        "ingredient": {
+          "item": "magialucis:inscription_concealment"
+        }
+      }
+    },
+    "pattern": [
+      " 1 ",
+      "   ",
+      "   "
+    ]
+  }
+}

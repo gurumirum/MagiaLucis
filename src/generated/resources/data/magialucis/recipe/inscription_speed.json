@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "magialucis:brightstones"
+    },
+    "2": {
+      "tag": "c:ingots/luminous_alloy"
+    },
+    "3": {
+      "tag": "c:gems/citrine"
+    }
+  },
+  "pattern": [
+    "121",
+    "131",
+    "121"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:inscription_speed"
+  }
+}

@@ -63,10 +63,10 @@ public final class CraftingLogic {
 				stack.is(ModBlocks.CONNECTOR.asItem());
 	}
 
-	public static @Nullable ConsumptionRecord test(InputPattern<IngredientStack> pattern, CraftingInput input) {
+	public static @Nullable ConsumptionRecord.Mutable test(InputPattern<IngredientStack> pattern, CraftingInput input) {
 		if (input.width() == pattern.width() && input.height() == pattern.height()) {
 			if (!pattern.symmetrical()) {
-				ConsumptionRecord r = test(pattern, input, true);
+				ConsumptionRecord.Mutable r = test(pattern, input, true);
 				if (r != null) return r;
 			}
 
@@ -76,7 +76,7 @@ public final class CraftingLogic {
 		return null;
 	}
 
-	private static @Nullable ConsumptionRecord test(InputPattern<IngredientStack> pattern, CraftingInput input,
+	private static @Nullable ConsumptionRecord.Mutable test(InputPattern<IngredientStack> pattern, CraftingInput input,
 	                                                boolean mirrored) {
 		for (int y = 0; y < pattern.height(); y++) {
 			for (int x = 0; x < pattern.width(); x++) {
@@ -89,16 +89,16 @@ public final class CraftingLogic {
 			}
 		}
 
-		ConsumptionRecord.Mutable consumptionRecord = new ConsumptionRecord.Mutable();
+		ConsumptionRecord.Mutable consumptions = new ConsumptionRecord.Mutable();
 
 		for (int y = 0; y < pattern.height(); y++) {
 			for (int x = 0; x < pattern.width(); x++) {
 				IngredientStack ingredient = pattern.get(x, y, mirrored);
 
-				consumptionRecord.add(pattern.getIndex(x, y, mirrored), ingredient.count());
+				consumptions.add(pattern.getIndex(x, y, mirrored), ingredient.count());
 			}
 		}
 
-		return consumptionRecord;
+		return consumptions;
 	}
 }

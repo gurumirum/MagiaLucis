@@ -2,7 +2,7 @@ package gurumirum.magialucis.datagen.builder;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import gurumirum.magialucis.contents.data.Augment;
+import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.contents.recipe.IngredientStack;
 import gurumirum.magialucis.contents.recipe.artisanry.ArtisanryRecipe;
 import gurumirum.magialucis.contents.recipe.artisanry.AugmentRecipe;

@@ -185,6 +185,13 @@ public class ItemModelGen extends ItemModelProvider {
 				.predicate(ClientInit.NO_CHARGE, 1)
 				.model(noChargeItem(Accessories.SHIELD_NECKLACE.asItem()));
 
+		basicItem(ModItems.INSCRIPTION_LUX_CAPACITY.asItem());
+		basicItem(ModItems.INSCRIPTION_SPEED.asItem());
+		basicItem(ModItems.INSCRIPTION_CASTING_SPEED.asItem());
+		basicItem(ModItems.INSCRIPTION_CONFIGURATION.asItem());
+		basicItem(ModItems.INSCRIPTION_CONCEALMENT.asItem());
+		basicItem(ModItems.INSCRIPTION_SPATIAL.asItem());
+
 		basicItem(ModItems.ANCIENT_CORE.asItem());
 		basicItem(ModItems.LUMINOUS_RESONATOR.asItem());
 		basicItem(ModItems.LUMINOUS_RESONANCE_CORE.asItem());

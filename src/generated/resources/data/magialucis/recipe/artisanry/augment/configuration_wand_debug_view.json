@@ -1,14 +1,14 @@
 {
   "type": "magialucis:artisanry_augment",
   "augments": [
-    "magialucis:idk"
+    "magialucis:configuration_wand_debug_view"
   ],
   "pattern": {
     "key": {
       "1": {
         "count": 0,
         "ingredient": {
-          "item": "magialucis:inscription_idk"
+          "item": "magialucis:inscription_configuration"
         }
       }
     },

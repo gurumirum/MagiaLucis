@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "magialucis:brightstones"
+    },
+    "2": {
+      "tag": "c:ingots/luminous_alloy"
+    }
+  },
+  "pattern": [
+    "111",
+    "121",
+    "111"
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:inscription_configuration"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "magialucis:artisanry_augment",
+  "augments": [
+    "magialucis:casting_speed_1"
+  ],
+  "pattern": {
+    "key": {
+      "1": {
+        "count": 0,
+        "ingredient": {
+          "item": "magialucis:inscription_casting_speed"
+        }
+      },
+      "2": {
+        "tag": "c:gems/aquamarine"
+      },
+      "3": {
+        "item": "magialucis:luminous_resonance_core"
+      }
+    },
+    "pattern": [
+      " 1 ",
+      "2 2",
+      " 3 "
+    ]
+  }
+}

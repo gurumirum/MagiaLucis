@@ -3,7 +3,6 @@ package gurumirum.magialucis.datagen.recipe;
 import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModItemTags;
-import gurumirum.magialucis.contents.ModItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
@@ -109,11 +108,53 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.save(out, "lux_capacity_3");
 
 		augment()
-				.addAugment(IDK)
+				.addAugment(CONFIGURATION_WAND_DEBUG_VIEW)
 				.pattern(" 1 ")
 				.pattern("   ")
 				.pattern("   ")
-				.define('1', ModItems.INSCRIPTION_IDK, 0)
+				.define('1', INSCRIPTION_CONFIGURATION, 0)
+				.processTicks(0)
+				.save(out);
+
+		augment()
+				.addAugment(AMBER_WAND_INVISIBLE_FLAME)
+				.pattern(" 1 ")
+				.pattern("   ")
+				.pattern("   ")
+				.define('1', INSCRIPTION_CONCEALMENT, 0)
+				.processTicks(0)
+				.save(out);
+
+		augment()
+				.addAugment(SPEED_1)
+				.pattern(" 1 ")
+				.pattern("2 2")
+				.pattern(" 3 ")
+				.define('1', INSCRIPTION_SPEED, 0)
+				.define('2', gem(Gem.CITRINE))
+				.define('3', LUMINOUS_RESONANCE_CORE)
+				.processTicks(0)
+				.save(out);
+
+		augment()
+				.addAugment(CASTING_SPEED_1)
+				.pattern(" 1 ")
+				.pattern("2 2")
+				.pattern(" 3 ")
+				.define('1', INSCRIPTION_CASTING_SPEED, 0)
+				.define('2', gem(Gem.AQUAMARINE))
+				.define('3', LUMINOUS_RESONANCE_CORE)
+				.processTicks(0)
+				.save(out);
+
+		augment()
+				.addAugment(ENDER_WAND_COLLECTOR)
+				.pattern(" 1 ")
+				.pattern("2 2")
+				.pattern(" 3 ")
+				.define('1', INSCRIPTION_SPATIAL, 0)
+				.define('2', gem(Gem.ENDER_PEARL))
+				.define('3', LUMINOUS_RESONANCE_CORE)
 				.processTicks(0)
 				.save(out);
 	}

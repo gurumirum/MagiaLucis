@@ -25,6 +25,64 @@ import static net.minecraft.data.recipes.SpecialRecipeBuilder.special;
 
 public abstract class CraftingRecipes extends SharedRecipeLogic {
 	public static void add(@NotNull RecipeOutput out) {
+		shaped(MISC, INSCRIPTION_LUX_CAPACITY)
+				.pattern("121")
+				.pattern("111")
+				.pattern("121")
+				.define('1', gem(Gem.BRIGHTSTONE))
+				.define('2', ModItemTags.LUMINOUS_ALLOY_INGOTS)
+				.unlockedBy("has_luminous_alloy", has(ModItemTags.LUMINOUS_ALLOY_INGOTS))
+				.save(out);
+
+		shaped(MISC, INSCRIPTION_SPEED)
+				.pattern("121")
+				.pattern("131")
+				.pattern("121")
+				.define('1', gem(Gem.BRIGHTSTONE))
+				.define('2', ModItemTags.LUMINOUS_ALLOY_INGOTS)
+				.define('3', gem(Gem.CITRINE))
+				.unlockedBy("has_luminous_alloy", has(ModItemTags.LUMINOUS_ALLOY_INGOTS))
+				.save(out);
+
+		shaped(MISC, INSCRIPTION_CASTING_SPEED)
+				.pattern("121")
+				.pattern("131")
+				.pattern("121")
+				.define('1', gem(Gem.BRIGHTSTONE))
+				.define('2', ModItemTags.LUMINOUS_ALLOY_INGOTS)
+				.define('3', gem(Gem.AQUAMARINE))
+				.unlockedBy("has_luminous_alloy", has(ModItemTags.LUMINOUS_ALLOY_INGOTS))
+				.save(out);
+
+		shaped(MISC, INSCRIPTION_CONFIGURATION)
+				.pattern("111")
+				.pattern("121")
+				.pattern("111")
+				.define('1', gem(Gem.BRIGHTSTONE))
+				.define('2', ModItemTags.LUMINOUS_ALLOY_INGOTS)
+				.unlockedBy("has_luminous_alloy", has(ModItemTags.LUMINOUS_ALLOY_INGOTS))
+				.save(out);
+
+		shaped(MISC, INSCRIPTION_CONCEALMENT)
+				.pattern("121")
+				.pattern("131")
+				.pattern("121")
+				.define('1', gem(Gem.BRIGHTSTONE))
+				.define('2', ModItemTags.LUMINOUS_ALLOY_INGOTS)
+				.define('3', gem(Gem.IOLITE))
+				.unlockedBy("has_luminous_alloy", has(ModItemTags.LUMINOUS_ALLOY_INGOTS))
+				.save(out);
+
+		shaped(MISC, INSCRIPTION_SPATIAL)
+				.pattern("121")
+				.pattern("131")
+				.pattern("121")
+				.define('1', gem(Gem.BRIGHTSTONE))
+				.define('2', ModItemTags.LUMINOUS_ALLOY_INGOTS)
+				.define('3', gem(Gem.ENDER_PEARL))
+				.unlockedBy("has_luminous_alloy", has(ModItemTags.LUMINOUS_ALLOY_INGOTS))
+				.save(out);
+
 		shaped(MISC, LUMINOUS_RESONATOR)
 				.pattern(" 12")
 				.pattern("131")

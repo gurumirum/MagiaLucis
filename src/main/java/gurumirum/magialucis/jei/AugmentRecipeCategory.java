@@ -1,10 +1,10 @@
 package gurumirum.magialucis.jei;
 
 import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModDataMaps;
-import gurumirum.magialucis.contents.data.Augment;
 import gurumirum.magialucis.contents.data.ItemAugment;
 import gurumirum.magialucis.contents.recipe.artisanry.AugmentRecipe;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;

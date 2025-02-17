@@ -13,9 +13,6 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static gurumirum.magialucis.contents.profile.ProfileInternals.defaultBlockItemFactory;
-import static gurumirum.magialucis.contents.profile.ProfileInternals.defaultItemFactory;
-
 @FunctionalInterface
 public interface ItemProfile<I extends Item> {
 	ItemProfile<Item> DEFAULT = item(null);
@@ -25,7 +22,7 @@ public interface ItemProfile<I extends Item> {
 	}
 
 	static ItemProfile<Item> item(@Nullable Consumer<Item.Properties> properties) {
-		return customItem(defaultItemFactory, properties);
+		return customItem(ProfileInternals.defaultItemFactory, properties);
 	}
 
 	static <I extends Item> ItemProfile<I> customItem(@NotNull Function<Item.Properties, I> itemFactory) {
@@ -49,9 +46,7 @@ public interface ItemProfile<I extends Item> {
 			@NotNull DeferredBlock<B> deferredBlock,
 			@Nullable Consumer<Item.Properties> properties
 	) {
-		return customBlockItem(deferredBlock,
-				defaultBlockItemFactory,
-				properties);
+		return customBlockItem(deferredBlock, ProfileInternals.defaultBlockItemFactory, properties);
 	}
 
 	static <B extends Block, I extends BlockItem> ItemProfile<I> customBlockItem(

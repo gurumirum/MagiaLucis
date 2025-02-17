@@ -8,11 +8,11 @@ import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableScreen;
 import gurumirum.magialucis.contents.block.lux.BasicRelayBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.charger.ChargerBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.connector.ConnectorBlockEntityRenderer;
-import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightbasin.LightBasinBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.block.lux.relay.RelayBlockEntityRenderer;
+import gurumirum.magialucis.contents.block.lux.splitter.SplitterBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreBlockEntityRenderer;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.MoonlightCoreItemExtension;
 import gurumirum.magialucis.contents.block.lux.sunlight.core.SunlightCoreBlockEntityRenderer;
@@ -36,10 +36,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 import java.util.Arrays;
@@ -169,6 +166,11 @@ public final class ClientInit {
 	@SubscribeEvent
 	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
 		event.registerSpriteSet(ModParticles.LIGHT.get(), LightParticle.Provider::new);
+	}
+
+	@SubscribeEvent
+	public static void registerMaterialAtlases(RegisterMaterialAtlasesEvent event) {
+		event.register(Textures.AUGMENT_ATLAS, Textures.AUGMENT_ATLAS_INFO);
 	}
 
 	@SuppressWarnings("deprecation")

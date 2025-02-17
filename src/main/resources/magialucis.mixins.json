@@ -4,5 +4,8 @@
     "AbstractContainerMenuInvoker",
     "ItemStackMixin",
     "PlayerMixin"
+  ],
+  "client": [
+    "GuiGraphicsMixin"
   ]
 }

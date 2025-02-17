@@ -9,5 +9,5 @@ public interface ArtisanryRecipeInput extends RecipeInput {
 	@NotNull ItemStack getCenterStack();
 
 	@NotNull CraftingInput asCraftingInput();
-	@NotNull CraftingInput asAugmentInput();
+	@NotNull CraftingInput asAugmentInput(boolean includeCenter);
 }
