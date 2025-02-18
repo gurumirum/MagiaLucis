@@ -159,12 +159,16 @@ public class AugmentRecipeBuilder extends ModRecipeBuilder<AugmentRecipe> {
 
 	@Override
 	protected @Nullable ResourceLocation defaultRecipeId() {
-		if (this.augments.size() == 1) {
-			AugmentRecipe.AugmentOp op = this.augments.getFirst();
-			if (!op.remove() && !op.optional())
-				return Objects.requireNonNull(op.augment().getKey()).location().withPrefix(defaultRecipePrefix());
+		AugmentRecipe.AugmentOp augmentAdded = null;
+		for (AugmentRecipe.AugmentOp augment : this.augments) {
+			if (!augment.optional() && !augment.remove()) {
+				if (augmentAdded != null) return null;
+				augmentAdded = augment;
+			}
 		}
-		return null;
+		return augmentAdded != null ?
+				Objects.requireNonNull(augmentAdded.augment().getKey()).location().withPrefix(defaultRecipePrefix()) :
+				null;
 	}
 
 	@Override

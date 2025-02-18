@@ -3,7 +3,7 @@ package gurumirum.magialucis.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import gurumirum.magialucis.client.RotationLogic;
-import gurumirum.magialucis.contents.item.WandEffectSource;
+import gurumirum.magialucis.api.item.WandEffectSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;

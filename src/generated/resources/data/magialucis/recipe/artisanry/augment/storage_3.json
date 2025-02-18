@@ -1,7 +1,11 @@
 {
   "type": "magialucis:artisanry_augment",
   "augments": [
-    "magialucis:ender_wand_collector"
+    "magialucis:storage_3",
+    {
+      "augment": "magialucis:storage_2",
+      "remove": true
+    }
   ],
   "pattern": {
     "key": {
@@ -15,16 +19,20 @@
         }
       },
       "2": {
-        "item": "minecraft:ender_pearl"
+        "item": "minecraft:ender_eye"
       },
       "3": {
         "item": "magialucis:luminous_resonance_core"
+      },
+      "4": {
+        "item": "magialucis:obsidian"
       }
     },
     "pattern": [
-      " 1 ",
+      "414",
       "2#2",
-      " 3 "
+      "434"
     ]
-  }
+  },
+  "precursor": "magialucis:storage_2"
 }

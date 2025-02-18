@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class SimpleAugment implements Augment {
 	protected final int descriptionCount;
@@ -61,16 +60,13 @@ public class SimpleAugment implements Augment {
 
 	protected @NotNull List<Component> createDescription(@Nullable ResourceLocation key) {
 		if (key == null) return List.of();
-		return Stream.concat(
-				Stream.of(name().copy().withStyle(ChatFormatting.YELLOW)),
-				IntStream.range(0, this.descriptionCount).mapToObj(i ->
-						Component.translatable("magialucis.augment.tooltip",
-								Component.translatable("magialucis.augment." +
-										key.getNamespace() + "." + key.getPath().replace('/', '.') +
-										".description." + i
-								)
-						).withStyle(ChatFormatting.YELLOW)
-				)
+		return IntStream.range(0, this.descriptionCount).mapToObj(i ->
+				Component.translatable("magialucis.augment.tooltip",
+						Component.translatable("magialucis.augment." +
+								key.getNamespace() + "." + key.getPath().replace('/', '.') +
+								".description." + i
+						)
+				).withStyle(ChatFormatting.YELLOW)
 		).collect(Collectors.toList());
 	}
 

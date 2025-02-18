@@ -1,6 +1,9 @@
 package gurumirum.magialucis.contents.item.wand;
 
+import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.data.AugmentLogic;
+import gurumirum.magialucis.contents.data.ItemAugment;
 import gurumirum.magialucis.contents.entity.EnderChestPortal;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
 import net.minecraft.server.level.ServerLevel;
@@ -55,6 +58,12 @@ public class EnderChestPortalWandItem extends LuxContainerItem {
 		portal.setDeltaMovement(look);
 		portal.setOwnerUuid(player.getUUID());
 		portal.setLife(60);
+
+		ItemAugment augments = AugmentLogic.getAugments(stack);
+		if (augments.has(Augments.STORAGE_3)) portal.setStorageTier(EnderChestPortal.StorageTier.T3);
+		else if (augments.has(Augments.STORAGE_2)) portal.setStorageTier(EnderChestPortal.StorageTier.T2);
+		else if (augments.has(Augments.STORAGE_1)) portal.setStorageTier(EnderChestPortal.StorageTier.T1);
+		else portal.setStorageTier(EnderChestPortal.StorageTier.T0);
 
 		if (portalId != null && serverLevel.getEntity(portalId) instanceof EnderChestPortal prevPortal) {
 			prevPortal.kill();

@@ -4,7 +4,7 @@ import gurumirum.magialucis.client.render.WandEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModMobEffects;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
-import gurumirum.magialucis.contents.item.WandEffectSource;
+import gurumirum.magialucis.api.item.WandEffectSource;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

@@ -2,8 +2,8 @@ package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.render.WandEffect;
 import gurumirum.magialucis.client.render.beam.BeamRender;
-import gurumirum.magialucis.contents.item.BeamSource;
-import gurumirum.magialucis.contents.item.WandEffectSource;
+import gurumirum.magialucis.api.item.BeamSource;
+import gurumirum.magialucis.api.item.WandEffectSource;
 import gurumirum.magialucis.impl.ancientlight.AncientLightCrafting;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.world.InteractionHand;

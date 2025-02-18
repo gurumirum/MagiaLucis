@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import gurumirum.magialucis.client.render.beam.BeamRender;
 import gurumirum.magialucis.client.render.beam.PlayerBeamEffect;
-import gurumirum.magialucis.contents.item.BeamSource;
+import gurumirum.magialucis.api.item.BeamSource;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;

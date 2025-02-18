@@ -1,23 +1,23 @@
 package gurumirum.magialucis.contents.entity;
 
+import gurumirum.magialucis.contents.ModDataAttachments;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModEntities;
 import gurumirum.magialucis.contents.Wands;
+import gurumirum.magialucis.contents.data.EnderPortalStorage;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.PlayerEnderChestContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -27,9 +27,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.UUID;
 
-public class EnderChestPortal extends Entity {
+public class EnderChestPortal extends Entity implements MenuProvider {
 	private @Nullable UUID owner;
 	private int life;
+	private StorageTier storageTier = StorageTier.T0;
 
 	public EnderChestPortal(EntityType<? extends EnderChestPortal> type, Level level) {
 		super(type, level);
@@ -51,6 +52,14 @@ public class EnderChestPortal extends Entity {
 		this.life = life;
 	}
 
+	public StorageTier storageTier() {
+		return this.storageTier;
+	}
+
+	public void setStorageTier(StorageTier storageTier) {
+		this.storageTier = storageTier;
+	}
+
 	@Override
 	public @NotNull InteractionResult interact(@NotNull Player player, @NotNull InteractionHand hand) {
 		if (player.isSecondaryUseActive()) return InteractionResult.PASS;
@@ -63,36 +72,7 @@ public class EnderChestPortal extends Entity {
 		Player ownerPlayer = level.getPlayerByUUID(this.owner);
 		if (ownerPlayer == null) return InteractionResult.FAIL;
 
-		PlayerEnderChestContainer container = ownerPlayer.getEnderChestInventory();
-
-		Vec3 pos = this.position();
-		Vec3 playerDirection = ownerPlayer.position().subtract(pos).normalize().scale(0.5);
-		UUID portalId = this.getUUID();
-
-		player.openMenu(new SimpleMenuProvider(
-				(id, inventory, p) -> new ChestMenu(MenuType.GENERIC_9x3, id, inventory, container, 3) {
-					@Override
-					public boolean stillValid(@NotNull Player player) {
-						return EnderChestPortal.this.isAlive();
-					}
-
-					@Override
-					public void removed(@NotNull Player player) {
-						for (int i = 0; i < container.getItems().size(); i++) {
-							ItemStack stack = container.getItem(i);
-							if (stack.is(Wands.ENDER_WAND.asItem()) &&
-									Objects.equals(stack.get(ModDataComponents.PORTAL_UUID), portalId)) {
-
-								ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, stack);
-								itemEntity.setDeltaMovement(playerDirection);
-								if (level.addFreshEntity(itemEntity)) {
-									container.setItem(i, ItemStack.EMPTY);
-								}
-							}
-						}
-					}
-				},
-				Component.translatable("container.enderchest")));
+		player.openMenu(this);
 
 		return InteractionResult.CONSUME;
 	}
@@ -126,17 +106,104 @@ public class EnderChestPortal extends Entity {
 	protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
-		if (compound.contains("owner")) this.owner = compound.getUUID("owner");
+	protected void readAdditionalSaveData(CompoundTag tag) {
+		if (tag.contains("owner")) this.owner = tag.getUUID("owner");
+		this.storageTier = StorageTier.values()[Math.clamp(tag.getByte("storageTier"), 0, 3)];
 	}
 
 	@Override
-	protected void addAdditionalSaveData(@NotNull CompoundTag compound) {
-		if (this.owner != null) compound.putUUID("owner", this.owner);
+	protected void addAdditionalSaveData(@NotNull CompoundTag tag) {
+		if (this.owner != null) tag.putUUID("owner", this.owner);
+		if (this.storageTier != StorageTier.T0) tag.putByte("storageTier", (byte)this.storageTier.ordinal());
 	}
 
 	@Override
 	public boolean isPickable() {
 		return true;
+	}
+
+	@Override
+	public @Nullable AbstractContainerMenu createMenu(
+			int containerId, @NotNull Inventory playerInventory, @NotNull Player player) {
+		Level level = level();
+
+		if (this.owner == null) return null;
+		Player ownerPlayer = level.getPlayerByUUID(this.owner);
+		if (ownerPlayer == null) return null;
+
+		StorageTier tier = this.storageTier;
+		Container container = container(ownerPlayer, tier);
+
+		Vec3 pos = position();
+		Vec3 playerDirection = player.position().subtract(pos).normalize().scale(0.5);
+		UUID portalId = getUUID();
+
+		return new ChestMenu(tier.menuType(), containerId, playerInventory, container, tier.rows()) {
+			@Override
+			public boolean stillValid(@NotNull Player player) {
+				return EnderChestPortal.this.isAlive();
+			}
+
+			@Override
+			public void removed(@NotNull Player player) {
+				for (int i = 0; i < container.getContainerSize(); i++) {
+					ItemStack stack = container.getItem(i);
+					if (stack.is(Wands.ENDER_WAND.asItem()) &&
+							Objects.equals(stack.get(ModDataComponents.PORTAL_UUID), portalId)) {
+
+						ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, stack);
+						itemEntity.setDeltaMovement(playerDirection);
+						if (level.addFreshEntity(itemEntity)) {
+							container.setItem(i, ItemStack.EMPTY);
+						}
+					}
+				}
+			}
+		};
+	}
+
+	private Container container(@NotNull Player ownerPlayer, @NotNull StorageTier storageTier) {
+		if (storageTier == StorageTier.T0) return ownerPlayer.getEnderChestInventory();
+
+		EnderPortalStorage storage = ownerPlayer.getData(ModDataAttachments.ENDER_PORTAL_STORAGE.get());
+		return new CompoundContainer(ownerPlayer.getEnderChestInventory(), storageTier.getContainer(storage));
+	}
+
+	public enum StorageTier {
+		T0,
+		T1,
+		T2,
+		T3;
+
+		private MenuType<?> menuType() {
+			return switch (this) {
+				case T0 -> MenuType.GENERIC_9x3;
+				case T1 -> MenuType.GENERIC_9x4;
+				case T2 -> MenuType.GENERIC_9x5;
+				case T3 -> MenuType.GENERIC_9x6;
+			};
+		}
+
+		private int rows() {
+			return switch (this) {
+				case T0 -> 3;
+				case T1 -> 4;
+				case T2 -> 5;
+				case T3 -> 6;
+			};
+		}
+
+		private int slots() {
+			return rows() * 9;
+		}
+
+		private Container getContainer(EnderPortalStorage storage) {
+			return switch (this) {
+				case T0 -> throw new IllegalStateException();
+				case T1 -> storage.getOneRowWrapper();
+				case T2 -> storage.getTwoRowWrapper();
+				case T3 -> storage.getThreeRowWrapper();
+			};
+		}
 	}
 }

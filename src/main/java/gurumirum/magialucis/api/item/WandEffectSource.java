@@ -1,4 +1,4 @@
-package gurumirum.magialucis.contents.item;
+package gurumirum.magialucis.api.item;
 
 import gurumirum.magialucis.client.render.WandEffect;
 import net.minecraft.world.InteractionHand;

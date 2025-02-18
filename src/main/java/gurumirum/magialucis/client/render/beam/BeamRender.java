@@ -6,7 +6,7 @@ import com.mojang.math.Axis;
 import gurumirum.magialucis.client.render.ModRenderTypes;
 import gurumirum.magialucis.client.render.RenderShapes;
 import gurumirum.magialucis.client.render.beam.BeamEffect.CoordinateSystem;
-import gurumirum.magialucis.contents.item.BeamSource;
+import gurumirum.magialucis.api.item.BeamSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;

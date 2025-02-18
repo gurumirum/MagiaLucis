@@ -3,6 +3,7 @@ package gurumirum.magialucis.datagen.recipe;
 import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModItemTags;
+import gurumirum.magialucis.contents.Wands;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
@@ -148,10 +149,56 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.save(out);
 
 		augment()
+				.addAugment(STORAGE_1)
+				.incompatible(STORAGE_2, STORAGE_3)
+				.pattern("414")
+				.pattern("2#2")
+				.pattern("434")
+				.define('#', Wands.ENDER_WAND)
+				.define('1', INSCRIPTION_SPATIAL, 0)
+				.define('2', Items.ENDER_EYE)
+				.define('3', LUMINOUS_RESONANCE_CORE)
+				.define('4', gem(Gem.OBSIDIAN))
+				.processTicks(0)
+				.save(out);
+
+		augment()
+				.addAugment(STORAGE_2)
+				.removeAugment(STORAGE_1)
+				.precursor(STORAGE_1)
+				.incompatible(STORAGE_3)
+				.pattern("414")
+				.pattern("2#2")
+				.pattern("434")
+				.define('#', Wands.ENDER_WAND)
+				.define('1', INSCRIPTION_SPATIAL, 0)
+				.define('2', Items.ENDER_EYE)
+				.define('3', LUMINOUS_RESONANCE_CORE)
+				.define('4', gem(Gem.OBSIDIAN))
+				.processTicks(0)
+				.save(out);
+
+		augment()
+				.addAugment(STORAGE_3)
+				.removeAugment(STORAGE_2)
+				.precursor(STORAGE_2)
+				.pattern("414")
+				.pattern("2#2")
+				.pattern("434")
+				.define('#', Wands.ENDER_WAND)
+				.define('1', INSCRIPTION_SPATIAL, 0)
+				.define('2', Items.ENDER_EYE)
+				.define('3', LUMINOUS_RESONANCE_CORE)
+				.define('4', gem(Gem.OBSIDIAN))
+				.processTicks(0)
+				.save(out);
+
+		augment()
 				.addAugment(ENDER_WAND_COLLECTOR)
 				.pattern(" 1 ")
-				.pattern("2 2")
+				.pattern("2#2")
 				.pattern(" 3 ")
+				.define('#', Wands.ENDER_WAND)
 				.define('1', INSCRIPTION_SPATIAL, 0)
 				.define('2', gem(Gem.ENDER_PEARL))
 				.define('3', LUMINOUS_RESONANCE_CORE)

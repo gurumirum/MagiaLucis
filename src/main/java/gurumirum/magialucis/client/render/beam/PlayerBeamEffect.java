@@ -1,6 +1,6 @@
 package gurumirum.magialucis.client.render.beam;
 
-import gurumirum.magialucis.contents.item.BeamSource;
+import gurumirum.magialucis.api.item.BeamSource;
 import gurumirum.magialucis.contents.item.wand.AncientLightWandItem;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;

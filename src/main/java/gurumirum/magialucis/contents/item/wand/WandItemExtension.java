@@ -6,7 +6,7 @@ import gurumirum.magialucis.client.render.beam.BeamRender;
 import gurumirum.magialucis.client.ModArmPose;
 import gurumirum.magialucis.client.render.WandEffect;
 import gurumirum.magialucis.client.render.beam.PlayerBeamEffect;
-import gurumirum.magialucis.contents.item.BeamSource;
+import gurumirum.magialucis.api.item.BeamSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;

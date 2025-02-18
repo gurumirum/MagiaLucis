@@ -16,7 +16,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
@@ -29,6 +31,7 @@ public final class Contents {
 	public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, MODID);
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
+	public static final DeferredRegister<AttachmentType<?>> ATTACHMENTS = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, MODID);
 	public static final DeferredRegister<Augment> AUGMENTS = DeferredRegister.create(MagiaLucisRegistries.AUGMENT, MODID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
@@ -55,6 +58,7 @@ public final class Contents {
 		DATA_COMPONENTS.register(eventBus);
 		BLOCKS.register(eventBus);
 
+		ATTACHMENTS.register(eventBus);
 		AUGMENTS.register(eventBus);
 		BLOCK_ENTITIES.register(eventBus);
 		CREATIVE_MODE_TABS.register(eventBus);
@@ -76,6 +80,7 @@ public final class Contents {
 		ModBlockEntities.init();
 		ModBlocks.init();
 		ModBuildingBlocks.init();
+		ModDataAttachments.init();
 		ModDataComponents.init();
 		ModEntities.init();
 		ModItems.init();
