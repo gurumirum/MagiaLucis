@@ -60,10 +60,13 @@ public class EnderChestPortalWandItem extends LuxContainerItem {
 		portal.setLife(60);
 
 		ItemAugment augments = AugmentLogic.getAugments(stack);
+
 		if (augments.has(Augments.STORAGE_3)) portal.setStorageTier(EnderChestPortal.StorageTier.T3);
 		else if (augments.has(Augments.STORAGE_2)) portal.setStorageTier(EnderChestPortal.StorageTier.T2);
 		else if (augments.has(Augments.STORAGE_1)) portal.setStorageTier(EnderChestPortal.StorageTier.T1);
 		else portal.setStorageTier(EnderChestPortal.StorageTier.T0);
+
+		if (augments.has(Augments.ENDER_WAND_COLLECTOR)) portal.setCollectItems(true);
 
 		if (portalId != null && serverLevel.getEntity(portalId) instanceof EnderChestPortal prevPortal) {
 			prevPortal.kill();
