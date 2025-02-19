@@ -1,6 +1,7 @@
 package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.api.augment.Augment;
+import gurumirum.magialucis.api.capability.LuxContainerStat;
 import gurumirum.magialucis.api.item.AugmentTooltipProvider;
 import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.ModDataComponents;
@@ -8,6 +9,8 @@ import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.contents.data.ItemAugment;
 import gurumirum.magialucis.contents.entity.EnderChestPortal;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
+import gurumirum.magialucis.utils.NumberFormats;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -27,9 +30,20 @@ import java.util.List;
 import java.util.UUID;
 
 public class EnderChestPortalWandItem extends LuxContainerItem implements AugmentTooltipProvider {
-	public static final int COST_PER_PORTAL_SPAWN = 30;
-	public static final int COST_PER_PORTAL_TICK = 5;
 	public static final double PORTAL_DISTANCE_LIMIT = 10;
+
+	public static final int BASE_SPAWN_COST = 200;
+	public static final int BASE_TICK_COST = 5;
+
+	public static final int EXTRA_SPAWN_COST_STORAGE_1 = 200; // total 400
+	public static final int EXTRA_SPAWN_COST_STORAGE_2 = 600; // total 800
+	public static final int EXTRA_SPAWN_COST_STORAGE_3 = 1400; // total 1600
+
+	public static final int EXTRA_TICK_COST_STORAGE_1 = 5; // total 10
+	public static final int EXTRA_TICK_COST_STORAGE_2 = 15; // total 20
+	public static final int EXTRA_TICK_COST_STORAGE_3 = 35; // total 40
+
+	public static final int EXTRA_TICK_COST_COLLECTOR = 10;
 
 	public EnderChestPortalWandItem(Properties properties) {
 		super(properties);
@@ -51,10 +65,12 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 		}
 
 		long lux = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
-		if (lux < COST_PER_PORTAL_SPAWN) return InteractionResultHolder.fail(stack);
+		int spawnCost = portalSpawnCost(stack);
+
+		if (lux < spawnCost) return InteractionResultHolder.fail(stack);
 		if (!(level instanceof ServerLevel serverLevel)) return InteractionResultHolder.consume(stack);
 
-		stack.set(ModDataComponents.LUX_CHARGE, lux - COST_PER_PORTAL_SPAWN);
+		stack.set(ModDataComponents.LUX_CHARGE, lux - spawnCost);
 
 		Vec3 look = player.getLookAngle();
 
@@ -81,7 +97,10 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 
 		Vec3 pos = portal.getPosition(0);
 		if (!portal.isFree(pos.x, pos.y, pos.z)) {
-			portal.setPos(player.blockPosition().getX() + 0.5, player.blockPosition().getY() + player.getEyeHeight(), player.blockPosition().getZ() + 0.5);
+			BlockPos blockPos = player.blockPosition();
+			portal.setPos(blockPos.getX() + 0.5,
+					blockPos.getY() + player.getBbHeight() / 2,
+					blockPos.getZ() + 0.5);
 		}
 
 		if (level.addFreshEntity(portal)) {
@@ -99,17 +118,32 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 			if (portalId == null) return;
 
 			long lux = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
-			if (lux < COST_PER_PORTAL_TICK) return;
+			int spawnCost = portalTickCost(stack);
+
+			if (lux < spawnCost) return;
 
 			if (serverLevel.getEntity(portalId) instanceof EnderChestPortal portal &&
 					portal.isAlive() &&
 					portal.distanceToSqr(entity) <= PORTAL_DISTANCE_LIMIT * PORTAL_DISTANCE_LIMIT) {
 				portal.setLife(60);
-				stack.set(ModDataComponents.LUX_CHARGE, lux - COST_PER_PORTAL_TICK);
+				stack.set(ModDataComponents.LUX_CHARGE, lux - spawnCost);
 			} else {
 				stack.remove(ModDataComponents.PORTAL_UUID);
 			}
 		}
+	}
+
+	@Override
+	protected void appendLuxContainerDescription(@NotNull ItemStack stack, @NotNull TooltipContext context,
+	                                             @NotNull List<Component> tooltip, @NotNull TooltipFlag flag,
+	                                             @NotNull LuxContainerStat luxContainerStat) {
+		super.appendLuxContainerDescription(stack, context, tooltip, flag, luxContainerStat);
+		tooltip.add(Component.translatable("item.magialucis.tooltip.lux_consumption",
+				Component.translatable("item.magialucis.ender_wand.tooltip.cost",
+						NumberFormats.dec(portalSpawnCost(stack), null),
+						NumberFormats.dec(portalTickCost(stack) * 20, null)
+				)
+		));
 	}
 
 	@Override
@@ -126,5 +160,29 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.collector"));
 		} else return false;
 		return true;
+	}
+
+	public static int portalSpawnCost(@NotNull ItemStack stack) {
+		ItemAugment augments = AugmentLogic.getAugments(stack);
+		int cost = BASE_SPAWN_COST;
+
+		if (augments.has(Augments.STORAGE_3)) cost += EXTRA_SPAWN_COST_STORAGE_3;
+		else if (augments.has(Augments.STORAGE_2)) cost += EXTRA_SPAWN_COST_STORAGE_2;
+		else if (augments.has(Augments.STORAGE_1)) cost += EXTRA_SPAWN_COST_STORAGE_1;
+
+		return cost;
+	}
+
+	public static int portalTickCost(@NotNull ItemStack stack) {
+		ItemAugment augments = AugmentLogic.getAugments(stack);
+		int cost = BASE_TICK_COST;
+
+		if (augments.has(Augments.STORAGE_3)) cost += EXTRA_TICK_COST_STORAGE_3;
+		else if (augments.has(Augments.STORAGE_2)) cost += EXTRA_TICK_COST_STORAGE_2;
+		else if (augments.has(Augments.STORAGE_1)) cost += EXTRA_TICK_COST_STORAGE_1;
+
+		if (augments.has(Augments.ENDER_WAND_COLLECTOR)) cost += EXTRA_TICK_COST_COLLECTOR;
+
+		return cost;
 	}
 }

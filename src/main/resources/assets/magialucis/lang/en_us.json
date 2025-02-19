@@ -116,6 +116,7 @@
   "item.magialucis.electrum_ingot": "Electrum Ingot",
   "item.magialucis.electrum_nugget": "Electrum Nugget",
   "item.magialucis.ender_wand": "Pocket Void",
+  "item.magialucis.ender_wand.tooltip.cost": "%s§7/§euse§7, %s§7/§es",
   "item.magialucis.ender_wand.tooltip.augment.collector": "§7Automatically collects nearby items",
   "item.magialucis.ender_wand.tooltip.augment.storage_1": "§7Gain §eone§7 extra row of slots",
   "item.magialucis.ender_wand.tooltip.augment.storage_2": "§7Gain §etwo§7 extra row of slots",
@@ -179,6 +180,7 @@
   "item.magialucis.tooltip.lux_charge_rate": "§fLUX§7 Charge Rate:",
   "item.magialucis.tooltip.lux_consumer_stat_expanded": "§7+ §fLUX§7 Consumer Stat [Ctrl]",
   "item.magialucis.tooltip.lux_consumer_stat_hidden": "§7- §fLUX§7 Consumer Stat [Ctrl]",
+  "item.magialucis.tooltip.lux_consumption": "§fLUX§7 Consumption: %s",
   "item.magialucis.tooltip.lux_consumption_rate": "§fLUX§7 Consumption Rate:",
   "item.magialucis.tooltip.lux_container_stat_expanded": "§7+ §fLUX§7 Container Stat [Ctrl]",
   "item.magialucis.tooltip.lux_container_stat_hidden": "§7- §fLUX§7 Container Stat [Ctrl]",
@@ -231,6 +233,6 @@
   "magialucis.augment.magialucis.storage_1": "Expansion I",
   "magialucis.augment.magialucis.storage_2": "Expansion II",
   "magialucis.augment.magialucis.storage_3": "Expansion III",
-  "magialucis.augment.tooltip.name": " * %s",
-  "magialucis.augment.tooltip.description": "   %s"
+  "magialucis.augment.tooltip.description": "   %s",
+  "magialucis.augment.tooltip.name": " * %s"
 }

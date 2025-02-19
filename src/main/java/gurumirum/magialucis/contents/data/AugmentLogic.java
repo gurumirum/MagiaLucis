@@ -36,7 +36,7 @@ public final class AugmentLogic {
 
 	public static MutableComponent augmentName(Component parameter) {
 		return Component.translatable("magialucis.augment.tooltip.name", parameter.copy()
-						.withStyle(ChatFormatting.RESET))
+						.withStyle(ChatFormatting.WHITE))
 				.withStyle(ChatFormatting.GRAY);
 	}
 

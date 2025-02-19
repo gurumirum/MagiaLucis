@@ -35,7 +35,7 @@ public enum Wands implements ItemLike {
 	// TODO prismarine wand
 
 	ENDER_WAND(ItemProfile.customItem(EnderChestPortalWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(EnderChestPortalWandItem.COST_PER_PORTAL_TICK * 20 * 300, Gem.ENDER_PEARL)),
+			LuxContainerStat.withBaseStat(EnderChestPortalWandItem.BASE_TICK_COST * 20 * 300, Gem.ENDER_PEARL)),
 
 	// TODO redstone wand
 

@@ -3,8 +3,8 @@ package gurumirum.magialucis.mixin;
 import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.api.item.AugmentTooltipProvider;
 import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.contents.data.ItemAugment;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +39,7 @@ public abstract class ItemStackMixin {
 
 				Component descriptionName = augment.getDescriptionName(context, player, self, flag);
 				if (descriptionName == null) {
-					descriptionName = Component.literal(h.toString()).withStyle(ChatFormatting.YELLOW);
+					descriptionName = AugmentLogic.augmentName(Component.literal(h.toString()));
 				}
 				list.add(descriptionName);
 

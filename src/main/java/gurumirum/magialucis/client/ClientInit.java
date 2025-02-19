@@ -32,14 +32,17 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.function.ToLongFunction;
 
 import static gurumirum.magialucis.api.MagiaLucisApi.MODID;
 import static gurumirum.magialucis.api.MagiaLucisApi.id;
@@ -79,7 +82,7 @@ public final class ClientInit {
 
 			ItemProperties.register(Wands.DIAMOND_MACE.asItem(), NO_CHARGE, noCharge(DiamondMaceItem.COST_PER_ATTACK));
 
-			ItemProperties.register(Wands.ENDER_WAND.asItem(), NO_CHARGE, noCharge(EnderChestPortalWandItem.COST_PER_PORTAL_SPAWN));
+			ItemProperties.register(Wands.ENDER_WAND.asItem(), NO_CHARGE, noCharge(EnderChestPortalWandItem::portalSpawnCost));
 
 			ItemProperties.register(Accessories.SPEED_RING.asItem(), NO_CHARGE, noCharge(1));
 			ItemProperties.register(Accessories.OBSIDIAN_BRACELET.asItem(), NO_CHARGE, noCharge(ObsidianBraceletItem.COST_PER_FIRE_RESISTANCE));
@@ -176,6 +179,14 @@ public final class ClientInit {
 	@SuppressWarnings("deprecation")
 	private static ItemPropertyFunction noCharge(long minimumCharge) {
 		return (stack, level, entity, seed) -> {
+			return stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L) < minimumCharge ? 1 : 0;
+		};
+	}
+
+	@SuppressWarnings("deprecation")
+	private static ItemPropertyFunction noCharge(@NotNull ToLongFunction<@NotNull ItemStack> minimumChargeSupplier) {
+		return (stack, level, entity, seed) -> {
+			long minimumCharge = minimumChargeSupplier.applyAsLong(stack);
 			return stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L) < minimumCharge ? 1 : 0;
 		};
 	}
