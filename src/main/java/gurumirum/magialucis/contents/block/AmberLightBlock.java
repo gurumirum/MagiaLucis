@@ -32,6 +32,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static gurumirum.magialucis.contents.block.ModBlockStates.HIDDEN;
 import static gurumirum.magialucis.contents.block.ModBlockStates.LANTERN;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
@@ -42,18 +43,19 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 		super(properties);
 		registerDefaultState(defaultBlockState()
 				.setValue(WATERLOGGED, false)
-				.setValue(LANTERN, false));
+				.setValue(LANTERN, false)
+				.setValue(HIDDEN, false));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(WATERLOGGED, LANTERN);
+		builder.add(WATERLOGGED, LANTERN, HIDDEN);
 	}
 
 	@Override
 	protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level,
 	                                       @NotNull BlockPos pos, @NotNull CollisionContext context) {
-		return !state.getValue(LANTERN) ||
+		return (!state.getValue(LANTERN) && !state.getValue(HIDDEN)) ||
 				context.isHoldingItem(Wands.AMBER_TORCH.asItem()) ||
 				context.isHoldingItem(ModBlocks.AMBER_LANTERN.asItem()) ? SHAPE : Shapes.empty();
 	}
@@ -82,7 +84,7 @@ public class AmberLightBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-		if (state.getValue(LANTERN)) {
+		if (state.getValue(LANTERN) || state.getValue(HIDDEN)) {
 			Minecraft mc = Minecraft.getInstance();
 			if (mc.player == null) return;
 

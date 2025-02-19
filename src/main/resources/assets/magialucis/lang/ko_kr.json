@@ -216,6 +216,8 @@
   "jei.magialucis.light_basin": "빛받이 대야",
 
   "magialucis.augment.magialucis.amber_wand_invisible_flame": "숨겨진 불꽃",
+  "magialucis.augment.magialucis.amber_wand_invisible_flame.description.0": "생성된 광원을 숨김",
+  "magialucis.augment.magialucis.amber_wand_invisible_flame.description.1": "§f호박석 횃불§7 또는 §f호박석 랜턴§7을 손에 들어 보기",
   "magialucis.augment.magialucis.casting_speed": "빠른 시전",
   "magialucis.augment.magialucis.casting_speed_1": "빠른 시전 I",
   "magialucis.augment.magialucis.casting_speed_2": "빠른 시전 II",

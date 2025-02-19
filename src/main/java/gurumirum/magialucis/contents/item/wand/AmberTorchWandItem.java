@@ -1,8 +1,10 @@
 package gurumirum.magialucis.contents.item.wand;
 
+import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.ModBlockStates;
+import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -29,6 +31,8 @@ import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+
+import static gurumirum.magialucis.contents.block.ModBlockStates.HIDDEN;
 
 public class AmberTorchWandItem extends LuxContainerItem {
 	public static final int COST_PER_LIGHT_SOURCE = 5;
@@ -98,6 +102,9 @@ public class AmberTorchWandItem extends LuxContainerItem {
 		BlockState placeState = ModBlocks.AMBER_LIGHT.block()
 				.getStateForPlacement(new BlockPlaceContext(player, hand, stack, blockHitResult));
 		if (placeState == null) return InteractionResult.FAIL;
+
+		placeState = placeState.setValue(HIDDEN, AugmentLogic.getAugments(stack)
+				.has(Augments.AMBER_WAND_INVISIBLE_FLAME));
 
 		particleCircle(level, pos, placeState.getValue(BlockStateProperties.WATERLOGGED));
 		level.playSound(null, player.blockPosition(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.5F, 1.0F);

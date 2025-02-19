@@ -35,7 +35,7 @@ public enum Augments implements AugmentProvider {
 	STORAGE_3(tiered(STORAGE, 2)),
 
 	CONFIGURATION_WAND_DEBUG_VIEW(textured(Textures.AUGMENT_DEBUG_VIEW, 1)),
-	AMBER_WAND_INVISIBLE_FLAME(textured(Textures.AUGMENT_CONCEAL, 1)),
+	AMBER_WAND_INVISIBLE_FLAME(textured(Textures.AUGMENT_CONCEAL, 2)),
 
 	ENDER_WAND_COLLECTOR(textured(Textures.AUGMENT_COLLECTOR, 1)),
 	;
