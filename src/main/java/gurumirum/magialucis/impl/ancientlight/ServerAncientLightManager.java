@@ -45,7 +45,7 @@ public class ServerAncientLightManager extends AncientLightManager {
 	                                @NotNull BlockState focusBlockState, @NotNull AncientLightRecipe recipe) {
 		if (this.record == null) this.record = new AncientLightRecord();
 
-		int progress = this.record.getProgress(focusPos) + UPDATE_INTERVAL;
+		int progress = this.record.getProgress(focusPos) + getProgress(p);
 		int recipeProcessTicks = recipe.getProcessTicks(level, focusPos, focusBlockState);
 
 		if (progress >= recipeProcessTicks) {

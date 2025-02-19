@@ -1,7 +1,9 @@
 package gurumirum.magialucis.impl.ancientlight;
 
+import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.ModRecipes;
 import gurumirum.magialucis.contents.Wands;
+import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.contents.item.wand.AncientLightWandItem;
 import gurumirum.magialucis.contents.recipe.ancientlight.AncientLightRecipe;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -10,6 +12,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
@@ -31,6 +34,9 @@ import java.util.concurrent.Executor;
 public abstract class AncientLightManager extends ContextAwareReloadListener {
 	protected static final int UPDATE_INTERVAL = 2;
 	protected static final int PROGRESS_DECAY_UPDATE_INTERVAL = UPDATE_INTERVAL * 10;
+
+	protected static final int PROGRESS_PER_UPDATE = 2;
+	protected static final int PROGRESS_PER_UPDATE_ACCELERATED = 3;
 	protected static final int DECAY_AMOUNT_PER_SEC = 5;
 
 	protected final Map<UUID, BlockPos> focus = new Object2ObjectOpenHashMap<>();
@@ -114,5 +120,16 @@ public abstract class AncientLightManager extends ContextAwareReloadListener {
 					});
 		}
 		return this.recipes;
+	}
+
+	protected static int getProgress(@NotNull Player player) {
+		if (player.isUsingItem()) {
+			ItemStack stack = player.getUseItem();
+			if (stack.is(Wands.ANCIENT_LIGHT.asItem()) &&
+					AugmentLogic.getAugments(stack).has(Augments.SPEED_1.augment())) {
+				return PROGRESS_PER_UPDATE_ACCELERATED;
+			}
+		}
+		return PROGRESS_PER_UPDATE;
 	}
 }

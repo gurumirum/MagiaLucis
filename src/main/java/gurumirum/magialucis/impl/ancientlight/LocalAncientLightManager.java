@@ -38,7 +38,7 @@ public class LocalAncientLightManager extends AncientLightManager {
 		if (this.record == null) this.record = new AncientLightRecord();
 
 		// keep counting on, it should be corrected by sync anyway
-		int progress = this.record.getProgress(focusPos) + UPDATE_INTERVAL;
+		int progress = this.record.getProgress(focusPos) + getProgress(p);
 		int totalProgress = this.record.getTotalProgress(focusPos);
 
 		this.record.setProgress(focusPos, progress, totalProgress <= 0 ?

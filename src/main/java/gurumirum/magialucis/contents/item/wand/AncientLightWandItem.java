@@ -1,17 +1,26 @@
 package gurumirum.magialucis.contents.item.wand;
 
+import gurumirum.magialucis.api.augment.Augment;
+import gurumirum.magialucis.api.item.AugmentTooltipProvider;
 import gurumirum.magialucis.client.render.WandEffect;
 import gurumirum.magialucis.client.render.beam.BeamRender;
 import gurumirum.magialucis.api.item.BeamSource;
 import gurumirum.magialucis.api.item.WandEffectSource;
+import gurumirum.magialucis.contents.Augments;
+import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.impl.ancientlight.AncientLightCrafting;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
+import gurumirum.magialucis.utils.NumberFormats;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -20,7 +29,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AncientLightWandItem extends Item implements BeamSource, WandEffectSource {
+import java.util.List;
+
+public class AncientLightWandItem extends Item implements BeamSource, WandEffectSource, AugmentTooltipProvider {
 	public static final double DISTANCE = 10;
 
 	public AncientLightWandItem(Properties properties) {
@@ -96,5 +107,17 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 	@Override
 	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack, InteractionHand hand) {
 		return player.isUsingItem() && player.getUsedItemHand() == hand ? AncientLightWandEffect.INSTANCE : null;
+	}
+
+	@Override
+	public boolean appendHoverTextForAugment(@NotNull TooltipContext context, @Nullable Player player,
+	                                         @NotNull ItemStack stack, @NotNull List<Component> tooltip,
+	                                         @NotNull TooltipFlag flag, @NotNull Holder<Augment> augment) {
+		if (Augments.SPEED_1.is(augment)) {
+			tooltip.add(AugmentLogic.augmentDesc(Component.translatable(
+					"item.magialucis.ancient_light.tooltip.augment.speed",
+					NumberFormats.pct(.5, ChatFormatting.YELLOW))));
+			return true;
+		} else return false;
 	}
 }

@@ -78,6 +78,7 @@
 
   "effect.magialucis.natures_blessing": "자연의 은총",
   "effect.magialucis.recall_fatigue": "회귀 후유증",
+
   "entity.magialucis.ender_chest_portal": "공허 차원문",
   "entity.magialucis.lesser_ice_projectile": "얼음 조각",
   "entity.magialucis.temple_guardian": "신전 수호자",
@@ -96,6 +97,7 @@
   "item.magialucis.amber_torch": "호박석 횃불",
   "item.magialucis.ancient_core": "고대의 코어",
   "item.magialucis.ancient_light": "고대의 빛",
+  "item.magialucis.ancient_light.tooltip.augment.speed": "§e+%s§7 빛 주입 속도",
   "item.magialucis.aquamarine": "아쿠아마린",
   "item.magialucis.brightstone": "브라이트스톤",
   "item.magialucis.citrine": "황수정",
