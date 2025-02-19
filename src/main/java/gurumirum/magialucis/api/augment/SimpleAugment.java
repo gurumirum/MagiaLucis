@@ -1,7 +1,7 @@
 package gurumirum.magialucis.api.augment;
 
 import gurumirum.magialucis.api.MagiaLucisRegistries;
-import net.minecraft.ChatFormatting;
+import gurumirum.magialucis.contents.data.AugmentLogic;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -16,26 +16,27 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SimpleAugment implements Augment {
-	protected final int descriptionCount;
-
 	private @Nullable Component name;
+	private @Nullable Function<@Nullable ResourceLocation, @NotNull List<@NotNull Component>> descriptionFunction;
 	private @Nullable List<Component> description;
 	private @Nullable ResourceLocation texture;
 
 	public SimpleAugment(@NotNull Properties properties) {
-		this.descriptionCount = properties.descriptions;
 		this.name = properties.name;
+		this.descriptionFunction = properties.descriptions;
 		this.texture = properties.texture;
 	}
 
 	@Override
-	public @NotNull Component name() {
+	public @Nullable Component getDescriptionName(Item.@NotNull TooltipContext context, @Nullable Player player,
+	                                              @NotNull ItemStack stack, @NotNull TooltipFlag flag) {
 		if (this.name == null) {
-			if (!MagiaLucisRegistries.initialized()) return Component.empty();
+			if (!MagiaLucisRegistries.initialized()) return null;
 			ResourceLocation key = MagiaLucisRegistries.augmentRegistry().getKey(this);
 			this.name = createName(key);
 		}
@@ -43,31 +44,22 @@ public class SimpleAugment implements Augment {
 	}
 
 	protected @NotNull Component createName(@Nullable ResourceLocation key) {
-		if (key == null) return Component.translatable("magialucis.augment.unregistered_sadface");
-		return Component.translatable("magialucis.augment." + key.getNamespace() + "." + key.getPath().replace('/', '.'));
+		return AugmentLogic.augmentName(key == null ?
+				"magialucis.augment.unregistered_sadface" :
+				"magialucis.augment." + key.getNamespace() + "." + key.getPath().replace('/', '.')
+		);
 	}
 
 	@Override
-	public void appendHoverText(Item.@NotNull TooltipContext context, @Nullable Player player, @NotNull ItemStack stack,
-	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+	public void appendDescription(Item.@NotNull TooltipContext context, @Nullable Player player, @NotNull ItemStack stack,
+	                              @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
 		if (this.description == null) {
 			if (!MagiaLucisRegistries.initialized()) return;
 			ResourceLocation key = MagiaLucisRegistries.augmentRegistry().getKey(this);
-			this.description = createDescription(key);
+			this.description = this.descriptionFunction != null ? this.descriptionFunction.apply(key) : List.of();
+			this.descriptionFunction = null;
 		}
 		tooltip.addAll(this.description);
-	}
-
-	protected @NotNull List<Component> createDescription(@Nullable ResourceLocation key) {
-		if (key == null) return List.of();
-		return IntStream.range(0, this.descriptionCount).mapToObj(i ->
-				Component.translatable("magialucis.augment.tooltip",
-						Component.translatable("magialucis.augment." +
-								key.getNamespace() + "." + key.getPath().replace('/', '.') +
-								".description." + i
-						)
-				).withStyle(ChatFormatting.YELLOW)
-		).collect(Collectors.toList());
 	}
 
 	@Override
@@ -82,22 +74,35 @@ public class SimpleAugment implements Augment {
 		return this.texture;
 	}
 
+	public static @NotNull List<Component> simpleDescriptions(@Nullable ResourceLocation key, int descriptionCount) {
+		if (key == null) return List.of();
+		return IntStream.range(0, descriptionCount).mapToObj(i ->
+				AugmentLogic.augmentDesc("magialucis.augment." +
+						key.getNamespace() + "." + key.getPath().replace('/', '.') +
+						".description." + i)
+		).collect(Collectors.toList());
+	}
+
 	public static final class Properties {
 		private @Nullable Component name;
-		private int descriptions;
+		private @Nullable Function<@Nullable ResourceLocation, @NotNull List<@NotNull Component>> descriptions;
 		private @Nullable ResourceLocation texture;
 
-		public Properties name(Component name) {
+		public Properties name(@Nullable Component name) {
 			this.name = name;
 			return this;
 		}
 
 		public Properties descriptions(int descriptions) {
+			return descriptions(key -> simpleDescriptions(key, descriptions));
+		}
+
+		public Properties descriptions(@Nullable Function<@Nullable ResourceLocation, @NotNull List<@NotNull Component>> descriptions) {
 			this.descriptions = descriptions;
 			return this;
 		}
 
-		public Properties texture(ResourceLocation texture) {
+		public Properties texture(@Nullable ResourceLocation texture) {
 			this.texture = texture;
 			return this;
 		}

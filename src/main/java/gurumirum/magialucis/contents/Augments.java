@@ -2,9 +2,10 @@ package gurumirum.magialucis.contents;
 
 import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.api.augment.SimpleAugment;
-import gurumirum.magialucis.api.augment.SimpleAugment.Properties;
 import gurumirum.magialucis.client.Textures;
-import gurumirum.magialucis.contents.augment.OptionalTierAugment;
+import gurumirum.magialucis.contents.augment.TieredAugment;
+import gurumirum.magialucis.contents.augment.TieredAugmentType;
+import gurumirum.magialucis.contents.augment.TieredAugmentTypes;
 import gurumirum.magialucis.contents.profile.AugmentProfile;
 import gurumirum.magialucis.utils.AugmentProvider;
 import net.minecraft.core.Holder;
@@ -14,52 +15,46 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
+import static gurumirum.magialucis.contents.augment.TieredAugmentTypes.*;
+
 public enum Augments implements AugmentProvider {
-	LUX_CAPACITY_1,
-	LUX_CAPACITY_2,
-	LUX_CAPACITY_3,
+	LUX_CAPACITY_1(tiered(LUX_CAPACITY, 0)),
+	LUX_CAPACITY_2(tiered(LUX_CAPACITY, 1)),
+	LUX_CAPACITY_3(tiered(LUX_CAPACITY, 2)),
 
-	SPEED_1(AugmentProfile.customAugment(Augments::speed)),
-	SPEED_2,
-	SPEED_3,
+	SPEED_1(tiered(SPEED, 0)),
+	SPEED_2(tiered(SPEED, 1)),
+	SPEED_3(tiered(SPEED, 2)),
 
-	CASTING_SPEED_1(AugmentProfile.customAugment(Augments::castingSpeed)),
-	CASTING_SPEED_2,
-	CASTING_SPEED_3,
+	CASTING_SPEED_1(tiered(CASTING_SPEED, 0)),
+	CASTING_SPEED_2(tiered(CASTING_SPEED, 1)),
+	CASTING_SPEED_3(tiered(CASTING_SPEED, 2)),
 
-	STORAGE_1(AugmentProfile.customAugment(Augments::storage)),
-	STORAGE_2,
-	STORAGE_3,
+	STORAGE_1(tiered(STORAGE, 0)),
+	STORAGE_2(tiered(STORAGE, 1)),
+	STORAGE_3(tiered(STORAGE, 2)),
 
-	CONFIGURATION_WAND_DEBUG_VIEW(textured(Textures.AUGMENT_DEBUG_VIEW)),
-	AMBER_WAND_INVISIBLE_FLAME(textured(Textures.AUGMENT_CONCEAL)),
+	CONFIGURATION_WAND_DEBUG_VIEW(textured(Textures.AUGMENT_DEBUG_VIEW, 1)),
+	AMBER_WAND_INVISIBLE_FLAME(textured(Textures.AUGMENT_CONCEAL, 1)),
 
-	ENDER_WAND_COLLECTOR(textured(Textures.AUGMENT_COLLECTOR)),
+	ENDER_WAND_COLLECTOR(textured(Textures.AUGMENT_COLLECTOR, 1)),
 	;
 
-	private static AugmentProfile<SimpleAugment> textured(ResourceLocation texture) {
-		return AugmentProfile.augment(p -> p.texture(texture));
+	private static AugmentProfile<SimpleAugment> textured(ResourceLocation texture, int descriptions) {
+		return AugmentProfile.augment(p -> p.texture(texture).descriptions(descriptions));
 	}
 
-	private static OptionalTierAugment speed(Properties p) {
-		return new OptionalTierAugment(p, Augments.SPEED_2::augment, Textures.AUGMENT_SPEED, Textures.AUGMENT_SPEED_1);
+	private static AugmentProfile<TieredAugment> tiered(TieredAugmentType type, int index) {
+		return type.profile(index);
 	}
 
-	private static OptionalTierAugment castingSpeed(Properties p) {
-		return new OptionalTierAugment(p, Augments.CASTING_SPEED_2::augment, Textures.AUGMENT_CASTING_SPEED, Textures.AUGMENT_CASTING_SPEED_1);
-	}
-
-	private static OptionalTierAugment storage(Properties p) {
-		return new OptionalTierAugment(p, Augments.STORAGE_2::augment, Textures.AUGMENT_STORAGE, Textures.AUGMENT_STORAGE_1);
-	}
-
-	private final DeferredHolder<Augment, SimpleAugment> holder;
+	private final DeferredHolder<Augment, ? extends SimpleAugment> holder;
 
 	Augments() {
 		this(AugmentProfile.augment());
 	}
 
-	Augments(@NotNull AugmentProfile<SimpleAugment> profile) {
+	Augments(@NotNull AugmentProfile<? extends SimpleAugment> profile) {
 		String id = name().toLowerCase(Locale.ROOT);
 		this.holder = profile.create(id);
 	}
@@ -77,5 +72,11 @@ public enum Augments implements AugmentProvider {
 		return this.holder.getDelegate();
 	}
 
-	public static void init() {}
+	public boolean is(@NotNull Holder<Augment> augment) {
+		return augment.is(id());
+	}
+
+	public static void init() {
+		TieredAugmentTypes.init();
+	}
 }

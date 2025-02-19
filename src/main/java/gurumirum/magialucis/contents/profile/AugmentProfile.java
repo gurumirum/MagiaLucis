@@ -27,14 +27,13 @@ public interface AugmentProfile<A extends SimpleAugment> {
 	}
 
 	static <A extends SimpleAugment> AugmentProfile<A> customAugment(@NotNull Function<SimpleAugment.Properties, A> augmentFactory,
-	                                                        @Nullable Consumer<SimpleAugment.Properties> properties) {
+	                                                                 @Nullable Consumer<SimpleAugment.Properties> properties) {
 		return id -> Contents.AUGMENTS.register(id, () -> {
 			SimpleAugment.Properties p = new SimpleAugment.Properties();
 			if (properties != null) properties.accept(p);
 			return augmentFactory.apply(p);
 		});
 	}
-
 
 	@NotNull DeferredHolder<Augment, A> create(@NotNull String id);
 }

@@ -34,13 +34,19 @@ public abstract class ItemStackMixin {
 
 		ItemAugment itemAugment = self.get(ModDataComponents.AUGMENTS);
 		if (itemAugment != null) {
-			for (Holder<Augment> augment : itemAugment) {
-				list.add(augment.value().name().copy().withStyle(ChatFormatting.YELLOW));
-				if (tooltipProvider != null &&
-						tooltipProvider.appendHoverTextForAugment(context, player, self, list, flag, augment)) {
-					continue;
+			for (Holder<Augment> h : itemAugment) {
+				Augment augment = h.value();
+
+				Component descriptionName = augment.getDescriptionName(context, player, self, flag);
+				if (descriptionName == null) {
+					descriptionName = Component.literal(h.toString()).withStyle(ChatFormatting.YELLOW);
 				}
-				augment.value().appendHoverText(context, player, self, list, flag);
+				list.add(descriptionName);
+
+				if (tooltipProvider == null ||
+						!tooltipProvider.appendHoverTextForAugment(context, player, self, list, flag, h)) {
+					augment.appendDescription(context, player, self, list, flag);
+				}
 			}
 		}
 	}

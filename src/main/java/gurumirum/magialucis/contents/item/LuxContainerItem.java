@@ -25,14 +25,20 @@ public class LuxContainerItem extends Item {
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
 		LuxContainerStat luxContainerStat = stack.getCapability(MagiaLucisCaps.LUX_CONTAINER_STAT);
-		if (luxContainerStat == null) return;
+		if (luxContainerStat != null) {
+			appendLuxContainerDescription(stack, context, tooltip, flag, luxContainerStat);
+			LuxStatTooltip.formatStat(luxContainerStat, tooltip, LuxStatTooltip.Type.CONTAINER);
+			LuxStatTooltip.skipAutoTooltipFor(stack);
+		}
+	}
 
+	protected void appendLuxContainerDescription(@NotNull ItemStack stack, @NotNull TooltipContext context,
+	                                             @NotNull List<Component> tooltip, @NotNull TooltipFlag flag,
+	                                             @NotNull LuxContainerStat luxContainerStat) {
 		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
 		tooltip.add(Component.translatable("item.magialucis.tooltip.lux_charge",
 				NumberFormats.INTEGER.format(charge),
 				NumberFormats.INTEGER.format(luxContainerStat.maxCharge())));
-		LuxStatTooltip.formatStat(luxContainerStat, tooltip, LuxStatTooltip.Type.CONTAINER);
-		LuxStatTooltip.skipAutoTooltipFor(stack);
 	}
 
 	@Override

@@ -1,11 +1,15 @@
 package gurumirum.magialucis.contents.item.wand;
 
+import gurumirum.magialucis.api.augment.Augment;
+import gurumirum.magialucis.api.item.AugmentTooltipProvider;
 import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.contents.data.ItemAugment;
 import gurumirum.magialucis.contents.entity.EnderChestPortal;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -13,13 +17,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.UUID;
 
-public class EnderChestPortalWandItem extends LuxContainerItem {
+public class EnderChestPortalWandItem extends LuxContainerItem implements AugmentTooltipProvider {
 	public static final int COST_PER_PORTAL_SPAWN = 30;
 	public static final int COST_PER_PORTAL_TICK = 5;
 	public static final double PORTAL_DISTANCE_LIMIT = 10;
@@ -103,5 +110,21 @@ public class EnderChestPortalWandItem extends LuxContainerItem {
 				stack.remove(ModDataComponents.PORTAL_UUID);
 			}
 		}
+	}
+
+	@Override
+	public boolean appendHoverTextForAugment(
+			@NotNull TooltipContext context, @Nullable Player player, @NotNull ItemStack stack,
+			@NotNull List<Component> tooltip, @NotNull TooltipFlag flag, @NotNull Holder<Augment> augment) {
+		if (Augments.STORAGE_1.is(augment)) {
+			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.storage_1"));
+		} else if (Augments.STORAGE_2.is(augment)) {
+			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.storage_2"));
+		} else if (Augments.STORAGE_3.is(augment)) {
+			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.storage_3"));
+		} else if (Augments.ENDER_WAND_COLLECTOR.is(augment)) {
+			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.collector"));
+		} else return false;
+		return true;
 	}
 }

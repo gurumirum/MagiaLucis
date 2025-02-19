@@ -9,15 +9,17 @@ import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public interface Augment {
-	@NotNull Component name();
+	@Nullable Component getDescriptionName(
+			Item.@NotNull TooltipContext context, @Nullable Player player,
+			@NotNull ItemStack stack, @NotNull TooltipFlag flag);
 
-	void appendHoverText(Item.@NotNull TooltipContext context, @Nullable Player player, @NotNull ItemStack stack,
-	                     @NotNull List<Component> tooltip, @NotNull TooltipFlag flag);
+	void appendDescription(Item.@NotNull TooltipContext context, @Nullable Player player, @NotNull ItemStack stack,
+	                       @NotNull List<Component> tooltip, @NotNull TooltipFlag flag);
 
 	@OnlyIn(Dist.CLIENT)
 	@Nullable ResourceLocation texture(@NotNull ItemStack stack);
