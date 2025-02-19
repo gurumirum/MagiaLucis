@@ -1,10 +1,11 @@
 package gurumirum.magialucis.contents.item.wand;
 
+import gurumirum.magialucis.api.item.WandEffectSource;
 import gurumirum.magialucis.client.render.WandEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModMobEffects;
+import gurumirum.magialucis.contents.augment.TieredAugmentTypes;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
-import gurumirum.magialucis.api.item.WandEffectSource;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -21,6 +22,11 @@ import org.jetbrains.annotations.Nullable;
 public class RecallStaffWandItem extends LuxContainerItem implements WandEffectSource {
 	public static final int COST_PER_RECALL = 800;
 	public static final int RECALL_FATIGUE_DURATION = 20 * 75;
+
+	public static final int USE_DURATION = 160;
+	public static final int USE_DURATION_QC1 = 120;
+	public static final int USE_DURATION_QC2 = 80;
+	public static final int USE_DURATION_QC3 = 40;
 
 	public RecallStaffWandItem(Properties properties) {
 		super(properties);
@@ -66,7 +72,12 @@ public class RecallStaffWandItem extends LuxContainerItem implements WandEffectS
 
 	@Override
 	public int getUseDuration(@NotNull ItemStack stack, @NotNull LivingEntity entity) {
-		return 160;
+		return switch (TieredAugmentTypes.QUICK_CAST.getTier(stack)) {
+			case 0 -> USE_DURATION_QC1;
+			case 1 -> USE_DURATION_QC2;
+			case 2 -> USE_DURATION_QC3;
+			default -> USE_DURATION;
+		};
 	}
 
 	@Override

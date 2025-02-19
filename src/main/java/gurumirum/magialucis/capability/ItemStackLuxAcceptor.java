@@ -2,10 +2,8 @@ package gurumirum.magialucis.capability;
 
 import gurumirum.magialucis.api.capability.LuxAcceptor;
 import gurumirum.magialucis.api.capability.LuxContainerStat;
-import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.ModDataComponents;
-import gurumirum.magialucis.contents.data.AugmentLogic;
-import gurumirum.magialucis.contents.data.ItemAugment;
+import gurumirum.magialucis.contents.augment.TieredAugmentTypes;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -28,10 +26,11 @@ public class ItemStackLuxAcceptor implements LuxAcceptor, LuxContainerStat {
 	@Override
 	public long maxCharge() {
 		long maxCharge = this.baseStat.maxCharge();
-		ItemAugment augments = AugmentLogic.getAugments(this.stack);
-		if (augments.has(Augments.OVERCHARGE_3)) maxCharge *= OVERCHARGE_3_MULTIPLIER;
-		else if (augments.has(Augments.OVERCHARGE_2)) maxCharge *= OVERCHARGE_2_MULTIPLIER;
-		else if (augments.has(Augments.OVERCHARGE_1)) maxCharge *= OVERCHARGE_1_MULTIPLIER;
+		switch (TieredAugmentTypes.OVERCHARGE.getTier(this.stack)) {
+			case 0 -> maxCharge *= OVERCHARGE_1_MULTIPLIER;
+			case 1 -> maxCharge *= OVERCHARGE_2_MULTIPLIER;
+			case 2 -> maxCharge *= OVERCHARGE_3_MULTIPLIER;
+		}
 		return maxCharge;
 	}
 

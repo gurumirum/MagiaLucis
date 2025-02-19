@@ -1,11 +1,11 @@
 {
   "type": "magialucis:artisanry_augment",
   "augments": [
-    "magialucis:overcharge_2",
     {
       "augment": "magialucis:overcharge_1",
       "remove": true
-    }
+    },
+    "magialucis:overcharge_2"
   ],
   "incompatible": "magialucis:overcharge_3",
   "pattern": {
@@ -28,6 +28,5 @@
       "2 2",
       " 3 "
     ]
-  },
-  "precursor": "magialucis:overcharge_1"
+  }
 }

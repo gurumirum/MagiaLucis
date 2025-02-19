@@ -37,7 +37,8 @@
       "magialucis:overcharge_2",
       "magialucis:overcharge_3",
       "magialucis:quick_cast_1",
-      "magialucis:quick_cast_2"
+      "magialucis:quick_cast_2",
+      "magialucis:quick_cast_3"
     ],
     "magialucis:icy_configuration_wand": "magialucis:configuration_wand_debug_view",
     "magialucis:lapis_shield": [
@@ -56,7 +57,8 @@
       "magialucis:overcharge_2",
       "magialucis:overcharge_3",
       "magialucis:quick_cast_1",
-      "magialucis:quick_cast_2"
+      "magialucis:quick_cast_2",
+      "magialucis:quick_cast_3"
     ],
     "magialucis:red_configuration_wand": "magialucis:configuration_wand_debug_view",
     "magialucis:shield_necklace": [

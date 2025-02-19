@@ -1,7 +1,7 @@
 package gurumirum.magialucis.datagen.builder;
 
-import gurumirum.magialucis.utils.BlockProvider;
 import gurumirum.magialucis.contents.recipe.ancientlight.SimpleAncientLightRecipe;
+import gurumirum.magialucis.utils.BlockProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -48,6 +48,7 @@ public class AncientLightRecipeBuilder extends ModRecipeBuilder<SimpleAncientLig
 		return this;
 	}
 
+	@Override
 	protected SimpleAncientLightRecipe createRecipeInstance() {
 		return new SimpleAncientLightRecipe(this.blocks, this.results, this.processTicks);
 	}

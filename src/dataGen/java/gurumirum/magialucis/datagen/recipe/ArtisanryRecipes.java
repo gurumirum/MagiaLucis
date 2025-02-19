@@ -4,10 +4,18 @@ import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.GemItems;
 import gurumirum.magialucis.contents.ModItemTags;
 import gurumirum.magialucis.contents.Wands;
+import gurumirum.magialucis.contents.augment.TieredAugmentType;
+import gurumirum.magialucis.contents.augment.TieredAugmentTypes;
+import gurumirum.magialucis.datagen.builder.AugmentRecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.BiFunction;
+import java.util.function.IntFunction;
 
 import static gurumirum.magialucis.contents.Accessories.*;
 import static gurumirum.magialucis.contents.Augments.*;
@@ -69,44 +77,49 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.luxInput(b -> b.minB(300))
 				.save(out);
 
-		augment()
-				.addAugment(OVERCHARGE_1)
-				.incompatible(OVERCHARGE_2, OVERCHARGE_3)
+		tieredAugmentRecipes(out, TieredAugmentTypes.OVERCHARGE, (b, i) -> b
 				.pattern(" 1 ")
 				.pattern("2 2")
 				.pattern(" 3 ")
 				.define('1', INSCRIPTION_LUX_CAPACITY, 0)
-				.define('2', LUMINOUS_RESONATOR)
-				.define('3', gem(Gem.BRIGHTSTONE))
-				.processTicks(0)
-				.save(out);
+				.define('2', i == 0 ? LUMINOUS_RESONATOR : LUMINOUS_RESONANCE_CORE)
+				.define('3', switch (i) {
+					case 0 -> gem(Gem.BRIGHTSTONE);
+					case 1 -> gem(Gem.PURIFIED_QUARTZ);
+					case 2 -> Ingredient.of(Items.BEDROCK);
+					default -> throw new IllegalStateException();
+				})
+				.instant());
 
-		augment()
-				.addAugment(OVERCHARGE_2)
-				.removeAugment(OVERCHARGE_1)
-				.precursor(OVERCHARGE_1)
-				.incompatible(OVERCHARGE_3)
+		tieredAugmentRecipes(out, TieredAugmentTypes.ACCELERATION, (b, i) -> b
 				.pattern(" 1 ")
 				.pattern("2 2")
 				.pattern(" 3 ")
-				.define('1', INSCRIPTION_LUX_CAPACITY, 0)
-				.define('2', LUMINOUS_RESONANCE_CORE)
-				.define('3', gem(Gem.PURIFIED_QUARTZ))
-				.processTicks(0)
-				.save(out);
+				.define('1', INSCRIPTION_SPEED, 0)
+				.define('2', gem(Gem.CITRINE))
+				.define('3', LUMINOUS_RESONANCE_CORE)
+				.instant());
 
-		augment()
-				.addAugment(OVERCHARGE_3)
-				.removeAugment(OVERCHARGE_2)
-				.precursor(OVERCHARGE_2)
+		tieredAugmentRecipes(out, TieredAugmentTypes.QUICK_CAST, (b, i) -> b
 				.pattern(" 1 ")
 				.pattern("2 2")
 				.pattern(" 3 ")
-				.define('1', INSCRIPTION_LUX_CAPACITY, 0)
-				.define('2', LUMINOUS_RESONANCE_CORE, 2)
-				.define('3', Items.BEDROCK, 64)
-				.processTicks(0)
-				.save(out);
+				.define('1', INSCRIPTION_CASTING_SPEED, 0)
+				.define('2', gem(Gem.AQUAMARINE))
+				.define('3', LUMINOUS_RESONANCE_CORE)
+				.instant());
+
+		tieredAugmentRecipes(out, TieredAugmentTypes.EXPANSION, (b, i) -> b
+						.pattern("414")
+						.pattern("2#2")
+						.pattern("434")
+						.define('#', Wands.ENDER_WAND)
+						.define('1', INSCRIPTION_SPATIAL, 0)
+						.define('2', Items.ENDER_EYE)
+						.define('3', LUMINOUS_RESONANCE_CORE)
+						.define('4', gem(Gem.OBSIDIAN))
+						.instant(),
+				i -> "ender_wand_expansion_" + (i + 1));
 
 		augment()
 				.addAugment(CONFIGURATION_WAND_DEBUG_VIEW)
@@ -127,73 +140,6 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.save(out);
 
 		augment()
-				.addAugment(ACCELERATION_1)
-				.pattern(" 1 ")
-				.pattern("2 2")
-				.pattern(" 3 ")
-				.define('1', INSCRIPTION_SPEED, 0)
-				.define('2', gem(Gem.CITRINE))
-				.define('3', LUMINOUS_RESONANCE_CORE)
-				.processTicks(0)
-				.save(out);
-
-		augment()
-				.addAugment(QUICK_CAST_1)
-				.pattern(" 1 ")
-				.pattern("2 2")
-				.pattern(" 3 ")
-				.define('1', INSCRIPTION_CASTING_SPEED, 0)
-				.define('2', gem(Gem.AQUAMARINE))
-				.define('3', LUMINOUS_RESONANCE_CORE)
-				.processTicks(0)
-				.save(out);
-
-		augment()
-				.addAugment(EXPANSION_1)
-				.incompatible(EXPANSION_2, EXPANSION_3)
-				.pattern("414")
-				.pattern("2#2")
-				.pattern("434")
-				.define('#', Wands.ENDER_WAND)
-				.define('1', INSCRIPTION_SPATIAL, 0)
-				.define('2', Items.ENDER_EYE)
-				.define('3', LUMINOUS_RESONANCE_CORE)
-				.define('4', gem(Gem.OBSIDIAN))
-				.processTicks(0)
-				.save(out, "ender_wand_expansion_1");
-
-		augment()
-				.addAugment(EXPANSION_2)
-				.removeAugment(EXPANSION_1)
-				.precursor(EXPANSION_1)
-				.incompatible(EXPANSION_3)
-				.pattern("414")
-				.pattern("2#2")
-				.pattern("434")
-				.define('#', Wands.ENDER_WAND)
-				.define('1', INSCRIPTION_SPATIAL, 0)
-				.define('2', Items.ENDER_EYE)
-				.define('3', LUMINOUS_RESONANCE_CORE)
-				.define('4', gem(Gem.OBSIDIAN))
-				.processTicks(0)
-				.save(out, "ender_wand_expansion_2");
-
-		augment()
-				.addAugment(EXPANSION_3)
-				.removeAugment(EXPANSION_2)
-				.precursor(EXPANSION_2)
-				.pattern("414")
-				.pattern("2#2")
-				.pattern("434")
-				.define('#', Wands.ENDER_WAND)
-				.define('1', INSCRIPTION_SPATIAL, 0)
-				.define('2', Items.ENDER_EYE)
-				.define('3', LUMINOUS_RESONANCE_CORE)
-				.define('4', gem(Gem.OBSIDIAN))
-				.processTicks(0)
-				.save(out, "ender_wand_expansion_3");
-
-		augment()
 				.addAugment(ENDER_WAND_COLLECTOR)
 				.pattern(" 1 ")
 				.pattern("2 2")
@@ -203,5 +149,33 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.define('3', LUMINOUS_RESONANCE_CORE)
 				.processTicks(0)
 				.save(out);
+	}
+
+	private static void tieredAugmentRecipes(
+			@NotNull RecipeOutput out,
+			TieredAugmentType type,
+			BiFunction<@NotNull AugmentRecipeBuilder, @NotNull Integer, AugmentRecipeBuilder> function) {
+		tieredAugmentRecipes(out, type, function, null);
+	}
+
+	private static void tieredAugmentRecipes(
+			@NotNull RecipeOutput out,
+			TieredAugmentType type,
+			BiFunction<@NotNull AugmentRecipeBuilder, @NotNull Integer, @Nullable AugmentRecipeBuilder> function,
+			@Nullable IntFunction<@Nullable String> recipeName) {
+		for (int i = 0; i < type.tiers(); i++) {
+			AugmentRecipeBuilder b = function.apply(augment(), i);
+			if (b == null) continue;
+
+			for (int j = 0; j < type.tiers(); j++) {
+				if (j == i) b.addAugment(type.get(j));
+				else if (j == i - 1) b.removeAugment(type.get(j));
+				else b.incompatible(type.get(j));
+			}
+
+			String customName = recipeName != null ? recipeName.apply(i) : null;
+			if (customName != null) b.save(out, customName);
+			else b.save(out);
+		}
 	}
 }

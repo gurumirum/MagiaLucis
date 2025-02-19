@@ -2,6 +2,7 @@ package gurumirum.magialucis.contents.item.wand;
 
 import gurumirum.magialucis.client.render.WandEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.augment.TieredAugmentTypes;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
 import gurumirum.magialucis.api.item.WandEffectSource;
 import net.minecraft.world.InteractionHand;
@@ -23,6 +24,11 @@ public class HealWandItem extends LuxContainerItem implements WandEffectSource {
 	private static final int HEAL_AMOUNT = 10;
 	private static final int REGENERATION_EFFECT_DURATION = 100;
 	private static final int COOLDOWN = 20;
+
+	public static final int USE_DURATION = 80;
+	public static final int USE_DURATION_QC1 = 60;
+	public static final int USE_DURATION_QC2 = 40;
+	public static final int USE_DURATION_QC3 = 20;
 
 	public HealWandItem(Properties properties) {
 		super(properties);
@@ -60,7 +66,12 @@ public class HealWandItem extends LuxContainerItem implements WandEffectSource {
 
 	@Override
 	public int getUseDuration(@NotNull ItemStack stack, @NotNull LivingEntity entity) {
-		return 80;
+		return switch (TieredAugmentTypes.QUICK_CAST.getTier(stack)) {
+			case 0 -> USE_DURATION_QC1;
+			case 1 -> USE_DURATION_QC2;
+			case 2 -> USE_DURATION_QC3;
+			default -> USE_DURATION;
+		};
 	}
 
 	@Override

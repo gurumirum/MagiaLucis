@@ -5,6 +5,7 @@ import gurumirum.magialucis.api.capability.LuxContainerStat;
 import gurumirum.magialucis.api.item.AugmentTooltipProvider;
 import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.augment.TieredAugmentTypes;
 import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.contents.data.ItemAugment;
 import gurumirum.magialucis.contents.entity.EnderChestPortal;
@@ -84,12 +85,13 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 
 		ItemAugment augments = AugmentLogic.getAugments(stack);
 
-		if (augments.has(Augments.EXPANSION_3)) portal.setStorageTier(EnderChestPortal.StorageTier.T3);
-		else if (augments.has(Augments.EXPANSION_2)) portal.setStorageTier(EnderChestPortal.StorageTier.T2);
-		else if (augments.has(Augments.EXPANSION_1)) portal.setStorageTier(EnderChestPortal.StorageTier.T1);
-		else portal.setStorageTier(EnderChestPortal.StorageTier.T0);
-
-		if (augments.has(Augments.ENDER_WAND_COLLECTOR)) portal.setCollectItems(true);
+		portal.setStorageTier(switch (TieredAugmentTypes.EXPANSION.getTier(augments)) {
+			case 0 -> EnderChestPortal.StorageTier.T1;
+			case 1 -> EnderChestPortal.StorageTier.T2;
+			case 2 -> EnderChestPortal.StorageTier.T3;
+			default -> EnderChestPortal.StorageTier.T0;
+		});
+		portal.setCollectItems(augments.has(Augments.ENDER_WAND_COLLECTOR));
 
 		if (portalId != null && serverLevel.getEntity(portalId) instanceof EnderChestPortal prevPortal) {
 			prevPortal.kill();
@@ -166,9 +168,11 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 		ItemAugment augments = AugmentLogic.getAugments(stack);
 		int cost = BASE_SPAWN_COST;
 
-		if (augments.has(Augments.EXPANSION_3)) cost += EXTRA_SPAWN_COST_STORAGE_3;
-		else if (augments.has(Augments.EXPANSION_2)) cost += EXTRA_SPAWN_COST_STORAGE_2;
-		else if (augments.has(Augments.EXPANSION_1)) cost += EXTRA_SPAWN_COST_STORAGE_1;
+		switch (TieredAugmentTypes.EXPANSION.getTier(augments)) {
+			case 0 -> cost += EXTRA_SPAWN_COST_STORAGE_1;
+			case 1 -> cost += EXTRA_SPAWN_COST_STORAGE_2;
+			case 2 -> cost += EXTRA_SPAWN_COST_STORAGE_3;
+		}
 
 		return cost;
 	}
@@ -177,9 +181,11 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 		ItemAugment augments = AugmentLogic.getAugments(stack);
 		int cost = BASE_TICK_COST;
 
-		if (augments.has(Augments.EXPANSION_3)) cost += EXTRA_TICK_COST_STORAGE_3;
-		else if (augments.has(Augments.EXPANSION_2)) cost += EXTRA_TICK_COST_STORAGE_2;
-		else if (augments.has(Augments.EXPANSION_1)) cost += EXTRA_TICK_COST_STORAGE_1;
+		switch (TieredAugmentTypes.EXPANSION.getTier(augments)) {
+			case 0 -> cost += EXTRA_TICK_COST_STORAGE_1;
+			case 1 -> cost += EXTRA_TICK_COST_STORAGE_2;
+			case 2 -> cost += EXTRA_TICK_COST_STORAGE_3;
+		}
 
 		if (augments.has(Augments.ENDER_WAND_COLLECTOR)) cost += EXTRA_TICK_COST_COLLECTOR;
 

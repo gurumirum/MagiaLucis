@@ -7,6 +7,7 @@ import gurumirum.magialucis.contents.recipe.IngredientStack;
 import gurumirum.magialucis.contents.recipe.artisanry.ArtisanryRecipe;
 import gurumirum.magialucis.contents.recipe.artisanry.AugmentRecipe;
 import gurumirum.magialucis.utils.AugmentProvider;
+import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.resources.ResourceLocation;
@@ -17,18 +18,15 @@ import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class AugmentRecipeBuilder extends ModRecipeBuilder<AugmentRecipe> {
 	private final List<String> rows = Lists.newArrayList();
 	private final Map<Character, IngredientStack> key = Maps.newLinkedHashMap();
 	private final List<AugmentRecipe.AugmentOp> augments = new ArrayList<>();
-	private HolderSet<Augment> precursor = HolderSet.empty();
-	private HolderSet<Augment> incompatible = HolderSet.empty();
+	private final Set<Holder<Augment>> precursor = new ObjectLinkedOpenHashSet<>();
+	private final Set<Holder<Augment>> incompatible = new ObjectLinkedOpenHashSet<>();
 	private int processTicks = -1;
 	private final LuxInputConditionBuilder luxInput = new LuxInputConditionBuilder();
 
@@ -107,30 +105,34 @@ public class AugmentRecipeBuilder extends ModRecipeBuilder<AugmentRecipe> {
 	}
 
 	public AugmentRecipeBuilder precursor(AugmentProvider... augmentProviders) {
-		return precursor(HolderSet.direct(AugmentProvider::augment, augmentProviders));
+		for (AugmentProvider p : augmentProviders) this.precursor.add(p.augment());
+		return this;
 	}
 
 	@SafeVarargs
 	public final AugmentRecipeBuilder precursor(Holder<Augment>... augments) {
-		return precursor(HolderSet.direct(augments));
+		this.precursor.addAll(Arrays.asList(augments));
+		return this;
 	}
 
-	public AugmentRecipeBuilder precursor(HolderSet<Augment> precursor) {
-		this.precursor = precursor;
+	public AugmentRecipeBuilder precursor(Collection<Holder<Augment>> precursor) {
+		this.precursor.addAll(precursor);
 		return this;
 	}
 
 	public AugmentRecipeBuilder incompatible(AugmentProvider... augmentProviders) {
-		return incompatible(HolderSet.direct(AugmentProvider::augment, augmentProviders));
+		for (AugmentProvider p : augmentProviders) this.incompatible.add(p.augment());
+		return this;
 	}
 
 	@SafeVarargs
 	public final AugmentRecipeBuilder incompatible(Holder<Augment>... augments) {
-		return incompatible(HolderSet.direct(augments));
+		this.incompatible.addAll(Arrays.asList(augments));
+		return this;
 	}
 
-	public AugmentRecipeBuilder incompatible(HolderSet<Augment> incompatible) {
-		this.incompatible = incompatible;
+	public AugmentRecipeBuilder incompatible(Collection<Holder<Augment>> precursor) {
+		this.incompatible.addAll(precursor);
 		return this;
 	}
 
@@ -153,7 +155,7 @@ public class AugmentRecipeBuilder extends ModRecipeBuilder<AugmentRecipe> {
 	protected AugmentRecipe createRecipeInstance() {
 		return new AugmentRecipe(
 				ArtisanryRecipe.GRID_UNOPTIMIZED_SPEC.unpack(this.key, this.rows), this.augments,
-				this.precursor, this.incompatible,
+				HolderSet.direct(List.copyOf(this.precursor)), HolderSet.direct(List.copyOf(this.incompatible)),
 				this.processTicks, this.luxInput.build());
 	}
 

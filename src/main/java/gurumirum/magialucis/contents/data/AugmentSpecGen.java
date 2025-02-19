@@ -40,8 +40,8 @@ public final class AugmentSpecGen {
 					c.add(CONFIGURATION_WAND_DEBUG_VIEW);
 			case AMBER_TORCH -> c.add(AMBER_TORCH_CONCEALED_FLAME);
 			case LESSER_ICE_STAFF -> c.add(QUICK_CAST_1);
-			case RECALL_STAFF -> c.add(QUICK_CAST_1, QUICK_CAST_2);
-			case HEAL_WAND -> c.add(QUICK_CAST_1, QUICK_CAST_2);
+			case RECALL_STAFF -> c.add(QUICK_CAST_1, QUICK_CAST_2, QUICK_CAST_3);
+			case HEAL_WAND -> c.add(QUICK_CAST_1, QUICK_CAST_2, QUICK_CAST_3);
 			case ENDER_WAND -> c
 					.add(EXPANSION_1, EXPANSION_2, EXPANSION_3)
 					.add(ENDER_WAND_COLLECTOR);

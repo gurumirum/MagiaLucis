@@ -3,6 +3,10 @@
   "augments": [
     "magialucis:quick_cast_1"
   ],
+  "incompatible": [
+    "magialucis:quick_cast_2",
+    "magialucis:quick_cast_3"
+  ],
   "pattern": {
     "key": {
       "1": {

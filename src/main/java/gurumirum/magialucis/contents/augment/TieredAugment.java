@@ -52,6 +52,6 @@ public class TieredAugment extends SimpleAugment {
 	}
 
 	protected boolean isTheOnlyTier(@NotNull ItemStack stack) {
-		return this.index == 0 && (this.type.levels() < 2 || !AugmentLogic.getSpec(stack).contains(this.type.get(1)));
+		return this.index == 0 && (this.type.tiers() < 2 || !AugmentLogic.getSpec(stack).contains(this.type.get(1)));
 	}
 }

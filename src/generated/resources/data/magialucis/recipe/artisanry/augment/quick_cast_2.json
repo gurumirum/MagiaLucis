@@ -2,25 +2,25 @@
   "type": "magialucis:artisanry_augment",
   "augments": [
     {
-      "augment": "magialucis:overcharge_2",
+      "augment": "magialucis:quick_cast_1",
       "remove": true
     },
-    "magialucis:overcharge_3"
+    "magialucis:quick_cast_2"
   ],
-  "incompatible": "magialucis:overcharge_1",
+  "incompatible": "magialucis:quick_cast_3",
   "pattern": {
     "key": {
       "1": {
         "count": 0,
         "ingredient": {
-          "item": "magialucis:inscription_lux_capacity"
+          "item": "magialucis:inscription_casting_speed"
         }
       },
       "2": {
-        "item": "magialucis:luminous_resonance_core"
+        "tag": "c:gems/aquamarine"
       },
       "3": {
-        "item": "minecraft:bedrock"
+        "item": "magialucis:luminous_resonance_core"
       }
     },
     "pattern": [

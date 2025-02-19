@@ -1,8 +1,10 @@
 package gurumirum.magialucis.contents.item.wand;
 
-import gurumirum.magialucis.client.render.WandEffect;
-import gurumirum.magialucis.contents.entity.LesserIceProjectile;
 import gurumirum.magialucis.api.item.WandEffectSource;
+import gurumirum.magialucis.client.render.WandEffect;
+import gurumirum.magialucis.contents.Augments;
+import gurumirum.magialucis.contents.data.AugmentLogic;
+import gurumirum.magialucis.contents.entity.LesserIceProjectile;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class LesserIceStaffItem extends Item implements WandEffectSource {
 	public static final int CHARGE_DURATION = 40;
+	public static final int CHARGE_DURATION_QC = 20;
 
 	public LesserIceStaffItem(Properties properties) {
 		super(properties);
@@ -29,7 +32,7 @@ public class LesserIceStaffItem extends Item implements WandEffectSource {
 
 	@Override
 	public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity, int timeCharged) {
-		if (level.isClientSide || stack.getUseDuration(livingEntity) - timeCharged < CHARGE_DURATION) return;
+		if (level.isClientSide || stack.getUseDuration(livingEntity) - timeCharged < chargeDuration(stack)) return;
 
 		Vec3 lookAngle = livingEntity.getLookAngle();
 
@@ -52,5 +55,9 @@ public class LesserIceStaffItem extends Item implements WandEffectSource {
 	@Override
 	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack, InteractionHand hand) {
 		return player.isUsingItem() && player.getUsedItemHand() == hand ? LesserIceStaffEffect.INSTANCE : null;
+	}
+
+	public static int chargeDuration(@NotNull ItemStack stack) {
+		return AugmentLogic.getAugments(stack).has(Augments.QUICK_CAST_1) ? CHARGE_DURATION_QC : CHARGE_DURATION;
 	}
 }

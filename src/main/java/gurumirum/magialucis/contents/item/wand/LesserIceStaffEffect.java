@@ -27,15 +27,13 @@ public class LesserIceStaffEffect extends WandEffect.SpinningTipEffect {
 	protected void getRotation(Player player, ItemStack stack, boolean firstPersonPerspective, float partialTicks, Quaternionf dest) {
 		int ticksUsingItem = player.getTicksUsingItem();
 		dest.rotateX(-RotationLogic.rotation(ticksUsingItem,
-				ticksUsingItem < LesserIceStaffItem.CHARGE_DURATION ? CHARGING_ROTATION_PERIOD : CHARGED_ROTATION_PERIOD,
+				ticksUsingItem < LesserIceStaffItem.chargeDuration(stack) ? CHARGING_ROTATION_PERIOD : CHARGED_ROTATION_PERIOD,
 				partialTicks));
 	}
 
 	@Override
 	protected ResourceLocation texture(Player player, ItemStack stack, float partialTicks, boolean firstPersonPerspective) {
-		int ticksUsingItem = player.getTicksUsingItem();
-		return ticksUsingItem < LesserIceStaffItem.CHARGE_DURATION ? TEXTURE_CHARGING :
-				ticksUsingItem - LesserIceStaffItem.CHARGE_DURATION < 4 ? TEXTURE_CHARGED_BLINKING :
-						TEXTURE_CHARGED;
+		int t = player.getTicksUsingItem() - LesserIceStaffItem.chargeDuration(stack);
+		return t < 0 ? TEXTURE_CHARGING : t < 4 ? TEXTURE_CHARGED_BLINKING : TEXTURE_CHARGED;
 	}
 }

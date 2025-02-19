@@ -3,6 +3,10 @@
   "augments": [
     "magialucis:acceleration_1"
   ],
+  "incompatible": [
+    "magialucis:acceleration_2",
+    "magialucis:acceleration_3"
+  ],
   "pattern": {
     "key": {
       "1": {

@@ -3,9 +3,12 @@ package gurumirum.magialucis.contents.augment;
 import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.api.augment.SimpleAugment;
 import gurumirum.magialucis.contents.Contents;
+import gurumirum.magialucis.contents.data.AugmentLogic;
+import gurumirum.magialucis.contents.data.ItemAugment;
 import gurumirum.magialucis.contents.profile.AugmentProfile;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
@@ -93,7 +96,7 @@ public final class TieredAugmentType {
 		return this.augments;
 	}
 
-	public int levels() {
+	public int tiers() {
 		return augments().size();
 	}
 
@@ -110,7 +113,7 @@ public final class TieredAugmentType {
 
 	public @NotNull ResourceLocation getTieredTexture(int index) {
 		if (this.tieredTextures == null) {
-			this.tieredTextures = new ResourceLocation[levels()];
+			this.tieredTextures = new ResourceLocation[tiers()];
 		}
 		if (this.tieredTextures[index] == null) {
 			this.tieredTextures[index] = baseName().withSuffix("_" + (index + 1));
@@ -126,6 +129,17 @@ public final class TieredAugmentType {
 						holder.getId().getPath() + ", provided: " + id);
 			return holder;
 		};
+	}
+
+	public int getTier(@NotNull ItemStack stack) {
+		return getTier(AugmentLogic.getAugments(stack));
+	}
+
+	public int getTier(@NotNull ItemAugment itemAugment) {
+		for (int i = this.augments.size() - 1; i >= 0; i--) {
+			if (itemAugment.has(this.augments.get(i))) return i;
+		}
+		return -1;
 	}
 
 	@FunctionalInterface
