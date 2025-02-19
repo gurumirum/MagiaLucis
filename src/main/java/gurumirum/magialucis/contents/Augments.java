@@ -18,24 +18,24 @@ import java.util.Locale;
 import static gurumirum.magialucis.contents.augment.TieredAugmentTypes.*;
 
 public enum Augments implements AugmentProvider {
-	LUX_CAPACITY_1(tiered(LUX_CAPACITY, 0)),
-	LUX_CAPACITY_2(tiered(LUX_CAPACITY, 1)),
-	LUX_CAPACITY_3(tiered(LUX_CAPACITY, 2)),
+	OVERCHARGE_1(tiered(OVERCHARGE, 0)),
+	OVERCHARGE_2(tiered(OVERCHARGE, 1)),
+	OVERCHARGE_3(tiered(OVERCHARGE, 2)),
 
-	SPEED_1(tiered(SPEED, 0)),
-	SPEED_2(tiered(SPEED, 1)),
-	SPEED_3(tiered(SPEED, 2)),
+	ACCELERATION_1(tiered(ACCELERATION, 0)),
+	ACCELERATION_2(tiered(ACCELERATION, 1)),
+	ACCELERATION_3(tiered(ACCELERATION, 2)),
 
-	CASTING_SPEED_1(tiered(CASTING_SPEED, 0)),
-	CASTING_SPEED_2(tiered(CASTING_SPEED, 1)),
-	CASTING_SPEED_3(tiered(CASTING_SPEED, 2)),
+	QUICK_CAST_1(tiered(QUICK_CAST, 0)),
+	QUICK_CAST_2(tiered(QUICK_CAST, 1)),
+	QUICK_CAST_3(tiered(QUICK_CAST, 2)),
 
-	STORAGE_1(tiered(STORAGE, 0)),
-	STORAGE_2(tiered(STORAGE, 1)),
-	STORAGE_3(tiered(STORAGE, 2)),
+	EXPANSION_1(tiered(EXPANSION, 0)),
+	EXPANSION_2(tiered(EXPANSION, 1)),
+	EXPANSION_3(tiered(EXPANSION, 2)),
 
 	CONFIGURATION_WAND_DEBUG_VIEW(textured(Textures.AUGMENT_DEBUG_VIEW, 1)),
-	AMBER_WAND_INVISIBLE_FLAME(textured(Textures.AUGMENT_CONCEAL, 2)),
+	AMBER_TORCH_CONCEALED_FLAME(textured(Textures.AUGMENT_CONCEAL, 2)),
 
 	ENDER_WAND_COLLECTOR(textured(Textures.AUGMENT_COLLECTOR, 1)),
 	;

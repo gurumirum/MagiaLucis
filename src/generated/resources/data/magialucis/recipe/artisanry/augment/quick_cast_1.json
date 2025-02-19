@@ -1,25 +1,21 @@
 {
   "type": "magialucis:artisanry_augment",
   "augments": [
-    "magialucis:lux_capacity_1"
-  ],
-  "incompatible": [
-    "magialucis:lux_capacity_2",
-    "magialucis:lux_capacity_3"
+    "magialucis:quick_cast_1"
   ],
   "pattern": {
     "key": {
       "1": {
         "count": 0,
         "ingredient": {
-          "item": "magialucis:inscription_lux_capacity"
+          "item": "magialucis:inscription_casting_speed"
         }
       },
       "2": {
-        "item": "magialucis:luminous_resonator"
+        "tag": "c:gems/aquamarine"
       },
       "3": {
-        "tag": "magialucis:brightstones"
+        "item": "magialucis:luminous_resonance_core"
       }
     },
     "pattern": [

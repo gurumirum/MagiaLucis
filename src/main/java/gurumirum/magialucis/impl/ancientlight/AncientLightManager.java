@@ -126,7 +126,7 @@ public abstract class AncientLightManager extends ContextAwareReloadListener {
 		if (player.isUsingItem()) {
 			ItemStack stack = player.getUseItem();
 			if (stack.is(Wands.ANCIENT_LIGHT.asItem()) &&
-					AugmentLogic.getAugments(stack).has(Augments.SPEED_1.augment())) {
+					AugmentLogic.getAugments(stack).has(Augments.ACCELERATION_1.augment())) {
 				return PROGRESS_PER_UPDATE_ACCELERATED;
 			}
 		}

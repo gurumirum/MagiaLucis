@@ -5,9 +5,6 @@
   ],
   "pattern": {
     "key": {
-      "#": {
-        "item": "magialucis:ender_wand"
-      },
       "1": {
         "count": 0,
         "ingredient": {
@@ -23,7 +20,7 @@
     },
     "pattern": [
       " 1 ",
-      "2#2",
+      "2 2",
       " 3 "
     ]
   }

@@ -104,7 +104,7 @@ public class AmberTorchWandItem extends LuxContainerItem {
 		if (placeState == null) return InteractionResult.FAIL;
 
 		placeState = placeState.setValue(HIDDEN, AugmentLogic.getAugments(stack)
-				.has(Augments.AMBER_WAND_INVISIBLE_FLAME));
+				.has(Augments.AMBER_TORCH_CONCEALED_FLAME));
 
 		particleCircle(level, pos, placeState.getValue(BlockStateProperties.WATERLOGGED));
 		level.playSound(null, player.blockPosition(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.5F, 1.0F);

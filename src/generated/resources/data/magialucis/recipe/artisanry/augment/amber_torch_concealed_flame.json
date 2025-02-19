@@ -1,7 +1,7 @@
 {
   "type": "magialucis:artisanry_augment",
   "augments": [
-    "magialucis:amber_wand_invisible_flame"
+    "magialucis:amber_torch_concealed_flame"
   ],
   "pattern": {
     "key": {

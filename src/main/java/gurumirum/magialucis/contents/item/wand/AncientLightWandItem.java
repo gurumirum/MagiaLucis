@@ -113,9 +113,9 @@ public class AncientLightWandItem extends Item implements BeamSource, WandEffect
 	public boolean appendHoverTextForAugment(@NotNull TooltipContext context, @Nullable Player player,
 	                                         @NotNull ItemStack stack, @NotNull List<Component> tooltip,
 	                                         @NotNull TooltipFlag flag, @NotNull Holder<Augment> augment) {
-		if (Augments.SPEED_1.is(augment)) {
+		if (Augments.ACCELERATION_1.is(augment)) {
 			tooltip.add(AugmentLogic.augmentDesc(Component.translatable(
-					"item.magialucis.ancient_light.tooltip.augment.speed",
+					"item.magialucis.ancient_light.tooltip.augment.acceleration",
 					NumberFormats.pct(.5, ChatFormatting.YELLOW))));
 			return true;
 		} else return false;

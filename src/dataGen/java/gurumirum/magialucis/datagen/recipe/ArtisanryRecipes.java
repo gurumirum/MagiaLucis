@@ -70,8 +70,8 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.save(out);
 
 		augment()
-				.addAugment(LUX_CAPACITY_1)
-				.incompatible(LUX_CAPACITY_2, LUX_CAPACITY_3)
+				.addAugment(OVERCHARGE_1)
+				.incompatible(OVERCHARGE_2, OVERCHARGE_3)
 				.pattern(" 1 ")
 				.pattern("2 2")
 				.pattern(" 3 ")
@@ -79,13 +79,13 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.define('2', LUMINOUS_RESONATOR)
 				.define('3', gem(Gem.BRIGHTSTONE))
 				.processTicks(0)
-				.save(out, "lux_capacity_1");
+				.save(out);
 
 		augment()
-				.addAugment(LUX_CAPACITY_2)
-				.removeAugment(LUX_CAPACITY_1)
-				.precursor(LUX_CAPACITY_1)
-				.incompatible(LUX_CAPACITY_3)
+				.addAugment(OVERCHARGE_2)
+				.removeAugment(OVERCHARGE_1)
+				.precursor(OVERCHARGE_1)
+				.incompatible(OVERCHARGE_3)
 				.pattern(" 1 ")
 				.pattern("2 2")
 				.pattern(" 3 ")
@@ -93,12 +93,12 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.define('2', LUMINOUS_RESONANCE_CORE)
 				.define('3', gem(Gem.PURIFIED_QUARTZ))
 				.processTicks(0)
-				.save(out, "lux_capacity_2");
+				.save(out);
 
 		augment()
-				.addAugment(LUX_CAPACITY_3)
-				.removeAugment(LUX_CAPACITY_2)
-				.precursor(LUX_CAPACITY_2)
+				.addAugment(OVERCHARGE_3)
+				.removeAugment(OVERCHARGE_2)
+				.precursor(OVERCHARGE_2)
 				.pattern(" 1 ")
 				.pattern("2 2")
 				.pattern(" 3 ")
@@ -106,7 +106,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.define('2', LUMINOUS_RESONANCE_CORE, 2)
 				.define('3', Items.BEDROCK, 64)
 				.processTicks(0)
-				.save(out, "lux_capacity_3");
+				.save(out);
 
 		augment()
 				.addAugment(CONFIGURATION_WAND_DEBUG_VIEW)
@@ -118,7 +118,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.save(out);
 
 		augment()
-				.addAugment(AMBER_WAND_INVISIBLE_FLAME)
+				.addAugment(AMBER_TORCH_CONCEALED_FLAME)
 				.pattern(" 1 ")
 				.pattern("   ")
 				.pattern("   ")
@@ -127,7 +127,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.save(out);
 
 		augment()
-				.addAugment(SPEED_1)
+				.addAugment(ACCELERATION_1)
 				.pattern(" 1 ")
 				.pattern("2 2")
 				.pattern(" 3 ")
@@ -138,7 +138,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.save(out);
 
 		augment()
-				.addAugment(CASTING_SPEED_1)
+				.addAugment(QUICK_CAST_1)
 				.pattern(" 1 ")
 				.pattern("2 2")
 				.pattern(" 3 ")
@@ -149,8 +149,8 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.save(out);
 
 		augment()
-				.addAugment(STORAGE_1)
-				.incompatible(STORAGE_2, STORAGE_3)
+				.addAugment(EXPANSION_1)
+				.incompatible(EXPANSION_2, EXPANSION_3)
 				.pattern("414")
 				.pattern("2#2")
 				.pattern("434")
@@ -160,13 +160,13 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.define('3', LUMINOUS_RESONANCE_CORE)
 				.define('4', gem(Gem.OBSIDIAN))
 				.processTicks(0)
-				.save(out);
+				.save(out, "ender_wand_expansion_1");
 
 		augment()
-				.addAugment(STORAGE_2)
-				.removeAugment(STORAGE_1)
-				.precursor(STORAGE_1)
-				.incompatible(STORAGE_3)
+				.addAugment(EXPANSION_2)
+				.removeAugment(EXPANSION_1)
+				.precursor(EXPANSION_1)
+				.incompatible(EXPANSION_3)
 				.pattern("414")
 				.pattern("2#2")
 				.pattern("434")
@@ -176,12 +176,12 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.define('3', LUMINOUS_RESONANCE_CORE)
 				.define('4', gem(Gem.OBSIDIAN))
 				.processTicks(0)
-				.save(out);
+				.save(out, "ender_wand_expansion_2");
 
 		augment()
-				.addAugment(STORAGE_3)
-				.removeAugment(STORAGE_2)
-				.precursor(STORAGE_2)
+				.addAugment(EXPANSION_3)
+				.removeAugment(EXPANSION_2)
+				.precursor(EXPANSION_2)
 				.pattern("414")
 				.pattern("2#2")
 				.pattern("434")
@@ -191,14 +191,13 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.define('3', LUMINOUS_RESONANCE_CORE)
 				.define('4', gem(Gem.OBSIDIAN))
 				.processTicks(0)
-				.save(out);
+				.save(out, "ender_wand_expansion_3");
 
 		augment()
 				.addAugment(ENDER_WAND_COLLECTOR)
 				.pattern(" 1 ")
-				.pattern("2#2")
+				.pattern("2 2")
 				.pattern(" 3 ")
-				.define('#', Wands.ENDER_WAND)
 				.define('1', INSCRIPTION_SPATIAL, 0)
 				.define('2', gem(Gem.ENDER_PEARL))
 				.define('3', LUMINOUS_RESONANCE_CORE)

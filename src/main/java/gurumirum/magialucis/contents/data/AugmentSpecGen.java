@@ -32,24 +32,24 @@ public final class AugmentSpecGen {
 	}
 
 	private static void addWandAugment(Collector c, Wands wand) {
-		if (wand.luxContainerStat() != null) c.add(LUX_CAPACITY_1, LUX_CAPACITY_2, LUX_CAPACITY_3);
+		if (wand.luxContainerStat() != null) c.add(OVERCHARGE_1, OVERCHARGE_2, OVERCHARGE_3);
 
 		switch (wand) {
-			case ANCIENT_LIGHT -> c.add(SPEED_1);
+			case ANCIENT_LIGHT -> c.add(ACCELERATION_1);
 			case CONFIGURATION_WAND, RED_CONFIGURATION_WAND, ICY_CONFIGURATION_WAND ->
 					c.add(CONFIGURATION_WAND_DEBUG_VIEW);
-			case AMBER_TORCH -> c.add(AMBER_WAND_INVISIBLE_FLAME);
-			case LESSER_ICE_STAFF -> c.add(CASTING_SPEED_1);
-			case RECALL_STAFF -> c.add(CASTING_SPEED_1, CASTING_SPEED_2);
-			case HEAL_WAND -> c.add(CASTING_SPEED_1, CASTING_SPEED_2);
+			case AMBER_TORCH -> c.add(AMBER_TORCH_CONCEALED_FLAME);
+			case LESSER_ICE_STAFF -> c.add(QUICK_CAST_1);
+			case RECALL_STAFF -> c.add(QUICK_CAST_1, QUICK_CAST_2);
+			case HEAL_WAND -> c.add(QUICK_CAST_1, QUICK_CAST_2);
 			case ENDER_WAND -> c
-					.add(STORAGE_1, STORAGE_2, STORAGE_3)
+					.add(EXPANSION_1, EXPANSION_2, EXPANSION_3)
 					.add(ENDER_WAND_COLLECTOR);
 		}
 	}
 
 	private static void addAccessoryAugment(Collector c, Accessories acc) {
-		if (acc.luxContainerStat() != null) c.add(LUX_CAPACITY_1, LUX_CAPACITY_2, LUX_CAPACITY_3);
+		if (acc.luxContainerStat() != null) c.add(OVERCHARGE_1, OVERCHARGE_2, OVERCHARGE_3);
 	}
 
 	private static <T> void collect(T t,

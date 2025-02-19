@@ -1,73 +1,73 @@
 {
   "values": {
     "magialucis:amber_torch": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3",
-      "magialucis:amber_wand_invisible_flame"
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3",
+      "magialucis:amber_torch_concealed_flame"
     ],
-    "magialucis:ancient_light": "magialucis:speed_1",
+    "magialucis:ancient_light": "magialucis:acceleration_1",
     "magialucis:configuration_wand": "magialucis:configuration_wand_debug_view",
     "magialucis:diamond_mace": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3"
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3"
     ],
     "magialucis:druid_wreath": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3"
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3"
     ],
     "magialucis:dryad_wreath": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3"
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3"
     ],
     "magialucis:ender_wand": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3",
-      "magialucis:storage_1",
-      "magialucis:storage_2",
-      "magialucis:storage_3",
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3",
+      "magialucis:expansion_1",
+      "magialucis:expansion_2",
+      "magialucis:expansion_3",
       "magialucis:ender_wand_collector"
     ],
     "magialucis:heal_wand": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3",
-      "magialucis:casting_speed_1",
-      "magialucis:casting_speed_2"
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3",
+      "magialucis:quick_cast_1",
+      "magialucis:quick_cast_2"
     ],
     "magialucis:icy_configuration_wand": "magialucis:configuration_wand_debug_view",
     "magialucis:lapis_shield": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3"
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3"
     ],
-    "magialucis:lesser_ice_staff": "magialucis:casting_speed_1",
+    "magialucis:lesser_ice_staff": "magialucis:quick_cast_1",
     "magialucis:obsidian_bracelet": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3"
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3"
     ],
     "magialucis:recall_staff": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3",
-      "magialucis:casting_speed_1",
-      "magialucis:casting_speed_2"
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3",
+      "magialucis:quick_cast_1",
+      "magialucis:quick_cast_2"
     ],
     "magialucis:red_configuration_wand": "magialucis:configuration_wand_debug_view",
     "magialucis:shield_necklace": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3"
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3"
     ],
     "magialucis:speed_ring": [
-      "magialucis:lux_capacity_1",
-      "magialucis:lux_capacity_2",
-      "magialucis:lux_capacity_3"
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3"
     ]
   }
 }

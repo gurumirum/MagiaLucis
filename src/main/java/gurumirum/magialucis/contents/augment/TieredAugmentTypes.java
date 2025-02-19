@@ -12,21 +12,21 @@ import java.util.List;
 public final class TieredAugmentTypes {
 	private TieredAugmentTypes() {}
 
-	public static final TieredAugmentType LUX_CAPACITY = TieredAugmentType.create("lux_capacity", 3,
+	public static final TieredAugmentType OVERCHARGE = TieredAugmentType.create("overcharge", 3,
 			(p, i) -> p.descriptions(key -> luxCapacityDescription(i)));
 
-	public static final TieredAugmentType SPEED = TieredAugmentType.create("speed", 3);
-	public static final TieredAugmentType CASTING_SPEED = TieredAugmentType.create("casting_speed", 3);
-	public static final TieredAugmentType STORAGE = TieredAugmentType.create("storage", 3);
+	public static final TieredAugmentType ACCELERATION = TieredAugmentType.create("acceleration", 3);
+	public static final TieredAugmentType QUICK_CAST = TieredAugmentType.create("quick_cast", 3);
+	public static final TieredAugmentType EXPANSION = TieredAugmentType.create("expansion", 3);
 
 	private static @NotNull List<@NotNull Component> luxCapacityDescription(int index) {
 		return List.of(
 				AugmentLogic.augmentDesc(
-						Component.translatable("magialucis.augment.magialucis.lux_capacity.description",
+						Component.translatable("magialucis.augment.magialucis.overcharge.description",
 								NumberFormats.pct(switch (index) {
-									case 2 -> ItemStackLuxAcceptor.LUX_CAPACITY_3_MULTIPLIER;
-									case 1 -> ItemStackLuxAcceptor.LUX_CAPACITY_2_MULTIPLIER;
-									default -> ItemStackLuxAcceptor.LUX_CAPACITY_1_MULTIPLIER;
+									case 2 -> ItemStackLuxAcceptor.OVERCHARGE_3_MULTIPLIER;
+									case 1 -> ItemStackLuxAcceptor.OVERCHARGE_2_MULTIPLIER;
+									default -> ItemStackLuxAcceptor.OVERCHARGE_1_MULTIPLIER;
 								} - 1, ChatFormatting.YELLOW)
 						)
 				)

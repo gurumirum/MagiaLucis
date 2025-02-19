@@ -1,7 +1,7 @@
 {
   "type": "magialucis:artisanry_augment",
   "augments": [
-    "magialucis:speed_1"
+    "magialucis:acceleration_1"
   ],
   "pattern": {
     "key": {

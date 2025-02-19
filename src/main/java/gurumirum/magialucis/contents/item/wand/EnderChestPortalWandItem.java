@@ -84,9 +84,9 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 
 		ItemAugment augments = AugmentLogic.getAugments(stack);
 
-		if (augments.has(Augments.STORAGE_3)) portal.setStorageTier(EnderChestPortal.StorageTier.T3);
-		else if (augments.has(Augments.STORAGE_2)) portal.setStorageTier(EnderChestPortal.StorageTier.T2);
-		else if (augments.has(Augments.STORAGE_1)) portal.setStorageTier(EnderChestPortal.StorageTier.T1);
+		if (augments.has(Augments.EXPANSION_3)) portal.setStorageTier(EnderChestPortal.StorageTier.T3);
+		else if (augments.has(Augments.EXPANSION_2)) portal.setStorageTier(EnderChestPortal.StorageTier.T2);
+		else if (augments.has(Augments.EXPANSION_1)) portal.setStorageTier(EnderChestPortal.StorageTier.T1);
 		else portal.setStorageTier(EnderChestPortal.StorageTier.T0);
 
 		if (augments.has(Augments.ENDER_WAND_COLLECTOR)) portal.setCollectItems(true);
@@ -150,12 +150,12 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 	public boolean appendHoverTextForAugment(
 			@NotNull TooltipContext context, @Nullable Player player, @NotNull ItemStack stack,
 			@NotNull List<Component> tooltip, @NotNull TooltipFlag flag, @NotNull Holder<Augment> augment) {
-		if (Augments.STORAGE_1.is(augment)) {
-			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.storage_1"));
-		} else if (Augments.STORAGE_2.is(augment)) {
-			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.storage_2"));
-		} else if (Augments.STORAGE_3.is(augment)) {
-			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.storage_3"));
+		if (Augments.EXPANSION_1.is(augment)) {
+			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.expansion_1"));
+		} else if (Augments.EXPANSION_2.is(augment)) {
+			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.expansion_2"));
+		} else if (Augments.EXPANSION_3.is(augment)) {
+			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.expansion_3"));
 		} else if (Augments.ENDER_WAND_COLLECTOR.is(augment)) {
 			tooltip.add(AugmentLogic.augmentDesc("item.magialucis.ender_wand.tooltip.augment.collector"));
 		} else return false;
@@ -166,9 +166,9 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 		ItemAugment augments = AugmentLogic.getAugments(stack);
 		int cost = BASE_SPAWN_COST;
 
-		if (augments.has(Augments.STORAGE_3)) cost += EXTRA_SPAWN_COST_STORAGE_3;
-		else if (augments.has(Augments.STORAGE_2)) cost += EXTRA_SPAWN_COST_STORAGE_2;
-		else if (augments.has(Augments.STORAGE_1)) cost += EXTRA_SPAWN_COST_STORAGE_1;
+		if (augments.has(Augments.EXPANSION_3)) cost += EXTRA_SPAWN_COST_STORAGE_3;
+		else if (augments.has(Augments.EXPANSION_2)) cost += EXTRA_SPAWN_COST_STORAGE_2;
+		else if (augments.has(Augments.EXPANSION_1)) cost += EXTRA_SPAWN_COST_STORAGE_1;
 
 		return cost;
 	}
@@ -177,9 +177,9 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 		ItemAugment augments = AugmentLogic.getAugments(stack);
 		int cost = BASE_TICK_COST;
 
-		if (augments.has(Augments.STORAGE_3)) cost += EXTRA_TICK_COST_STORAGE_3;
-		else if (augments.has(Augments.STORAGE_2)) cost += EXTRA_TICK_COST_STORAGE_2;
-		else if (augments.has(Augments.STORAGE_1)) cost += EXTRA_TICK_COST_STORAGE_1;
+		if (augments.has(Augments.EXPANSION_3)) cost += EXTRA_TICK_COST_STORAGE_3;
+		else if (augments.has(Augments.EXPANSION_2)) cost += EXTRA_TICK_COST_STORAGE_2;
+		else if (augments.has(Augments.EXPANSION_1)) cost += EXTRA_TICK_COST_STORAGE_1;
 
 		if (augments.has(Augments.ENDER_WAND_COLLECTOR)) cost += EXTRA_TICK_COST_COLLECTOR;
 

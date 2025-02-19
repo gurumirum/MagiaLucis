@@ -1,13 +1,12 @@
 {
   "type": "magialucis:artisanry_augment",
   "augments": [
-    "magialucis:storage_2",
-    {
-      "augment": "magialucis:storage_1",
-      "remove": true
-    }
+    "magialucis:expansion_1"
   ],
-  "incompatible": "magialucis:storage_3",
+  "incompatible": [
+    "magialucis:expansion_2",
+    "magialucis:expansion_3"
+  ],
   "pattern": {
     "key": {
       "#": {
@@ -34,6 +33,5 @@
       "2#2",
       "434"
     ]
-  },
-  "precursor": "magialucis:storage_1"
+  }
 }

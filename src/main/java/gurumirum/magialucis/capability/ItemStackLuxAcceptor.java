@@ -12,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
 public class ItemStackLuxAcceptor implements LuxAcceptor, LuxContainerStat {
-	public static final double LUX_CAPACITY_1_MULTIPLIER = 1.5;
-	public static final double LUX_CAPACITY_2_MULTIPLIER = 3.0;
-	public static final double LUX_CAPACITY_3_MULTIPLIER = 6.0;
+	public static final double OVERCHARGE_1_MULTIPLIER = 1.5;
+	public static final double OVERCHARGE_2_MULTIPLIER = 3.0;
+	public static final double OVERCHARGE_3_MULTIPLIER = 6.0;
 
 	private final ItemStack stack;
 	private final LuxContainerStat baseStat;
@@ -29,9 +29,9 @@ public class ItemStackLuxAcceptor implements LuxAcceptor, LuxContainerStat {
 	public long maxCharge() {
 		long maxCharge = this.baseStat.maxCharge();
 		ItemAugment augments = AugmentLogic.getAugments(this.stack);
-		if (augments.has(Augments.LUX_CAPACITY_3)) maxCharge *= LUX_CAPACITY_3_MULTIPLIER;
-		else if (augments.has(Augments.LUX_CAPACITY_2)) maxCharge *= LUX_CAPACITY_2_MULTIPLIER;
-		else if (augments.has(Augments.LUX_CAPACITY_1)) maxCharge *= LUX_CAPACITY_1_MULTIPLIER;
+		if (augments.has(Augments.OVERCHARGE_3)) maxCharge *= OVERCHARGE_3_MULTIPLIER;
+		else if (augments.has(Augments.OVERCHARGE_2)) maxCharge *= OVERCHARGE_2_MULTIPLIER;
+		else if (augments.has(Augments.OVERCHARGE_1)) maxCharge *= OVERCHARGE_1_MULTIPLIER;
 		return maxCharge;
 	}
 
