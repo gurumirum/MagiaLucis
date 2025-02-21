@@ -8,8 +8,8 @@ import org.joml.Vector3f;
 
 import static gurumirum.magialucis.api.MagiaLucisApi.id;
 
-public class RecallStaffWandEffect extends WandEffect.SpinningTipEffect {
-	public static final RecallStaffWandEffect INSTANCE = new RecallStaffWandEffect();
+public class RecallStaffEffect extends WandEffect.SpinningTipEffect {
+	public static final RecallStaffEffect INSTANCE = new RecallStaffEffect();
 
 	private static final ResourceLocation TEXTURE = id("textures/wand_effect/recall.png");
 

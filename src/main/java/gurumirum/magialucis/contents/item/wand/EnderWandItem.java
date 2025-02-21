@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class EnderChestPortalWandItem extends LuxContainerItem implements AugmentTooltipProvider {
+public class EnderWandItem extends LuxContainerItem implements AugmentTooltipProvider {
 	public static final double PORTAL_DISTANCE_LIMIT = 10;
 
 	public static final int BASE_SPAWN_COST = 200;
@@ -46,7 +46,7 @@ public class EnderChestPortalWandItem extends LuxContainerItem implements Augmen
 
 	public static final int EXTRA_TICK_COST_COLLECTOR = 10;
 
-	public EnderChestPortalWandItem(Properties properties) {
+	public EnderWandItem(Properties properties) {
 		super(properties);
 	}
 

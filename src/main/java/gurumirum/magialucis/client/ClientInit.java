@@ -70,7 +70,7 @@ public final class ClientInit {
 
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), USING, wandUsing);
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
-				return RecallStaffWandItem.canUse(stack, entity) ? 0 : 1;
+				return RecallStaffItem.canUse(stack, entity) ? 0 : 1;
 			});
 
 			ItemProperties.register(Wands.HEAL_WAND.asItem(), USING, wandUsing);
@@ -81,7 +81,7 @@ public final class ClientInit {
 
 			ItemProperties.register(Wands.DIAMOND_MACE.asItem(), NO_CHARGE, noCharge(DiamondMaceItem.COST_PER_ATTACK));
 
-			ItemProperties.register(Wands.ENDER_WAND.asItem(), NO_CHARGE, noCharge(EnderChestPortalWandItem::portalSpawnCost));
+			ItemProperties.register(Wands.ENDER_WAND.asItem(), NO_CHARGE, noCharge(EnderWandItem::portalSpawnCost));
 
 			ItemProperties.register(Accessories.SPEED_RING.asItem(), NO_CHARGE, noCharge(1));
 			ItemProperties.register(Accessories.OBSIDIAN_BRACELET.asItem(), NO_CHARGE, noCharge(ObsidianBraceletItem.COST_PER_FIRE_RESISTANCE));

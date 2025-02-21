@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class RecallStaffWandItem extends LuxContainerItem implements WandEffectSource {
+public class RecallStaffItem extends LuxContainerItem implements WandEffectSource {
 	public static final int RECALL_FATIGUE_DURATION = 20 * 75;
 
 	public static final int COST = 800;
@@ -39,7 +39,7 @@ public class RecallStaffWandItem extends LuxContainerItem implements WandEffectS
 	public static final int USE_DURATION_QC2 = 80;
 	public static final int USE_DURATION_QC3 = 40;
 
-	public RecallStaffWandItem(Properties properties) {
+	public RecallStaffItem(Properties properties) {
 		super(properties);
 	}
 
@@ -88,7 +88,7 @@ public class RecallStaffWandItem extends LuxContainerItem implements WandEffectS
 
 	@Override
 	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack, InteractionHand hand) {
-		return player.isUsingItem() && player.getUsedItemHand() == hand ? RecallStaffWandEffect.INSTANCE : null;
+		return player.isUsingItem() && player.getUsedItemHand() == hand ? RecallStaffEffect.INSTANCE : null;
 	}
 
 	@Override

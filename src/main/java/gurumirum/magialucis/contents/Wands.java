@@ -26,16 +26,16 @@ public enum Wands implements ItemLike {
 
 	// TODO citrine, iolite wand
 
-	RECALL_STAFF(ItemProfile.customItem(RecallStaffWandItem::new, StandardWandShape.STAFF),
-			LuxContainerStat.withBaseStat(RecallStaffWandItem.COST * 3, Gem.AQUAMARINE)),
+	RECALL_STAFF(ItemProfile.customItem(RecallStaffItem::new, StandardWandShape.STAFF),
+			LuxContainerStat.withBaseStat(RecallStaffItem.COST * 3, Gem.AQUAMARINE)),
 
 	HEAL_WAND(ItemProfile.customItem(HealWandItem::new, StandardWandShape.WAND),
 			LuxContainerStat.withBaseStat(HealWandItem.COST_PER_CAST * 5, Gem.PEARL)),
 
 	// TODO prismarine wand
 
-	ENDER_WAND(ItemProfile.customItem(EnderChestPortalWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(EnderChestPortalWandItem.BASE_TICK_COST * 20 * 300, Gem.ENDER_PEARL)),
+	ENDER_WAND(ItemProfile.customItem(EnderWandItem::new, StandardWandShape.WAND),
+			LuxContainerStat.withBaseStat(EnderWandItem.BASE_TICK_COST * 20 * 300, Gem.ENDER_PEARL)),
 
 	// TODO redstone wand
 
