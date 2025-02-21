@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 public class EnderChestPortalRenderer extends EntityRenderer<EnderChestPortal> {
 	private static final ResourceLocation TEXTURE = MagiaLucisApi.id("textures/entity/ender_chest_portal.png");
@@ -21,6 +22,8 @@ public class EnderChestPortalRenderer extends EntityRenderer<EnderChestPortal> {
 
 	@Override
 	public void render(@NotNull EnderChestPortal entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+		Vector3f normal = poseStack.last().transformNormal(0, 1, 0, new Vector3f());
+
 		poseStack.pushPose();
 		poseStack.translate(0, entity.getBbHeight() / 2, 0);
 		poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
@@ -40,10 +43,10 @@ public class EnderChestPortalRenderer extends EntityRenderer<EnderChestPortal> {
 		float v1 = (spriteIndex) / 8f;
 		float v2 = (spriteIndex + 1) / 8f;
 
-		vertex(poseStack.last(), vc, -.5f, -.5f, 0, 1, v1, 0, 0, 1);
-		vertex(poseStack.last(), vc, .5f, -.5f, 0, 0, v1, 0, 0, 1);
-		vertex(poseStack.last(), vc, .5f, .5f, 0, 0, v2, 0, 0, 1);
-		vertex(poseStack.last(), vc, -.5f, .5f, 0, 1, v2, 0, 0, 1);
+		vertex(poseStack.last(), vc, -.5f, -.5f, 0, 1, v1, normal);
+		vertex(poseStack.last(), vc, .5f, -.5f, 0, 0, v1, normal);
+		vertex(poseStack.last(), vc, .5f, .5f, 0, 0, v2, normal);
+		vertex(poseStack.last(), vc, -.5f, .5f, 0, 1, v2, normal);
 
 		poseStack.popPose();
 	}
@@ -56,12 +59,12 @@ public class EnderChestPortalRenderer extends EntityRenderer<EnderChestPortal> {
 	private static void vertex(PoseStack.Pose pose, VertexConsumer consumer,
 	                           float x, float y, float z,
 	                           float u, float v,
-	                           float normalX, float normalY, float normalZ) {
+	                           Vector3f normal) {
 		consumer.addVertex(pose, x, y, z)
 				.setColor(-1)
 				.setUv(u, v)
 				.setOverlay(OverlayTexture.NO_OVERLAY)
 				.setLight(LightTexture.FULL_BRIGHT)
-				.setNormal(pose, normalX, normalZ, normalY);
+				.setNormal(normal.x, normal.y, normal.z);
 	}
 }
