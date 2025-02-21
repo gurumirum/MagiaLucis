@@ -70,8 +70,7 @@ public final class ClientInit {
 
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), USING, wandUsing);
 			ItemProperties.register(Wands.RECALL_STAFF.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
-				return stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L) < RecallStaffWandItem.COST_PER_RECALL ||
-						entity != null && entity.hasEffect(ModMobEffects.RECALL_FATIGUE) ? 1 : 0;
+				return RecallStaffWandItem.canUse(stack, entity) ? 0 : 1;
 			});
 
 			ItemProperties.register(Wands.HEAL_WAND.asItem(), USING, wandUsing);

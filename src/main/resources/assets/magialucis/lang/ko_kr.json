@@ -176,6 +176,8 @@
   "item.magialucis.sunlight_infused_powder": "햇빛이 주입된 가루",
   "item.magialucis.temple_guardian_spawn_egg": "신전 수호자 생성 알",
   "item.magialucis.tooltip.charger": "§7배치된 아이템 충전",
+  "item.magialucis.tooltip.consumption.s": "%s§7/§es",
+  "item.magialucis.tooltip.consumption.use": "%s§7/§e사용",
   "item.magialucis.tooltip.interference_threshold": "§7작동 가능한 기체 수: %s",
   "item.magialucis.tooltip.lux_charge": "§fLUX§7: §f%s§7 / §f%s",
   "item.magialucis.tooltip.lux_charge_rate": "§fLUX§7 최대 충전량:",
