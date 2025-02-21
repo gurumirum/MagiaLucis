@@ -82,7 +82,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.pattern("2 2")
 				.pattern(" 3 ")
 				.define('1', INSCRIPTION_LUX_CAPACITY, 0)
-				.define('2', i == 0 ? LUMINOUS_RESONATOR : LUMINOUS_RESONANCE_CORE)
+				.define('2', LUMINOUS_RESONANCE_AUGMENTOR)
 				.define('3', switch (i) {
 					case 0 -> gem(Gem.BRIGHTSTONE);
 					case 1 -> gem(Gem.PURIFIED_QUARTZ);
@@ -97,7 +97,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.pattern(" 3 ")
 				.define('1', INSCRIPTION_SPEED, 0)
 				.define('2', gem(Gem.CITRINE))
-				.define('3', LUMINOUS_RESONANCE_CORE)
+				.define('3', LUMINOUS_RESONANCE_AUGMENTOR)
 				.instant());
 
 		tieredAugmentRecipes(out, TieredAugmentTypes.QUICK_CAST, (b, i) -> b
@@ -106,7 +106,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.pattern(" 3 ")
 				.define('1', INSCRIPTION_CASTING_SPEED, 0)
 				.define('2', gem(Gem.AQUAMARINE))
-				.define('3', LUMINOUS_RESONANCE_CORE)
+				.define('3', LUMINOUS_RESONANCE_AUGMENTOR)
 				.instant());
 
 		tieredAugmentRecipes(out, TieredAugmentTypes.EXPANSION, (b, i) -> b
@@ -116,7 +116,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 						.define('#', Wands.ENDER_WAND)
 						.define('1', INSCRIPTION_SPATIAL, 0)
 						.define('2', Items.ENDER_EYE)
-						.define('3', LUMINOUS_RESONANCE_CORE)
+						.define('3', LUMINOUS_RESONANCE_AUGMENTOR)
 						.define('4', gem(Gem.OBSIDIAN))
 						.instant(),
 				i -> "ender_wand_expansion_" + (i + 1));
@@ -146,7 +146,7 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.pattern(" 3 ")
 				.define('1', INSCRIPTION_SPATIAL, 0)
 				.define('2', gem(Gem.ENDER_PEARL))
-				.define('3', LUMINOUS_RESONANCE_CORE)
+				.define('3', LUMINOUS_RESONANCE_AUGMENTOR)
 				.processTicks(0)
 				.save(out);
 	}

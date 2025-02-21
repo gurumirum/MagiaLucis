@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "1": {
+      "tag": "c:nuggets/electrum"
+    },
+    "2": {
+      "item": "magialucis:luminous_resonator"
+    },
+    "3": {
+      "tag": "magialucis:brightstones"
+    }
+  },
+  "pattern": [
+    " 12",
+    "131",
+    "21 "
+  ],
+  "result": {
+    "count": 1,
+    "id": "magialucis:luminous_resonance_augmentor"
+  }
+}

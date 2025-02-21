@@ -195,6 +195,7 @@ public class ItemModelGen extends ItemModelProvider {
 		basicItem(ModItems.ANCIENT_CORE.asItem());
 		basicItem(ModItems.LUMINOUS_RESONATOR.asItem());
 		basicItem(ModItems.LUMINOUS_RESONANCE_CORE.asItem());
+		basicItem(ModItems.LUMINOUS_RESONANCE_AUGMENTOR.asItem());
 		basicItem(ModItems.MECHANICAL_COMPONENT.asItem());
 		basicItem(ModItems.LUMINOUS_MECHANICAL_COMPONENT.asItem());
 

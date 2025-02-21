@@ -104,6 +104,16 @@ public abstract class CraftingRecipes extends SharedRecipeLogic {
 				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
 				.save(out);
 
+		shaped(MISC, LUMINOUS_RESONANCE_AUGMENTOR)
+				.pattern(" 12")
+				.pattern("131")
+				.pattern("21 ")
+				.define('1', ModItemTags.ELECTRUM_NUGGETS)
+				.define('2', LUMINOUS_RESONATOR)
+				.define('3', gem(Gem.BRIGHTSTONE))
+				.unlockedBy("has_luminous_resonator", has(LUMINOUS_RESONATOR))
+				.save(out);
+
 		shaped(MISC, MECHANICAL_COMPONENT, 2)
 				.pattern(" 1 ")
 				.pattern("121")
