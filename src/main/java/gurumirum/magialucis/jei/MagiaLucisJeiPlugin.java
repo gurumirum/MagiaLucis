@@ -1,10 +1,7 @@
 package gurumirum.magialucis.jei;
 
 import gurumirum.magialucis.api.MagiaLucisApi;
-import gurumirum.magialucis.contents.Accessories;
-import gurumirum.magialucis.contents.ModBlocks;
-import gurumirum.magialucis.contents.ModRecipes;
-import gurumirum.magialucis.contents.Wands;
+import gurumirum.magialucis.contents.*;
 import gurumirum.magialucis.contents.block.artisanrytable.ArtisanryTableScreen;
 import gurumirum.magialucis.contents.block.lux.lightloom.LightLoomType;
 import gurumirum.magialucis.contents.recipe.artisanry.AugmentRecipe;
@@ -16,9 +13,12 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @JeiPlugin
@@ -82,16 +82,29 @@ public class MagiaLucisJeiPlugin implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(@NotNull ISubtypeRegistration registration) {
+		registration.registerSubtypeInterpreter(ModBlocks.RELAY.asItem(), GemContainerSubtypeInterpreter.INSTANCE);
+		registration.registerSubtypeInterpreter(ModBlocks.SPLITTER.asItem(), GemContainerSubtypeInterpreter.INSTANCE);
+		registration.registerSubtypeInterpreter(ModBlocks.CONNECTOR.asItem(), GemContainerSubtypeInterpreter.INSTANCE);
+	}
+
+	@Override
+	public void registerExtraIngredients(@NotNull IExtraIngredientRegistration registration) {
+		List<ItemStack> stacks = new ArrayList<>();
 		for (var i : Wands.values()) {
 			if (i.luxContainerStat() != null) {
-				registration.registerSubtypeInterpreter(i.asItem(), LuxContainerSubtypeInterpreter.INSTANCE);
+				ItemStack stack = new ItemStack(i.asItem());
+				stack.set(ModDataComponents.LUX_CHARGE, i.luxContainerStat().maxCharge());
+				stacks.add(stack);
 			}
 		}
 		for (Accessories i : Accessories.values()) {
 			if (i.luxContainerStat() != null) {
-				registration.registerSubtypeInterpreter(i.asItem(), LuxContainerSubtypeInterpreter.INSTANCE);
+				ItemStack stack = new ItemStack(i.asItem());
+				stack.set(ModDataComponents.LUX_CHARGE, i.luxContainerStat().maxCharge());
+				stacks.add(stack);
 			}
 		}
+		registration.addExtraItemStacks(stacks);
 	}
 
 	@Override
