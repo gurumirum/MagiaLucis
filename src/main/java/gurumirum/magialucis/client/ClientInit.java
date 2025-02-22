@@ -64,7 +64,7 @@ public final class ClientInit {
 
 			ItemProperties.register(Wands.ANCIENT_LIGHT.asItem(), USING, wandUsing);
 
-			ItemProperties.register(Wands.AMBER_TORCH.asItem(), NO_CHARGE, noCharge(AmberTorchWandItem.COST_PER_LIGHT_SOURCE));
+			ItemProperties.register(Wands.AMBER_TORCH.asItem(), NO_CHARGE, noCharge(AmberTorchWandItem.COST));
 
 			ItemProperties.register(Wands.LESSER_ICE_STAFF.asItem(), USING, wandUsing);
 
@@ -74,7 +74,7 @@ public final class ClientInit {
 			});
 
 			ItemProperties.register(Wands.HEAL_WAND.asItem(), USING, wandUsing);
-			ItemProperties.register(Wands.HEAL_WAND.asItem(), NO_CHARGE, noCharge(HealWandItem.COST_PER_CAST));
+			ItemProperties.register(Wands.HEAL_WAND.asItem(), NO_CHARGE, noCharge(HealWandItem::cost));
 
 			ItemProperties.register(Wands.LAPIS_SHIELD.asItem(), USING, wandUsing);
 			ItemProperties.register(Wands.LAPIS_SHIELD.asItem(), NO_CHARGE, noCharge(LapisShieldItem.COST_PER_BLOCK));

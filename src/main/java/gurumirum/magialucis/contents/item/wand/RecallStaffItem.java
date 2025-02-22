@@ -7,7 +7,7 @@ import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModMobEffects;
 import gurumirum.magialucis.contents.augment.TieredAugmentTypes;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
-import gurumirum.magialucis.utils.NumberFormats;
+import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -96,11 +96,7 @@ public class RecallStaffItem extends LuxContainerItem implements WandEffectSourc
 	                                             @NotNull List<Component> tooltip, @NotNull TooltipFlag flag,
 	                                             @NotNull LuxContainerStat luxContainerStat) {
 		super.appendLuxContainerDescription(stack, context, tooltip, flag, luxContainerStat);
-		tooltip.add(Component.translatable("item.magialucis.tooltip.lux_consumption",
-				Component.translatable("item.magialucis.tooltip.consumption.use",
-						NumberFormats.dec(cost(stack), null)
-				)
-		));
+		tooltip.add(LuxStatTooltip.luxConsumptionPerUse(cost(stack), luxContainerStat.maxCharge()));
 	}
 
 	@SuppressWarnings("lossy-conversions")

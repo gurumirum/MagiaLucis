@@ -1,14 +1,17 @@
 package gurumirum.magialucis.contents.item.wand;
 
+import gurumirum.magialucis.api.capability.LuxContainerStat;
 import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
+import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -18,6 +21,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -32,10 +36,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import java.util.List;
+
 import static gurumirum.magialucis.contents.block.ModBlockStates.HIDDEN;
 
 public class AmberTorchWandItem extends LuxContainerItem {
-	public static final int COST_PER_LIGHT_SOURCE = 5;
+	public static final int COST = 5;
 
 	private static final int HIT_DISTANCE = 15;
 	private static final int PARTICLE_COUNT = 8;
@@ -49,7 +55,7 @@ public class AmberTorchWandItem extends LuxContainerItem {
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
-		if (charge < COST_PER_LIGHT_SOURCE) return InteractionResultHolder.fail(player.getItemInHand(hand));
+		if (charge < COST) return InteractionResultHolder.fail(player.getItemInHand(hand));
 
 		HitResult res = player.pick(HIT_DISTANCE, 0, false);
 		if (!(res instanceof BlockHitResult hitResult) || hitResult.getType() != HitResult.Type.BLOCK)
@@ -58,7 +64,7 @@ public class AmberTorchWandItem extends LuxContainerItem {
 		InteractionResult result = placeLight(level, player, hand, stack, hitResult);
 		if (result.indicateItemUse()) {
 			particleLine(level, player, hitResult.getLocation());
-			stack.set(ModDataComponents.LUX_CHARGE, charge - COST_PER_LIGHT_SOURCE);
+			stack.set(ModDataComponents.LUX_CHARGE, charge - COST);
 			applyCooldown(player);
 		}
 
@@ -69,12 +75,12 @@ public class AmberTorchWandItem extends LuxContainerItem {
 	public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
 		ItemStack stack = context.getItemInHand();
 		long charge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
-		if (charge < COST_PER_LIGHT_SOURCE) return InteractionResult.FAIL;
+		if (charge < COST) return InteractionResult.FAIL;
 
 		InteractionResult result = placeLight(context.getLevel(), context.getPlayer(), context.getHand(),
 				context.getItemInHand(), context.getHitResult());
 		if (result.indicateItemUse()) {
-			stack.set(ModDataComponents.LUX_CHARGE, charge - COST_PER_LIGHT_SOURCE);
+			stack.set(ModDataComponents.LUX_CHARGE, charge - COST);
 			applyCooldown(context.getPlayer());
 		}
 
@@ -165,5 +171,13 @@ public class AmberTorchWandItem extends LuxContainerItem {
 						0.0, waterlogged ? (j + 1) * 0.001 : 0.0, 0.0);
 			}
 		}
+	}
+
+	@Override
+	protected void appendLuxContainerDescription(@NotNull ItemStack stack, @NotNull TooltipContext context,
+	                                             @NotNull List<Component> tooltip, @NotNull TooltipFlag flag,
+	                                             @NotNull LuxContainerStat luxContainerStat) {
+		super.appendLuxContainerDescription(stack, context, tooltip, flag, luxContainerStat);
+		tooltip.add(LuxStatTooltip.luxConsumptionPerUse(COST, luxContainerStat.maxCharge()));
 	}
 }

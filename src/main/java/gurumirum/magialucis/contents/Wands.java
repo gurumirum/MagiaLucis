@@ -20,7 +20,7 @@ public enum Wands implements ItemLike {
 	ICY_CONFIGURATION_WAND(ItemProfile.customItem(ConfigurationWandItem::new, StandardWandShape.WAND), null),
 
 	AMBER_TORCH(ItemProfile.customItem(AmberTorchWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(AmberTorchWandItem.COST_PER_LIGHT_SOURCE * 300, Gem.AMBER)),
+			LuxContainerStat.withBaseStat(AmberTorchWandItem.COST * 300, Gem.AMBER)),
 
 	LESSER_ICE_STAFF(ItemProfile.customItem(LesserIceStaffItem::new, StandardWandShape.STAFF), null),
 
@@ -30,7 +30,7 @@ public enum Wands implements ItemLike {
 			LuxContainerStat.withBaseStat(RecallStaffItem.COST * 3, Gem.AQUAMARINE)),
 
 	HEAL_WAND(ItemProfile.customItem(HealWandItem::new, StandardWandShape.WAND),
-			LuxContainerStat.withBaseStat(HealWandItem.COST_PER_CAST * 5, Gem.PEARL)),
+			LuxContainerStat.withBaseStat(HealWandItem.COST * 5, Gem.PEARL)),
 
 	// TODO prismarine wand
 

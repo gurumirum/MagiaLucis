@@ -154,6 +154,22 @@ public final class LuxStatTooltip {
 		else return NumberFormats.INTEGER.format(value);
 	}
 
+	public static MutableComponent luxConsumptionPerUse(long cost, long maxCharge) {
+		return Component.translatable("item.magialucis.tooltip.lux_consumption.use",
+				NumberFormats.i(cost, maxCharge < cost ? ChatFormatting.RED : null));
+	}
+
+	public static MutableComponent luxConsumptionPerSec(long cost, long maxCharge) {
+		return Component.translatable("item.magialucis.tooltip.lux_consumption.s",
+				NumberFormats.i(cost, maxCharge < cost ? ChatFormatting.RED : null));
+	}
+
+	public static MutableComponent luxConsumptionPerUseAndSec(long perUseCost, long perSecCost, long maxCharge) {
+		return Component.translatable("item.magialucis.tooltip.lux_consumption.use_s",
+				NumberFormats.i(perUseCost, maxCharge < perUseCost ? ChatFormatting.RED : null),
+				NumberFormats.i(perSecCost, maxCharge < perSecCost ? ChatFormatting.RED : null));
+	}
+
 	public enum Mode {
 		HIDDEN,
 		EXPANDED,

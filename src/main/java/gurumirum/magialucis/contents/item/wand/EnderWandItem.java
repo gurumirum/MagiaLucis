@@ -10,7 +10,7 @@ import gurumirum.magialucis.contents.data.AugmentLogic;
 import gurumirum.magialucis.contents.data.ItemAugment;
 import gurumirum.magialucis.contents.entity.EnderChestPortal;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
-import gurumirum.magialucis.utils.NumberFormats;
+import gurumirum.magialucis.impl.LuxStatTooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -140,12 +140,8 @@ public class EnderWandItem extends LuxContainerItem implements AugmentTooltipPro
 	                                             @NotNull List<Component> tooltip, @NotNull TooltipFlag flag,
 	                                             @NotNull LuxContainerStat luxContainerStat) {
 		super.appendLuxContainerDescription(stack, context, tooltip, flag, luxContainerStat);
-		tooltip.add(Component.translatable("item.magialucis.tooltip.lux_consumption",
-				Component.translatable("item.magialucis.ender_wand.tooltip.cost",
-						NumberFormats.dec(portalSpawnCost(stack), null),
-						NumberFormats.dec(portalTickCost(stack) * 20, null)
-				)
-		));
+		tooltip.add(LuxStatTooltip.luxConsumptionPerUseAndSec(portalSpawnCost(stack),
+				portalTickCost(stack) * 20, luxContainerStat.maxCharge()));
 	}
 
 	@Override
