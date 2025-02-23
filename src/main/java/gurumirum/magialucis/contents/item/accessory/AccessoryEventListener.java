@@ -22,6 +22,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
@@ -111,9 +112,18 @@ public final class AccessoryEventListener {
 		}
 	}
 
-	private static boolean findCurioItemAndDo(@NotNull Accessories item, @NotNull Player player,
+	@SubscribeEvent
+	public static void livingVisibility(LivingEvent.LivingVisibilityEvent event) {
+		findCurioItemAndDo(Accessories.INVISIBILITY_RING, event.getEntity(), stack -> {
+			if (!stack.getOrDefault(ACTIVE, false)) return false;
+			event.modifyVisibility(event.getVisibilityModifier() * 0.25);
+			return true;
+		});
+	}
+
+	private static boolean findCurioItemAndDo(@NotNull Accessories item, @NotNull LivingEntity entity,
 	                                          @NotNull Predicate<ItemStack> action) {
-		ICuriosItemHandler h = CuriosApi.getCuriosInventory(player).orElse(null);
+		ICuriosItemHandler h = CuriosApi.getCuriosInventory(entity).orElse(null);
 		if (h == null) return false;
 
 		ICurioStacksHandler curios = h.getCurios().get(item.curioSlot());

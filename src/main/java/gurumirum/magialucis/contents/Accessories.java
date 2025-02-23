@@ -32,6 +32,9 @@ public enum Accessories implements ItemLike {
 			1)), ModCurioSlots.RING,
 			LuxContainerStat.withBaseStat(1000, Gem.CITRINE)),
 
+	INVISIBILITY_RING(ItemProfile.customItem(InvisibilityCurioItem::new), ModCurioSlots.RING,
+			LuxContainerStat.withBaseStat(1000, Gem.IOLITE)),
+
 	OBSIDIAN_BRACELET(ItemProfile.customItem(ObsidianBraceletItem::new), ModCurioSlots.BRACELET,
 			LuxContainerStat.withBaseStat(ObsidianBraceletItem.COST * 20 * 30, Gem.OBSIDIAN)),
 

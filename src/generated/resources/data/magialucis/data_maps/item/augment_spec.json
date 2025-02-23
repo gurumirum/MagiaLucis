@@ -41,6 +41,11 @@
       "magialucis:quick_cast_3"
     ],
     "magialucis:icy_configuration_wand": "magialucis:configuration_wand_debug_view",
+    "magialucis:invisibility_ring": [
+      "magialucis:overcharge_1",
+      "magialucis:overcharge_2",
+      "magialucis:overcharge_3"
+    ],
     "magialucis:lapis_shield": [
       "magialucis:overcharge_1",
       "magialucis:overcharge_2",
