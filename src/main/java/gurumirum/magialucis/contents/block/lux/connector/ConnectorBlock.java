@@ -9,10 +9,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -23,8 +27,9 @@ import java.util.EnumMap;
 import java.util.List;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
-public class ConnectorBlock extends GemContainerBlock {
+public class ConnectorBlock extends GemContainerBlock implements SimpleWaterloggedBlock {
 	private static final EnumMap<Direction, VoxelShape> SHAPES = new EnumMap<>(Direction.class);
 
 	static {
@@ -74,12 +79,14 @@ public class ConnectorBlock extends GemContainerBlock {
 
 	public ConnectorBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN));
+		registerDefaultState(defaultBlockState()
+				.setValue(WATERLOGGED, false)
+				.setValue(FACING, Direction.DOWN));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
+		builder.add(FACING, WATERLOGGED);
 	}
 
 	@Override
@@ -89,13 +96,31 @@ public class ConnectorBlock extends GemContainerBlock {
 
 	@Override
 	public @Nullable BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
-		return defaultBlockState().setValue(FACING, context.getClickedFace().getOpposite());
+		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+		return defaultBlockState()
+				.setValue(FACING, context.getClickedFace().getOpposite())
+				.setValue(WATERLOGGED, fluidState.is(Fluids.WATER));
 	}
 
 	@Override
 	protected @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter level,
 	                                       @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return SHAPES.get(state.getValue(FACING));
+	}
+
+	@Override
+	protected @NotNull FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
+	protected @NotNull BlockState updateShape(BlockState state, @NotNull Direction facing,
+	                                          @NotNull BlockState facingState, @NotNull LevelAccessor level,
+	                                          @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED)) {
+			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		}
+		return state;
 	}
 
 	@Override

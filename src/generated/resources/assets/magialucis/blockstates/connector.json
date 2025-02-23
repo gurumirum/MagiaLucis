@@ -1,27 +1,53 @@
 {
   "variants": {
-    "facing=down": {
+    "facing=down,waterlogged=false": {
       "model": "magialucis:block/connector",
       "x": 180
     },
-    "facing=east": {
+    "facing=down,waterlogged=true": {
+      "model": "magialucis:block/connector",
+      "x": 180
+    },
+    "facing=east,waterlogged=false": {
       "model": "magialucis:block/connector",
       "x": 90,
       "y": 90
     },
-    "facing=north": {
+    "facing=east,waterlogged=true": {
+      "model": "magialucis:block/connector",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,waterlogged=false": {
       "model": "magialucis:block/connector",
       "x": 90
     },
-    "facing=south": {
+    "facing=north,waterlogged=true": {
+      "model": "magialucis:block/connector",
+      "x": 90
+    },
+    "facing=south,waterlogged=false": {
       "model": "magialucis:block/connector",
       "x": 90,
       "y": 180
     },
-    "facing=up": {
+    "facing=south,waterlogged=true": {
+      "model": "magialucis:block/connector",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,waterlogged=false": {
       "model": "magialucis:block/connector"
     },
-    "facing=west": {
+    "facing=up,waterlogged=true": {
+      "model": "magialucis:block/connector"
+    },
+    "facing=west,waterlogged=false": {
+      "model": "magialucis:block/connector",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,waterlogged=true": {
       "model": "magialucis:block/connector",
       "x": 90,
       "y": 270
