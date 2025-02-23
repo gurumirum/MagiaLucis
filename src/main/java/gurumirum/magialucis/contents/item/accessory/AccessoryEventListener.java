@@ -2,7 +2,9 @@ package gurumirum.magialucis.contents.item.accessory;
 
 import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.contents.Accessories;
+import gurumirum.magialucis.contents.Augments;
 import gurumirum.magialucis.contents.ModDataComponents;
+import gurumirum.magialucis.contents.data.AugmentLogic;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
@@ -44,10 +46,10 @@ public final class AccessoryEventListener {
 				!player.hasEffect(MobEffects.FIRE_RESISTANCE)) {
 			findCurioItemAndDo(Accessories.OBSIDIAN_BRACELET, player, stack -> {
 				long charge = stack.getOrDefault(LUX_CHARGE, 0L);
-				if (charge < ObsidianBraceletItem.COST_PER_FIRE_RESISTANCE) return false;
+				if (charge < ObsidianBraceletItem.COST) return false;
 
 				event.setInvulnerable(true);
-				stack.set(LUX_CHARGE, charge - ObsidianBraceletItem.COST_PER_FIRE_RESISTANCE);
+				stack.set(LUX_CHARGE, charge - ObsidianBraceletItem.COST);
 				return true;
 			});
 		}
@@ -70,16 +72,19 @@ public final class AccessoryEventListener {
 				stack.set(SHIELD_CHARGE, 0f);
 				stack.set(DEPLETED, true);
 
-				long luxCharge = stack.getOrDefault(LUX_CHARGE, 0L);
-				if (luxCharge >= ShieldCurioItem.COST_PER_IMPACT) {
-					// TODO Do visual? sth? idk
-					for (Monster entity : player.level().getEntities(
-							EntityTypeTest.forClass(Monster.class),
-							player.getBoundingBox().inflate(4),
-							LivingEntity::isAlive)) {
-						entity.knockback(1.5f, player.getX() - entity.getX(), player.getZ() - entity.getZ());
-						entity.hurt(player.damageSources().source(DamageTypes.INDIRECT_MAGIC, player),
-								ShieldCurioItem.IMPACT_DAMAGE);
+				if (AugmentLogic.getAugments(stack).has(Augments.SHIELD_NECKLACE_EXPLOSION)) {
+					long luxCharge = stack.getOrDefault(LUX_CHARGE, 0L);
+					if (luxCharge >= ShieldCurioItem.EXPLOSION_COST) {
+						// TODO Do visual? sth? idk
+						for (Monster entity : player.level().getEntities(
+								EntityTypeTest.forClass(Monster.class),
+								player.getBoundingBox().inflate(4),
+								LivingEntity::isAlive)) {
+							entity.knockback(1.5f, player.getX() - entity.getX(), player.getZ() - entity.getZ());
+							entity.hurt(player.damageSources().source(DamageTypes.INDIRECT_MAGIC, player),
+									ShieldCurioItem.EXPLOSION_DAMAGE);
+						}
+						stack.set(LUX_CHARGE, luxCharge - ShieldCurioItem.EXPLOSION_COST);
 					}
 				}
 			} else {

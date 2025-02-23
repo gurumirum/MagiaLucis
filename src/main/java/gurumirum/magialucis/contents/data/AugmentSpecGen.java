@@ -50,6 +50,10 @@ public final class AugmentSpecGen {
 
 	private static void addAccessoryAugment(Collector c, Accessories acc) {
 		if (acc.luxContainerStat() != null) c.add(OVERCHARGE_1, OVERCHARGE_2, OVERCHARGE_3);
+
+		switch (acc) {
+			case SHIELD_NECKLACE -> c.add(SHIELD_NECKLACE_EXPLOSION);
+		}
 	}
 
 	private static <T> void collect(T t,

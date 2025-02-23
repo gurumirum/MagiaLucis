@@ -3,8 +3,10 @@ package gurumirum.magialucis.contents.item.accessory;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import gurumirum.magialucis.api.MagiaLucisApi;
+import gurumirum.magialucis.api.capability.LuxContainerStat;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.ModMobEffects;
+import gurumirum.magialucis.impl.LuxStatTooltip;
 import gurumirum.magialucis.utils.NumberFormats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -53,12 +55,11 @@ public class AmberWreathItem extends LuxContainerCurioItem {
 
 		if (level.isClientSide || level.getGameTime() % 10 != 0) return;
 
-		boolean active = AccessoryLogic.updateCharge(slotContext, stack,
-				6, COST_PER_UPDATE,
-				entity.hasEffect(ModMobEffects.NATURES_BLESSING) ||
-						((this.day ? level.isDay() : level.isNight()) &&
-								level.getBrightness(LightLayer.SKY, entity.blockPosition()) > 12)
-		);
+		boolean active = (entity.hasEffect(ModMobEffects.NATURES_BLESSING) ||
+				((this.day ? level.isDay() : level.isNight()) &&
+						level.getBrightness(LightLayer.SKY, entity.blockPosition()) > 12)) &&
+				AccessoryLogic.updateCharge(slotContext, stack,
+						6, COST_PER_UPDATE, true);
 
 		boolean stackActive = stack.getOrDefault(ModDataComponents.ACTIVE, false);
 		if (stackActive != active) {
@@ -91,5 +92,13 @@ public class AmberWreathItem extends LuxContainerCurioItem {
 		tooltip.add(Component.translatable(key + ".2"));
 
 		super.appendHoverText(stack, context, tooltip, flag);
+	}
+
+	@Override
+	protected void appendLuxContainerDescription(@NotNull ItemStack stack, @NotNull TooltipContext context,
+	                                             @NotNull List<Component> tooltip, @NotNull TooltipFlag flag,
+	                                             @NotNull LuxContainerStat luxContainerStat) {
+		super.appendLuxContainerDescription(stack, context, tooltip, flag, luxContainerStat);
+		tooltip.add(LuxStatTooltip.subzeroLuxConsumptionPerSec());
 	}
 }

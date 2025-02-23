@@ -33,10 +33,10 @@ public enum Accessories implements ItemLike {
 			LuxContainerStat.withBaseStat(1000, Gem.CITRINE)),
 
 	OBSIDIAN_BRACELET(ItemProfile.customItem(ObsidianBraceletItem::new), ModCurioSlots.BRACELET,
-			LuxContainerStat.withBaseStat(ObsidianBraceletItem.COST_PER_FIRE_RESISTANCE * 20 * 30, Gem.OBSIDIAN)),
+			LuxContainerStat.withBaseStat(ObsidianBraceletItem.COST * 20 * 30, Gem.OBSIDIAN)),
 
 	SHIELD_NECKLACE(ItemProfile.customItem(ShieldCurioItem::new), ModCurioSlots.NECKLACE,
-			LuxContainerStat.withBaseStat(ShieldCurioItem.COST_PER_IMPACT * 10, Gem.POLISHED_LAPIS_LAZULI)),
+			LuxContainerStat.withBaseStat(ShieldCurioItem.SHIELD_RECHARGE_COST * 60, Gem.POLISHED_LAPIS_LAZULI)),
 	;
 
 	private final DeferredItem<Item> item;

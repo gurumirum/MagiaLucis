@@ -84,13 +84,13 @@ public final class ClientInit {
 			ItemProperties.register(Wands.ENDER_WAND.asItem(), NO_CHARGE, noCharge(EnderWandItem::portalSpawnCost));
 
 			ItemProperties.register(Accessories.SPEED_RING.asItem(), NO_CHARGE, noCharge(1));
-			ItemProperties.register(Accessories.OBSIDIAN_BRACELET.asItem(), NO_CHARGE, noCharge(ObsidianBraceletItem.COST_PER_FIRE_RESISTANCE));
+			ItemProperties.register(Accessories.OBSIDIAN_BRACELET.asItem(), NO_CHARGE, noCharge(ObsidianBraceletItem.COST));
 			ItemProperties.register(Accessories.SHIELD_NECKLACE.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
 				if (stack.getOrDefault(ModDataComponents.DEPLETED, false)) return 1;
 				if (stack.getOrDefault(ModDataComponents.SHIELD_CHARGE, 0f) > 0f) return 0;
 
 				long luxCharge = stack.getOrDefault(ModDataComponents.LUX_CHARGE, 0L);
-				return luxCharge >= ShieldCurioItem.COST_PER_SHIELD_RECHARGE ? 0 : 1;
+				return luxCharge >= ShieldCurioItem.SHIELD_RECHARGE_COST ? 0 : 1;
 			});
 		});
 	}

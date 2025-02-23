@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents;
 
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.api.augment.Augment;
 import gurumirum.magialucis.api.augment.SimpleAugment;
 import gurumirum.magialucis.client.Textures;
@@ -38,6 +39,8 @@ public enum Augments implements AugmentProvider {
 	AMBER_TORCH_CONCEALED_FLAME(textured(Textures.AUGMENT_CONCEAL, 2)),
 
 	ENDER_WAND_COLLECTOR(textured(Textures.AUGMENT_COLLECTOR, 1)),
+
+	SHIELD_NECKLACE_EXPLOSION(textured(MagiaLucisApi.id("no_texture"), 1)),
 	;
 
 	private static AugmentProfile<SimpleAugment> textured(ResourceLocation texture, int descriptions) {

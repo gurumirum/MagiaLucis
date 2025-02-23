@@ -1,20 +1,26 @@
 package gurumirum.magialucis.contents.item.wand;
 
+import gurumirum.magialucis.api.capability.LuxContainerStat;
+import gurumirum.magialucis.api.item.WandEffectSource;
 import gurumirum.magialucis.client.render.WandEffect;
 import gurumirum.magialucis.contents.ModDataComponents;
 import gurumirum.magialucis.contents.item.LuxContainerItem;
-import gurumirum.magialucis.api.item.WandEffectSource;
+import gurumirum.magialucis.impl.LuxStatTooltip;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LapisShieldItem extends LuxContainerItem implements WandEffectSource {
 	public static final int COST_PER_SHIELDING_TICK = 25;
@@ -63,5 +69,15 @@ public class LapisShieldItem extends LuxContainerItem implements WandEffectSourc
 	@Override
 	public @Nullable WandEffect getWandEffect(Player player, ItemStack stack, InteractionHand hand) {
 		return player.isUsingItem() && player.getUsedItemHand() == hand ? LapisShieldEffect.INSTANCE : null;
+	}
+
+	@Override
+	protected void appendLuxContainerDescription(@NotNull ItemStack stack, @NotNull TooltipContext context,
+	                                             @NotNull List<Component> tooltip, @NotNull TooltipFlag flag,
+	                                             @NotNull LuxContainerStat luxContainerStat) {
+		super.appendLuxContainerDescription(stack, context, tooltip, flag, luxContainerStat);
+		tooltip.add(Component.translatable("item.magialucis.lapis_shield.tooltip.lux_consumption",
+				LuxStatTooltip.formatLuxCost(COST_PER_BLOCK, luxContainerStat.maxCharge()),
+				LuxStatTooltip.formatLuxCost(COST_PER_SHIELDING_TICK, luxContainerStat.maxCharge())));
 	}
 }

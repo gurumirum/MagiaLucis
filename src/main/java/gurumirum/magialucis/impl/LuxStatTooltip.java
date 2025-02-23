@@ -155,19 +155,28 @@ public final class LuxStatTooltip {
 	}
 
 	public static MutableComponent luxConsumptionPerUse(long cost, long maxCharge) {
-		return Component.translatable("item.magialucis.tooltip.lux_consumption.use",
-				NumberFormats.i(cost, maxCharge < cost ? ChatFormatting.RED : null));
+		return Component.translatable("item.magialucis.tooltip.lux_consumption.use", formatLuxCost(cost, maxCharge));
 	}
 
 	public static MutableComponent luxConsumptionPerSec(long cost, long maxCharge) {
-		return Component.translatable("item.magialucis.tooltip.lux_consumption.s",
-				NumberFormats.i(cost, maxCharge < cost ? ChatFormatting.RED : null));
+		return Component.translatable("item.magialucis.tooltip.lux_consumption.s", formatLuxCost(cost, maxCharge));
 	}
 
 	public static MutableComponent luxConsumptionPerUseAndSec(long perUseCost, long perSecCost, long maxCharge) {
 		return Component.translatable("item.magialucis.tooltip.lux_consumption.use_s",
-				NumberFormats.i(perUseCost, maxCharge < perUseCost ? ChatFormatting.RED : null),
-				NumberFormats.i(perSecCost, maxCharge < perSecCost ? ChatFormatting.RED : null));
+				formatLuxCost(perUseCost, maxCharge), formatLuxCost(perSecCost, maxCharge));
+	}
+
+	public static Component formatLuxCost(long cost, long maxCharge) {
+		return NumberFormats.i(cost, maxCharge < cost ? ChatFormatting.RED : null);
+	}
+
+	private static @Nullable MutableComponent subzeroLuxConsumptionPerSecComponent;
+
+	public static MutableComponent subzeroLuxConsumptionPerSec() {
+		if (subzeroLuxConsumptionPerSecComponent == null) subzeroLuxConsumptionPerSecComponent =
+				Component.translatable("item.magialucis.tooltip.lux_consumption.s", "<1");
+		return subzeroLuxConsumptionPerSecComponent;
 	}
 
 	public enum Mode {
