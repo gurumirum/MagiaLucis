@@ -102,6 +102,8 @@
   "item.magialucis.brightstone": "Brightstone",
   "item.magialucis.citrine": "Citrine",
   "item.magialucis.citrine_matrix": "Citrine Matrix",
+  "item.magialucis.conceal_ring": "Ring of Concealment",
+  "item.magialucis.conceal_ring.tooltip.0": "§7Makes wearer harder to detect for mobs",
   "item.magialucis.configuration_wand": "Configuration Wand",
   "item.magialucis.copper_nugget": "Copper Nugget",
   "item.magialucis.crystallized_redstone": "Crystallized Redstone",

@@ -114,7 +114,7 @@ public final class AccessoryEventListener {
 
 	@SubscribeEvent
 	public static void livingVisibility(LivingEvent.LivingVisibilityEvent event) {
-		findCurioItemAndDo(Accessories.INVISIBILITY_RING, event.getEntity(), stack -> {
+		findCurioItemAndDo(Accessories.CONCEAL_RING, event.getEntity(), stack -> {
 			if (!stack.getOrDefault(ACTIVE, false)) return false;
 			event.modifyVisibility(event.getVisibilityModifier() * 0.25);
 			return true;

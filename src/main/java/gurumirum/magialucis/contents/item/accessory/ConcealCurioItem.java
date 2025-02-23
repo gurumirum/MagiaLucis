@@ -13,10 +13,10 @@ import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.List;
 
-public class InvisibilityCurioItem extends LuxContainerCurioItem {
+public class ConcealCurioItem extends LuxContainerCurioItem {
 	public static final int COST = 1;
 
-	public InvisibilityCurioItem(Properties properties) {
+	public ConcealCurioItem(Properties properties) {
 		super(properties);
 	}
 
@@ -38,7 +38,7 @@ public class InvisibilityCurioItem extends LuxContainerCurioItem {
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
 	                            @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-		tooltip.add(Component.translatable("item.magialucis.invisibility_ring.tooltip.0"));
+		tooltip.add(Component.translatable("item.magialucis.conceal_ring.tooltip.0"));
 
 		super.appendHoverText(stack, context, tooltip, flag);
 	}

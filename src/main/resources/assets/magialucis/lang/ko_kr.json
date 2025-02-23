@@ -102,6 +102,8 @@
   "item.magialucis.brightstone": "브라이트스톤",
   "item.magialucis.citrine": "황수정",
   "item.magialucis.citrine_matrix": "황수정 매트릭스",
+  "item.magialucis.conceal_ring": "은닉의 반지",
+  "item.magialucis.conceal_ring.tooltip.0": "§7착용자가 몹에게 쉽게 발각되지 않도록 함",
   "item.magialucis.configuration_wand": "재구성 마법봉",
   "item.magialucis.copper_nugget": "구리 조각",
   "item.magialucis.crystallized_redstone": "결정화된 레드스톤",

@@ -1,0 +1,6 @@
+{
+  "parent": "magialucis:item/conceal_ring",
+  "textures": {
+    "layer0": "magialucis:item/conceal_ring_no_charge"
+  }
+}

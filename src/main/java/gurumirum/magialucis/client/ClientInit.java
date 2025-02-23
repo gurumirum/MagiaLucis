@@ -22,6 +22,7 @@ import gurumirum.magialucis.contents.entity.EnderChestPortalRenderer;
 import gurumirum.magialucis.contents.entity.LesserIceProjectileRenderer;
 import gurumirum.magialucis.contents.entity.templeguardian.TempleGuardianModel;
 import gurumirum.magialucis.contents.entity.templeguardian.TempleGuardianRenderer;
+import gurumirum.magialucis.contents.item.accessory.ConcealCurioItem;
 import gurumirum.magialucis.contents.item.accessory.ObsidianBraceletItem;
 import gurumirum.magialucis.contents.item.accessory.ShieldCurioItem;
 import gurumirum.magialucis.contents.item.wand.*;
@@ -84,6 +85,7 @@ public final class ClientInit {
 			ItemProperties.register(Wands.ENDER_WAND.asItem(), NO_CHARGE, noCharge(EnderWandItem::portalSpawnCost));
 
 			ItemProperties.register(Accessories.SPEED_RING.asItem(), NO_CHARGE, noCharge(1));
+			ItemProperties.register(Accessories.CONCEAL_RING.asItem(), NO_CHARGE, noCharge(ConcealCurioItem.COST));
 			ItemProperties.register(Accessories.OBSIDIAN_BRACELET.asItem(), NO_CHARGE, noCharge(ObsidianBraceletItem.COST));
 			ItemProperties.register(Accessories.SHIELD_NECKLACE.asItem(), NO_CHARGE, (stack, level, entity, seed) -> {
 				if (stack.getOrDefault(ModDataComponents.DEPLETED, false)) return 1;

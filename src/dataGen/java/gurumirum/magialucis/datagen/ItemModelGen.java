@@ -176,6 +176,10 @@ public class ItemModelGen extends ItemModelProvider {
 				.override()
 				.predicate(ClientInit.NO_CHARGE, 1)
 				.model(noChargeItem(Accessories.SPEED_RING.asItem()));
+		basicItem(Accessories.CONCEAL_RING.asItem())
+				.override()
+				.predicate(ClientInit.NO_CHARGE, 1)
+				.model(noChargeItem(Accessories.CONCEAL_RING.asItem()));
 		basicItem(Accessories.OBSIDIAN_BRACELET.asItem())
 				.override()
 				.predicate(ClientInit.NO_CHARGE, 1)

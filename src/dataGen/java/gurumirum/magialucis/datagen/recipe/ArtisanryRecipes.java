@@ -55,6 +55,16 @@ public abstract class ArtisanryRecipes extends SharedRecipeLogic {
 				.luxInput(b -> b.minR(20).minG(20))
 				.save(out);
 
+		artisanry(CONCEAL_RING)
+				.pattern("12 ")
+				.pattern("2 2")
+				.pattern(" 2 ")
+				.define('1', gem(Gem.IOLITE))
+				.define('2', ModItemTags.SILVER_NUGGETS)
+				.processTicks(RING_RECIPE_TICKS)
+				.luxInput(b -> b.minB(20))
+				.save(out);
+
 		artisanry(OBSIDIAN_BRACELET)
 				.pattern("121")
 				.pattern("232")
