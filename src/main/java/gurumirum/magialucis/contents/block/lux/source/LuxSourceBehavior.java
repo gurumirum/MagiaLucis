@@ -1,11 +1,11 @@
 package gurumirum.magialucis.contents.block.lux.source;
 
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNode;
 import gurumirum.magialucis.api.luxnet.behavior.LuxGeneratorNodeBehavior;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
-import gurumirum.magialucis.contents.LuxNodeTypes;
 import gurumirum.magialucis.impl.luxnet.behavior.DynamicLuxNodeBehavior;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +15,10 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 public class LuxSourceBehavior extends DynamicLuxNodeBehavior implements LuxGeneratorNodeBehavior {
+	public static final LuxNodeType<LuxSourceBehavior> NODE_TYPE = new LuxNodeType.Serializable<>(
+			MagiaLucisApi.id("source"), LuxSourceBehavior.class,
+			LuxSourceBehavior::save, LuxSourceBehavior::new);
+
 	private double luxGeneration;
 
 	public LuxSourceBehavior() {}
@@ -26,7 +30,7 @@ public class LuxSourceBehavior extends DynamicLuxNodeBehavior implements LuxGene
 
 	@Override
 	public @NotNull LuxNodeType<?> type() {
-		return LuxNodeTypes.SOURCE;
+		return NODE_TYPE;
 	}
 
 	@Override

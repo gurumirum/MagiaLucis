@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public sealed abstract class LuxNodeType<B extends LuxNodeBehavior> {
 	private final ResourceLocation id;
@@ -84,11 +84,20 @@ public sealed abstract class LuxNodeType<B extends LuxNodeBehavior> {
 	}
 
 	public static final class Simple<B extends LuxNodeBehavior> extends LuxNodeType<B> {
-		private final Supplier<B> factory;
+		private final Function<LuxNodeType.Simple<B>, B> factory;
 
-		public Simple(@NotNull ResourceLocation id, @NotNull Class<B> type, @NotNull Supplier<B> factory) {
+		public Simple(@NotNull ResourceLocation id, @NotNull Class<B> type, @NotNull B instance) {
+			this(id, type, t -> instance);
+		}
+
+		public Simple(@NotNull ResourceLocation id, @NotNull Class<B> type,
+		              @NotNull Function<LuxNodeType.Simple<B>, B> factory) {
 			super(id, type);
-			this.factory = factory;
+			this.factory = Objects.requireNonNull(factory);
+		}
+
+		public @NotNull B instantiate() {
+			return this.factory.apply(this);
 		}
 
 		@Override
@@ -98,7 +107,7 @@ public sealed abstract class LuxNodeType<B extends LuxNodeBehavior> {
 
 		@Override
 		public @NotNull B read(@Nullable CompoundTag tag, HolderLookup.@NotNull Provider lookupProvider) {
-			return this.factory.get();
+			return this.factory.apply(this);
 		}
 	}
 }

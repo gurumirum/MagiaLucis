@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.ambercore;
 
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.api.field.Field;
 import gurumirum.magialucis.api.luxnet.LuxNet;
@@ -19,6 +20,10 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
 public class AmberCoreBehavior extends SingleFieldLuxNodeBehavior implements LuxGeneratorNodeBehavior {
+	public static final LuxNodeType<AmberCoreBehavior> NODE_TYPE = new LuxNodeType.Serializable<>(
+			MagiaLucisApi.id("amber_core"), AmberCoreBehavior.class,
+			AmberCoreBehavior::save, AmberCoreBehavior::new);
+
 	private boolean disabled;
 
 	public AmberCoreBehavior(@NotNull BlockPos pos, boolean disabled) {
@@ -52,7 +57,7 @@ public class AmberCoreBehavior extends SingleFieldLuxNodeBehavior implements Lux
 
 	@Override
 	public @NotNull LuxNodeType<?> type() {
-		return LuxNodeTypes.AMBER_CORE;
+		return NODE_TYPE;
 	}
 
 	@Override

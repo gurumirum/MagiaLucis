@@ -1,5 +1,6 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.contents.LuxNodeTypes;
 import gurumirum.magialucis.api.field.Field;
@@ -11,13 +12,17 @@ import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
 public class SunlightCoreBehavior extends BaseSunlightCoreNodeBehavior {
+	public static final LuxNodeType<SunlightCoreBehavior> NODE_TYPE = new LuxNodeType.Serializable<>(
+			MagiaLucisApi.id("sunlight_core"), SunlightCoreBehavior.class,
+			SunlightCoreBehavior::save, SunlightCoreBehavior::new);
+
 	public SunlightCoreBehavior(@NotNull BlockPos pos) {
 		super(pos);
 	}
 
 	@Override
 	public @NotNull LuxNodeType<?> type() {
-		return LuxNodeTypes.SUNLIGHT_CORE;
+		return NODE_TYPE;
 	}
 
 	@Override

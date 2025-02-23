@@ -1,15 +1,19 @@
 package gurumirum.magialucis.impl.luxnet.behavior;
 
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeBehavior;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
-import gurumirum.magialucis.contents.LuxNodeTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DynamicLuxNodeBehavior implements LuxNodeBehavior, LuxStat {
+	public static final LuxNodeType<DynamicLuxNodeBehavior> NODE_TYPE = new LuxNodeType.Serializable<>(
+			MagiaLucisApi.id("dynamic"), DynamicLuxNodeBehavior.class,
+			DynamicLuxNodeBehavior::save, DynamicLuxNodeBehavior::new);
+
 	private double minLuxThreshold;
 	private double rMaxTransfer;
 	private double gMaxTransfer;
@@ -23,7 +27,7 @@ public class DynamicLuxNodeBehavior implements LuxNodeBehavior, LuxStat {
 
 	@Override
 	public @NotNull LuxNodeType<?> type() {
-		return LuxNodeTypes.DYNAMIC;
+		return NODE_TYPE;
 	}
 
 	@Override

@@ -7,16 +7,16 @@ import org.jetbrains.annotations.NotNull;
 public final class DefaultLuxNodeBehavior implements LuxNodeBehavior {
 	public static final DefaultLuxNodeBehavior INSTANCE = new DefaultLuxNodeBehavior();
 
-	public static final LuxNodeType<DefaultLuxNodeBehavior> TYPE = new LuxNodeType.Simple<>(
+	public static final LuxNodeType<DefaultLuxNodeBehavior> NODE_TYPE = new LuxNodeType.Simple<>(
 			MagiaLucisApi.id("default"),
 			DefaultLuxNodeBehavior.class,
-			() -> INSTANCE);
+			INSTANCE);
 
 	private DefaultLuxNodeBehavior() {}
 
 	@Override
 	public @NotNull LuxNodeType<?> type() {
-		return TYPE;
+		return NODE_TYPE;
 	}
 
 	@Override

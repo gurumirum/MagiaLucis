@@ -1,10 +1,10 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.core;
 
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNode;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
-import gurumirum.magialucis.contents.LuxNodeTypes;
 import gurumirum.magialucis.api.field.Field;
 import gurumirum.magialucis.impl.field.Fields;
 import net.minecraft.core.BlockPos;
@@ -15,13 +15,17 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
 public class MoonlightCoreBehavior extends BaseSunlightCoreNodeBehavior {
+	public static final LuxNodeType<MoonlightCoreBehavior> NODE_TYPE = new LuxNodeType.Serializable<>(
+			MagiaLucisApi.id("moonlight_core"), MoonlightCoreBehavior.class,
+			MoonlightCoreBehavior::save, MoonlightCoreBehavior::new);
+
 	public MoonlightCoreBehavior(@NotNull BlockPos pos) {
 		super(pos);
 	}
 
 	@Override
 	public @NotNull LuxNodeType<?> type() {
-		return LuxNodeTypes.MOONLIGHT_CORE;
+		return NODE_TYPE;
 	}
 
 	@Override

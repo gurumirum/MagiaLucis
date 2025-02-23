@@ -7,6 +7,7 @@ import gurumirum.magialucis.contents.ModBlocks;
 import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
+import gurumirum.magialucis.impl.luxnet.behavior.SimpleConsumerBehavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -17,7 +18,7 @@ import org.joml.Vector3d;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
-public class LightLoomBlockEntity extends LuxNodeBlockEntity<LightLoomBehavior>
+public class LightLoomBlockEntity extends LuxNodeBlockEntity<SimpleConsumerBehavior>
 		implements Ticker.Client {
 	private static final float VELOCITY_IDLE = 0.5f;
 	private static final float VELOCITY_WORKING = 54;
@@ -40,7 +41,7 @@ public class LightLoomBlockEntity extends LuxNodeBlockEntity<LightLoomBehavior>
 	}
 
 	public @NotNull Vector3d luxInput(@NotNull Vector3d dest) {
-		return nodeBehavior().luxInput.min(dest);
+		return nodeBehavior().min(dest);
 	}
 
 	public float clientSideAngle(float partialTick) {
@@ -60,8 +61,8 @@ public class LightLoomBlockEntity extends LuxNodeBlockEntity<LightLoomBehavior>
 	}
 
 	@Override
-	protected @NotNull LightLoomBehavior createNodeBehavior() {
-		return new LightLoomBehavior(this.type);
+	protected @NotNull SimpleConsumerBehavior createNodeBehavior() {
+		return this.type.behaviorType().instantiate();
 	}
 
 	@Override

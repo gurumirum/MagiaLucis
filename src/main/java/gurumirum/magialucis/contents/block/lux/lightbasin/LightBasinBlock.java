@@ -1,10 +1,12 @@
 package gurumirum.magialucis.contents.block.lux.lightbasin;
 
 import gurumirum.magialucis.api.capability.LuxStat;
+import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
 import gurumirum.magialucis.contents.Gem;
 import gurumirum.magialucis.contents.block.ModBlockStates;
 import gurumirum.magialucis.contents.block.Ticker;
 import gurumirum.magialucis.impl.LuxStatTooltip;
+import gurumirum.magialucis.impl.luxnet.behavior.SimpleConsumerBehavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -34,6 +36,9 @@ import java.util.List;
 
 public class LightBasinBlock extends Block implements EntityBlock {
 	public static final LuxStat STAT = Gem.BRIGHTSTONE;
+
+	public static final LuxNodeType.Simple<SimpleConsumerBehavior> NODE_TYPE =
+			SimpleConsumerBehavior.createType("light_basin", STAT);
 
 	private static final VoxelShape SHAPE = box(0, 0, 0, 16, 12, 16);
 

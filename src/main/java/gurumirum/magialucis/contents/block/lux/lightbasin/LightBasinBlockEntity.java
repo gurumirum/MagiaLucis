@@ -15,6 +15,7 @@ import gurumirum.magialucis.contents.block.lux.LuxNodeBlockEntity;
 import gurumirum.magialucis.contents.recipe.LuxRecipeEvaluation;
 import gurumirum.magialucis.contents.recipe.transfusion.TransfusionRecipeInput;
 import gurumirum.magialucis.impl.luxnet.LuxUtils;
+import gurumirum.magialucis.impl.luxnet.behavior.SimpleConsumerBehavior;
 import gurumirum.magialucis.utils.ModUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,7 +34,7 @@ import org.joml.Vector3d;
 
 import java.util.Objects;
 
-public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior> implements Ticker.Both {
+public class LightBasinBlockEntity extends LuxNodeBlockEntity<SimpleConsumerBehavior> implements Ticker.Both {
 	private static final int SYNC_INTERVAL = 3;
 	private static final int NO_LUX_INPUT_TICKS_MAX = 30;
 
@@ -67,8 +68,8 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 	public void updateLink(LuxNet luxNet, LuxNetLinkCollector linkCollector) {}
 
 	@Override
-	protected @NotNull LightBasinBehavior createNodeBehavior() {
-		return new LightBasinBehavior();
+	protected @NotNull SimpleConsumerBehavior createNodeBehavior() {
+		return LightBasinBlock.NODE_TYPE.instantiate();
 	}
 
 	@Override
@@ -116,7 +117,7 @@ public class LightBasinBlockEntity extends LuxNodeBlockEntity<LightBasinBehavior
 		boolean working = false;
 
 		if (this.currentRecipe != null) {
-			Vector3d luxInput = nodeBehavior().luxInput.min(new Vector3d());
+			Vector3d luxInput = nodeBehavior().min();
 			double progress = this.currentRecipe.luxInputCondition().computeProgress(luxInput);
 			if (progress > 0) {
 				working = true;

@@ -1,11 +1,11 @@
 package gurumirum.magialucis.contents.block.lux.sunlight.focus;
 
+import gurumirum.magialucis.api.MagiaLucisApi;
 import gurumirum.magialucis.api.capability.LuxStat;
 import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNode;
 import gurumirum.magialucis.api.luxnet.behavior.LuxGeneratorNodeBehavior;
 import gurumirum.magialucis.api.luxnet.behavior.LuxNodeType;
-import gurumirum.magialucis.contents.LuxNodeTypes;
 import gurumirum.magialucis.contents.block.lux.sunlight.SunlightLogic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -17,6 +17,10 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 
 public class SunlightFocusBehavior implements LuxGeneratorNodeBehavior {
+	public static final LuxNodeType<SunlightFocusBehavior> NODE_TYPE = new LuxNodeType.Serializable<>(
+			MagiaLucisApi.id("sunlight_focus"), SunlightFocusBehavior.class,
+			SunlightFocusBehavior::save, SunlightFocusBehavior::new);
+
 	private final BlockPos pos;
 
 	private int skyVisibility;
@@ -28,7 +32,7 @@ public class SunlightFocusBehavior implements LuxGeneratorNodeBehavior {
 
 	@Override
 	public @NotNull LuxNodeType<?> type() {
-		return LuxNodeTypes.SUNLIGHT_FOCUS;
+		return NODE_TYPE;
 	}
 
 	@Override

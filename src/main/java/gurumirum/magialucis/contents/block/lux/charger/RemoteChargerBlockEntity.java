@@ -92,7 +92,7 @@ public class RemoteChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior
 
 	@Override
 	protected @NotNull ChargerBehavior createNodeBehavior() {
-		return new ChargerBehavior(this.chargerTier, true);
+		return this.chargerTier.chargerBehaviorType(true).instantiate();
 	}
 
 	@Override

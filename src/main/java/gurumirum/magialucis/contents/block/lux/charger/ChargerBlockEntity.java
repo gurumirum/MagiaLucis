@@ -1,10 +1,10 @@
 package gurumirum.magialucis.contents.block.lux.charger;
 
 import gurumirum.magialucis.api.capability.DirectLinkDestination;
+import gurumirum.magialucis.api.capability.MagiaLucisCaps;
 import gurumirum.magialucis.api.luxnet.LinkContext;
 import gurumirum.magialucis.api.luxnet.LuxNet;
 import gurumirum.magialucis.api.luxnet.LuxNetLinkCollector;
-import gurumirum.magialucis.api.capability.MagiaLucisCaps;
 import gurumirum.magialucis.client.render.RenderEffects;
 import gurumirum.magialucis.client.render.light.BlockLightEffectProvider;
 import gurumirum.magialucis.contents.Accessories;
@@ -104,7 +104,7 @@ public class ChargerBlockEntity extends LuxNodeBlockEntity<ChargerBehavior> impl
 
 	@Override
 	protected @NotNull ChargerBehavior createNodeBehavior() {
-		return new ChargerBehavior(this.chargerTier, false);
+		return this.chargerTier.chargerBehaviorType(false).instantiate();
 	}
 
 	@Override
